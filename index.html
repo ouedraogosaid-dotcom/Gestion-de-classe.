@@ -2152,11 +2152,11 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
         <p>Remplissez l'en-tête du registre ci-dessus (école, classe, année, maître), puis saisissez vos élèves dans la rubrique <b>Élèves</b>. Tout le reste (tableaux de scolarité, effectifs, âges, tableau récapitulatif) se calcule tout seul.</p></details>
       <details><summary>La barre du bas</summary>
         <ul>
-          <li><b>Accueil</b> : votre journée — actions rapides, appels du matin et du soir, agenda, tâches, situation de la classe.</li>
+          <li><b>Accueil</b> : votre journée — actions rapides, appels du matin et du soir, agenda, situation de la classe.</li>
           <li><b>Élèves</b> : la liste, le cahier d'appel, les groupes, les tableaux de scolarité et la synthèse.</li>
           <li><b>Notes</b> : les compositions, la fin d'année et les statistiques.</li>
-          <li><b>Organisation</b> : l'agenda, l'emploi du temps et les tâches de l'année.</li>
-          <li><b>Plus</b> : les documents à imprimer, les ressources (fournitures, manuels, inventaire, chants), la vie professionnelle et l'administration (sauvegarde, classes, paramètres).</li>
+          <li><b>Organisation</b> : le cahier journal, le calendrier, l'agenda et l'emploi du temps.</li>
+          <li><b>Plus</b> : les documents à imprimer, les chants et récitations et l'administration (sauvegarde, classes, paramètres).</li>
         </ul>
         <p>En haut : la loupe pour tout retrouver, la cloche pour les alertes, la roue pour les paramètres.</p></details>
       <details><summary>Saisir les élèves</summary>
@@ -2167,6 +2167,8 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
         <p>Ouvrez un document puis touchez le bouton <b>Imprimer</b> en bas de l'écran. Dans la fenêtre du téléphone, choisissez une imprimante ou « Enregistrer au format PDF ».</p></details>
       <details><summary>Sauvegarde, corbeille et Annuler</summary>
         <p>Faites une sauvegarde chaque semaine : l'application vous le rappelle. Un élève ou une classe supprimés restent 30 jours dans la corbeille. La flèche en haut à droite annule la dernière action.</p></details>
+      <details id="aideDonnees"><summary>Vos données</summary>
+        <p>Les élèves, les notes et l'appel restent dans votre téléphone (et dans vos sauvegardes). L'application compte seulement ses ouvertures, de façon anonyme — aucun nom, aucune note, aucune donnée d'élève — pour savoir combien d'enseignants l'utilisent.</p></details>
       <details><summary>Installer l'application sur le téléphone</summary>
         <p>Dans Chrome, menu ⋮ puis « Ajouter à l'écran d'accueil ». L'application fonctionne ensuite sans internet.</p></details>
     </section>
@@ -7565,6 +7567,7 @@ el("acInstallBtn").addEventListener("click", function(){
 
 /* ---------- « Quoi de neuf » après une mise à jour ---------- */
 var NOUVEAUTES = [
+  ["2.5.1", ["Aide mise à jour après l'allègement de l'application"]],
   ["2.5.0", ["Application allégée : tirage au sort, minuteur, message aux parents, tâches de l'année, bloc-notes, registre des visites, fournitures, manuels, inventaire et passage à un remplaçant sont retirés","Documents retirés : étiquettes, satisfecits, bilan PNAPAS, fiche de renseignements, rapport mensuel","Les données déjà saisies restent conservées dans votre sauvegarde"]],
   ["2.4.5", ["Élèves en double : ignorés à l'import (même avec accents ou nom/prénom inversés), signalés à la saisie, et bandeau « Corriger » pour regrouper ceux déjà présents"]],
   ["2.4.4", ["Cahier journal : ajoutez, renommez, déplacez ou supprimez vos disciplines (bouton « Disciplines et jours »), jusqu'à 30","Une discipline ajoutée est aussi reconnue à l'import de la répartition"]],
@@ -8730,7 +8733,7 @@ function tableauMatieresEleve(e){
 }
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "2.5.0";
+var APP_VERSION = "2.5.1";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
@@ -8812,6 +8815,16 @@ function lancerGuide(){
   });
 }
 
+/* compteur de visites anonyme (GoatCounter) : seule l'ouverture de l'application est comptée, aucune donnée d'élève n'est envoyée */
+var COMPTEUR = "";
+(function(){
+  if(!COMPTEUR){ el("aideDonnees").classList.add("retire"); return; }
+  if(!/\.github\.io$/.test(location.hostname)) return;
+  var sc = document.createElement("script");
+  sc.async = true; sc.src = "https://gc.zgo.at/count.js";
+  sc.setAttribute("data-goatcounter", "https://" + COMPTEUR + ".goatcounter.com/count");
+  document.head.appendChild(sc);
+})();
 /* masque les fonctions retirées (menus, onglets, documents, raccourcis) */
 (function(){
   var cacher = function(n){ if(n) n.classList.add("retire"); };
