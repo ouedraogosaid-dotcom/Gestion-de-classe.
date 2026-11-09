@@ -1,62 +1,87 @@
-/* Registre récapitulatif
-/* Registre récapitulatif — V1 — cache hors ligne */
-var CACHE = "registre-v1";
+/* Registre récapitulatif — cache hors ligne
+   À CHAQUE PUBLICATION : augmenter le numéro de VERSION ci-dessous.
+   C'est ce qui fait apparaître « Nouvelle version disponible » sur les téléphones. */
+var VERSION = "1.1.0";
+var CACHE = "registre-" + VERSION;
 
 var FICHIERS = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
   "./icon-192.png",
-  "./icon-512.png"
+  "./icon-512.png",
+  "./icon-512-maskable.png"
 ];
 
+/* Au-delà de ce délai, on sert la copie hors ligne plutôt que d'attendre un réseau lent. */
+var DELAI_RESEAU = 4000;
+
 self.addEventListener("install", function(e) {
+  /* Pas de skipWaiting ici : la nouvelle version attend que l'utilisateur
+     touche « Mettre à jour », pour ne jamais recharger pendant une saisie. */
   e.waitUntil(
-    caches.open(CACHE)
-      .then(function(c) {
-        return c.addAll(FICHIERS);
-      })
-      .then(function() {
-        return self.skipWaiting();
-      })
+    caches.open(CACHE).then(function(c) { return c.addAll(FICHIERS); }).then(function() {
+      /* L'ancienne version (registre-v1) n'affichait pas le bandeau : on la remplace tout de suite. */
+      return caches.has("registre-v1").then(function(ancienne) { if (ancienne) return self.skipWaiting(); });
+    })
   );
+});
+
+self.addEventListener("message", function(e) {
+  if (e.data === "activer") self.skipWaiting();
 });
 
 self.addEventListener("activate", function(e) {
   e.waitUntil(
     caches.keys().then(function(noms) {
-      return Promise.all(
-        noms.map(function(n) {
-          return n === CACHE ? null : caches.delete(n);
-        })
-      );
-    }).then(function() {
-      return self.clients.claim();
-    })
+      return Promise.all(noms.map(function(n) {
+        return n === CACHE ? null : caches.delete(n);
+      }));
+    }).then(function() { return self.clients.claim(); })
   );
 });
 
+function mettreEnCache(req, rep) {
+  if (rep && rep.ok && rep.type === "basic") {
+    var copie = rep.clone();
+    caches.open(CACHE).then(function(c) { c.put(req, copie); });
+  }
+  return rep;
+}
+
+/* Page : réseau d'abord (pour toujours avoir la dernière version),
+   copie hors ligne si le réseau est absent ou trop lent. */
+function reseauDabord(req) {
+  return new Promise(function(ok) {
+    var fini = false;
+    var minuteur = setTimeout(function() {
+      caches.match(req).then(function(r) { if (r && !fini) { fini = true; ok(r); } });
+    }, DELAI_RESEAU);
+    fetch(req).then(function(rep) {
+      mettreEnCache(req, rep);
+      if (!fini) { fini = true; clearTimeout(minuteur); ok(rep); }
+    }).catch(function() {
+      clearTimeout(minuteur);
+      caches.match(req).then(function(r) {
+        return r || caches.match("./index.html");
+      }).then(function(r) {
+        if (!fini) { fini = true; ok(r || Response.error()); }
+      });
+    });
+  });
+}
+
+/* Icônes et autres fichiers fixes : copie d'abord, réseau sinon. */
+function cacheDabord(req) {
+  return caches.match(req).then(function(r) {
+    return r || fetch(req).then(function(rep) { return mettreEnCache(req, rep); });
+  });
+}
+
 self.addEventListener("fetch", function(e) {
   var req = e.request;
-
   if (req.method !== "GET") return;
   if (new URL(req.url).origin !== self.location.origin) return;
-
-  e.respondWith(
-    caches.match(req).then(function(rep) {
-      if (rep) return rep;
-
-      return fetch(req).then(function(net) {
-        var copie = net.clone();
-
-        caches.open(CACHE).then(function(c) {
-          c.put(req, copie);
-        });
-
-        return net;
-      }).catch(function() {
-        return caches.match("./index.html");
-      });
-    })
-  );
+  var page = req.mode === "navigate" || /\.html?$|\/$|\.webmanifest$/.test(new URL(req.url).pathname);
+  e.respondWith(page ? reseauDabord(req) : cacheDabord(req));
 });

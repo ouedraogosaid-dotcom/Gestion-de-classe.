@@ -181,6 +181,57 @@ thead th{
 .hint{color:var(--ink3); font-size:12.5px; margin-top:6px}
 .rowbtns{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; align-items:center}
 .is-hidden{display:none}
+
+/* ---- sauvegarde, annuler, corbeille, messages ---- */
+.btn:disabled{opacity:.45; cursor:default}
+.sv-info{margin:8px 0 0; font-size:12.5px; color:var(--ink3)}
+.sv-info.alerte{color:var(--warn); font-weight:600}
+.rappel{
+  display:flex; gap:10px 14px; align-items:center; flex-wrap:wrap; margin-top:10px; padding:10px 12px;
+  border:1px solid color-mix(in srgb, var(--warn) 40%, var(--edge)); border-radius:var(--r);
+  background:var(--warn-bg); color:var(--ink); font-size:13px; animation:glisse .35s ease-out;
+}
+.rappel > span:first-child{flex:1 1 240px}
+.rappel.is-hidden{display:none}
+.rappel-btns{display:flex; gap:6px; flex-wrap:wrap}
+.toast{
+  position:fixed; left:50%; bottom:calc(16px + env(safe-area-inset-bottom,0px)); z-index:60;
+  transform:translate(-50%, 140%); opacity:0; transition:transform .3s ease, opacity .3s ease;
+  display:flex; gap:12px; align-items:center; width:max-content; max-width:min(92vw, 520px);
+  background:var(--ink); color:var(--paper); padding:10px 14px; border-radius:10px;
+  box-shadow:0 10px 30px -10px rgba(0,0,0,.45); font-size:13.5px;
+}
+.toast.on{transform:translate(-50%, 0); opacity:1}
+.toast .btn{background:transparent; color:var(--paper); border-color:color-mix(in srgb, var(--paper) 45%, transparent); flex:none}
+.modal{
+  position:fixed; inset:0; z-index:70; display:none; align-items:center; justify-content:center; padding:16px;
+  background:rgba(10,14,22,.5);
+}
+.modal.on{display:flex; animation:fondu .2s ease-out}
+.modal-box{
+  background:var(--sheet); color:var(--ink); border-radius:12px; padding:18px; width:100%; max-width:480px;
+  max-height:85vh; overflow:auto; box-shadow:0 20px 60px -20px rgba(0,0,0,.5); animation:monte .25s ease-out;
+}
+.modal-box h3{font-size:19px; letter-spacing:.04em; margin-bottom:10px}
+.modal-corps{font-size:14px}
+.modal-btns{display:flex; gap:8px; justify-content:flex-end; flex-wrap:wrap; margin-top:16px}
+.corb, .imp{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px}
+.corb li{display:flex; gap:10px; align-items:center; justify-content:space-between; padding:9px 10px; border:1px solid var(--edge); border-radius:8px; background:var(--sunk)}
+.corb-q{display:flex; flex-direction:column; min-width:0}
+.corb-q small, .imp small{color:var(--ink3); font-size:12px}
+.imp li{padding:7px 10px; border-left:3px solid var(--rule-2); background:var(--sunk); border-radius:4px}
+.imp small.warn{color:var(--warn); font-weight:600}
+.maj-banniere{
+  position:fixed; left:12px; right:12px; top:calc(10px + env(safe-area-inset-top,0px)); z-index:65; margin:0 auto; max-width:520px;
+  display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap;
+  background:var(--sheet); border:1px solid var(--edge); border-radius:10px; padding:10px 14px; box-shadow:var(--shadow);
+  font-size:13.5px; animation:glisse .35s ease-out;
+}
+.maj-banniere[hidden]{display:none}
+@keyframes glisse{from{opacity:0; transform:translateY(-8px)} to{opacity:1; transform:none}}
+@keyframes monte{from{opacity:0; transform:translateY(14px) scale(.98)} to{opacity:1; transform:none}}
+@keyframes fondu{from{opacity:0} to{opacity:1}}
+@media (prefers-reduced-motion: reduce){ .rappel, .modal.on, .modal-box, .maj-banniere{animation:none} .toast{transition:none} }
 .pill{font-family:"Barlow Condensed"; font-size:12px; font-weight:600; letter-spacing:.07em; text-transform:uppercase; padding:1px 7px; border-radius:20px; border:1px solid currentColor}
 .pill-R{color:var(--warn)}
 .status{font-size:12.5px; color:var(--ink3); margin-left:auto}
@@ -400,7 +451,18 @@ thead th{
         <button class="btn btn-sm is-hidden" id="btnSauve" type="button">Sauvegarde (.json)</button>
         <button class="btn btn-sm" id="btnRestaure" type="button">Restaurer</button>
         <input type="file" id="fRestaure" accept=".json,application/json" style="display:none">
+        <span class="cl-sep"></span>
+        <button class="btn btn-sm" id="btnAnnuler" type="button" disabled title="Annuler la dernière action">↶ Annuler</button>
+        <button class="btn btn-sm" id="btnCorbeille" type="button">Corbeille</button>
       </div>
+    </div>
+    <p class="sv-info" id="svInfo">Dernière sauvegarde : jamais</p>
+    <div class="rappel is-hidden" id="rappelSauve" role="status">
+      <span id="rappelTxt"></span>
+      <span class="rappel-btns">
+        <button class="btn btn-sm btn-primary" id="rappelOk" type="button">Sauvegarder maintenant</button>
+        <button class="btn btn-sm btn-ghost" id="rappelPlusTard" type="button">Plus tard</button>
+      </span>
     </div>
     <div class="entete">
       <div class="field"><label for="f_drena">DRENA</label><input id="f_drena" data-m="drena" autocomplete="off" placeholder="DRENA"></div>
@@ -615,6 +677,13 @@ thead th{
   </section>
 </main>
 
+<div class="maj-banniere no-print" id="majBanniere" role="status" hidden>
+  <span>Une nouvelle version du registre est disponible.</span>
+  <button class="btn btn-sm btn-primary" id="majOk" type="button">Mettre à jour</button>
+</div>
+<div class="toast no-print" id="toast" role="status" aria-live="polite"></div>
+<div class="modal no-print" id="modal"></div>
+
 <script>
 (function(){
 "use strict";
@@ -688,16 +757,68 @@ var state = null, dossier = null, docId = null, db = null, docRef = null, saveTi
 var LS = "tabrecap.v1";        /* ancien format : un seul registre */
 var STORE = "tabrecap.v2";     /* nouveau : toutes les classes */
 
+/* ---------- garde-fous : tout ce qui vient d'un fichier est nettoyé ---------- */
+var MAX_CLASSES = 60, MAX_ELEVES = 250, MAX_TXT = 160, MAX_LIBRE = 4000;
+var JOURS_CORBEILLE = 30;
+/* identifiant sûr : lettres, chiffres, tiret, souligné (il finit dans des attributs HTML) */
+function idSur(v){ return String(v == null ? "" : v).replace(/[^A-Za-z0-9_-]/g, "").slice(0, 40); }
+function txt(v, max){ return v == null ? "" : String(v).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, "").slice(0, max || MAX_TXT); }
+function borne(v, min, max, defaut){
+  var n = Math.round(Number(v));
+  return (v === "" || v == null || isNaN(n)) ? defaut : Math.min(max, Math.max(min, n));
+}
+function dateSure(v){ var t = Date.parse(v); return isNaN(t) ? null : new Date(t).toISOString(); }
+
 /* Le dossier tient plusieurs classes ; « state » reste la classe ouverte. */
 function normDossier(d){
   d = d || {};
-  if(Array.isArray(d.classes) && d.classes.length){
-    var cls = d.classes.map(function(c){ return normalize(c); });
-    var ids = cls.map(function(c){ return c.id; });
-    return {v:2, active: (ids.indexOf(d.active) >= 0 ? d.active : ids[0]), classes: cls};
+  var cls;
+  if(Array.isArray(d.classes) && d.classes.length) cls = d.classes.slice(0, MAX_CLASSES).map(function(c){ return normalize(c); });
+  else cls = [normalize(d)];
+  /* deux classes ne peuvent pas partager un identifiant */
+  var vus = {};
+  cls.forEach(function(c){ if(vus[c.id]) c.id = uid(); vus[c.id] = 1; });
+  var ids = cls.map(function(c){ return c.id; });
+  var corbeille = (Array.isArray(d.corbeille) ? d.corbeille : []).map(normCorbeille).filter(Boolean);
+  return {
+    v:3,
+    active: (ids.indexOf(idSur(d.active)) >= 0 ? idSur(d.active) : ids[0]),
+    classes: cls,
+    corbeille: corbeille,
+    derniereSauvegarde: dateSure(d.derniereSauvegarde),
+    rappelReporte: dateSure(d.rappelReporte)
+  };
+}
+function normCorbeille(x){
+  if(!x || typeof x !== "object") return null;
+  var quand = dateSure(x.quand) || new Date().toISOString();
+  if(x.type === "classe" && x.classe) return {type:"classe", quand:quand, classe:normalize(x.classe)};
+  if(x.type === "eleve" && x.eleve){
+    var e = normEleve(x.eleve); if(!e) return null;
+    var notes = {};
+    if(x.notes && typeof x.notes === "object"){
+      PERIODES.forEach(function(m){
+        var l = x.notes[m]; if(!l || typeof l !== "object") return;
+        var o = {}, plein = false;
+        CODES.forEach(function(c){ var v = Number(l[c]); if(l[c] !== "" && l[c] != null && !isNaN(v)){ o[c] = v; plein = true; } });
+        if(plein) notes[m] = o;
+      });
+    }
+    return {type:"eleve", quand:quand, classeId:idSur(x.classeId), classeNom:txt(x.classeNom), eleve:e, notes:notes};
   }
-  var un = normalize(d);
-  return {v:2, active: un.id, classes: [un]};
+  return null;
+}
+function normEleve(e){
+  if(!e || typeof e !== "object") return null;
+  return {
+    id: idSur(e.id) || uid(),
+    mat: txt(e.mat, 40),
+    nom: txt(e.nom, 90),
+    sexe: e.sexe === "F" ? "F" : "G",
+    age: borne(e.age, 1, 30, null),
+    sc: borne(e.sc, 1, 3, 1),
+    st: borne(e.st, 1, 9, 1)
+  };
 }
 function classeActive(){
   var c = dossier.classes.filter(function(x){ return x.id === dossier.active; })[0];
@@ -719,26 +840,23 @@ function ouvrirClasse(id){
 
 function cloneDemo(){ return JSON.parse(JSON.stringify(DEMO)); }
 
+var CHAMPS_META = ["drena","inspection","ecole","classe","an1","an2","directeur","maitre"];
 function normalize(d){
-  d = d || {};
+  d = (d && typeof d === "object") ? d : {};
+  var srcMeta = (d.meta && typeof d.meta === "object") ? d.meta : {}, meta = {};
+  CHAMPS_META.forEach(function(k){ meta[k] = txt(srcMeta[k]); });
+  var vus = {};
+  var eleves = (Array.isArray(d.eleves) ? d.eleves : []).slice(0, MAX_ELEVES).map(normEleve).filter(Boolean);
+  eleves.forEach(function(e){ if(vus[e.id]) e.id = uid(); vus[e.id] = 1; });
   return {
-    id: d && d.id ? String(d.id) : uid(),
-    nom: d && d.nom != null ? String(d.nom) : "",
+    id: idSur(d.id) || uid(),
+    nom: txt(d.nom),
     demo: !!d.demo,
-    meta: Object.assign({drena:"",inspection:"",ecole:"",classe:"",an1:"",an2:"",directeur:"",maitre:""}, d.meta||{}),
-    chants: typeof d.chants === "string" ? d.chants : "",
-    recitations: typeof d.recitations === "string" ? d.recitations : "",
-    eleves: (Array.isArray(d.eleves)?d.eleves:[]).map(function(e){
-      return {
-        id: e && e.id ? String(e.id) : uid(),
-        mat: e && e.mat != null ? String(e.mat) : "",
-        nom: e && e.nom != null ? String(e.nom) : "",
-        sexe: (e && e.sexe === "F") ? "F" : "G",
-        age: e && e.age != null && e.age !== "" ? Number(e.age) : null,
-        sc: e && e.sc ? Number(e.sc) : 1,
-        st: e && e.st ? Number(e.st) : 1
-      };
-    }),
+    modifie: dateSure(d.modifie),
+    meta: meta,
+    chants: txt(d.chants, MAX_LIBRE),
+    recitations: txt(d.recitations, MAX_LIBRE),
+    eleves: eleves,
     notes: normNotes(d.notes)
   };
 }
@@ -763,19 +881,19 @@ function normNotes(n){
   PERIODES.forEach(function(m){
     var bloc = src[m]; if(!bloc || typeof bloc !== "object") return;
     var out = {};
-    Object.keys(bloc).forEach(function(id){
-      var l = bloc[id]; if(!l || typeof l !== "object") return;
+    Object.keys(bloc).slice(0, MAX_ELEVES * 2).forEach(function(id){
+      var l = bloc[id], k = idSur(id); if(!k || !l || typeof l !== "object") return;
       var o = {}, vide = true;
       CODES.forEach(function(c){
         var v = l[c];
         if(v === "" || v == null || isNaN(Number(v))) return;
-        o[c] = Number(v); vide = false;
+        o[c] = Math.min(1000, Math.max(-1000, Number(v))); vide = false;
       });
-      if(!vide) out[id] = o;
+      if(!vide) out[k] = o;
     });
     data[m] = out;
   });
-  var seuil = (n.seuil == null || isNaN(Number(n.seuil))) ? echelle / 2 : Number(n.seuil);
+  var seuil = (n.seuil == null || isNaN(Number(n.seuil))) ? echelle / 2 : Math.min(20, Math.max(0, Number(n.seuil)));
   return {bareme:ancienBareme, echelle:echelle, baremes:baremes, mois:mois, actives:actives, data:data, seuil:seuil};
 }
 
@@ -1669,8 +1787,193 @@ function persist(){
 }
 function touch(){
   if(state.demo) state.demo = false;
+  state.modifie = new Date().toISOString();
   clearTimeout(saveTimer);
   saveTimer = setTimeout(persist, 600);
+  majSauvegardeInfo();
+}
+
+/* ---------- Annuler : pile de photos du dossier, en mémoire ---------- */
+var pileAnnuler = [], derniereFrappe = 0;
+/* À appeler AVANT de modifier. « groupe » regroupe une saisie continue
+   (une note, un nom tapé lettre par lettre) en une seule étape d'annulation. */
+function avantModif(groupe){
+  var t = Date.now();
+  if(groupe && t - derniereFrappe < 2500){ derniereFrappe = t; return; }
+  derniereFrappe = groupe ? t : 0;
+  pileAnnuler.push(JSON.stringify(dossier));
+  if(pileAnnuler.length > 20) pileAnnuler.shift();
+  majBoutonAnnuler();
+}
+function annuler(){
+  if(!pileAnnuler.length) return;
+  dossier = normDossier(JSON.parse(pileAnnuler.pop()));
+  state = classeActive();
+  derniereFrappe = 0;
+  clearTimeout(saveTimer);
+  persist(); renderAll(); majBoutonAnnuler(); majSauvegardeInfo(); majCorbeilleBouton();
+  toast("Dernière action annulée.");
+}
+function majBoutonAnnuler(){
+  var b = el("btnAnnuler"); if(!b) return;
+  b.disabled = !pileAnnuler.length;
+}
+
+/* ---------- petits messages et boîtes de dialogue ---------- */
+var toastTimer = null;
+function toast(texte, action){
+  var t = el("toast");
+  t.innerHTML = '<span>' + esc(texte) + '</span>' + (action ? '<button type="button" class="btn btn-sm" id="toastAct">' + esc(action.label) + '</button>' : '');
+  t.classList.add("on");
+  if(action) el("toastAct").addEventListener("click", function(){ t.classList.remove("on"); action.fn(); });
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ t.classList.remove("on"); }, action ? 7000 : 3200);
+}
+/* boutons : [{label, valeur, style}] — renvoie une promesse avec la valeur choisie (null si fermé) */
+function dialogue(titre, corpsHtml, boutons){
+  return new Promise(function(ok){
+    var fond = el("modal");
+    fond.innerHTML = '<div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalTitre">'
+      + '<h3 id="modalTitre">' + esc(titre) + '</h3><div class="modal-corps">' + corpsHtml + '</div>'
+      + '<div class="modal-btns">' + boutons.map(function(b, i){
+          return '<button type="button" class="btn ' + (b.style || "") + '" data-i="' + i + '">' + esc(b.label) + '</button>';
+        }).join("") + '</div></div>';
+    fond.classList.add("on");
+    function fermer(v){ fond.classList.remove("on"); fond.innerHTML = ""; fond.onclick = null; document.removeEventListener("keydown", clavier); ok(v); }
+    function clavier(ev){ if(ev.key === "Escape") fermer(null); }
+    document.addEventListener("keydown", clavier);
+    fond.onclick = function(ev){
+      if(ev.target === fond) return fermer(null);
+      var v = ev.target.closest("[data-v]");
+      if(v && fond.contains(v)) return fermer(v.getAttribute("data-v"));
+      var b = ev.target.closest("[data-i]");
+      if(b && fond.contains(b)) fermer(boutons[Number(b.getAttribute("data-i"))].valeur);
+    };
+    var premier = fond.querySelector(".modal-btns .btn"); if(premier) premier.focus();
+  });
+}
+function dateFr(iso){
+  if(!iso) return "—";
+  try{ return new Date(iso).toLocaleDateString("fr-FR", {day:"numeric", month:"long", year:"numeric"}); }catch(e){ return iso.slice(0,10); }
+}
+function ilYa(iso){
+  if(!iso) return "jamais";
+  var j = Math.floor((Date.now() - Date.parse(iso)) / 86400000);
+  if(j <= 0) return "aujourd'hui";
+  if(j === 1) return "hier";
+  return "il y a " + j + " jours";
+}
+
+/* ---------- rappel de sauvegarde ---------- */
+var JOURS_RAPPEL = 7;
+function aDesDonnees(){ return dossier.classes.some(function(c){ return !c.demo && c.eleves.some(function(e){ return e.nom.trim(); }); }); }
+function derniereModif(){
+  var m = null;
+  dossier.classes.forEach(function(c){ if(c.modifie && (!m || c.modifie > m)) m = c.modifie; });
+  return m;
+}
+function majSauvegardeInfo(){
+  var info = el("svInfo"), ban = el("rappelSauve");
+  if(!info || !dossier) return;
+  info.textContent = "Dernière sauvegarde : " + ilYa(dossier.derniereSauvegarde);
+  var maintenant = Date.now();
+  var vieille = !dossier.derniereSauvegarde || (maintenant - Date.parse(dossier.derniereSauvegarde)) > JOURS_RAPPEL * 86400000;
+  var modifDepuis = !dossier.derniereSauvegarde || (derniereModif() && derniereModif() > dossier.derniereSauvegarde);
+  var reporte = dossier.rappelReporte && (maintenant - Date.parse(dossier.rappelReporte)) < 86400000;
+  var montrer = aDesDonnees() && vieille && modifDepuis && !reporte && enregistrementPossible();
+  info.classList.toggle("alerte", aDesDonnees() && vieille && modifDepuis);
+  ban.classList.toggle("is-hidden", !montrer);
+  if(montrer){
+    el("rappelTxt").textContent = dossier.derniereSauvegarde
+      ? "Votre dernière sauvegarde date du " + dateFr(dossier.derniereSauvegarde) + ". Pensez à en refaire une : si le téléphone est perdu ou réinitialisé, vos classes seront perdues."
+      : "Vous n'avez encore jamais sauvegardé vos classes. Une sauvegarde vous protège si le téléphone est perdu ou réinitialisé.";
+  }
+}
+function faireSauvegarde(){
+  var nom = "registre-classes-" + new Date().toISOString().slice(0,10) + ".json";
+  return sauvegarder(nom, JSON.stringify(dossier, null, 1), "application/json").then(function(r){
+    if(r && r.status === "declined") return;
+    dossier.derniereSauvegarde = new Date().toISOString();
+    dossier.rappelReporte = null;
+    persist(); majSauvegardeInfo();
+    toast("Sauvegarde enregistrée : " + nom);
+  }).catch(function(err){
+    if(err && err.code === "declined") return;
+    toast("La sauvegarde n'a pas pu être enregistrée. Réessayez.");
+  });
+}
+
+/* ---------- corbeille ---------- */
+function purgerCorbeille(){
+  var limite = Date.now() - JOURS_CORBEILLE * 86400000;
+  dossier.corbeille = dossier.corbeille.filter(function(x){ return Date.parse(x.quand) > limite; });
+}
+function notesDeLEleve(c, id){
+  var o = {};
+  PERIODES.forEach(function(m){ var b = c.notes.data[m]; if(b && b[id]) o[m] = JSON.parse(JSON.stringify(b[id])); });
+  return o;
+}
+function supprimerEleve(id){
+  var e = eleveParId(id); if(!e) return;
+  avantModif(false);
+  var vide = !e.nom.trim() && !e.mat.trim();
+  if(!vide){
+    dossier.corbeille.unshift({type:"eleve", quand:new Date().toISOString(), classeId:state.id, classeNom:nomClasse(state),
+                               eleve:JSON.parse(JSON.stringify(e)), notes:notesDeLEleve(state, id)});
+  }
+  state.eleves = state.eleves.filter(function(x){ return x.id !== id; });
+  PERIODES.forEach(function(m){ if(state.notes.data[m]) delete state.notes.data[m][id]; });
+  touch(); renderAll(); majCorbeilleBouton();
+  toast(vide ? "Ligne vide supprimée." : "« " + e.nom.trim() + " » est dans la corbeille.", {label:"Annuler", fn:annuler});
+}
+function restaurerDeCorbeille(index){
+  var x = dossier.corbeille[index]; if(!x) return;
+  avantModif(false);
+  dossier.corbeille.splice(index, 1);
+  if(x.type === "classe"){
+    var c = normalize(x.classe);
+    if(dossier.classes.some(function(k){ return k.id === c.id; })) c.id = uid();
+    dossier.classes.push(c);
+    dossier.active = c.id; state = classeActive();
+    touch(); renderAll(); majCorbeilleBouton();
+    toast("Classe « " + nomClasse(c) + " » restaurée.");
+    return;
+  }
+  var cible = dossier.classes.filter(function(k){ return k.id === x.classeId; })[0] || state;
+  var e = normEleve(x.eleve);
+  if(cible.eleves.some(function(k){ return k.id === e.id; })) e.id = uid();
+  cible.eleves.push(e);
+  Object.keys(x.notes || {}).forEach(function(m){
+    if(!cible.notes.data[m]) cible.notes.data[m] = {};
+    cible.notes.data[m][e.id] = x.notes[m];
+  });
+  cible.modifie = new Date().toISOString();
+  if(cible !== state){ dossier.active = cible.id; state = classeActive(); }
+  touch(); renderAll(); majCorbeilleBouton();
+  toast("« " + e.nom + " » est revenu(e) dans " + nomClasse(cible) + ".");
+}
+function majCorbeilleBouton(){
+  var b = el("btnCorbeille"); if(!b) return;
+  var n = dossier.corbeille.length;
+  b.textContent = "Corbeille" + (n ? " (" + n + ")" : "");
+}
+function ouvrirCorbeille(){
+  purgerCorbeille();
+  var l = dossier.corbeille;
+  var corps = l.length
+    ? '<p class="hint" style="margin:0 0 10px">Les éléments supprimés restent ici ' + JOURS_CORBEILLE + ' jours, puis disparaissent définitivement.</p><ul class="corb">'
+      + l.map(function(x, i){
+          var quoi = x.type === "classe"
+            ? '<b>Classe ' + esc(nomClasse(x.classe)) + '</b><small>' + x.classe.eleves.length + ' élève(s), avec les notes</small>'
+            : '<b>' + esc(x.eleve.nom || "Élève sans nom") + '</b><small>' + esc(x.classeNom || "") + '</small>';
+          var reste = Math.max(0, JOURS_CORBEILLE - Math.floor((Date.now() - Date.parse(x.quand)) / 86400000));
+          return '<li><span class="corb-q">' + quoi + '<small>Supprimé ' + esc(ilYa(x.quand)) + ' — encore ' + reste + ' j</small></span>'
+               + '<button type="button" class="btn btn-sm" data-v="' + i + '">Restaurer</button></li>';
+        }).join("") + '</ul>'
+    : '<p style="margin:0">La corbeille est vide.</p>';
+  dialogue("Corbeille", corps, [{label:"Fermer", valeur:null}]).then(function(v){
+    if(v != null && v !== "") restaurerDeCorbeille(Number(v));
+  });
 }
 
 /* ---------- interactions ---------- */
@@ -1681,6 +1984,7 @@ function onField(ev){
   var tr = inp.closest("tr"), id = tr.getAttribute("data-id");
   var e = state.eleves.filter(function(x){ return x.id === id; })[0]; if(!e) return;
   var f = inp.getAttribute("data-f"), v = inp.value;
+  avantModif(true);
   if(f === "age") e.age = v === "" ? null : Number(v);
   else if(f === "sc" || f === "st") e[f] = Number(v);
   else e[f] = v;
@@ -1689,20 +1993,21 @@ function onField(ev){
 }
 el("tbSaisie").addEventListener("click", function(ev){
   var b = ev.target.closest("[data-del]"); if(!b) return;
-  var id = b.getAttribute("data-del");
-  state.eleves = state.eleves.filter(function(x){ return x.id !== id; });
-  touch(); renderAll();
+  supprimerEleve(b.getAttribute("data-del"));
 });
 el("btnAdd").addEventListener("click", function(){
+  avantModif(false);
   state.eleves.push(eleveVide()); touch(); renderAll();
   var rows = el("tbSaisie").querySelectorAll('input[data-f="nom"]');
   if(rows.length) rows[rows.length-1].focus();
 });
 el("btnAdd10").addEventListener("click", function(){
+  avantModif(false);
   for(var k=0;k<10;k++) state.eleves.push(eleveVide());
   touch(); renderAll();
 });
 el("btnTrier").addEventListener("click", function(){
+  avantModif(false);
   state.eleves.sort(function(a,b){
     var an = a.nom.trim(), bn = b.nom.trim();
     if(!an && bn) return 1;
@@ -1712,17 +2017,23 @@ el("btnTrier").addEventListener("click", function(){
   });
   touch(); renderAll();
 });
+/* Correction : on vide la classe ouverte SUR PLACE. Avant, une nouvelle classe
+   était créée à côté du dossier, et rien de ce qui était saisi n'était enregistré. */
 el("btnVider").addEventListener("click", function(){
-  state = normalize({meta:{drena:state.meta.drena, inspection:state.meta.inspection, ecole:state.meta.ecole, classe:state.meta.classe, an1:state.meta.an1, an2:state.meta.an2, directeur:state.meta.directeur, maitre:state.meta.maitre}, eleves:[]});
+  avantModif(false);
+  state.eleves = [];
+  state.notes = normNotes(null);
+  state.chants = ""; state.recitations = "";
   state.demo = false;
   for(var k=0;k<5;k++) state.eleves.push(eleveVide());
-  persist(); renderAll();
+  touch(); persist(); renderAll();
+  toast("Classe d'exemple vidée : saisissez vos élèves.", {label:"Annuler", fn:annuler});
 });
 document.querySelectorAll("[data-m]").forEach(function(inp){
-  inp.addEventListener("input", function(){ state.meta[inp.getAttribute("data-m")] = inp.value; touch(); render(); });
+  inp.addEventListener("input", function(){ avantModif(true); state.meta[inp.getAttribute("data-m")] = txt(inp.value); touch(); render(); });
 });
-el("f_chants").addEventListener("input", function(){ state.chants = this.value; touch(); render(); });
-el("f_recits").addEventListener("input", function(){ state.recitations = this.value; touch(); render(); });
+el("f_chants").addEventListener("input", function(){ avantModif(true); state.chants = txt(this.value, MAX_LIBRE); touch(); render(); });
+el("f_recits").addEventListener("input", function(){ avantModif(true); state.recitations = txt(this.value, MAX_LIBRE); touch(); render(); });
 
 /* ---------- classes : interactions ---------- */
 function renderClasses(){
@@ -1740,14 +2051,22 @@ function classeVierge(modele){
 }
 el("f_classeSel").addEventListener("change", function(){ ouvrirClasse(this.value); });
 el("btnClNew").addEventListener("click", function(){
+  var nom = window.prompt("Nom de la nouvelle classe (ex. CE2 B) :", "");
+  if(nom === null) return;
+  if(dossier.classes.length >= MAX_CLASSES){ toast("Nombre maximum de classes atteint."); return; }
+  avantModif(false);
   var c = classeVierge(state);
-  c.nom = window.prompt("Nom de la nouvelle classe (ex. CE2 B) :", "") || "";
+  c.nom = txt(nom.trim());
   if(c.nom) c.meta.classe = c.meta.classe || c.nom;
+  c.modifie = new Date().toISOString();
   dossier.classes.push(c);
   ouvrirClasse(c.id);
 });
 el("btnClDup").addEventListener("click", function(){
+  if(dossier.classes.length >= MAX_CLASSES){ toast("Nombre maximum de classes atteint."); return; }
+  avantModif(false);
   var copie = normalize(JSON.parse(JSON.stringify(state)));
+  copie.modifie = new Date().toISOString();
   copie.id = uid();
   copie.demo = false;
   copie.nom = (state.nom || state.meta.classe || "Classe") + " (copie)";
@@ -1759,42 +2078,119 @@ el("btnClDup").addEventListener("click", function(){
 el("btnClRen").addEventListener("click", function(){
   var n = window.prompt("Nom de cette classe :", nomClasse(state));
   if(n === null) return;
-  state.nom = n.trim();
+  avantModif(false);
+  state.nom = txt(n.trim());
   touch(); renderClasses();
 });
 el("btnClDel").addEventListener("click", function(){
   if(dossier.classes.length < 2) return;
-  if(!window.confirm("Supprimer définitivement « " + nomClasse(state) + " » et toutes ses notes ?")) return;
-  dossier.classes = dossier.classes.filter(function(c){ return c.id !== state.id; });
-  ouvrirClasse(dossier.classes[0].id);
+  var nom = nomClasse(state);
+  dialogue("Supprimer cette classe ?",
+    '<p style="margin:0">« ' + esc(nom) + ' » et toutes ses notes iront dans la corbeille. Vous pourrez la récupérer pendant ' + JOURS_CORBEILLE + ' jours.</p>',
+    [{label:"Annuler", valeur:false}, {label:"Supprimer", valeur:true, style:"btn-danger"}]
+  ).then(function(oui){
+    if(!oui) return;
+    avantModif(false);
+    if(!state.demo) dossier.corbeille.unshift({type:"classe", quand:new Date().toISOString(), classe:JSON.parse(JSON.stringify(state))});
+    var id = state.id;
+    dossier.classes = dossier.classes.filter(function(c){ return c.id !== id; });
+    ouvrirClasse(dossier.classes[0].id);
+    majCorbeilleBouton();
+    toast("Classe « " + nom + " » mise à la corbeille.", {label:"Annuler", fn:annuler});
+  });
 });
+
+/* ---------- Restaurer / importer un fichier : contrôlé avant d'être ouvert ---------- */
+var TAILLE_MAX_IMPORT = 5 * 1024 * 1024;
+function lireSauvegarde(texte){
+  var d;
+  try{ d = JSON.parse(texte); }catch(e){ return {erreur:"Ce fichier n'est pas une sauvegarde du registre (format illisible)."}; }
+  if(!d || typeof d !== "object" || Array.isArray(d)) return {erreur:"Ce fichier n'est pas une sauvegarde du registre."};
+  var reconnu = Array.isArray(d.classes) || Array.isArray(d.eleves);
+  if(!reconnu) return {erreur:"Ce fichier ne contient aucune classe du registre."};
+  if(Array.isArray(d.classes) && d.classes.length > MAX_CLASSES) return {erreur:"Ce fichier contient trop de classes (" + d.classes.length + ")."};
+  var entrant = normDossier(d);
+  var utiles = entrant.classes.filter(function(c){ return c.eleves.length || c.meta.classe || c.nom; });
+  if(!utiles.length) return {erreur:"Ce fichier ne contient aucune classe avec des élèves."};
+  return {classes:utiles};
+}
+function appliquerImport(classes, choix){
+  avantModif(false);
+  var ajout = 0, remplace = 0, copies = 0, premier = null;
+  classes.forEach(function(c){
+    var i = -1;
+    dossier.classes.forEach(function(x, k){ if(x.id === c.id) i = k; });
+    if(i < 0){ dossier.classes.push(c); ajout++; premier = premier || c.id; return; }
+    if(choix === "remplacer"){
+      if(!dossier.classes[i].demo) dossier.corbeille.unshift({type:"classe", quand:new Date().toISOString(), classe:JSON.parse(JSON.stringify(dossier.classes[i]))});
+      dossier.classes[i] = c; remplace++; premier = premier || c.id;
+    } else if(choix === "copie"){
+      c.id = uid(); c.nom = (c.nom || nomClasse(c)) + " (importée)";
+      dossier.classes.push(c); copies++; premier = premier || c.id;
+    }
+  });
+  /* la classe d'exemple laisse la place aux vraies classes */
+  if(ajout + remplace + copies){
+    var reelles = dossier.classes.filter(function(c){ return !c.demo; });
+    if(reelles.length) dossier.classes = reelles;
+  }
+  if(premier) dossier.active = premier;
+  state = classeActive();
+  persist(); renderAll(); majCorbeilleBouton();
+  var morceaux = [];
+  if(ajout) morceaux.push(ajout + " classe(s) ajoutée(s)");
+  if(remplace) morceaux.push(remplace + " remplacée(s) (l'ancienne version est dans la corbeille)");
+  if(copies) morceaux.push(copies + " importée(s) en copie");
+  toast(morceaux.length ? "Import terminé : " + morceaux.join(", ") + "." : "Rien n'a été importé.", morceaux.length ? {label:"Annuler", fn:annuler} : null);
+}
 el("btnRestaure").addEventListener("click", function(){ el("fRestaure").click(); });
+el("btnCorbeille").addEventListener("click", ouvrirCorbeille);
+el("btnAnnuler").addEventListener("click", annuler);
+el("rappelOk").addEventListener("click", faireSauvegarde);
+el("rappelPlusTard").addEventListener("click", function(){
+  dossier.rappelReporte = new Date().toISOString(); persist(); majSauvegardeInfo();
+});
 el("fRestaure").addEventListener("change", function(){
-  var f = this.files && this.files[0]; if(!f) return;
+  var f = this.files && this.files[0]; this.value = ""; if(!f) return;
+  if(f.size > TAILLE_MAX_IMPORT){ dialogue("Fichier refusé", '<p style="margin:0">Ce fichier est trop gros pour être une sauvegarde du registre.</p>', [{label:"Fermer", valeur:null}]); return; }
   var lec = new FileReader();
   lec.onload = function(){
-    var d = null;
-    try{ d = JSON.parse(String(lec.result)); }catch(e){}
-    if(!d){ window.alert("Fichier illisible : ce n'est pas une sauvegarde du registre."); return; }
-    var entrant = normDossier(d), ajout = 0, maj = 0;
-    entrant.classes.forEach(function(c){
-      var i = -1;
-      dossier.classes.forEach(function(x, k){ if(x.id === c.id) i = k; });
-      if(i >= 0){ dossier.classes[i] = c; maj++; } else { dossier.classes.push(c); ajout++; }
-    });
-    if(state.demo && entrant.classes.length) dossier.active = entrant.classes[0].id;
-    state = classeActive();
-    persist(); renderAll();
-    window.alert("Sauvegarde restaurée : " + ajout + " classe(s) ajoutée(s), " + maj + " mise(s) à jour.");
+    var r = lireSauvegarde(String(lec.result));
+    if(r.erreur){ dialogue("Fichier refusé", '<p style="margin:0">' + esc(r.erreur) + '</p>', [{label:"Fermer", valeur:null}]); return; }
+    var conflits = r.classes.filter(function(c){ return dossier.classes.some(function(x){ return x.id === c.id && !x.demo; }); });
+    var nouvelles = r.classes.length - conflits.length;
+    if(!conflits.length){
+      dialogue("Importer ce fichier ?",
+        '<p style="margin:0 0 6px">' + r.classes.length + ' classe(s) trouvée(s) :</p><ul class="imp">'
+        + r.classes.map(function(c){ return '<li><b>' + esc(nomClasse(c)) + '</b> — ' + c.eleves.filter(function(e){ return e.nom.trim(); }).length + ' élève(s)</li>'; }).join("")
+        + '</ul>',
+        [{label:"Annuler", valeur:null}, {label:"Importer", valeur:"ajouter", style:"btn-primary"}]
+      ).then(function(v){ if(v) appliquerImport(r.classes, v); });
+      return;
+    }
+    var lignes = conflits.map(function(c){
+      var ici = dossier.classes.filter(function(x){ return x.id === c.id; })[0];
+      var plusRecent = ici.modifie && (!c.modifie || ici.modifie > c.modifie);
+      return '<li><b>' + esc(nomClasse(c)) + '</b><br><small>Fichier : ' + esc(c.modifie ? dateFr(c.modifie) : "date inconnue")
+        + ' — Sur ce téléphone : ' + esc(ici.modifie ? dateFr(ici.modifie) : "date inconnue") + '</small>'
+        + (plusRecent ? '<br><small class="warn">La version de ce téléphone est plus récente que celle du fichier.</small>' : '') + '</li>';
+    }).join("");
+    dialogue("Ces classes existent déjà",
+      '<p style="margin:0 0 6px">Le fichier contient ' + conflits.length + ' classe(s) déjà présente(s) sur ce téléphone'
+      + (nouvelles ? ' et ' + nouvelles + ' nouvelle(s)' : '') + ' :</p><ul class="imp">' + lignes + '</ul>'
+      + '<p class="hint" style="margin:8px 0 0">« Remplacer » met l\'ancienne version dans la corbeille. « Garder les deux » ajoute la classe du fichier à côté.</p>',
+      [{label:"Annuler", valeur:null}, {label:"Garder les deux", valeur:"copie"}, {label:"Remplacer", valeur:"remplacer", style:"btn-danger"}]
+    ).then(function(v){ if(v) appliquerImport(r.classes, v); });
   };
+  lec.onerror = function(){ dialogue("Fichier illisible", '<p style="margin:0">Le fichier n\'a pas pu être lu.</p>', [{label:"Fermer", valeur:null}]); };
   lec.readAsText(f);
-  this.value = "";
 });
 
 el("f_seuil").addEventListener("input", function(){
   var v = Number(this.value.replace(",", ".").trim());
   if(isNaN(v)) return;
-  state.notes.seuil = v;
+  avantModif(true);
+  state.notes.seuil = Math.min(20, Math.max(0, v));
   touch(); renderAnnee();
 });
 
@@ -1824,6 +2220,7 @@ function onNote(ev){
   var inp = ev.target.closest("[data-nt]"); if(!inp) return;
   var tr = inp.closest("tr"), e = eleveParId(tr.getAttribute("data-nid")); if(!e) return;
   var brut = inp.value.replace(",", ".").trim();
+  avantModif(true);
   if(brut === ""){ poserNote(e, inp.getAttribute("data-nt"), ""); inp.classList.remove("bad"); }
   else{
     var v = Number(brut);
@@ -1847,6 +2244,7 @@ el("f_mois").addEventListener("change", function(){
   state.notes.mois = this.value; touch(); renderNotes(); buildCartes(); fitCartes();
 });
 function changerEchelle(v){
+  avantModif(false);
   state.notes.echelle = Number(v) === 20 ? 20 : 10;
   state.notes.seuil = state.notes.echelle / 2;
   touch(); render();
@@ -1858,6 +2256,7 @@ el("btnMatieres").addEventListener("click", function(){
 });
 el("matList").addEventListener("change", function(ev){
   var bm = ev.target.closest("[data-bareme-mat]");
+  if(bm || ev.target.closest("[data-mat]")) avantModif(false);
   if(bm){
     state.notes.baremes[bm.getAttribute("data-bareme-mat")] = Number(bm.value) === 50 ? 50 : (Number(bm.value) === 20 ? 20 : 10);
     touch(); renderNotes(); buildCartes(); fitCartes(); return;
@@ -1872,9 +2271,15 @@ el("matList").addEventListener("change", function(ev){
   touch(); renderNotes(); buildCartes(); fitCartes();
 });
 el("btnViderMois").addEventListener("click", function(){
-  if(!window.confirm("Effacer toutes les notes du mois de " + state.notes.mois + " ?")) return;
-  state.notes.data[state.notes.mois] = {};
-  touch(); renderNotes(); buildCartes(); fitCartes();
+  var periode = libellePeriode(state.notes.mois, false);
+  dialogue("Effacer cette composition ?", '<p style="margin:0">Toutes les notes de la ' + esc(periode) + ' seront effacées. Le bouton « Annuler » permettra de revenir en arrière tout de suite après.</p>',
+    [{label:"Garder", valeur:false}, {label:"Effacer", valeur:true, style:"btn-danger"}]).then(function(oui){
+    if(!oui) return;
+    avantModif(false);
+    state.notes.data[state.notes.mois] = {};
+    touch(); renderNotes(); buildCartes(); fitCartes();
+    toast("Notes de la " + periode + " effacées.", {label:"Annuler", fn:annuler});
+  });
 });
 el("f_cartesMode").addEventListener("change", function(){ buildCartes(); fitCartes(); });
 
@@ -2185,8 +2590,10 @@ function csv(){
 /* ---------- démarrage ---------- */
 function boot(data){
   dossier = normDossier(data);
+  purgerCorbeille();
   state = classeActive();
   renderAll();
+  majCorbeilleBouton(); majBoutonAnnuler(); majSauvegardeInfo();
 }
 
 var boutonsActifs = false;
@@ -2205,10 +2612,8 @@ function activerBoutons(){
   });
   var sv = el("btnSauve");
   sv.classList.remove("is-hidden");
-  sv.addEventListener("click", function(){
-    var nom = "registre-classes-" + new Date().toISOString().slice(0,10) + ".json";
-    sauvegarder(nom, JSON.stringify(dossier, null, 1), "application/json").catch(function(){});
-  });
+  sv.addEventListener("click", faireSauvegarde);
+  majSauvegardeInfo();
   var p3 = el("btnPdf3");
   p3.classList.remove("is-hidden");
   p3.addEventListener("click", function(){ enregistrerCartes(false, p3); });
@@ -2256,7 +2661,8 @@ if(window.claude && typeof window.claude.use === "function"){
         var remote = normDossier(snap.data());
         var utile = remote.classes.some(function(c){ return c.eleves.length || c.meta.classe; });
         if(utile){
-          dossier = remote; state = classeActive(); renderAll(); setStatus("Enregistré");
+          dossier = remote; purgerCorbeille(); state = classeActive(); renderAll(); setStatus("Enregistré");
+          majCorbeilleBouton(); majSauvegardeInfo();
         }
       } else if(local){ persist(); }
       else setStatus("Exemple — rien n'est encore enregistré");
@@ -2273,9 +2679,33 @@ if(window.claude && typeof window.claude.use === "function"){
 </script>
 
 <script>
+/* Hors ligne + annonce des mises à jour : quand une nouvelle version est
+   publiée sur GitHub, un bandeau propose de l'installer d'un geste. */
 if("serviceWorker" in navigator){
   window.addEventListener("load", function(){
-    navigator.serviceWorker.register("sw.js").catch(function(){});
+    var dejaControle = !!navigator.serviceWorker.controller, recharge = false;
+    function proposer(reg){
+      if(!reg.waiting || !dejaControle) return;
+      var b = document.getElementById("majBanniere");
+      b.hidden = false;
+      document.getElementById("majOk").onclick = function(){
+        this.disabled = true; this.textContent = "Mise à jour…";
+        reg.waiting.postMessage("activer");
+      };
+    }
+    navigator.serviceWorker.register("sw.js").then(function(reg){
+      proposer(reg);
+      reg.addEventListener("updatefound", function(){
+        var nv = reg.installing; if(!nv) return;
+        nv.addEventListener("statechange", function(){ if(nv.state === "installed") proposer(reg); });
+      });
+      /* vérifie s'il y a du nouveau à chaque retour sur l'application */
+      document.addEventListener("visibilitychange", function(){ if(!document.hidden) reg.update().catch(function(){}); });
+    }).catch(function(){});
+    navigator.serviceWorker.addEventListener("controllerchange", function(){
+      if(recharge || !dejaControle) return;
+      recharge = true; window.location.reload();
+    });
   });
 }
 </script>
