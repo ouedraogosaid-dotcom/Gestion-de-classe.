@@ -604,6 +604,73 @@ td.faible{color:var(--bad); font-weight:700}
 .auj{display:flex; flex-direction:column; gap:4px}
 .auj .puces-el{display:flex; flex-wrap:wrap; gap:6px; margin-top:6px}
 
+
+/* ================= Lot 3B : outils de la classe ================= */
+.hero-compte{display:inline-flex; align-items:center; gap:8px; margin-top:10px !important; padding:7px 12px; border-radius:999px; background:rgba(255,255,255,.16); font-weight:600; font-size:.82rem !important}
+.agenda{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px}
+.agenda li{display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:12px; border:1px solid var(--bord); background:var(--surface); cursor:pointer}
+.agenda.passe li{opacity:.6}
+.ag-date{flex:none; width:52px; text-align:center; border-radius:10px; background:var(--surface-2); padding:6px 0; line-height:1.1}
+.ag-date b{display:block; font:700 1.2rem/1 "Poppins",sans-serif}
+.ag-date small{font-size:.68rem; text-transform:uppercase; color:var(--texte-3); font-weight:600}
+.ag-txt{flex:1; min-width:0}
+.ag-txt b{display:block; font-size:.92rem}
+.ag-txt small{color:var(--texte-3); font-size:.76rem}
+.ag-type{font-size:.68rem; font-weight:700; padding:3px 8px; border-radius:999px}
+.t-composition{background:var(--bleu-doux); color:var(--bleu)} .t-conge{background:var(--ok-bg); color:var(--ok)} .t-reunion{background:var(--f-bg); color:var(--f)} .t-rappel{background:var(--warn-bg); color:var(--warn)} .t-autre{background:var(--surface-2); color:var(--texte-2)} .t-anniv{background:var(--or-doux); color:var(--warn)}
+.edt{min-width:640px; border-collapse:collapse}
+.edt th, .edt td{border:1px solid var(--bord); padding:0}
+.edt thead th{padding:8px 4px}
+.edt input{border:0; border-radius:0; background:transparent; padding:9px 6px; font-size:.82rem; text-align:center}
+.edt td:first-child input{font-weight:600; color:var(--texte-2); text-align:left; min-width:110px}
+.edt th.jour-j{background:var(--bleu-doux); color:var(--bleu)}
+.edt input:focus{background:var(--surface); box-shadow:inset 0 0 0 2px var(--bleu)}
+.liste-items{margin:0 0 6px; padding-left:22px; display:flex; flex-direction:column; gap:4px}
+.liste-items li{padding:4px 0}
+.liste-items li span{display:inline-flex; gap:8px; align-items:center; width:100%; justify-content:space-between}
+.liste-items .btn{min-height:30px; padding:3px 8px}
+.suivi{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px}
+.suivi li{display:flex; align-items:center; gap:10px; padding:9px 12px; border-radius:12px; border:1px solid var(--bord); cursor:pointer}
+.suivi li .ce-nom{flex:1; min-width:0}
+.suivi li small{color:var(--texte-3); font-size:.75rem}
+.suivi li.ok-tout .etat{color:var(--ok)} .suivi li.manque .etat{color:var(--bad)}
+.etat{font-size:.78rem; font-weight:700; white-space:nowrap}
+.cases{display:flex; flex-direction:column; gap:6px}
+.cases label{display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; background:var(--surface-2); cursor:pointer; font-size:.9rem}
+.cases input[type=checkbox]{width:20px; height:20px; accent-color:var(--bad)}
+.cases select{width:auto; margin-left:auto; padding:6px 10px; background:var(--surface)}
+.notes-perso{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px}
+.notes-perso li{padding:12px 14px; border-radius:12px; background:var(--surface-2); white-space:pre-wrap; font-size:.9rem; position:relative}
+.notes-perso li small{display:block; color:var(--texte-3); font-size:.74rem; margin-bottom:4px}
+.notes-perso .btn{position:absolute; top:6px; right:6px; min-height:30px; padding:3px 8px}
+.textes{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px}
+.textes li{display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; border:1px solid var(--bord)}
+.textes li .ag-txt{cursor:pointer}
+.partis{margin-top:14px; border-radius:14px; border:1px dashed var(--bord-2); padding:10px 12px}
+.partis summary{cursor:pointer; font-weight:600; color:var(--texte-2); font-size:.88rem}
+.partis .liste-eleves{margin-top:10px}
+.partis .carte-eleve{opacity:.75}
+/* verrouillage */
+.verrou{position:fixed; inset:0; z-index:200; display:grid; place-items:center; padding:20px; background:var(--fond)}
+.verrou[hidden]{display:none}
+.verrou-box{text-align:center; max-width:320px; width:100%}
+.verrou-box h2{font-size:1.3rem; margin-bottom:4px}
+.verrou-box p{color:var(--texte-3); margin:0 0 16px}
+.points{display:flex; gap:12px; justify-content:center; margin-bottom:22px; min-height:16px}
+.points i{width:14px; height:14px; border-radius:50%; border:2px solid var(--bord-2)}
+.points i.on{background:var(--bleu); border-color:var(--bleu)}
+.points.erreur{animation:secoue .35s}
+.pave{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:14px}
+.pave button{appearance:none; height:62px; border-radius:18px; border:1px solid var(--bord); background:var(--surface); color:var(--texte); font:600 1.35rem/1 "Poppins",sans-serif; cursor:pointer; box-shadow:var(--ombre-1)}
+.pave button:active{transform:scale(.94); background:var(--surface-2)}
+@keyframes secoue{0%,100%{transform:none} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)}}
+/* affichage en grand */
+.grand-texte{position:fixed; inset:0; z-index:150; background:var(--fond); overflow:auto; padding:calc(14px + env(safe-area-inset-top,0px)) 20px 40px}
+.grand-texte[hidden]{display:none}
+.gt-barre{display:flex; gap:8px; justify-content:flex-end; flex-wrap:wrap; position:sticky; top:0; padding-bottom:10px; background:var(--fond)}
+.grand-texte h2{font-size:calc(var(--gt, 28px) * .9); margin:10px 0 18px; text-align:center}
+#gtCorps{font-size:var(--gt, 28px); line-height:1.55; white-space:pre-wrap; text-align:center; max-width:900px; margin:0 auto; font-weight:500}
+
 /* ================= Animations ================= */
 @keyframes entre{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
 @keyframes glisse{from{opacity:0; transform:translateY(-8px)} to{opacity:1; transform:none}}
@@ -753,7 +820,10 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
   body.pr-saisie #vSaisie, body.pr-scolarite #vScolarite, body.pr-alpha #vAlpha,
   body.pr-synthese #vSynthese, body.pr-feuille #vFeuille, body.pr-notes #vNotes,
   body.pr-annee #vAnnee, body.pr-cartes #vCartes, body.pr-appel #vAppel, body.pr-groupes #vGroupes,
-  body.pr-vie #vVie{display:block !important; animation:none !important}
+  body.pr-vie #vVie, body.pr-agenda #vAgenda, body.pr-edt #vEdt, body.pr-fourn #vFourn, body.pr-manuels #vManuels,
+  body.pr-blocnotes #vBlocnotes, body.pr-textes #vTextes{display:block !important; animation:none !important}
+  .edt input{font-size:9pt !important; padding:4px !important}
+  .page-titre p{color:#333 !important}
   body{background:#fff !important; color:#111 !important; margin:0; padding:0}
   .wrap{max-width:none; padding:0 !important; margin:0}
   .sheet{box-shadow:none !important; border:0 !important; border-radius:0 !important; padding:0 !important; margin:0 0 6mm !important; background:#fff !important}
@@ -814,6 +884,12 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
   <symbol id="i-de" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3.5"/><circle cx="9" cy="9" r="1.2" fill="currentColor"/><circle cx="15" cy="15" r="1.2" fill="currentColor"/><circle cx="15" cy="9" r="1.2" fill="currentColor"/><circle cx="9" cy="15" r="1.2" fill="currentColor"/></symbol>
   <symbol id="i-photo" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></symbol>
   <symbol id="i-import" viewBox="0 0 24 24"><path d="M12 3v11"/><path d="m7.5 9.5 4.5 4.5 4.5-4.5"/><path d="M4 16v3.5h16V16"/></symbol>
+  <symbol id="i-agenda" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M8 3v4M16 3v4M3.5 10h17"/><path d="M8 14h3"/></symbol>
+  <symbol id="i-horloge" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+  <symbol id="i-sac" viewBox="0 0 24 24"><path d="M6 8h12l1 12.5H5L6 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></symbol>
+  <symbol id="i-livre" viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5v-15Z"/><path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20v3H6.5"/></symbol>
+  <symbol id="i-musique" viewBox="0 0 24 24"><path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></symbol>
+  <symbol id="i-cadenas" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
   <symbol id="i-etoile" viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9L12 3Z"/></symbol>
 </svg>
 
@@ -831,12 +907,16 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
 <main class="wrap">
 
   <!-- =================== ACCUEIL =================== -->
-  <section class="rubrique no-print" id="rAccueil">
+  <section class="rubrique" id="rAccueil">
+   <div id="acHub" class="no-print">
     <div class="hero">
       <small id="acDate">—</small>
       <h1 id="acBonjour">Bonjour</h1>
       <p id="acClasse">—</p>
+      <p class="hero-compte is-hidden" id="acCompte"></p>
     </div>
+    <div class="notice is-hidden" id="acArchive"><span style="flex:1 1 200px"><b>Classe archivée.</b> Elle reste consultable ; rouvrez-la dans Réglages pour la remettre dans la liste.</span></div>
+    <div class="rappel is-hidden" id="acRappelsJour" role="status"></div>
 
     <div class="notice" id="demoNotice">
       <span style="flex:1 1 220px"><b>Données d'exemple.</b> Une classe fictive montre le fonctionnement du registre.</span>
@@ -890,6 +970,66 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
       <span class="ci-txt"><b>Sauvegarde</b><span id="acSv">—</span></span>
       <button class="btn btn-sm" type="button" id="acSvBtn">Sauvegarder</button>
     </div>
+
+    <h2 class="section-titre">Outils de la classe</h2>
+    <div class="raccourcis anim">
+      <button class="raccourci" type="button" data-outil="agenda" style="--i:0"><span class="rond"><svg class="ic"><use href="#i-agenda"/></svg></span><span>Agenda<small>Compositions, congés, rappels</small></span></button>
+      <button class="raccourci" type="button" data-outil="edt" style="--i:1"><span class="rond"><svg class="ic"><use href="#i-horloge"/></svg></span><span>Emploi du temps<small>À imprimer et afficher</small></span></button>
+      <button class="raccourci" type="button" data-outil="fourn" style="--i:2"><span class="rond"><svg class="ic"><use href="#i-sac"/></svg></span><span>Fournitures<small>Liste de rentrée, manquants</small></span></button>
+      <button class="raccourci" type="button" data-outil="manuels" style="--i:3"><span class="rond"><svg class="ic"><use href="#i-livre"/></svg></span><span>Manuels et kits<small>Remis, rendus</small></span></button>
+      <button class="raccourci" type="button" data-outil="blocnotes" style="--i:4"><span class="rond"><svg class="ic"><use href="#i-crayon"/></svg></span><span>Bloc-notes<small>Idées, incidents</small></span></button>
+      <button class="raccourci" type="button" data-outil="textes" style="--i:5"><span class="rond"><svg class="ic"><use href="#i-musique"/></svg></span><span>Chants et récitations<small>Afficher en grand</small></span></button>
+    </div>
+   </div>
+   <button class="retour no-print is-hidden" id="acRetour" type="button"><svg class="ic"><use href="#i-retour"/></svg>Accueil</button>
+
+   <section class="view is-hidden" id="vAgenda">
+     <div class="page-titre no-print"><div><h1>Agenda</h1><p>Compositions, congés, réunions et rappels</p></div>
+       <button class="btn btn-primary btn-sm" type="button" id="agAjout"><svg class="ic"><use href="#i-plus"/></svg>Ajouter</button></div>
+     <div class="sheet"><h2>À venir</h2><ul class="agenda" id="agListe"></ul></div>
+     <div class="sheet"><h2>Anniversaires des 30 prochains jours</h2><ul class="agenda" id="agAnniv"></ul></div>
+     <div class="sheet no-print"><h2>Passés</h2><ul class="agenda passe" id="agPasses"></ul></div>
+   </section>
+
+   <section class="view is-hidden" id="vEdt">
+     <div class="page-titre"><div><h1>Emploi du temps</h1><p id="edtSous">—</p></div></div>
+     <div class="sheet"><div class="scroll"><table class="edt" id="edtTable"></table></div>
+       <div class="rowbtns no-print"><button class="btn btn-sm" type="button" id="edtPlus"><svg class="ic"><use href="#i-plus"/></svg>Ajouter un créneau</button>
+         <button class="btn btn-sm btn-ghost" type="button" id="edtMoins">Retirer le dernier créneau</button></div>
+       <p class="hint no-print">Touchez une case pour écrire la matière. Les horaires de la première colonne sont modifiables.</p></div>
+   </section>
+
+   <section class="view is-hidden" id="vFourn">
+     <div class="page-titre"><div><h1>Fournitures</h1><p id="fnSous">—</p></div></div>
+     <div class="sheet"><h2>Liste de rentrée</h2>
+       <ol class="liste-items" id="fnItems"></ol>
+       <div class="mat-ajout no-print"><input id="fnNouveau" placeholder="Ex. Cahier de 100 pages" maxlength="60"><button class="btn btn-sm btn-primary" type="button" id="fnAjout">Ajouter</button></div>
+       <div class="rowbtns no-print"><button class="btn btn-sm" type="button" id="fnType">Liste type</button></div></div>
+     <div class="sheet"><h2>Ce qui manque <small>Touchez un élève pour cocher ce qui lui manque</small></h2>
+       <ul class="suivi" id="fnSuivi"></ul></div>
+   </section>
+
+   <section class="view is-hidden" id="vManuels">
+     <div class="page-titre"><div><h1>Manuels et kits</h1><p id="mnSous">—</p></div></div>
+     <div class="sheet"><h2>Manuels et kits à suivre</h2>
+       <ol class="liste-items" id="mnItems"></ol>
+       <div class="mat-ajout no-print"><input id="mnNouveau" placeholder="Ex. Livre de lecture CE2, kit scolaire" maxlength="60"><button class="btn btn-sm btn-primary" type="button" id="mnAjout">Ajouter</button></div></div>
+     <div class="sheet"><h2>Suivi par élève <small>Touchez un élève : remis, rendu</small></h2>
+       <ul class="suivi" id="mnSuivi"></ul></div>
+   </section>
+
+   <section class="view is-hidden" id="vBlocnotes">
+     <div class="page-titre"><div><h1>Bloc-notes</h1><p>Une idée, un incident, à noter tout de suite</p></div></div>
+     <div class="sheet no-print"><div class="field"><label for="bnTexte">Nouvelle note</label><textarea id="bnTexte" rows="3" maxlength="2000" placeholder="Écrivez ou dictez votre note…"></textarea></div>
+       <div class="rowbtns"><button class="btn btn-primary btn-sm" type="button" id="bnAjout">Enregistrer la note</button></div></div>
+     <div class="sheet"><ul class="notes-perso" id="bnListe"></ul></div>
+   </section>
+
+   <section class="view is-hidden" id="vTextes">
+     <div class="page-titre no-print"><div><h1>Chants et récitations</h1><p>Le texte complet, à afficher en grand en classe</p></div>
+       <button class="btn btn-primary btn-sm" type="button" id="txAjout"><svg class="ic"><use href="#i-plus"/></svg>Ajouter</button></div>
+     <div class="sheet"><ul class="textes" id="txListe"></ul></div>
+   </section>
   </section>
 
   <!-- =================== ÉLÈVES =================== -->
@@ -916,6 +1056,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
           </span>
         </div>
         <ul class="liste-eleves" id="listeEleves"></ul>
+        <details class="partis is-hidden no-print" id="partisBloc"><summary id="partisTitre">Élèves partis</summary><ul class="liste-eleves" id="partisListe"></ul></details>
         <div class="scroll" id="zoneTableau">
           <table>
             <thead><tr>
@@ -1068,6 +1209,10 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
         <div class="scroll"><table class="recap ages" id="tAges"></table></div>
         <p class="hint" id="ageHint"></p>
       </div>
+      <div class="sheet" id="mvSheet">
+        <h2>Arrivées et départs <small>Mouvements en cours d'année</small></h2>
+        <div class="scroll"><table class="recap" id="mvTable"></table></div>
+      </div>
       <div class="sheet">
         <h2>Visas</h2>
         <div class="sign">
@@ -1189,6 +1334,10 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
         <button class="btn btn-sm" id="btnClRen" type="button">Renommer</button>
         <button class="btn btn-sm btn-danger" id="btnClDel" type="button">Supprimer</button>
       </div>
+      <div class="cl-btns" style="margin-top:8px">
+        <button class="btn btn-sm btn-primary" id="btnPassage" type="button">Passage à l'année suivante…</button>
+        <button class="btn btn-sm" id="btnArchive" type="button">Archiver cette classe</button>
+      </div>
       <div class="field" style="margin-top:16px"><label for="rgSalle">Même salle que (groupes PNAPAS et d'EPS communs)</label>
         <select id="rgSalle"></select>
         <p class="hint" id="rgSalleInfo" style="margin:4px 0 0"></p></div>
@@ -1247,6 +1396,22 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
         <span class="interrupteur"><input type="checkbox" id="rgEco" aria-label="Impression économique"><span></span></span></div>
     </section>
 
+    <section class="sheet">
+      <h2>Maîtres sur ce téléphone <small>Chacun retrouve ses propres classes</small></h2>
+      <div class="reglage"><span class="r-txt"><b>Maître actuel</b><small id="pfInfo">—</small></span><select id="pfChoix"></select></div>
+      <div class="btns" style="margin-top:12px">
+        <button class="btn btn-sm" id="pfAjout" type="button"><svg class="ic"><use href="#i-plus"/></svg>Ajouter un maître</button>
+        <button class="btn btn-sm" id="pfRenommer" type="button">Renommer</button>
+        <button class="btn btn-sm btn-danger" id="pfSuppr" type="button">Supprimer ce maître</button>
+      </div>
+    </section>
+
+    <section class="sheet">
+      <h2>Verrouillage <small>Facultatif</small></h2>
+      <div class="reglage"><span class="r-txt"><b>Code à l'ouverture</b><small id="vrInfo">Demande un code à chaque ouverture de l'application</small></span>
+        <span class="interrupteur"><input type="checkbox" id="vrActif" aria-label="Code à l'ouverture"><span></span></span></div>
+    </section>
+
     <section class="sheet aide">
       <h2>Aide</h2>
       <details><summary>Par où commencer ?</summary>
@@ -1292,6 +1457,23 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
   <button class="btn btn-sm btn-primary" id="majOk" type="button">Mettre à jour</button>
 </div>
 <div class="toast no-print" id="toast" role="status" aria-live="polite"></div>
+<div class="verrou no-print" id="verrou" hidden>
+  <div class="verrou-box">
+    <div class="guide-ill"><svg class="ic"><use href="#i-cadenas"/></svg></div>
+    <h2>Registre verrouillé</h2>
+    <p id="vrMsg">Saisissez votre code</p>
+    <div class="points" id="vrPoints"></div>
+    <div class="pave" id="vrPave"></div>
+    <button class="btn btn-ghost btn-sm" type="button" id="vrOubli">Code oublié ?</button>
+  </div>
+</div>
+<div class="grand-texte no-print" id="grandTexte" hidden>
+  <div class="gt-barre"><button class="btn btn-sm" type="button" id="gtMoins">A−</button><button class="btn btn-sm" type="button" id="gtPlus">A+</button>
+    <button class="btn btn-sm" type="button" id="gtPrec" aria-label="Texte précédent">‹</button><button class="btn btn-sm" type="button" id="gtSuiv" aria-label="Texte suivant">›</button>
+    <button class="btn btn-sm btn-primary" type="button" id="gtFermer">Fermer</button></div>
+  <h2 id="gtTitre"></h2>
+  <div id="gtCorps"></div>
+</div>
 <div class="modal no-print" id="modal"></div>
 
 
@@ -1308,7 +1490,7 @@ var SC_TOTALE = [1,2,3,4,5,6,7,8,9];       // scolarité totale
 /* ---------- état ---------- */
 var uid = function(){ return Math.random().toString(36).slice(2,10); };
 
-function eleveVide(sexe){ return {id:uid(), mat:"", nom:"", sexe:sexe||"G", age:null, sc:1, st:1, naissance:"", lieu:"", parent:"", tel:"", obs:"", photo:""}; }
+function eleveVide(sexe){ return {id:uid(), mat:"", nom:"", sexe:sexe||"G", age:null, sc:1, st:1, naissance:"", lieu:"", parent:"", tel:"", obs:"", photo:"", arrivee:"", depart:null}; }
 
 /* les matieres du carnet mensuel, dans l'ordre exact des deux colonnes */
 var MATIERES = [
@@ -1367,6 +1549,18 @@ var DEMO = {
 var state = null, dossier = null, docId = null, db = null, docRef = null, saveTimer = null, saving = false, dirtyLocal = false;
 var LS = "tabrecap.v1";        /* ancien format : un seul registre */
 var STORE = "tabrecap.v2";     /* nouveau : toutes les classes */
+/* plusieurs maîtres sur un même téléphone : chacun a son propre enregistrement */
+var PROFILS = "tabrecap.profils";
+function lireProfils(){
+  var p = null; try{ p = JSON.parse(localStorage.getItem(PROFILS) || "null"); }catch(e){}
+  if(!p || !Array.isArray(p.liste) || !p.liste.length) p = {actif:"p1", liste:[{id:"p1", nom:"Maître principal"}]};
+  p.liste = p.liste.map(function(x){ return {id:idSur(x.id) || uid(), nom:txt(x.nom, 40).trim() || "Maître"}; }).slice(0, 8);
+  if(!p.liste.some(function(x){ return x.id === p.actif; })) p.actif = p.liste[0].id;
+  return p;
+}
+function ecrireProfils(p){ try{ localStorage.setItem(PROFILS, JSON.stringify(p)); }catch(e){} }
+function cleProfil(id){ return id === "p1" ? STORE : STORE + ":" + id; }
+var profils = lireProfils();
 
 /* ---------- garde-fous : tout ce qui vient d'un fichier est nettoyé ---------- */
 var MAX_CLASSES = 60, MAX_ELEVES = 250, MAX_TXT = 160, MAX_LIBRE = 4000;
@@ -1399,6 +1593,10 @@ function normDossier(d){
     derniereSauvegarde: dateSure(d.derniereSauvegarde),
     ecole: normEcole(d.ecole, cls),
     salles: normSalles(d.salles, cls),
+    agenda: listeNorm(d.agenda, 300, function(a){
+      var t = txt(a && a.titre, 80).trim(), dt = dateJour(a && a.date); if(!t || !dt) return null;
+      return {id:idSur(a.id) || uid(), titre:t, date:dt, fin:dateJour(a.fin), type:["composition","conge","reunion","rappel","autre"].indexOf(a.type) >= 0 ? a.type : "autre"};
+    }),
     rappelReporte: dateSure(d.rappelReporte)
   };
 }
@@ -1463,8 +1661,33 @@ function normEleve(e){
     parent: txt(e.parent, 80),
     tel: txt(e.tel, 30).replace(/[^0-9+ ().-]/g, ""),
     obs: txt(e.obs, 600),
-    photo: photo
+    photo: photo,
+    arrivee: dateJour(e.arrivee),
+    depart: (e.depart && typeof e.depart === "object" && dateJour(e.depart.date)) ? {date:dateJour(e.depart.date), motif:["Transfert","Abandon","Autre"].indexOf(e.depart.motif) >= 0 ? e.depart.motif : "", vers:txt(e.depart.vers, 80).trim()} : null
   };
+}
+function dateJour(v){ return /^\d{4}-\d{2}-\d{2}$/.test(v || "") ? v : ""; }
+function listeNorm(l, max, f){ return (Array.isArray(l) ? l : []).slice(0, max).map(f).filter(Boolean); }
+function normItems(l){ return listeNorm(l, 40, function(x){ var n = txt(x && x.nom, 60).trim(); return n ? {id:idSur(x.id) || uid(), nom:n} : null; }); }
+function normEdt(x){
+  x = (x && typeof x === "object") ? x : {};
+  var creneaux = listeNorm(x.creneaux, 16, function(c){ return txt(c, 30); });
+  if(!creneaux.length) creneaux = ["7h30 – 8h00","8h00 – 9h00","9h00 – 10h00","10h00 – 10h15","10h15 – 11h15","11h15 – 12h00","15h00 – 16h00","16h00 – 17h00"];
+  var jours = listeNorm(x.jours, 7, function(j){ return txt(j, 15).trim(); });
+  if(!jours.length) jours = JOURS_DEF.slice();
+  var cases = {};
+  if(x.cases && typeof x.cases === "object") Object.keys(x.cases).forEach(function(k){ if(/^\d{1,2}-\d$/.test(k)){ var v = txt(x.cases[k], 40); if(v) cases[k] = v; } });
+  return {creneaux:creneaux, jours:jours, cases:cases};
+}
+function normSuivi(o, ids, ok){
+  var r = {}; if(!o || typeof o !== "object") return r;
+  Object.keys(o).slice(0, MAX_ELEVES).forEach(function(k){
+    var id = idSur(k); if(!id || (ids && !ids[id])) return;
+    var v = o[k];
+    if(Array.isArray(v)) r[id] = v.map(idSur).filter(Boolean).slice(0, 40);
+    else if(v && typeof v === "object"){ var m = {}; Object.keys(v).forEach(function(i){ if(ok.indexOf(v[i]) >= 0) m[idSur(i)] = v[i]; }); r[id] = m; }
+  });
+  return r;
 }
 
 /* ---------- niveaux, matières, groupes, vie de classe, appel ---------- */
@@ -1593,7 +1816,13 @@ function normalize(d){
     eps: normEPS(d.eps, vus),
     pnapas: normPnapas(d.pnapas, vus),
     vie: normVie(d.vie, vus),
-    appel: normAppel(d.appel, vus)
+    appel: normAppel(d.appel, vus),
+    archive: !!d.archive,
+    edt: normEdt(d.edt),
+    fourn: {items:normItems(d.fourn && d.fourn.items), manque:normSuivi(d.fourn && d.fourn.manque, vus, [])},
+    manuels: {items:normItems(d.manuels && d.manuels.items), suivi:normSuivi(d.manuels && d.manuels.suivi, vus, ["remis","rendu"])},
+    blocnotes: listeNorm(d.blocnotes, 300, function(n){ var t = txt(n && n.texte, 2000).trim(); return t ? {id:idSur(n.id) || uid(), date:dateSure(n.date) || new Date().toISOString(), texte:t} : null; }),
+    textes: listeNorm(d.textes, 60, function(t){ var ti = txt(t && t.titre, 80).trim(); return ti ? {id:idSur(t.id) || uid(), type:t.type === "recitation" ? "recitation" : "chant", titre:ti, texte:txt(t.texte, 6000)} : null; })
   };
 }
 
@@ -1638,7 +1867,9 @@ function normNotes(n, codesClasse){
 function collator(){ try{ return new Intl.Collator("fr",{sensitivity:"base"}); }catch(e){ return {compare:function(a,b){return a<b?-1:a>b?1:0;}}; } }
 var COL = collator();
 
-function nommes(){ return state.eleves.filter(function(e){ return e.nom.trim() !== ""; }); }
+/* élèves comptés : nommés et pas partis en cours d'année */
+function nommes(){ return state.eleves.filter(function(e){ return e.nom.trim() !== "" && !e.depart; }); }
+function partis(){ return state.eleves.filter(function(e){ return e.nom.trim() !== "" && e.depart; }); }
 /* Les tableaux du registre sont toujours présentés dans l'ordre alphabétique,
    quel que soit l'ordre de saisie. */
 function parSexe(s){
@@ -1837,6 +2068,7 @@ function renderSaisie(){
       if(!correspond(e, f)) return;
       var nomVide = !e.nom.trim();
       if(nomVide && !e.mat.trim()) return;   /* les lignes vides ne servent qu'en mode tableau */
+      if(e.depart) return;
       h += '<li class="carte-eleve sx-' + e.sexe + '" data-fiche="' + e.id + '" style="--i:' + (vus++) + '" tabindex="0" role="button" aria-label="Fiche de ' + esc(e.nom || "l'élève " + (idx + 1)) + '">'
         + avatarHtml(e, idx + 1)
         + '<span class="ce-txt"><span class="ce-nom' + (nomVide ? ' vide' : '') + '">' + esc(nomVide ? "Élève sans nom — toucher pour remplir" : e.nom) + '</span>'
@@ -1850,9 +2082,18 @@ function renderSaisie(){
     if(!h) h = '<li class="vide-etat">' + (f ? "Aucun élève ne correspond à « " + esc(el("fRecherche").value) + " »." : "Aucun élève. Touchez « Ajouter un élève ».") + '</li>';
     el("listeEleves").innerHTML = h;
   }
+  var pt = partis();
+  el("partisBloc").classList.toggle("is-hidden", !pt.length);
+  el("partisTitre").textContent = "Élèves partis en cours d'année (" + pt.length + ")";
+  el("partisListe").innerHTML = pt.map(function(e){
+    return '<li class="carte-eleve sx-' + e.sexe + '" data-fiche="' + e.id + '" tabindex="0" role="button">' + avatarHtml(e)
+      + '<span class="ce-txt"><span class="ce-nom">' + esc(e.nom) + '</span><span class="ce-info"><span class="pill">' + esc(e.depart.motif || "Parti(e)") + ' le ' + esc(dateFr(e.depart.date)) + '</span>'
+      + (e.depart.vers ? '<span class="pill">vers ' + esc(e.depart.vers) + '</span>' : '') + '</span></span><svg class="ic chev"><use href="#i-chevron"/></svg></li>';
+  }).join("");
   var tb = el("tbSaisie"), html = "";
   state.eleves.forEach(function(e, idx){
     if(mode === "tableau" && !correspond(e, f)) return;
+    if(e.depart) return;
     var opts = function(list, v){ return list.map(function(n){ return '<option value="'+n+'"'+(Number(v)===n?" selected":"")+'>'+n+'</option>'; }).join(""); };
     html += '<tr data-id="'+e.id+'" class="sx-'+e.sexe+'">'
       + '<td class="num">'+(idx+1)+'</td>'
@@ -1892,6 +2133,11 @@ function ouvrirFiche(id){
     + '<div class="field"><label for="fcLieu">Lieu de naissance</label><input id="fcLieu" name="lieu" value="' + esc(base.lieu || "") + '" autocomplete="off"></div>'
     + '<div class="field"><label for="fcParent">Parent ou tuteur</label><input id="fcParent" name="parent" value="' + esc(base.parent || "") + '" autocomplete="off"></div>'
     + '<div class="field"><label for="fcTel">Téléphone</label><input id="fcTel" name="tel" type="tel" inputmode="tel" value="' + esc(base.tel || "") + '" autocomplete="off"></div>'
+    + '<div class="fiche-section">Arrivée et départ en cours d\'année</div>'
+    + '<div class="field"><label for="fcArr">Arrivé(e) le</label><input id="fcArr" name="arrivee" type="date" value="' + esc(base.arrivee || "") + '"></div>'
+    + '<div class="field"><label for="fcDep">Parti(e) le</label><input id="fcDep" name="depDate" type="date" value="' + esc(base.depart ? base.depart.date : "") + '"></div>'
+    + '<div class="field"><label for="fcMotif">Motif du départ</label><select id="fcMotif" name="depMotif">' + ["","Transfert","Abandon","Autre"].map(function(m){ return '<option value="' + m + '"' + ((base.depart && base.depart.motif === m) ? ' selected' : '') + '>' + (m || "—") + '</option>'; }).join("") + '</select></div>'
+    + '<div class="field"><label for="fcVers">Vers (école)</label><input id="fcVers" name="depVers" value="' + esc(base.depart ? base.depart.vers : "") + '" autocomplete="off"></div>'
     + '<div class="field plein"><label for="fcObs">Observations</label><textarea id="fcObs" name="obs" rows="3" placeholder="Santé, comportement, situation familiale…" style="min-height:76px">' + esc(base.obs || "") + '</textarea></div>'
     + '</div>';
   var boutons = neuf
@@ -1928,6 +2174,10 @@ function ouvrirFiche(id){
     cible.age = borne(c.age, 1, 30, null); cible.sc = borne(c.sc, 1, 3, 1); cible.st = borne(c.st, 1, 9, 1);
     var autres = normEleve({id:cible.id, nom:"x", naissance:c.naissance, lieu:c.lieu, parent:c.parent, tel:c.tel, obs:c.obs, photo:c.photo});
     cible.naissance = autres.naissance; cible.lieu = autres.lieu.trim(); cible.parent = autres.parent.trim(); cible.tel = autres.tel.trim(); cible.obs = autres.obs.trim(); cible.photo = autres.photo;
+    var mv = normEleve({id:cible.id, nom:"x", arrivee:c.arrivee, depart:{date:c.depDate, motif:c.depMotif, vers:c.depVers}});
+    var partait = !!cible.depart;
+    cible.arrivee = mv.arrivee; cible.depart = mv.depart;
+    if(cible.depart && !partait) setTimeout(function(){ toast("« " + cible.nom + " » est noté(e) parti(e) : il n'est plus compté dans l'effectif."); }, 900);
     touch(); renderAll();
     toast(neuf ? "« " + cible.nom + " » ajouté(e) à la classe." : "Fiche enregistrée.");
     if(r.valeur === "encore") setTimeout(function(){ ouvrirFiche(null); }, 120);
@@ -2622,6 +2872,8 @@ function render(){
     if(vueActive === "appel") renderAppel();
     if(vueActive === "groupes"){ renderEPS(); renderPnapas(); }
     if(vueActive === "vie") renderVie();
+    if(RUBRIQUE_DE[vueActive] === "accueil") renderOutil(vueActive);
+    renderMouvements();
     renderNotes();
     renderAnnee();
     buildFeuille();
@@ -2637,7 +2889,7 @@ function setStatus(txt){ el("stStatus").textContent = txt; }
 
 function persist(){
   var body = JSON.parse(JSON.stringify(dossier));
-  try{ localStorage.setItem(STORE, JSON.stringify(body)); }catch(e){}
+  try{ localStorage.setItem(cleProfil(profils.actif), JSON.stringify(body)); }catch(e){}
   if(!docRef) { setStatus("Enregistré sur cet appareil"); return; }
   if(saving){ dirtyLocal = true; return; }
   saving = true; setStatus("Enregistrement…");
@@ -2942,9 +3194,11 @@ el("f_recits").addEventListener("input", function(){ avantModif(true); state.rec
 /* ---------- classes : interactions ---------- */
 function renderClasses(){
   var sel = el("f_classeSel");
-  sel.innerHTML = dossier.classes.map(function(c){
-    return '<option value="'+c.id+'"'+(c.id === dossier.active ? ' selected' : '')+'>'+esc(nomClasse(c))+'</option>';
-  }).join("");
+  var opt = function(c){ return '<option value="'+c.id+'"'+(c.id === dossier.active ? ' selected' : '')+'>'+esc(nomClasse(c))+'</option>'; };
+  var arch = dossier.classes.filter(function(c){ return c.archive; });
+  sel.innerHTML = dossier.classes.filter(function(c){ return !c.archive; }).map(opt).join("")
+    + (arch.length ? '<optgroup label="Archives">' + arch.map(opt).join("") + '</optgroup>' : '');
+  el("btnArchive").textContent = state.archive ? "Rouvrir cette classe" : "Archiver cette classe";
   el("btnClDel").disabled = dossier.classes.length < 2;
   el("rgClasseNom").textContent = nomClasse(state);
   el("brandSub").textContent = state.meta.ecole ? "EPP " + state.meta.ecole : "Gestion de classe";
@@ -2994,6 +3248,7 @@ function renderAccueil(anime){
   } else { el("acCompo").textContent = "Aucune composition saisie"; el("acCompoSous").textContent = "Les résultats apparaîtront ici."; }
   var c = controles(), graves = c.filter(function(x){ return x.bad; }).length;
   renderAujourdhui();
+  renderAccueil3B();
   el("acControles").textContent = c.length ? c.length + " point(s) à vérifier" : "Registre cohérent";
   el("acControlesSous").textContent = c.length ? (graves ? graves + " erreur(s) et " + (c.length - graves) + " remarque(s)" : "Des remarques sur les âges ou les scolarités") : "Effectifs, âges et scolarités sont cohérents.";
   majSauvegardeInfo();
@@ -3320,9 +3575,9 @@ el("btnViderMois").addEventListener("click", function(){
 el("f_cartesMode").addEventListener("change", function(){ majTitreCartes(); buildCartes(); fitCartes(); majFab(); });
 
 /* ---------- navigation : 5 rubriques, chacune avec ses vues ---------- */
-var VIEWS = {saisie:"vSaisie", appel:"vAppel", groupes:"vGroupes", vie:"vVie", scolarite:"vScolarite", alpha:"vAlpha", synthese:"vSynthese", feuille:"vFeuille", notes:"vNotes", annee:"vAnnee", cartes:"vCartes"};
+var VIEWS = {agenda:"vAgenda", edt:"vEdt", fourn:"vFourn", manuels:"vManuels", blocnotes:"vBlocnotes", textes:"vTextes", saisie:"vSaisie", appel:"vAppel", groupes:"vGroupes", vie:"vVie", scolarite:"vScolarite", alpha:"vAlpha", synthese:"vSynthese", feuille:"vFeuille", notes:"vNotes", annee:"vAnnee", cartes:"vCartes"};
 var RUBRIQUES = {accueil:"rAccueil", eleves:"rEleves", notes:"rNotes", documents:"rDocuments", reglages:"rReglages"};
-var RUBRIQUE_DE = {saisie:"eleves", appel:"eleves", groupes:"eleves", vie:"eleves", scolarite:"eleves", alpha:"eleves", synthese:"eleves", notes:"notes", annee:"notes", feuille:"documents", cartes:"documents"};
+var RUBRIQUE_DE = {agenda:"accueil", edt:"accueil", fourn:"accueil", manuels:"accueil", blocnotes:"accueil", textes:"accueil", saisie:"eleves", appel:"eleves", groupes:"eleves", vie:"eleves", scolarite:"eleves", alpha:"eleves", synthese:"eleves", notes:"notes", annee:"notes", feuille:"documents", cartes:"documents"};
 var DERNIERE_VUE = {eleves:"saisie", notes:"notes"};
 var vueActive = null, rubriqueActive = "accueil";
 var TITRES_CARTES = {cartes:"Bulletins scolaires", tableau:"Tableau des notes", annee:"Résultats de fin d'année"};
@@ -3349,7 +3604,8 @@ function allerRubrique(r, vue){
   if(change) animer(el(RUBRIQUES[r]));
   if(r === "eleves" || r === "notes") montrerVue(vue || DERNIERE_VUE[r], !change);
   else if(r === "documents"){ if(vue) montrerVue(vue, !change); else fermerDocument(); }
-  else { vueActive = null; if(r === "accueil") renderAccueil(true); }
+  else if(r === "accueil"){ if(vue) montrerVue(vue, !change); else { fermerOutil(); vueActive = null; renderAccueil(true); } }
+  else vueActive = null;
   majFab();
   window.scrollTo({top:0, behavior: change ? "auto" : "smooth"});
 }
@@ -3359,6 +3615,7 @@ function montrerVue(v, anim){
   zone.querySelectorAll(".view").forEach(function(n){ n.classList.toggle("is-hidden", n.id !== VIEWS[v]); });
   zone.querySelectorAll(".seg button").forEach(function(b){ b.setAttribute("aria-selected", String(b.getAttribute("data-v") === v)); });
   if(r === "documents"){ el("docsHub").classList.add("is-hidden"); el("docRetour").classList.remove("is-hidden"); }
+  else if(r === "accueil"){ el("acHub").classList.add("is-hidden"); el("acRetour").classList.remove("is-hidden"); renderOutil(v); }
   else DERNIERE_VUE[r] = v;
   vueActive = v;
   if(anim) animer(el(VIEWS[v]));
@@ -3388,6 +3645,7 @@ el("nav").addEventListener("click", function(ev){
   var b = ev.target.closest(".nav-btn"); if(!b) return;
   var r = b.getAttribute("data-r");
   if(r === rubriqueActive && r === "documents" && vueActive){ fermerDocument(); return; }
+  if(r === rubriqueActive && r === "accueil" && vueActive){ allerRubrique("accueil"); return; }
   allerRubrique(r);
 });
 document.querySelectorAll(".seg").forEach(function(seg){
@@ -3419,6 +3677,10 @@ function nomDocument(ext){
     if(mode === "annee") return "resultats-fin-annee-" + classe + "." + ext;
     return "bulletins-scolaires-" + mois + "-" + classe + "." + ext;
   }
+  var NOMS = {saisie:"liste-des-eleves", appel:"cahier-d-appel", groupes:"groupes", vie:"vie-de-classe", scolarite:"tableaux-de-scolarite",
+    alpha:"liste-de-classe", synthese:"synthese", agenda:"agenda", edt:"emploi-du-temps", fourn:"fournitures", manuels:"manuels-et-kits",
+    blocnotes:"bloc-notes", textes:"chants-et-recitations"};
+  if(NOMS[vueActive]) return NOMS[vueActive] + "-" + classe + "." + ext;
   return "tableau-recapitulatif-" + classe + "." + ext;
 }
 function nomFichier(ext){ return nomDocument(ext); }
@@ -3721,8 +3983,8 @@ function activerBoutons(){
 
 var local = null, ancienFormat = false;
 try{
-  var brut = localStorage.getItem(STORE);
-  if(!brut){ brut = localStorage.getItem(LS); ancienFormat = !!brut; }
+  var brut = localStorage.getItem(cleProfil(profils.actif));
+  if(!brut && profils.actif === "p1"){ brut = localStorage.getItem(LS); ancienFormat = !!brut; }
   local = JSON.parse(brut || "null");
 }catch(e){}
 
@@ -4262,8 +4524,488 @@ function renderAujourdhui(){
   el("acAujResp").classList.toggle("is-hidden", !resp.length);
 }
 
+/* =====================================================================
+   LOT 3B — mouvements, années, profils, verrouillage, outils de la classe
+   ===================================================================== */
+
+/* ---------- arrivées et départs (Synthèse) ---------- */
+function renderMouvements(){
+  var arr = state.eleves.filter(function(e){ return e.nom.trim() && e.arrivee; });
+  var dep = partis();
+  el("mvSheet").classList.toggle("is-hidden", !arr.length && !dep.length);
+  if(!arr.length && !dep.length) return;
+  var lignes = arr.map(function(e){ return {d:e.arrivee, e:e, t:"Arrivée", info:""}; })
+    .concat(dep.map(function(e){ return {d:e.depart.date, e:e, t:"Départ", info:[e.depart.motif, e.depart.vers ? "vers " + e.depart.vers : ""].filter(Boolean).join(" — ")}; }))
+    .sort(function(a, b){ return a.d.localeCompare(b.d); });
+  el("mvTable").innerHTML = '<thead><tr><th>Date</th><th>Élève</th><th>Mouvement</th><th>Précision</th></tr></thead><tbody>'
+    + lignes.map(function(l){ return '<tr class="sx-' + l.e.sexe + '"><td>' + esc(dateFr(l.d)) + '</td><td class="nom">' + esc(l.e.nom) + '</td><td>' + l.t + '</td><td>' + esc(l.info) + '</td></tr>'; }).join("")
+    + '<tr class="tot"><td colspan="2">Effectif actuel</td><td colspan="2">' + nommes().length + ' (' + arr.length + ' arrivée(s), ' + dep.length + ' départ(s))</td></tr></tbody>';
+}
+
+/* ---------- archives ---------- */
+el("btnArchive").addEventListener("click", function(){
+  avantModif(false);
+  state.archive = !state.archive;
+  touch(); renderAll();
+  toast(state.archive ? "Classe archivée : elle est rangée à la fin de la liste des classes." : "Classe rouverte.");
+});
+
+/* ---------- passage à l'année suivante ---------- */
+var SUIVANT = {CP1:"CP2", CP2:"CE1", CE1:"CE2", CE2:"CM1", CM1:"CM2", CM2:""};
+el("btnPassage").addEventListener("click", function(){
+  if(state.demo){ toast("Commencez par saisir votre vraie classe."); return; }
+  var cla = classementAnnuel(), aDecisions = cla.sur > 0;
+  var nv = state.niveaux.map(function(n){ return SUIVANT[n]; }).filter(Boolean);
+  var nom = state.meta.classe || nomClasse(state);
+  var nouveauNom = nv.length ? nv.join("-") : nom;
+  var a1 = Number(state.meta.an1) || anneeScolaire()[0], a2 = Number(state.meta.an2) || a1 + 1;
+  var corps = '<p style="margin:0 0 12px">Une nouvelle classe est créée pour l\'année ' + (a1 + 1) + '–' + (a2 + 1) + ', avec l\'en-tête, les matières et l\'emploi du temps. Les élèves y passent avec une année de scolarité et d\'âge en plus.</p>'
+    + '<div class="fiche-grille">'
+    + '<div class="field plein"><label for="psNom">Nom de la nouvelle classe</label><input id="psNom" name="nom" value="' + esc(nouveauNom) + '"></div>'
+    + '<div class="field plein"><span class="lbl">Élèves qui passent</span><div class="choix">'
+    + '<label><input type="radio" name="qui" value="admis"' + (aDecisions ? ' checked' : ' disabled') + '><span>Les admis (' + (aDecisions ? cla.admis : "—") + ')</span></label>'
+    + '<label><input type="radio" name="qui" value="tous"' + (aDecisions ? '' : ' checked') + '><span>Tous (' + nommes().length + ')</span></label></div>'
+    + (aDecisions ? '' : '<p class="hint">Les décisions de fin d\'année ne sont pas encore calculées : tous les élèves passeront.</p>') + '</div>'
+    + (aDecisions ? '<label class="plein" style="display:flex;gap:10px;align-items:center;font-size:.9rem"><input type="checkbox" name="redoub" value="1" checked style="width:20px;height:20px;accent-color:var(--bleu)"> Créer aussi la classe des redoublants (' + (cla.sur - cla.admis) + ')</label>' : '')
+    + '<label class="plein" style="display:flex;gap:10px;align-items:center;font-size:.9rem"><input type="checkbox" name="archiver" value="1" checked style="width:20px;height:20px;accent-color:var(--bleu)"> Archiver la classe de cette année</label>'
+    + '</div>';
+  dialogue("Passage à l'année suivante", corps, [{label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Créer la nouvelle classe", valeur:"ok", style:"btn-primary"}], {champs:true, feuille:true}).then(function(r){
+    if(!r || r.valeur !== "ok") return;
+    if(dossier.classes.length + 2 > MAX_CLASSES){ toast("Trop de classes : supprimez-en d'anciennes."); return; }
+    avantModif(false);
+    var c = r.champs, admisIds = {};
+    if(aDecisions) cla.liste.forEach(function(x){ if(x.a.annuelle >= state.notes.seuil) admisIds[x.e.id] = 1; });
+    var tous = nommes(), passent = (c.qui === "admis" && aDecisions) ? tous.filter(function(e){ return admisIds[e.id]; }) : tous;
+    var restent = (c.qui === "admis" && aDecisions && c.redoub) ? tous.filter(function(e){ return !admisIds[e.id]; }) : [];
+    var fabriquer = function(nomCl, eleves, niveaux, redouble){
+      var base = JSON.parse(JSON.stringify(state));
+      var k = normalize({nom:"", meta:base.meta, matieres:base.matieres, edt:base.edt, niveaux:niveaux,
+        fourn:{items:base.fourn.items}, manuels:{items:base.manuels.items},
+        notes:{echelle:base.notes.echelle, baremes:base.notes.baremes, seuil:base.notes.seuil}});
+      k.meta.classe = txt(nomCl).trim() || nomCl; k.meta.an1 = String(a1 + 1); k.meta.an2 = String(a2 + 1);
+      k.eleves = eleves.map(function(e){
+        var n = normEleve(JSON.parse(JSON.stringify(e)));
+        n.age = n.age != null ? Math.min(30, n.age + 1) : null;
+        n.st = Math.min(9, n.st + 1);
+        n.sc = redouble ? Math.min(3, n.sc + 1) : 1;
+        n.arrivee = ""; n.depart = null;
+        return n;
+      });
+      k.modifie = new Date().toISOString();
+      return k;
+    };
+    var nouvelle = fabriquer(c.nom || nouveauNom, passent, nv.length ? nv : state.niveaux, false);
+    dossier.classes.push(nouvelle);
+    if(restent.length) dossier.classes.push(fabriquer(nom + " (redoublants)", restent, state.niveaux, true));
+    if(c.archiver) state.archive = true;
+    state.modifie = new Date().toISOString();
+    ouvrirClasse(nouvelle.id);
+    toast("Classe « " + nomClasse(nouvelle) + " » créée avec " + passent.length + " élève(s).", {label:"Annuler", fn:annuler});
+  });
+});
+
+/* ---------- plusieurs maîtres sur ce téléphone ---------- */
+
+function renderProfils(){
+  el("pfChoix").innerHTML = profils.liste.map(function(x){ return '<option value="' + x.id + '"' + (x.id === profils.actif ? ' selected' : '') + '>' + esc(x.nom) + '</option>'; }).join("");
+  el("pfInfo").textContent = profils.liste.length > 1 ? profils.liste.length + " maîtres sur ce téléphone" : "Un seul maître pour l'instant";
+  el("pfSuppr").disabled = profils.liste.length < 2;
+}
+function changerProfil(id){
+  clearTimeout(saveTimer); persist();
+  profils.actif = id; ecrireProfils(profils);
+  window.location.reload();
+}
+el("pfChoix").addEventListener("change", function(){ if(this.value !== profils.actif) changerProfil(this.value); });
+el("pfAjout").addEventListener("click", function(){
+  if(profils.liste.length >= 8){ toast("Maximum 8 maîtres."); return; }
+  dialogue("Ajouter un maître", '<div class="field"><label for="pfNom">Nom du maître</label><input id="pfNom" name="nom" maxlength="40" placeholder="Ex. M. KAMBOU"></div><p class="hint">Il aura ses propres classes. Vous passerez de l\'un à l\'autre ici, dans Réglages.</p>',
+    [{label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Ajouter et ouvrir", valeur:"ok", style:"btn-primary"}], {champs:true, focus:"pfNom"}).then(function(r){
+      if(!r || r.valeur !== "ok") return;
+      var x = {id:"p" + uid().slice(0, 6), nom:txt(r.champs.nom, 40).trim() || "Maître " + (profils.liste.length + 1)};
+      profils.liste.push(x); changerProfil(x.id);
+    });
+});
+el("pfRenommer").addEventListener("click", function(){
+  var x = profils.liste.filter(function(p){ return p.id === profils.actif; })[0];
+  dialogue("Renommer", '<div class="field"><label for="pfNom2">Nom du maître</label><input id="pfNom2" name="nom" maxlength="40" value="' + esc(x.nom) + '"></div>',
+    [{label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Enregistrer", valeur:"ok", style:"btn-primary"}], {champs:true, focus:"pfNom2"}).then(function(r){
+      if(!r || r.valeur !== "ok") return;
+      x.nom = txt(r.champs.nom, 40).trim() || x.nom; ecrireProfils(profils); renderProfils();
+    });
+});
+el("pfSuppr").addEventListener("click", function(){
+  if(profils.liste.length < 2) return;
+  var x = profils.liste.filter(function(p){ return p.id === profils.actif; })[0];
+  dialogue("Supprimer « " + x.nom + " » ?", '<p style="margin:0">Toutes ses classes seront effacées de ce téléphone. Faites d\'abord une sauvegarde si vous voulez les garder.</p>',
+    [{label:"Garder", valeur:false}, {label:"Supprimer", valeur:true, style:"btn-danger"}]).then(function(oui){
+      if(!oui) return;
+      try{ localStorage.removeItem(cleProfil(x.id)); localStorage.removeItem(GUIDE + (x.id === "p1" ? "" : ":" + x.id)); }catch(e){}
+      profils.liste = profils.liste.filter(function(p){ return p.id !== x.id; });
+      profils.actif = profils.liste[0].id; ecrireProfils(profils);
+      window.location.reload();
+    });
+});
+
+/* ---------- verrouillage facultatif (simple barrière, sans chiffrement) ---------- */
+var VERROU = "tabrecap.verrou";
+function lireVerrou(){ try{ return JSON.parse(localStorage.getItem(VERROU) || "null"); }catch(e){ return null; } }
+function empreinte(code, sel){
+  var t = sel + ":" + code;
+  if(window.crypto && crypto.subtle && window.TextEncoder){
+    return crypto.subtle.digest("SHA-256", new TextEncoder().encode(t)).then(function(b){
+      return Array.prototype.map.call(new Uint8Array(b), function(x){ return ("0" + x.toString(16)).slice(-2); }).join("");
+    });
+  }
+  var h = 5381; for(var i = 0; i < t.length; i++) h = ((h << 5) + h + t.charCodeAt(i)) | 0;
+  return Promise.resolve("s" + (h >>> 0).toString(16));
+}
+function renderVerrouReglage(){ var v = lireVerrou(); el("vrActif").checked = !!v; el("vrInfo").textContent = v ? "Activé : le code est demandé à chaque ouverture" : "Demande un code à chaque ouverture de l'application"; }
+function saisirCode(titre, msg){
+  return new Promise(function(ok){
+    dialogue(titre, '<p style="margin:0 0 10px">' + msg + '</p><div class="field"><label for="vrCode">Code (4 à 6 chiffres)</label><input id="vrCode" name="code" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="off"></div>',
+      [{label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Valider", valeur:"ok", style:"btn-primary"}], {champs:true, focus:"vrCode"}).then(function(r){
+        ok(r && r.valeur === "ok" ? String(r.champs.code || "").replace(/\D/g, "") : null);
+      });
+  });
+}
+el("vrActif").addEventListener("change", function(){
+  var box = this;
+  if(!box.checked){ try{ localStorage.removeItem(VERROU); }catch(e){} renderVerrouReglage(); toast("Code retiré."); return; }
+  box.checked = false;
+  saisirCode("Choisir un code", "Ce code sera demandé à l'ouverture. Il protège des regards curieux ; vos données ne sont pas chiffrées.").then(function(c1){
+    if(c1 == null) return;
+    if(c1.length < 4){ toast("Le code doit avoir au moins 4 chiffres."); return; }
+    saisirCode("Confirmer le code", "Saisissez le même code une deuxième fois.").then(function(c2){
+      if(c2 !== c1){ toast("Les deux codes sont différents."); return; }
+      var sel = uid();
+      empreinte(c1, sel).then(function(h){
+        try{ localStorage.setItem(VERROU, JSON.stringify({sel:sel, h:h, n:c1.length})); }catch(e){}
+        renderVerrouReglage(); toast("Code activé.");
+      });
+    });
+  });
+});
+function ecranVerrou(){
+  var v = lireVerrou(); if(!v) return;
+  var ecran = el("verrou"), saisie = "", n = v.n || 4;
+  ecran.hidden = false;
+  var points = function(){ el("vrPoints").innerHTML = Array.apply(null, Array(n)).map(function(_, i){ return '<i' + (i < saisie.length ? ' class="on"' : '') + '></i>'; }).join(""); };
+  el("vrPave").innerHTML = ["1","2","3","4","5","6","7","8","9","","0","⌫"].map(function(k){ return k ? '<button type="button" data-k="' + k + '">' + k + '</button>' : '<span></span>'; }).join("");
+  points();
+  var verifier = function(){
+    empreinte(saisie, v.sel).then(function(h){
+      if(h === v.h){ ecran.hidden = true; document.removeEventListener("keydown", clavier); return; }
+      el("vrMsg").textContent = "Code incorrect, réessayez";
+      el("vrPoints").classList.remove("erreur"); void el("vrPoints").offsetWidth; el("vrPoints").classList.add("erreur");
+      saisie = ""; points();
+    });
+  };
+  var taper = function(k){
+    if(k === "⌫"){ saisie = saisie.slice(0, -1); points(); return; }
+    if(saisie.length >= n) return;
+    saisie += k; points();
+    if(saisie.length === n) setTimeout(verifier, 120);
+  };
+  var clavier = function(ev){ if(/^\d$/.test(ev.key)) taper(ev.key); else if(ev.key === "Backspace") taper("⌫"); };
+  document.addEventListener("keydown", clavier);
+  el("vrPave").onclick = function(ev){ var b = ev.target.closest("[data-k]"); if(b) taper(b.getAttribute("data-k")); };
+  el("vrOubli").onclick = function(){
+    var ecoles = {}; dossier.classes.forEach(function(c){ if(c.meta.ecole) ecoles[c.meta.ecole.trim().toLowerCase()] = 1; });
+    if(dossier.ecole && dossier.ecole.ecole) ecoles[dossier.ecole.ecole.toLowerCase()] = 1;
+    var aucune = !Object.keys(ecoles).length;
+    dialogue("Code oublié", aucune ? '<p style="margin:0">Aucun nom d\'école n\'est enregistré : le code peut être retiré directement.</p>'
+      : '<p style="margin:0 0 10px">Pour retirer le code, saisissez le nom de l\'école (E.P.P.) tel qu\'il est écrit dans le registre.</p><div class="field"><label for="vrEcole">Nom de l\'école</label><input id="vrEcole" name="ecole" autocomplete="off"></div>',
+      [{label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Retirer le code", valeur:"ok", style:"btn-primary"}], {champs:true, focus:aucune ? null : "vrEcole"}).then(function(r){
+        if(!r || r.valeur !== "ok") return;
+        var ok = aucune || ecoles[String(r.champs.ecole || "").trim().toLowerCase()];
+        if(!ok){ toast("Ce nom ne correspond pas."); return; }
+        try{ localStorage.removeItem(VERROU); }catch(e){}
+        ecran.hidden = true; document.removeEventListener("keydown", clavier); renderVerrouReglage();
+        toast("Code retiré. Vous pouvez en choisir un nouveau dans Réglages.");
+      });
+  };
+}
+
+/* ---------- outils de la classe (vues de l'accueil) ---------- */
+function ouvrirOutil(o){ allerRubrique("accueil", o); }
+document.querySelectorAll("[data-outil]").forEach(function(b){ b.addEventListener("click", function(){ ouvrirOutil(b.getAttribute("data-outil")); }); });
+el("acRetour").addEventListener("click", function(){ allerRubrique("accueil"); });
+function fermerOutil(){
+  el("acHub").classList.remove("is-hidden"); el("acRetour").classList.add("is-hidden");
+  ["vAgenda","vEdt","vFourn","vManuels","vBlocnotes","vTextes"].forEach(function(id){ el(id).classList.add("is-hidden"); });
+}
+function renderOutil(v){
+  if(v === "agenda") renderAgenda();
+  if(v === "edt") renderEdt();
+  if(v === "fourn") renderFourn();
+  if(v === "manuels") renderManuels();
+  if(v === "blocnotes") renderBlocnotes();
+  if(v === "textes") renderTextes();
+}
+
+/* agenda */
+var TYPES_AG = [["composition","Composition"],["conge","Congés"],["reunion","Réunion"],["rappel","Rappel"],["autre","Autre"]];
+function libType(t){ var x = TYPES_AG.filter(function(k){ return k[0] === t; })[0]; return x ? x[1] : "Autre"; }
+function moisCourt(iso){ try{ return new Date(iso + "T12:00:00").toLocaleDateString("fr-FR", {month:"short"}).replace(".", ""); }catch(e){ return iso.slice(5, 7); } }
+function joursAvant(iso){ return Math.round((Date.parse(iso + "T12:00:00") - Date.parse(aujourdhuiISO() + "T12:00:00")) / 86400000); }
+function ligneAgenda(a){
+  var j = joursAvant(a.date), quand = j === 0 ? "aujourd'hui" : j === 1 ? "demain" : j > 1 ? "dans " + j + " jours" : "il y a " + (-j) + " jour(s)";
+  return '<li data-ag="' + a.id + '"><span class="ag-date"><b>' + Number(a.date.slice(8, 10)) + '</b><small>' + esc(moisCourt(a.date)) + '</small></span>'
+    + '<span class="ag-txt"><b>' + esc(a.titre) + '</b><small>' + esc(jourLong(a.date)) + (a.fin && a.fin !== a.date ? " → " + esc(jourLong(a.fin)) : "") + ' · ' + quand + '</small></span>'
+    + '<span class="ag-type t-' + a.type + '">' + libType(a.type) + '</span></li>';
+}
+function anniversaires(jours){
+  var auj = aujourdhuiISO(), an = Number(auj.slice(0, 4)), res = [];
+  dossier.classes.forEach(function(c){
+    if(c.archive) return;
+    c.eleves.forEach(function(e){
+      if(!e.nom.trim() || e.depart || !e.naissance) return;
+      var d = an + e.naissance.slice(4);
+      if(d < auj) d = (an + 1) + e.naissance.slice(4);
+      var j = joursAvant(d);
+      if(j <= jours) res.push({e:e, c:c, date:d, j:j, age:Number(d.slice(0, 4)) - Number(e.naissance.slice(0, 4))});
+    });
+  });
+  return res.sort(function(a, b){ return a.j - b.j; });
+}
+function renderAgenda(){
+  var auj = aujourdhuiISO(), l = dossier.agenda.slice().sort(function(a, b){ return a.date.localeCompare(b.date); });
+  var avenir = l.filter(function(a){ return (a.fin || a.date) >= auj; }), passes = l.filter(function(a){ return (a.fin || a.date) < auj; }).reverse().slice(0, 20);
+  el("agListe").innerHTML = avenir.map(ligneAgenda).join("") || '<li class="vide-etat" style="border:0;cursor:default">Rien de prévu. Ajoutez les dates des compositions et des congés.</li>';
+  el("agPasses").innerHTML = passes.map(ligneAgenda).join("") || '<li class="vide-etat" style="border:0;cursor:default">—</li>';
+  var an = anniversaires(30);
+  el("agAnniv").innerHTML = an.map(function(x){
+    return '<li style="cursor:default"><span class="ag-date"><b>' + Number(x.date.slice(8, 10)) + '</b><small>' + esc(moisCourt(x.date)) + '</small></span><span class="ag-txt"><b>' + esc(x.e.nom) + '</b><small>' + x.age + ' ans · ' + (x.j === 0 ? "aujourd'hui" : "dans " + x.j + " jour(s)") + (dossier.classes.length > 1 ? " · " + esc(nomClasse(x.c)) : "") + '</small></span><span class="ag-type t-anniv">Anniversaire</span></li>';
+  }).join("") || '<li class="vide-etat" style="border:0;cursor:default">Aucun anniversaire. Les dates de naissance se saisissent dans la fiche de chaque élève.</li>';
+}
+function editerEvenement(id){
+  var a = id ? dossier.agenda.filter(function(x){ return x.id === id; })[0] : null;
+  var corps = '<div class="fiche-grille"><div class="field plein"><label for="agTitre">Intitulé</label><input id="agTitre" name="titre" maxlength="80" value="' + esc(a ? a.titre : "") + '" placeholder="Ex. Composition de décembre"></div>'
+    + '<div class="field plein"><label for="agType">Type</label><select id="agType" name="type">' + TYPES_AG.map(function(t){ return '<option value="' + t[0] + '"' + ((a ? a.type : "composition") === t[0] ? ' selected' : '') + '>' + t[1] + '</option>'; }).join("") + '</select></div>'
+    + '<div class="field"><label for="agDate">Date</label><input id="agDate" name="date" type="date" value="' + (a ? a.date : aujourdhuiISO()) + '"></div>'
+    + '<div class="field"><label for="agFin">Jusqu\'au (facultatif)</label><input id="agFin" name="fin" type="date" value="' + (a ? a.fin : "") + '"></div></div>';
+  var boutons = a ? [{label:"Supprimer", valeur:"suppr", style:"btn-danger"}, {label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Enregistrer", valeur:"ok", style:"btn-primary"}]
+                  : [{label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Ajouter", valeur:"ok", style:"btn-primary"}];
+  dialogue(a ? "Modifier" : "Ajouter à l'agenda", corps, boutons, {champs:true, feuille:true, focus:a ? null : "agTitre"}).then(function(r){
+    if(!r || !r.valeur) return;
+    avantModif(false);
+    if(r.valeur === "suppr"){ dossier.agenda = dossier.agenda.filter(function(x){ return x !== a; }); persist(); renderAgenda(); renderAccueil(false); toast("Supprimé.", {label:"Annuler", fn:annuler}); return; }
+    var c = r.champs, titre = txt(c.titre, 80).trim(), d = dateJour(c.date);
+    if(!titre || !d){ toast("Indiquez un intitulé et une date."); return; }
+    var fin = dateJour(c.fin); if(fin && fin < d) fin = "";
+    var type = TYPES_AG.some(function(t){ return t[0] === c.type; }) ? c.type : "autre";
+    if(a){ a.titre = titre; a.date = d; a.fin = fin; a.type = type; }
+    else dossier.agenda.push({id:uid(), titre:titre, date:d, fin:fin, type:type});
+    persist(); renderAgenda(); renderAccueil(false);
+  });
+}
+el("agAjout").addEventListener("click", function(){ editerEvenement(null); });
+["agListe","agPasses"].forEach(function(id){ el(id).addEventListener("click", function(ev){ var li = ev.target.closest("[data-ag]"); if(li) editerEvenement(li.getAttribute("data-ag")); }); });
+
+/* emploi du temps */
+function renderEdt(){
+  var t = state.edt, jj = t.jours.indexOf(JOURS_SEMAINE[new Date().getDay()]);
+  el("edtSous").textContent = (state.meta.classe || nomClasse(state)) + (state.meta.an1 ? " · " + state.meta.an1 + "–" + state.meta.an2 : "");
+  if(el("edtTable").contains(document.activeElement)) return;
+  el("edtTable").innerHTML = '<thead><tr><th>Horaire</th>' + t.jours.map(function(j, i){ return '<th' + (i === jj ? ' class="jour-j"' : '') + '>' + esc(j) + '</th>'; }).join("") + '</tr></thead><tbody>'
+    + t.creneaux.map(function(c, r){
+        return '<tr><td><input data-cr="' + r + '" value="' + esc(c) + '" maxlength="30" aria-label="Horaire"></td>'
+          + t.jours.map(function(j, k){ return '<td><input data-case="' + r + '-' + k + '" value="' + esc(t.cases[r + "-" + k] || "") + '" maxlength="40" aria-label="' + esc(j + " " + c) + '"></td>'; }).join("") + '</tr>';
+      }).join("") + '</tbody>';
+  el("edtMoins").disabled = t.creneaux.length <= 1;
+  el("edtPlus").disabled = t.creneaux.length >= 16;
+}
+el("edtTable").addEventListener("input", function(ev){
+  var i = ev.target; avantModif(true);
+  if(i.hasAttribute("data-cr")) state.edt.creneaux[Number(i.getAttribute("data-cr"))] = txt(i.value, 30);
+  else if(i.hasAttribute("data-case")){ var k = i.getAttribute("data-case"), v = txt(i.value, 40); if(v) state.edt.cases[k] = v; else delete state.edt.cases[k]; }
+  touch();
+});
+el("edtTable").addEventListener("focusout", function(){ setTimeout(function(){ if(!el("edtTable").contains(document.activeElement)) renderAccueil(false); }, 0); });
+el("edtPlus").addEventListener("click", function(){ avantModif(false); state.edt.creneaux.push(""); touch(); renderEdt(); });
+el("edtMoins").addEventListener("click", function(){
+  avantModif(false);
+  var r = state.edt.creneaux.length - 1; state.edt.creneaux.pop();
+  Object.keys(state.edt.cases).forEach(function(k){ if(k.split("-")[0] === String(r)) delete state.edt.cases[k]; });
+  touch(); renderEdt();
+});
+function edtDuJour(){
+  var t = state.edt, k = t.jours.indexOf(JOURS_SEMAINE[new Date().getDay()]); if(k < 0) return [];
+  return t.creneaux.map(function(c, r){ return {h:c, m:t.cases[r + "-" + k] || ""}; }).filter(function(x){ return x.m; });
+}
+
+/* fournitures et manuels : listes d'articles et suivi par élève */
+var LISTE_TYPE = ["Cahier de 100 pages (×2)","Cahier de 50 pages","Ardoise et craie","Stylos bleu, rouge, vert","Crayon et gomme","Règle de 20 cm","Livre de lecture","Livre de mathématiques","Cartable"];
+function listeArticles(cible, items, outil){
+  el(cible).innerHTML = items.map(function(it){
+    return '<li><span><span>' + esc(it.nom) + '</span><button type="button" class="btn btn-sm btn-ghost no-print" data-suppr-art="' + it.id + '" data-outil-art="' + outil + '" aria-label="Retirer ' + esc(it.nom) + '">✕</button></span></li>';
+  }).join("") || '<li class="hint" style="list-style:none;margin-left:-22px">Aucun article pour l\'instant.</li>';
+}
+function ajouterArticle(outil){
+  var inp = el(outil === "fourn" ? "fnNouveau" : "mnNouveau"), nom = txt(inp.value, 60).trim(), obj = state[outil];
+  if(!nom){ inp.focus(); return; }
+  if(obj.items.length >= 40){ toast("Maximum 40 articles."); return; }
+  avantModif(false); obj.items.push({id:uid(), nom:nom}); inp.value = ""; touch(); renderOutil(outil); inp.focus();
+}
+document.addEventListener("click", function(ev){
+  var b = ev.target.closest("[data-suppr-art]"); if(!b) return;
+  var outil = b.getAttribute("data-outil-art"), id = b.getAttribute("data-suppr-art");
+  avantModif(false); state[outil].items = state[outil].items.filter(function(x){ return x.id !== id; }); touch(); renderOutil(outil);
+  toast("Article retiré.", {label:"Annuler", fn:function(){ annuler(); renderOutil(outil); }});
+});
+el("fnAjout").addEventListener("click", function(){ ajouterArticle("fourn"); });
+el("mnAjout").addEventListener("click", function(){ ajouterArticle("manuels"); });
+el("fnNouveau").addEventListener("keydown", function(ev){ if(ev.key === "Enter"){ ev.preventDefault(); ajouterArticle("fourn"); } });
+el("mnNouveau").addEventListener("keydown", function(ev){ if(ev.key === "Enter"){ ev.preventDefault(); ajouterArticle("manuels"); } });
+el("fnType").addEventListener("click", function(){
+  avantModif(false);
+  LISTE_TYPE.forEach(function(n){ if(!state.fourn.items.some(function(x){ return x.nom.toLowerCase() === n.toLowerCase(); }) && state.fourn.items.length < 40) state.fourn.items.push({id:uid(), nom:n}); });
+  touch(); renderFourn(); toast("Liste type ajoutée : modifiez-la à votre guise.");
+});
+function renderFourn(){
+  var f = state.fourn, items = f.items, l = alpha();
+  listeArticles("fnItems", items, "fourn");
+  var ids = {}; items.forEach(function(i){ ids[i.id] = 1; });
+  var complets = 0;
+  el("fnSuivi").innerHTML = items.length ? l.map(function(e){
+    var m = (f.manque[e.id] || []).filter(function(x){ return ids[x]; });
+    if(!m.length) complets++;
+    return '<li class="sx-' + e.sexe + (m.length ? ' manque' : ' ok-tout') + '" data-fn="' + e.id + '">' + avatarHtml(e) + '<span class="ce-nom"><b>' + esc(e.nom) + '</b>'
+      + (m.length ? '<br><small>' + m.map(function(x){ return esc(items.filter(function(i){ return i.id === x; })[0].nom); }).join(", ") + '</small>' : '') + '</span>'
+      + '<span class="etat">' + (m.length ? m.length + " manquant(s)" : "Complet ✓") + '</span></li>';
+  }).join("") : '<li class="vide-etat" style="border:0;cursor:default">Commencez par la liste de rentrée.</li>';
+  el("fnSous").textContent = items.length ? complets + " élève(s) sur " + l.length + " ont tout" : "Liste de rentrée et suivi de ce qui manque";
+}
+el("fnSuivi").addEventListener("click", function(ev){
+  var li = ev.target.closest("[data-fn]"); if(!li) return;
+  var id = li.getAttribute("data-fn"), e = eleveParId(id), m = state.fourn.manque[id] || [];
+  dialogue(e.nom, '<p class="hint" style="margin:0 0 10px">Cochez ce qui lui manque :</p><div class="cases">' + state.fourn.items.map(function(it){
+      return '<label><input type="checkbox" name="m_' + it.id + '" value="1"' + (m.indexOf(it.id) >= 0 ? ' checked' : '') + '>' + esc(it.nom) + '</label>';
+    }).join("") + '</div>', [{label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Enregistrer", valeur:"ok", style:"btn-primary"}], {champs:true, feuille:true}).then(function(r){
+      if(!r || r.valeur !== "ok") return;
+      avantModif(false);
+      var n = state.fourn.items.filter(function(it){ return r.champs["m_" + it.id]; }).map(function(it){ return it.id; });
+      if(n.length) state.fourn.manque[id] = n; else delete state.fourn.manque[id];
+      touch(); renderFourn();
+    });
+});
+function renderManuels(){
+  var mn = state.manuels, items = mn.items, l = alpha();
+  listeArticles("mnItems", items, "manuels");
+  var remis = {}, rendus = {}; items.forEach(function(i){ remis[i.id] = 0; rendus[i.id] = 0; });
+  el("mnSuivi").innerHTML = items.length ? l.map(function(e){
+    var s = mn.suivi[e.id] || {}, txtEtat = [];
+    items.forEach(function(i){ if(s[i.id] === "remis"){ remis[i.id]++; txtEtat.push(i.nom + " : remis"); } if(s[i.id] === "rendu"){ rendus[i.id]++; txtEtat.push(i.nom + " : rendu"); } });
+    return '<li class="sx-' + e.sexe + '" data-mn="' + e.id + '">' + avatarHtml(e) + '<span class="ce-nom"><b>' + esc(e.nom) + '</b>' + (txtEtat.length ? '<br><small>' + esc(txtEtat.join(" · ")) + '</small>' : '') + '</span><svg class="ic chev"><use href="#i-chevron"/></svg></li>';
+  }).join("") : '<li class="vide-etat" style="border:0;cursor:default">Ajoutez d\'abord les manuels ou kits distribués.</li>';
+  el("mnSous").textContent = items.length ? items.map(function(i){ return i.nom + " : " + remis[i.id] + " remis, " + rendus[i.id] + " rendu(s)"; }).join(" · ") : "Qui a reçu quoi, et ce qui a été rendu";
+}
+el("mnSuivi").addEventListener("click", function(ev){
+  var li = ev.target.closest("[data-mn]"); if(!li) return;
+  var id = li.getAttribute("data-mn"), e = eleveParId(id), s = state.manuels.suivi[id] || {};
+  dialogue(e.nom, '<div class="cases">' + state.manuels.items.map(function(it){
+      return '<label>' + esc(it.nom) + '<select name="s_' + it.id + '"><option value="">—</option><option value="remis"' + (s[it.id] === "remis" ? ' selected' : '') + '>Remis</option><option value="rendu"' + (s[it.id] === "rendu" ? ' selected' : '') + '>Rendu</option></select></label>';
+    }).join("") + '</div>', [{label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Enregistrer", valeur:"ok", style:"btn-primary"}], {champs:true, feuille:true}).then(function(r){
+      if(!r || r.valeur !== "ok") return;
+      avantModif(false);
+      var n = {}; state.manuels.items.forEach(function(it){ var v = r.champs["s_" + it.id]; if(v === "remis" || v === "rendu") n[it.id] = v; });
+      if(Object.keys(n).length) state.manuels.suivi[id] = n; else delete state.manuels.suivi[id];
+      touch(); renderManuels();
+    });
+});
+
+/* bloc-notes */
+function renderBlocnotes(){
+  el("bnListe").innerHTML = state.blocnotes.slice().reverse().map(function(n){
+    var d = new Date(n.date), quand = "";
+    try{ quand = d.toLocaleDateString("fr-FR", {weekday:"long", day:"numeric", month:"long"}) + " à " + d.toLocaleTimeString("fr-FR", {hour:"2-digit", minute:"2-digit"}); }catch(e){}
+    return '<li><small>' + esc(quand) + '</small>' + esc(n.texte) + '<button type="button" class="btn btn-sm btn-ghost no-print" data-bn="' + n.id + '" aria-label="Supprimer la note">✕</button></li>';
+  }).join("") || '<li class="vide-etat" style="background:none">Aucune note.</li>';
+}
+el("bnAjout").addEventListener("click", function(){
+  var t = txt(el("bnTexte").value, 2000).trim(); if(!t){ el("bnTexte").focus(); return; }
+  avantModif(false); state.blocnotes.push({id:uid(), date:new Date().toISOString(), texte:t});
+  if(state.blocnotes.length > 300) state.blocnotes.shift();
+  el("bnTexte").value = ""; touch(); renderBlocnotes(); toast("Note enregistrée.");
+});
+el("bnListe").addEventListener("click", function(ev){
+  var b = ev.target.closest("[data-bn]"); if(!b) return;
+  avantModif(false); state.blocnotes = state.blocnotes.filter(function(n){ return n.id !== b.getAttribute("data-bn"); }); touch(); renderBlocnotes();
+  toast("Note supprimée.", {label:"Annuler", fn:function(){ annuler(); renderBlocnotes(); }});
+});
+
+/* chants et récitations : texte complet, affichage en grand */
+function renderTextes(){
+  el("txListe").innerHTML = state.textes.map(function(t, i){
+    return '<li><span class="ag-txt" data-tx-edit="' + t.id + '"><b>' + esc(t.titre) + '</b><small>' + (t.type === "recitation" ? "Récitation" : "Chant") + (t.texte ? " · " + t.texte.split("\n").length + " ligne(s)" : " · texte à compléter") + '</small></span>'
+      + '<button type="button" class="btn btn-sm btn-primary" data-tx-voir="' + i + '"' + (t.texte ? '' : ' disabled') + '>Afficher</button></li>';
+  }).join("") || '<li class="vide-etat" style="border:0">Ajoutez le texte d\'un chant ou d\'une récitation pour l\'afficher en grand devant la classe.</li>';
+}
+function editerTexte(id){
+  var t = id ? state.textes.filter(function(x){ return x.id === id; })[0] : null;
+  var corps = '<div class="field"><span class="lbl">Type</span><div class="choix"><label><input type="radio" name="type" value="chant"' + (!t || t.type === "chant" ? ' checked' : '') + '><span>Chant</span></label><label><input type="radio" name="type" value="recitation"' + (t && t.type === "recitation" ? ' checked' : '') + '><span>Récitation</span></label></div></div>'
+    + '<div class="field" style="margin-top:12px"><label for="txTitre">Titre</label><input id="txTitre" name="titre" maxlength="80" value="' + esc(t ? t.titre : "") + '"></div>'
+    + '<div class="field" style="margin-top:12px"><label for="txTexte">Texte</label><textarea id="txTexte" name="texte" rows="10" maxlength="6000">' + esc(t ? t.texte : "") + '</textarea></div>'
+    + '<p class="hint">Le titre est ajouté automatiquement à la liste des chants ou des récitations du tableau récapitulatif.</p>';
+  var boutons = t ? [{label:"Supprimer", valeur:"suppr", style:"btn-danger"}, {label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Enregistrer", valeur:"ok", style:"btn-primary"}]
+                  : [{label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Ajouter", valeur:"ok", style:"btn-primary"}];
+  dialogue(t ? "Modifier le texte" : "Nouveau texte", corps, boutons, {champs:true, feuille:true, focus:t ? null : "txTitre"}).then(function(r){
+    if(!r || !r.valeur) return;
+    avantModif(false);
+    if(r.valeur === "suppr"){ state.textes = state.textes.filter(function(x){ return x !== t; }); touch(); renderTextes(); return; }
+    var titre = txt(r.champs.titre, 80).trim(); if(!titre){ toast("Indiquez un titre."); return; }
+    var type = r.champs.type === "recitation" ? "recitation" : "chant", texte = txt(r.champs.texte, 6000);
+    if(t){ t.titre = titre; t.type = type; t.texte = texte; } else state.textes.push({id:uid(), titre:titre, type:type, texte:texte});
+    var champ = type === "chant" ? "chants" : "recitations";
+    var lignes = state[champ].split("\n").map(function(l){ return l.trim().toLowerCase(); });
+    if(lignes.indexOf(titre.toLowerCase()) < 0) state[champ] = (state[champ].trim() ? state[champ].replace(/\s+$/, "") + "\n" : "") + titre;
+    touch(); renderTextes(); render();
+  });
+}
+el("txAjout").addEventListener("click", function(){ editerTexte(null); });
+var gtIndex = 0, gtTaille = 28;
+function afficherTexte(i){
+  var l = state.textes.filter(function(t){ return t.texte; }); if(!l.length) return;
+  gtIndex = (i + l.length) % l.length;
+  var t = l[gtIndex];
+  el("gtTitre").textContent = t.titre; el("gtCorps").textContent = t.texte;
+  el("grandTexte").style.setProperty("--gt", gtTaille + "px");
+  el("grandTexte").hidden = false; el("grandTexte").scrollTop = 0;
+}
+el("txListe").addEventListener("click", function(ev){
+  var v = ev.target.closest("[data-tx-voir]");
+  if(v){ var t = state.textes[Number(v.getAttribute("data-tx-voir"))]; afficherTexte(state.textes.filter(function(x){ return x.texte; }).indexOf(t)); return; }
+  var e = ev.target.closest("[data-tx-edit]"); if(e) editerTexte(e.getAttribute("data-tx-edit"));
+});
+el("gtFermer").addEventListener("click", function(){ el("grandTexte").hidden = true; });
+el("gtPlus").addEventListener("click", function(){ gtTaille = Math.min(64, gtTaille + 4); el("grandTexte").style.setProperty("--gt", gtTaille + "px"); });
+el("gtMoins").addEventListener("click", function(){ gtTaille = Math.max(16, gtTaille - 4); el("grandTexte").style.setProperty("--gt", gtTaille + "px"); });
+el("gtPrec").addEventListener("click", function(){ afficherTexte(gtIndex - 1); });
+el("gtSuiv").addEventListener("click", function(){ afficherTexte(gtIndex + 1); });
+document.addEventListener("keydown", function(ev){ if(!el("grandTexte").hidden && ev.key === "Escape") el("grandTexte").hidden = true; });
+
+/* ---------- accueil : compteur, rappels du jour, anniversaires, cours du jour ---------- */
+function renderAccueil3B(){
+  var auj = aujourdhuiISO();
+  var compo = dossier.agenda.filter(function(a){ return a.type === "composition" && a.date >= auj; }).sort(function(a, b){ return a.date.localeCompare(b.date); })[0];
+  el("acCompte").classList.toggle("is-hidden", !compo);
+  if(compo){ var j = joursAvant(compo.date); el("acCompte").textContent = (j === 0 ? "Composition aujourd'hui" : j === 1 ? "Composition demain" : "Composition dans " + j + " jours") + " · " + compo.titre; }
+  var jour = dossier.agenda.filter(function(a){ return a.date <= auj && (a.fin || a.date) >= auj && a.type !== "composition"; });
+  var an = anniversaires(0);
+  var morceaux = jour.map(function(a){ return '<b>' + esc(libType(a.type)) + ' :</b> ' + esc(a.titre); })
+    .concat(an.map(function(x){ return '<b>Anniversaire :</b> ' + esc(x.e.nom) + ' a ' + x.age + ' ans aujourd\'hui'; }));
+  el("acRappelsJour").classList.toggle("is-hidden", !morceaux.length);
+  el("acRappelsJour").innerHTML = '<span>' + morceaux.join("<br>") + '</span><button class="btn btn-sm" type="button" data-outil-go="agenda">Agenda</button>';
+  el("acArchive").classList.toggle("is-hidden", !state.archive);
+  var cours = edtDuJour();
+  if(cours.length) el("acAujResp").innerHTML = esc(el("acAujResp").textContent) + (el("acAujResp").textContent ? '<br>' : '') + '<b>Aujourd\'hui :</b> ' + cours.map(function(c){ return esc(c.m); }).join(" · ");
+  if(cours.length) el("acAujResp").classList.remove("is-hidden");
+}
+el("acRappelsJour").addEventListener("click", function(ev){ if(ev.target.closest("[data-outil-go]")) ouvrirOutil("agenda"); });
+
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "1.3.1";
+var APP_VERSION = "1.4.0";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
@@ -4290,7 +5032,7 @@ el("appVersion").textContent = APP_VERSION;
 appliquerPrefs();
 
 /* ---------- démarrage guidé (premier lancement) ---------- */
-var GUIDE = "tabrecap.guide";
+var GUIDE = "tabrecap.guide" + (profils.actif === "p1" ? "" : ":" + profils.actif);
 function anneeScolaire(){
   var d = new Date(), y = d.getFullYear();
   return d.getMonth() >= 7 ? [y, y + 1] : [y - 1, y];
@@ -4341,6 +5083,8 @@ function lancerGuide(){
 boot(local || cloneDemo());
 if(ancienFormat) persist();   /* migration silencieuse de l'ancien enregistrement */
 allerRubrique("accueil");
+renderProfils(); renderVerrouReglage();
+ecranVerrou();
 (function(){
   var fait = null; try{ fait = localStorage.getItem(GUIDE); }catch(e){}
   var exempleSeul = dossier.classes.length === 1 && dossier.classes[0].demo;
