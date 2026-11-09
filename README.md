@@ -33,8 +33,17 @@ Si le navigateur est réinitialisé ou le téléphone perdu, elles sont perdues 
 | `lib/` | Lecture des fichiers PDF (pdf.js, licence Apache 2.0) et des fichiers Excel/Word (pako, licence MIT), chargés seulement à l'import |
 | `fonts/` | Polices Inter et Poppins (licence SIL OFL, voir `fonts/LICENCE-POLICES.txt`) |
 
+## Organisation de l'application (2.0)
+
+- **Barre du bas** (barre latérale sur ordinateur) : Accueil · Élèves · Notes · Organisation · Plus.
+- **Accueil** : carte de bienvenue, indicateurs, actions rapides, activités du jour (appels du matin et du soir, équipe de nettoyage, agenda, tâches) avec leur statut, situation de la classe, sauvegarde.
+- **Organisation** : agenda, emploi du temps, tâches de l'année.
+- **Plus** : documents, ressources (fournitures, manuels, inventaire, chants), vie professionnelle (visites, bloc-notes, envoi au directeur, Mon école), administration (sauvegarde, classes, établissement, paramètres, aide).
+- En haut : recherche, notifications, paramètres.
+
 ## Historique
 
+- **2.0.0** — Refonte de l'interface : thème bleu nuit et ambre (clair et sombre), une seule police (Inter), cartes plus compactes ; nouvelle barre de navigation et espaces Organisation et Plus ; tableau de bord du jour avec statuts (à faire, en cours, terminé, en retard) ; situation de la classe (dernière composition, moyenne, meilleur résultat, taux de réussite, élèves en difficulté, points à vérifier) ; centre de notifications ; recherche élargie. Données, calculs, impression et sauvegardes inchangés (seul ajout : l'équipe de nettoyage peut être marquée « faite » chaque jour).
 - **1.13.3** — Appel : bilan de fin de mois pour la classe (garçons, filles, total) — présences possibles (effectif × nombre d'appels), présences effectives, absences, taux de présence et taux d'absence ; plus de taux par élève ; un retard compte comme présent.
 - **1.13.1** — Fiche de présence du mois à imprimer (Documents, ou bouton dans le cahier d'appel) : pour chaque élève, l'appel du matin et du soir de chaque jour, présences, absences et taux ; bilan garçons, filles et classe (présences, absences, retards, taux de présence, taux d'absence).
 - **1.13.0** — Cahier d'appel en deux temps : appel du matin et appel du soir (une journée = 2 présences ou 2 absences). Bilan du mois : total des présences et des absences, retards, taux de présence et taux d'absence par élève et pour la classe ; bouton « Mêmes absents que le matin » ; feuille d'appel papier avec une case matin et une case soir par jour ; rapport mensuel mis à jour. Les appels déjà faits comptent pour le matin et le soir.

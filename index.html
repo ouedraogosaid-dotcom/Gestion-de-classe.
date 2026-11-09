@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#F3F6FB" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0B111C" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F4F6FA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0B1220" media="(prefers-color-scheme: dark)">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>Registre récapitulatif</title>
@@ -21,58 +21,66 @@
 @font-face{font-family:"Poppins"; src:url("fonts/poppins-medium.woff") format("woff"); font-weight:500; font-style:normal; font-display:swap}
 @font-face{font-family:"Poppins"; src:url("fonts/poppins-bold.woff") format("woff"); font-weight:700; font-style:normal; font-display:swap}
 
-/* ================= Couleurs : bleu modernisé ================= */
+/* ================= Couleurs : Registre (bleu nuit, accent ambre) ================= */
 :root{
-  --fond:#F3F6FB; --surface:#FFFFFF; --surface-2:#EDF2F9; --surface-3:#E3EAF5;
-  --texte:#0F1F38; --texte-2:#4A5A73; --texte-3:#8391A7;
-  --bord:#DCE3EE; --bord-2:#B8C4D6;
-  --bleu:#1D5BD8; --bleu-fonce:#1546AB; --bleu-doux:rgba(29,91,216,.10); --bleu-texte:#FFFFFF;
-  --or:#E9A23B; --or-doux:rgba(233,162,59,.14);
-  --ombre-1:0 1px 2px rgba(15,31,56,.06);
-  --ombre-2:0 1px 2px rgba(15,31,56,.05), 0 10px 28px -14px rgba(15,31,56,.22);
-  --ombre-3:0 18px 50px -18px rgba(15,31,56,.40);
-  --rayon:16px; --rayon-s:11px;
+  --fond:#F4F6FA; --surface:#FFFFFF; --surface-2:#EEF1F6; --surface-3:#E4E8EF;
+  --texte:#0F172A; --texte-2:#475569; --texte-3:#717D90;
+  --bord:#E2E7EF; --bord-2:#C9D1DD;
+  --bleu:#B45309; --bleu-fonce:#92400E; --bleu-doux:rgba(217,119,6,.12); --bleu-texte:#FFFFFF;
+  --or:#D97706; --or-doux:rgba(245,158,11,.14);
+  --ombre-1:0 1px 2px rgba(15,23,42,.05);
+  --ombre-2:0 1px 2px rgba(15,23,42,.05), 0 8px 24px -14px rgba(15,23,42,.18);
+  --ombre-3:0 18px 50px -18px rgba(15,23,42,.35);
+  --rayon:16px; --rayon-s:12px;
   /* noms historiques utilisés par le reste du code */
   --paper:var(--fond); --sheet:var(--surface); --sunk:var(--surface-2);
   --ink:var(--texte); --ink2:var(--texte-2); --ink3:var(--texte-3);
   --rule:var(--bord); --rule-2:var(--bord-2); --edge:var(--bord);
-  --g:#1D5BD8; --g-bg:rgba(29,91,216,.12); --g-line:rgba(29,91,216,.35);
-  --f:#C2336E; --f-bg:rgba(194,51,110,.11); --f-line:rgba(194,51,110,.33);
-  --ok:#12805A; --ok-bg:rgba(18,128,90,.10); --warn:#9A5B00; --warn-bg:rgba(233,162,59,.16); --bad:#B42318; --bad-bg:rgba(180,35,24,.09);
+  --g:#2563EB; --g-bg:rgba(37,99,235,.10); --g-line:rgba(37,99,235,.32);
+  --f:#DB2777; --f-bg:rgba(219,39,119,.10); --f-line:rgba(219,39,119,.30);
+  --ok:#0F8A66; --ok-bg:rgba(22,160,120,.11); --warn:#A15C07; --warn-bg:rgba(245,158,11,.15); --bad:#C0262D; --bad-bg:rgba(220,38,38,.09);
+  --info:#3B6FD8; --info-bg:rgba(59,111,216,.10);
+  --degrade:linear-gradient(125deg, #0D6B50 0%, #138A68 42%, #D98512 100%);
   --shadow:var(--ombre-2); --r:var(--rayon-s);
-  --nav-h:0px;
+  --nav-h:64px; --side-w:0px;
   color-scheme:light;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --fond:#0B111C; --surface:#131B2A; --surface-2:#1A2436; --surface-3:#223049;
-    --texte:#E8EEF8; --texte-2:#A9B6CB; --texte-3:#76849B;
-    --bord:#26324A; --bord-2:#3A4A68;
-    --bleu:#6F9BFF; --bleu-fonce:#8FB2FF; --bleu-doux:rgba(111,155,255,.15); --bleu-texte:#0B1424;
-    --or:#F1B456; --or-doux:rgba(241,180,86,.14);
-    --ombre-1:0 1px 2px rgba(0,0,0,.4);
-    --ombre-2:0 1px 2px rgba(0,0,0,.45), 0 12px 30px -16px rgba(0,0,0,.75);
+    --fond:#0B1220; --surface:#151F30; --surface-2:#1B2638; --surface-3:#22304A;
+    --texte:#F1F5F9; --texte-2:#94A3B8; --texte-3:#7C8BA1;
+    --bord:#263247; --bord-2:#34435E;
+    --bleu:#F59E0B; --bleu-fonce:#FBBF24; --bleu-doux:rgba(245,158,11,.14); --bleu-texte:#1A1203;
+    --or:#F59E0B; --or-doux:rgba(245,158,11,.14);
+    --ombre-1:none;
+    --ombre-2:0 10px 30px -18px rgba(0,0,0,.8);
     --ombre-3:0 20px 60px -20px rgba(0,0,0,.85);
-    --g:#7EA7FF; --g-bg:rgba(126,167,255,.16); --g-line:rgba(126,167,255,.4);
-    --f:#F38DB5; --f-bg:rgba(243,141,181,.14); --f-line:rgba(243,141,181,.38);
-    --ok:#4CD19C; --ok-bg:rgba(76,209,156,.12); --warn:#F1B456; --bad:#FF8A80; --bad-bg:rgba(255,138,128,.12);
+    --g:#60A5FA; --g-bg:rgba(96,165,250,.14); --g-line:rgba(96,165,250,.38);
+    --f:#F472B6; --f-bg:rgba(244,114,182,.13); --f-line:rgba(244,114,182,.36);
+    --ok:#16A078; --ok-bg:rgba(22,160,120,.15); --warn:#FBBF24; --warn-bg:rgba(245,158,11,.14); --bad:#F87171; --bad-bg:rgba(248,113,113,.13);
+    --info:#7DA2F0; --info-bg:rgba(125,162,240,.13);
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --fond:#0B111C; --surface:#131B2A; --surface-2:#1A2436; --surface-3:#223049;
-  --texte:#E8EEF8; --texte-2:#A9B6CB; --texte-3:#76849B;
-  --bord:#26324A; --bord-2:#3A4A68;
-  --bleu:#6F9BFF; --bleu-fonce:#8FB2FF; --bleu-doux:rgba(111,155,255,.15); --bleu-texte:#0B1424;
-  --or:#F1B456; --or-doux:rgba(241,180,86,.14);
-  --ombre-1:0 1px 2px rgba(0,0,0,.4);
-  --ombre-2:0 1px 2px rgba(0,0,0,.45), 0 12px 30px -16px rgba(0,0,0,.75);
+  --fond:#0B1220; --surface:#151F30; --surface-2:#1B2638; --surface-3:#22304A;
+  --texte:#F1F5F9; --texte-2:#94A3B8; --texte-3:#7C8BA1;
+  --bord:#263247; --bord-2:#34435E;
+  --bleu:#F59E0B; --bleu-fonce:#FBBF24; --bleu-doux:rgba(245,158,11,.14); --bleu-texte:#1A1203;
+  --or:#F59E0B; --or-doux:rgba(245,158,11,.14);
+  --ombre-1:none;
+  --ombre-2:0 10px 30px -18px rgba(0,0,0,.8);
   --ombre-3:0 20px 60px -20px rgba(0,0,0,.85);
-  --g:#7EA7FF; --g-bg:rgba(126,167,255,.16); --g-line:rgba(126,167,255,.4);
-  --f:#F38DB5; --f-bg:rgba(243,141,181,.14); --f-line:rgba(243,141,181,.38);
-  --ok:#4CD19C; --ok-bg:rgba(76,209,156,.12); --warn:#F1B456; --bad:#FF8A80; --bad-bg:rgba(255,138,128,.12);
+  --g:#60A5FA; --g-bg:rgba(96,165,250,.14); --g-line:rgba(96,165,250,.38);
+  --f:#F472B6; --f-bg:rgba(244,114,182,.13); --f-line:rgba(244,114,182,.36);
+  --ok:#16A078; --ok-bg:rgba(22,160,120,.15); --warn:#FBBF24; --warn-bg:rgba(245,158,11,.14); --bad:#F87171; --bad-bg:rgba(248,113,113,.13);
+  --info:#7DA2F0; --info-bg:rgba(125,162,240,.13);
   color-scheme:dark;
 }
+/* palette « bleu », au choix dans les Réglages */
+:root[data-palette="bleu"]{ --bleu:#1D5BD8; --bleu-fonce:#1546AB; --bleu-doux:rgba(29,91,216,.10); --bleu-texte:#FFFFFF; --degrade:linear-gradient(125deg, #123C93 0%, #1D5BD8 55%, #5A8DF2 100%) }
+@media (prefers-color-scheme: dark){ :root[data-palette="bleu"]:not([data-theme="light"]){ --bleu:#6F9BFF; --bleu-fonce:#8FB2FF; --bleu-doux:rgba(111,155,255,.15); --bleu-texte:#0B1424 } }
+:root[data-palette="bleu"][data-theme="dark"]{ --bleu:#6F9BFF; --bleu-fonce:#8FB2FF; --bleu-doux:rgba(111,155,255,.15); --bleu-texte:#0B1424 }
 
 /* ================= Base ================= */
 html{font-size:16px}
@@ -85,7 +93,7 @@ body{
   font-size:.9375rem; line-height:1.5; font-variant-numeric:tabular-nums;
   -webkit-text-size-adjust:100%; -webkit-tap-highlight-color:transparent;
 }
-h1,h2,h3,.titre{font-family:"Poppins","Inter",system-ui,sans-serif; margin:0; text-wrap:balance; letter-spacing:-.01em}
+h1,h2,h3,.titre{font-family:"Inter",system-ui,sans-serif; margin:0; text-wrap:balance; letter-spacing:-.01em}
 .wrap{max-width:1180px; margin:0 auto; padding:0 16px calc(var(--nav-h) + 96px + env(safe-area-inset-bottom,0px))}
 .is-hidden{display:none !important}
 .sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap}
@@ -106,10 +114,10 @@ svg.ic{width:1.25em; height:1.25em; flex:none; stroke:currentColor; fill:none; s
 .logo{
   width:38px; height:38px; border-radius:12px; flex:none; display:grid; place-items:center;
   background:linear-gradient(140deg, var(--bleu) 0%, #4F86F5 100%); color:#fff;
-  font:700 1.05rem/1 "Poppins",sans-serif; box-shadow:0 6px 16px -6px rgba(29,91,216,.6);
+  font:700 1.05rem/1 "Inter",sans-serif; box-shadow:0 6px 16px -6px rgba(29,91,216,.6);
 }
 .brand-txt{display:flex; flex-direction:column; min-width:0; line-height:1.15}
-.brand-txt b{font:700 1.05rem/1.2 "Poppins",sans-serif}
+.brand-txt b{font:700 1.05rem/1.2 "Inter",sans-serif}
 .brand-txt small{color:var(--texte-3); font-size:.75rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
 .classe-chip{margin-left:auto; position:relative; min-width:0; flex:0 1 320px}
 @media (max-width:480px){ .brand-txt small{display:none} }
@@ -271,7 +279,7 @@ tbody tr:hover{background:var(--surface-2); background:color-mix(in srgb, var(--
 .carte-eleve:hover{border-color:var(--bord-2); box-shadow:var(--ombre-2)}
 .avatar{
   width:42px; height:42px; border-radius:50%; flex:none; display:grid; place-items:center;
-  font:700 .9rem/1 "Poppins",sans-serif; color:#fff;
+  font:700 .9rem/1 "Inter",sans-serif; color:#fff;
 }
 .sx-G .avatar{background:linear-gradient(140deg,#2E6BE6,#5A8DF2)}
 .sx-F .avatar{background:linear-gradient(140deg,#C2336E,#E06A9A)}
@@ -303,7 +311,7 @@ tbody tr:hover{background:var(--surface-2); background:color-mix(in srgb, var(--
   display:flex; align-items:baseline; gap:10px; margin-top:12px; padding-top:10px;
   border-top:1px solid var(--bord); font-weight:600; font-size:.9rem; color:var(--texte-2); flex-wrap:wrap;
 }
-.total-line b{font:700 1.2rem/1 "Poppins",sans-serif; color:var(--texte)}
+.total-line b{font:700 1.2rem/1 "Inter",sans-serif; color:var(--texte)}
 
 /* synthèse */
 .cols{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:0 16px}
@@ -346,7 +354,7 @@ tbody tr:hover{background:var(--surface-2); background:color-mix(in srgb, var(--
 @media (min-width:720px){ .tuiles{grid-template-columns:repeat(4,1fr)} }
 .tuile{background:var(--surface); border:1px solid var(--bord); border-radius:var(--rayon); padding:14px; box-shadow:var(--ombre-1); position:relative; overflow:hidden}
 .tuile .lbl{display:flex; align-items:center; gap:6px; color:var(--texte-3)}
-.tuile .val{font:700 1.75rem/1.1 "Poppins",sans-serif; margin-top:6px}
+.tuile .val{font:700 1.75rem/1.1 "Inter",sans-serif; margin-top:6px}
 .tuile .sous{font-size:.75rem; color:var(--texte-3); margin-top:2px}
 .tuile .barre{height:6px; border-radius:6px; background:var(--surface-2); margin-top:10px; overflow:hidden; display:flex}
 .tuile .barre i{display:block; height:100%; transition:width .9s cubic-bezier(.2,.8,.2,1)}
@@ -365,7 +373,7 @@ tbody tr:hover{background:var(--surface-2); background:color-mix(in srgb, var(--
 .carte-info .ci-txt{min-width:0}
 .carte-info b{display:block}
 .carte-info span{color:var(--texte-3); font-size:.82rem}
-.section-titre{font:600 .95rem/1.2 "Poppins",sans-serif; margin:22px 2px 0; color:var(--texte-2)}
+.section-titre{font:600 .95rem/1.2 "Inter",sans-serif; margin:22px 2px 0; color:var(--texte-2)}
 
 /* ================= Documents ================= */
 .docs{display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:12px; margin-top:4px}
@@ -527,7 +535,7 @@ tbody tr:hover{background:var(--surface-2); background:color-mix(in srgb, var(--
   font:600 .84rem/1 "Inter",sans-serif; padding:9px 14px; border-radius:999px; transition:all .2s ease;
 }
 .puce[aria-pressed="true"]{background:var(--bleu); border-color:var(--bleu); color:var(--bleu-texte); box-shadow:0 6px 14px -8px var(--bleu)}
-.sous-titre{font:600 .9rem/1.2 "Poppins",sans-serif; margin:18px 0 10px; color:var(--texte-2)}
+.sous-titre{font:600 .9rem/1.2 "Inter",sans-serif; margin:18px 0 10px; color:var(--texte-2)}
 .seg-mini{position:static; margin:6px 0 12px}
 
 /* fiche élève : photo */
@@ -560,7 +568,7 @@ td.faible{color:var(--bad); font-weight:700}
 /* groupes d'EPS */
 .eps-grille{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px}
 .eps-groupe{border-radius:14px; border:1px solid var(--bord); overflow:hidden; background:var(--surface)}
-.eps-tete{appearance:none; width:100%; border:0; cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:8px; padding:11px 14px; color:#fff; font:700 .95rem/1.1 "Poppins",sans-serif; text-align:left}
+.eps-tete{appearance:none; width:100%; border:0; cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:8px; padding:11px 14px; color:#fff; font:700 .95rem/1.1 "Inter",sans-serif; text-align:left}
 .eps-tete small{font:600 .75rem/1 "Inter",sans-serif; opacity:.9}
 .eps-corps{display:flex; flex-wrap:wrap; gap:6px; padding:12px; min-height:52px}
 .eps-libres{margin-top:14px; padding:12px; border-radius:14px; border:1px dashed var(--bord-2)}
@@ -581,7 +589,7 @@ td.faible{color:var(--bad); font-weight:700}
 /* PNAPAS */
 .pn-groupes{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px}
 .pn-groupe{border-radius:14px; border:1px solid var(--bord); background:var(--surface-2); padding:12px}
-.pn-groupe h4{margin:0 0 4px; font:700 .95rem/1.2 "Poppins",sans-serif}
+.pn-groupe h4{margin:0 0 4px; font:700 .95rem/1.2 "Inter",sans-serif}
 .pn-groupe .niv{font-size:.75rem; color:var(--texte-3); margin-bottom:8px}
 .pn-groupe ol{margin:0; padding-left:20px; font-size:.84rem; columns:2; column-gap:18px}
 .pn-groupe ol li{break-inside:avoid; padding:1px 0}
@@ -597,11 +605,11 @@ td.faible{color:var(--bad); font-weight:700}
 .equipes{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px}
 .equipe{border-radius:14px; border:1px solid var(--bord); padding:12px; background:var(--surface)}
 .equipe.jour-j{border-color:var(--bleu); box-shadow:0 0 0 3px var(--bleu-doux)}
-.equipe h4{margin:0 0 8px; display:flex; justify-content:space-between; align-items:baseline; font:700 .95rem/1.2 "Poppins",sans-serif}
+.equipe h4{margin:0 0 8px; display:flex; justify-content:space-between; align-items:baseline; font:700 .95rem/1.2 "Inter",sans-serif}
 .equipe h4 small{font:600 .72rem/1 "Inter",sans-serif; color:var(--texte-3)}
 .equipe .puces-el{display:flex; flex-wrap:wrap; gap:6px}
 .tirage{text-align:center; padding:6px 0}
-.tirage-nom{font:700 1.5rem/1.3 "Poppins",sans-serif; min-height:2.6em; display:grid; place-items:center; padding:10px; border-radius:16px; background:var(--surface-2); margin-bottom:14px; transition:transform .2s ease}
+.tirage-nom{font:700 1.5rem/1.3 "Inter",sans-serif; min-height:2.6em; display:grid; place-items:center; padding:10px; border-radius:16px; background:var(--surface-2); margin-bottom:14px; transition:transform .2s ease}
 .tirage-nom.final{background:linear-gradient(120deg, var(--bleu-doux), var(--or-doux)); animation:pop .45s cubic-bezier(.3,1.6,.6,1)}
 .tirage-groupes{display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px; margin-top:12px; text-align:left}
 .tirage-groupes div{border-radius:12px; background:var(--surface-2); padding:10px 12px; font-size:.84rem}
@@ -617,7 +625,7 @@ td.faible{color:var(--bad); font-weight:700}
 .agenda li{display:flex; align-items:center; gap:12px; padding:10px 12px; border-radius:12px; border:1px solid var(--bord); background:var(--surface); cursor:pointer}
 .agenda.passe li{opacity:.6}
 .ag-date{flex:none; width:52px; text-align:center; border-radius:10px; background:var(--surface-2); padding:6px 0; line-height:1.1}
-.ag-date b{display:block; font:700 1.2rem/1 "Poppins",sans-serif}
+.ag-date b{display:block; font:700 1.2rem/1 "Inter",sans-serif}
 .ag-date small{font-size:.68rem; text-transform:uppercase; color:var(--texte-3); font-weight:600}
 .ag-txt{flex:1; min-width:0}
 .ag-txt b{display:block; font-size:.92rem}
@@ -667,7 +675,7 @@ td.faible{color:var(--bad); font-weight:700}
 .points i.on{background:var(--bleu); border-color:var(--bleu)}
 .points.erreur{animation:secoue .35s}
 .pave{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:14px}
-.pave button{appearance:none; height:62px; border-radius:18px; border:1px solid var(--bord); background:var(--surface); color:var(--texte); font:600 1.35rem/1 "Poppins",sans-serif; cursor:pointer; box-shadow:var(--ombre-1)}
+.pave button{appearance:none; height:62px; border-radius:18px; border:1px solid var(--bord); background:var(--surface); color:var(--texte); font:600 1.35rem/1 "Inter",sans-serif; cursor:pointer; box-shadow:var(--ombre-1)}
 .pave button:active{transform:scale(.94); background:var(--surface-2)}
 @keyframes secoue{0%,100%{transform:none} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)}}
 /* affichage en grand */
@@ -698,6 +706,147 @@ td.faible{color:var(--bad); font-weight:700}
 
 /* ================= Lot directeur ================= */
 .print-seul{display:none}
+/* ================= REFONTE 2.0 — composants ================= */
+h1,h2,h3,.titre{letter-spacing:-.015em}
+.appbar-in{padding:10px 16px; gap:8px}
+.logo{background:var(--degrade); color:#fff; box-shadow:0 6px 16px -8px rgba(13,107,80,.7); border-radius:11px; width:36px; height:36px; font:800 1rem/1 "Inter",sans-serif}
+.guide-ill{background:var(--degrade)}
+.brand-txt b{font:700 1.02rem/1.2 "Inter",sans-serif; letter-spacing:-.01em}
+.icon-btn{width:38px; height:38px; position:relative; box-shadow:none}
+.icon-btn:hover{border-color:var(--bord-2)}
+#btnAnnuler:disabled{display:none}
+.pastille-nb{position:absolute; top:-4px; right:-4px; min-width:18px; height:18px; padding:0 5px; border-radius:999px; background:var(--bad); color:#fff;
+  font:700 .66rem/18px "Inter",sans-serif; text-align:center; box-shadow:0 0 0 2px var(--fond)}
+.pastille-nb.doux{background:var(--bleu); color:var(--bleu-texte)}
+.classe-chip select{box-shadow:none; padding:8px 30px 8px 12px}
+
+/* barre du bas */
+.bottomnav{display:block}
+.bottomnav-in{height:var(--nav-h)}
+.nav-btn{font:600 .68rem/1 "Inter",sans-serif; gap:4px}
+.nav-btn .pastille{width:52px; height:30px}
+.nav-btn[aria-current="page"]{color:var(--bleu)}
+.nav-btn[aria-current="page"] .pastille{background:var(--bleu-doux)}
+
+/* cartes et titres */
+.sheet{border-radius:var(--rayon); box-shadow:var(--ombre-1)}
+.page-titre{margin:16px 2px 12px}
+.page-titre h1{font-size:1.45rem; font-weight:700}
+.section-titre{font:700 .78rem/1.2 "Inter",sans-serif; text-transform:uppercase; letter-spacing:.07em; color:var(--texte-3); margin:22px 2px 8px; display:flex; align-items:baseline; gap:8px}
+.section-titre small{font-weight:600; text-transform:none; letter-spacing:0; color:var(--texte-3); font-size:.76rem; margin-left:auto}
+
+/* carte de bienvenue */
+.hero{background:var(--degrade); padding:16px 18px; margin-top:12px; border-radius:20px; box-shadow:0 14px 34px -22px rgba(13,107,80,.9)}
+.hero::before{background:rgba(255,255,255,.10); right:-30px; top:-60px; width:150px; height:150px}
+.hero::after{background:rgba(0,0,0,.08); right:40px; bottom:-90px}
+.hero-haut{display:flex; justify-content:space-between; gap:10px; position:relative}
+.hero-haut small{text-transform:capitalize}
+.hero-an{font-size:.74rem; font-weight:700; padding:3px 9px; border-radius:999px; background:rgba(255,255,255,.18); white-space:nowrap}
+.hero h1{font-size:1.3rem; font-weight:700; margin:6px 0 2px}
+.hero p{font-size:.86rem}
+
+/* indicateurs */
+.tuiles{gap:10px; margin-top:12px}
+@media (min-width:640px){ .tuiles{grid-template-columns:repeat(4,1fr)} }
+.tuile{padding:12px 13px; box-shadow:none; display:grid; grid-template-columns:auto 1fr; column-gap:10px; align-items:center}
+.tuile .t-ic{grid-row:span 2; width:34px; height:34px; border-radius:10px; display:grid; place-items:center; background:var(--bleu-doux); color:var(--bleu)}
+.tuile .t-ic.g{background:var(--g-bg); color:var(--g)} .tuile .t-ic.f{background:var(--f-bg); color:var(--f)}
+.tuile .t-ic svg{width:18px; height:18px}
+.tuile .lbl{font-size:.76rem; font-weight:600; color:var(--texte-3)}
+.tuile .val{font:700 1.4rem/1.1 "Inter",sans-serif; margin:0; letter-spacing:-.02em}
+.tuile .sous, .tuile .barre{grid-column:1 / -1}
+.tuile .sous{margin-top:6px}
+.tuile .barre{margin-top:8px; height:5px}
+
+/* actions rapides */
+.actions{display:grid; grid-template-columns:repeat(4,1fr); gap:8px}
+.action{appearance:none; border:1px solid var(--bord); background:var(--surface); color:var(--texte); border-radius:14px; padding:12px 4px 10px; cursor:pointer;
+  display:flex; flex-direction:column; align-items:center; gap:7px; font:600 .74rem/1.2 "Inter",sans-serif; text-align:center; transition:transform .15s ease, border-color .2s ease}
+.action:hover{border-color:var(--bord-2)} .action:active{transform:scale(.96)}
+.action .rond{width:40px; height:40px; border-radius:12px; display:grid; place-items:center; background:var(--bleu-doux); color:var(--bleu)}
+.action .rond svg{width:20px; height:20px}
+
+/* activités du jour */
+.activites{padding:6px 14px}
+.act-liste{list-style:none; margin:0; padding:0}
+.act{display:grid; grid-template-columns:auto 1fr auto; gap:10px; align-items:center; padding:11px 0; border-bottom:1px solid var(--bord)}
+.act:last-child{border-bottom:0}
+.act-ic{width:34px; height:34px; border-radius:10px; display:grid; place-items:center; background:var(--surface-2); color:var(--texte-2)}
+.act-ic svg{width:18px; height:18px}
+.act-ic.fait{background:var(--ok-bg); color:var(--ok)} .act-ic.encours{background:var(--warn-bg); color:var(--warn)}
+.act-ic.retard{background:var(--bad-bg); color:var(--bad)} .act-ic.info{background:var(--info-bg); color:var(--info)}
+.act-txt{min-width:0; display:flex; flex-direction:column}
+.act-txt b{font-size:.9rem; font-weight:600; line-height:1.25}
+.act-txt small{font-size:.76rem; color:var(--texte-3); line-height:1.3; margin-top:2px; overflow-wrap:anywhere}
+.act-droite{display:flex; flex-direction:column; align-items:flex-end; gap:6px}
+.act-droite .btn{min-height:30px; padding:5px 10px; font-size:.76rem}
+.statut{font:700 .66rem/1 "Inter",sans-serif; padding:4px 8px; border-radius:999px; white-space:nowrap; background:var(--surface-2); color:var(--texte-2); letter-spacing:.01em}
+.statut.fait{background:var(--ok-bg); color:var(--ok)} .statut.encours{background:var(--warn-bg); color:var(--warn)}
+.statut.retard{background:var(--bad-bg); color:var(--bad)} .statut.info{background:var(--info-bg); color:var(--info)}
+.act-cours{margin:0 0 8px; padding:9px 0 2px; border-top:1px dashed var(--bord); font-size:.8rem; color:var(--texte-2)}
+
+/* situation de la classe */
+.situation{display:grid; grid-template-columns:repeat(2,1fr); gap:8px}
+@media (min-width:640px){ .situation{grid-template-columns:repeat(3,1fr)} }
+.sit{appearance:none; text-align:left; border:1px solid var(--bord); background:var(--surface); color:var(--texte); border-radius:14px; padding:11px 12px; cursor:pointer;
+  display:flex; flex-direction:column; gap:3px; min-width:0; font-family:inherit; transition:border-color .2s ease, transform .15s ease}
+.sit:hover{border-color:var(--bord-2)} .sit:active{transform:scale(.98)} .sit:disabled{cursor:default; transform:none}
+.sit.large{grid-column:1 / -1}
+.sit small{font-size:.72rem; font-weight:600; color:var(--texte-3)}
+.sit b{font:700 1.15rem/1.2 "Inter",sans-serif; letter-spacing:-.01em}
+.sit.large b{font-size:1rem}
+.sit b small{font-size:.8rem; color:var(--texte-3)}
+.sit span{font-size:.74rem; color:var(--texte-3); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.sit.ok b{color:var(--ok)} .sit.bad b{color:var(--bad)} .sit.warn b{color:var(--warn)}
+.carte-sauve{display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-top:8px; padding:12px 14px}
+.carte-sauve .ci-txt{display:flex; flex-direction:column; min-width:0}
+.carte-sauve .ci-txt > span{font-size:.8rem; color:var(--texte-3)}
+.carte-sauve .btns{display:flex; gap:6px; flex-wrap:wrap}
+.badge{display:inline-block; vertical-align:middle; margin-left:6px; font:700 .64rem/1 "Inter",sans-serif; padding:4px 7px; border-radius:999px; background:var(--surface-2); color:var(--texte-2)}
+.badge.ok{background:var(--ok-bg); color:var(--ok)} .badge.warn{background:var(--warn-bg); color:var(--warn)} .badge.bad{background:var(--bad-bg); color:var(--bad)}
+
+/* listes de navigation (Organisation, Plus) */
+.liste-nav{background:var(--surface); border:1px solid var(--bord); border-radius:var(--rayon); overflow:hidden}
+.ln-item{appearance:none; width:100%; border:0; border-bottom:1px solid var(--bord); background:none; color:var(--texte); cursor:pointer; text-align:left;
+  display:flex; align-items:center; gap:12px; padding:11px 14px; font-family:inherit; min-height:58px; transition:background .15s ease}
+.ln-item:last-child{border-bottom:0}
+.ln-item:hover{background:var(--surface-2)}
+.ln-item:active{background:var(--surface-3)}
+.ln-item .rond{width:36px; height:36px; border-radius:10px; display:grid; place-items:center; background:var(--bleu-doux); color:var(--bleu); flex:none}
+.ln-item .rond svg{width:19px; height:19px}
+.ln-txt{flex:1; min-width:0; display:flex; flex-direction:column}
+.ln-txt b{font-size:.92rem; font-weight:600}
+.ln-txt small{font-size:.76rem; color:var(--texte-3); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.ln-item > svg:last-child{color:var(--texte-3); width:18px; height:18px}
+
+/* notifications */
+.notifs{list-style:none; margin:0; padding:0; display:flex; flex-direction:column}
+.notifs li{display:grid; grid-template-columns:auto 1fr auto; gap:10px; align-items:center; padding:10px 0; border-bottom:1px solid var(--bord)}
+.notifs li:last-child{border-bottom:0}
+.notifs .btn{min-height:30px; padding:5px 10px; font-size:.76rem}
+
+/* réglages : section ciblée */
+.sheet.eclair{animation:eclair 1.4s ease}
+@keyframes eclair{0%,40%{box-shadow:0 0 0 2px var(--bleu)} 100%{box-shadow:var(--ombre-1)}}
+
+/* ordinateur : navigation latérale */
+@media (min-width:1024px){
+  :root{--side-w:232px}
+  body{padding-left:var(--side-w)}
+  .bottomnav{top:0; bottom:0; right:auto; left:0; width:var(--side-w); border-top:0; border-right:1px solid var(--bord); padding:16px 12px; background:var(--surface)}
+  .bottomnav::before{content:"Registre"; display:block; font:800 1.15rem/1 "Inter",sans-serif; padding:12px 12px 20px; color:var(--texte)}
+  .bottomnav-in{height:auto; display:flex; flex-direction:column; gap:4px; max-width:none}
+  .nav-btn{flex-direction:row; justify-content:flex-start; gap:10px; padding:4px 6px; font-size:.9rem; border-radius:12px; min-height:44px}
+  .nav-btn .pastille{width:38px; height:34px; border-radius:10px}
+  .nav-btn[aria-current="page"]{background:var(--bleu-doux)}
+  .nav-btn[aria-current="page"] .pastille{background:none}
+  .wrap{padding-bottom:96px}
+  .fab{bottom:24px}
+  .toast{bottom:24px}
+  .situation{grid-template-columns:repeat(4,1fr)}
+}
+@media (max-width:360px){ .actions{gap:6px} .action{font-size:.68rem} .nav-btn{font-size:.62rem} }
+
 @media print{ .print-seul{display:block; margin-bottom:6mm} .print-seul .eo{font-size:9px} .print-seul p{text-align:center; font-size:10px; margin:2mm 0 0} }
 body:not(.est-directeur) .role-directeur{display:none !important}
 body.est-directeur .role-maitre{display:none !important}
@@ -744,12 +893,6 @@ body.est-directeur .role-maitre{display:none !important}
 
 
 /* ================= Finitions ================= */
-:root[data-palette="ci"]{ --bleu:#B85000; --bleu-fonce:#9A4300; --bleu-doux:rgba(184,80,0,.11); --or:#009E60; --or-doux:rgba(0,158,96,.12);
-  --hero1:#FF9A3D; --hero2:#E06A00; --hero3:#007A4D; --logo2:#F7A440 }
-@media (prefers-color-scheme: dark){ :root[data-palette="ci"]:not([data-theme="light"]){ --bleu:#FF9B42; --bleu-fonce:#FFB46E; --bleu-doux:rgba(255,155,66,.16); --bleu-texte:#1F0F00; --or:#3CCB8C } }
-:root[data-palette="ci"][data-theme="dark"]{ --bleu:#FF9B42; --bleu-fonce:#FFB46E; --bleu-doux:rgba(255,155,66,.16); --bleu-texte:#1F0F00; --or:#3CCB8C }
-.hero{background:radial-gradient(120% 140% at 100% 0%, var(--hero1, #5A8DF2) 0%, var(--hero2, #1D5BD8) 45%, var(--hero3, #123C93) 100%)}
-.logo, .guide-ill{background:linear-gradient(140deg, var(--bleu) 0%, var(--logo2, #4F86F5) 100%)}
 .espace{margin-top:12px}
 .aide-photo{background:var(--bleu-doux); border-radius:12px; padding:10px 12px; color:var(--texte) !important}
 .aide-photo ol{margin:4px 0 0; padding-left:18px}
@@ -758,35 +901,12 @@ body.est-directeur .role-maitre{display:none !important}
 .nt-compte{margin:8px 0 0; font-size:.82rem; padding:7px 10px; border-radius:10px; display:inline-block}
 .nt-compte.oui{background:var(--ok-bg); color:var(--ok)}
 .nt-compte.non{background:var(--surface-2); color:var(--texte-2)}
-.bottomnav{display:none !important}
-.tiroir{position:fixed; inset:0; z-index:70}
-.tiroir[hidden]{display:none}
-.tiroir-fond{position:absolute; inset:0; background:rgba(8,15,30,.45); opacity:0; transition:opacity .25s ease}
-.tiroir-panneau{position:absolute; top:0; right:0; bottom:0; width:min(320px, 86vw); background:var(--surface); box-shadow:-20px 0 50px -20px rgba(0,0,0,.45);
-  display:flex; flex-direction:column; transform:translateX(102%); transition:transform .28s cubic-bezier(.2,.8,.2,1); padding-bottom:env(safe-area-inset-bottom,0px)}
-.tiroir.on .tiroir-fond{opacity:1}
-.tiroir.on .tiroir-panneau{transform:none}
-.tiroir-tete{display:flex; align-items:center; gap:10px; padding:16px 14px 12px; border-bottom:1px solid var(--bord)}
-.tiroir-nom{flex:1; display:flex; flex-direction:column; min-width:0}
-.tiroir-nom b{font:700 1.05rem/1.2 "Poppins",sans-serif}
-.tiroir-nom small{color:var(--texte-3); font-size:.78rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
-.tiroir-liste{flex:1; overflow:auto; padding:6px 10px 16px; overscroll-behavior:contain}
-.menu-titre{margin:14px 10px 4px; font-size:.72rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--texte-3)}
-.menu-sep{height:1px; background:var(--bord); margin:8px 6px}
-.menu-sep:first-child{display:none}
-.menu-item{display:flex; align-items:center; gap:12px; width:100%; min-height:44px; padding:8px 12px; border:0; border-radius:12px; background:none;
-  color:var(--texte); font:500 .95rem/1.2 "Inter",sans-serif; text-align:left; cursor:pointer}
-.menu-item .ic{width:20px; height:20px; color:var(--texte-3); flex:none}
-.menu-item:hover{background:var(--surface-2)}
-.menu-item.on{background:var(--bleu-doux); color:var(--bleu); font-weight:600}
-.menu-item.on .ic{color:var(--bleu)}
 @media (max-width:420px){ .brand-txt{display:none} }
-@media (prefers-reduced-motion: reduce){ .tiroir-panneau, .tiroir-fond{transition:none} }
 .ap-demi{margin:-2px 0 12px}
 .bilan-mois{display:grid; grid-template-columns:repeat(auto-fill, minmax(140px, 1fr)); gap:8px; width:100%}
 .bilan-mois .bm{border:1px solid var(--bord); border-radius:14px; padding:10px 12px; background:var(--surface)}
 .bilan-mois .bm small{display:block; font-size:.74rem; color:var(--texte-3); font-weight:600}
-.bilan-mois .bm b{font:700 1.2rem/1.3 "Poppins",sans-serif}
+.bilan-mois .bm b{font:700 1.2rem/1.3 "Inter",sans-serif}
 .bilan-mois .bm.ok b{color:var(--ok)} .bilan-mois .bm.ab b{color:var(--bad)}
 .ap-demi .puce{min-width:96px; justify-content:center}
 #apMois tr.total td{border-top:2px solid var(--bord-2)}
@@ -988,19 +1108,19 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
 .honneur .np-sous{font-size:12px}
 .honneur ol{list-style:none; margin:8mm auto 0; padding:0; max-width:150mm; display:flex; flex-direction:column; gap:3.5mm}
 .honneur li{display:flex; align-items:center; gap:5mm; border:1.4px solid #111 !important; border-radius:3mm; padding:3.5mm 5mm; font-size:14px; text-align:left}
-.honneur li .rg{font:700 22px/1 "Poppins",sans-serif; width:14mm; text-align:center}
+.honneur li .rg{font:700 22px/1 "Inter",sans-serif; width:14mm; text-align:center}
 .honneur li .hn{flex:1; font-weight:700; text-transform:uppercase}
 .honneur li .mo{font-weight:700}
 .honneur li:first-child{border-width:2.4px !important}
 .satis{height:136mm; border:2.6px double #111 !important; margin:3mm 3mm 6mm; padding:7mm 9mm; text-align:center; display:flex; flex-direction:column; justify-content:center; gap:3mm; position:relative}
 .satis h3{font-family:"Poppins"; font-size:30px; letter-spacing:.12em; margin:0; color:#111}
 .satis .ln{font-size:13px; line-height:1.6}
-.satis .sn{font:700 20px/1.2 "Poppins",sans-serif; text-transform:uppercase; border-bottom:1px solid #111 !important; display:inline-block; padding:0 6mm 1mm}
+.satis .sn{font:700 20px/1.2 "Inter",sans-serif; text-transform:uppercase; border-bottom:1px solid #111 !important; display:inline-block; padding:0 6mm 1mm}
 .satis .sig{display:flex; justify-content:space-between; font-size:11px; margin-top:6mm}
 .satis .eo{font-size:7px}
 .etiq{display:grid; grid-template-columns:repeat(3,1fr); grid-auto-rows:33mm; gap:2.5mm; padding:2mm}
 .etiq div{border:1px dashed #888 !important; border-radius:2.5mm; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:2mm; gap:1mm}
-.etiq b{font:700 13px/1.15 "Poppins",sans-serif; text-transform:uppercase}
+.etiq b{font:700 13px/1.15 "Inter",sans-serif; text-transform:uppercase}
 .etiq span{font-size:9px; color:#333}
 .doc-texte{font-size:13px; line-height:1.8; margin:10mm 6mm 0; text-align:justify}
 .doc-texte h3{font-family:"Poppins"; font-size:22px; text-align:center; letter-spacing:.1em; margin:4mm 0 10mm; text-decoration:underline}
@@ -1107,6 +1227,14 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
   <symbol id="i-balai" viewBox="0 0 24 24"><path d="M14 3 9.5 11"/><path d="M6 12h8l2 9H4l2-9Z"/><path d="M8 16v5M12 16v5"/></symbol>
   <symbol id="i-de" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3.5"/><circle cx="9" cy="9" r="1.2" fill="currentColor"/><circle cx="15" cy="15" r="1.2" fill="currentColor"/><circle cx="15" cy="9" r="1.2" fill="currentColor"/><circle cx="9" cy="15" r="1.2" fill="currentColor"/></symbol>
   <symbol id="i-graphe" viewBox="0 0 24 24"><path d="M4 20V4M4 20h16M8 16l4-5 3 3 5-6"/></symbol>
+  <symbol id="i-garcon" viewBox="0 0 24 24"><circle cx="10" cy="14" r="5"/><path d="M14 10l6-6M15 4h5v5"/></symbol>
+  <symbol id="i-fille" viewBox="0 0 24 24"><circle cx="12" cy="9" r="5"/><path d="M12 14v7M9 18h6"/></symbol>
+  <symbol id="i-boucle" viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5.3L20 9M20 4v5h-5M20 12a8 8 0 0 1-14 5.3L4 15M4 20v-5h5"/></symbol>
+  <symbol id="i-ajout-eleve" viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M19 8v6M16 11h6"/></symbol>
+  <symbol id="i-cloche" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></symbol>
+  <symbol id="i-grille" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.8"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.8"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.8"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.8"/></symbol>
+  <symbol id="i-aide" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.6v.6M12 17.2v.1"/></symbol>
+  <symbol id="i-telecharger" viewBox="0 0 24 24"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19.5h14"/></symbol>
   <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
   <symbol id="i-fermer" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
   <symbol id="i-photo" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></symbol>
@@ -1132,21 +1260,10 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
     <label class="classe-chip"><span class="sr">Classe ouverte</span><select id="f_classeSel"></select></label>
     <button class="icon-btn" id="btnRecherche" type="button" aria-label="Rechercher" title="Rechercher"><svg class="ic"><use href="#i-recherche"/></svg></button>
     <button class="icon-btn" id="btnAnnuler" type="button" disabled aria-label="Annuler la dernière action" title="Annuler la dernière action"><svg class="ic"><use href="#i-annuler"/></svg></button>
-    <button class="icon-btn" id="btnMenu" type="button" aria-label="Menu" title="Menu" aria-expanded="false" aria-controls="menu"><svg class="ic"><use href="#i-menu"/></svg></button>
+    <button class="icon-btn" id="btnNotif" type="button" aria-label="Notifications" title="Notifications"><svg class="ic"><use href="#i-cloche"/></svg><span class="pastille-nb is-hidden" id="notifNb">0</span></button>
+    <button class="icon-btn" id="btnReglages" type="button" aria-label="Paramètres" title="Paramètres"><svg class="ic"><use href="#i-reglages"/></svg></button>
   </div>
 </header>
-
-<div class="tiroir no-print" id="menu" hidden>
-  <div class="tiroir-fond" id="menuFond"></div>
-  <aside class="tiroir-panneau" role="dialog" aria-modal="true" aria-label="Menu">
-    <div class="tiroir-tete">
-      <span class="logo" aria-hidden="true">R</span>
-      <span class="tiroir-nom"><b>Registre</b><small id="menuClasse">—</small></span>
-      <button class="icon-btn" id="menuFermer" type="button" aria-label="Fermer le menu"><svg class="ic"><use href="#i-fermer"/></svg></button>
-    </div>
-    <nav class="tiroir-liste" id="menuListe" aria-label="Tous les écrans"></nav>
-  </aside>
-</div>
 
 <main class="wrap">
 
@@ -1154,15 +1271,13 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
   <section class="rubrique" id="rAccueil">
    <div id="acHub" class="no-print">
     <div class="hero">
-      <small id="acDate">—</small>
+      <div class="hero-haut"><small id="acDate">—</small><span class="hero-an" id="acAn"></span></div>
       <h1 id="acBonjour">Bonjour</h1>
       <p id="acClasse">—</p>
       <p class="hero-compte is-hidden" id="acCompte"></p>
     </div>
     <div class="notice is-hidden" id="acInstall"><span style="flex:1 1 200px"><b>Installez l'application</b> sur l'écran d'accueil : elle s'ouvrira d'un geste, même sans internet.</span><button class="btn btn-sm btn-primary" type="button" id="acInstallBtn">Installer</button></div>
     <div class="notice is-hidden" id="acArchive"><span style="flex:1 1 200px"><b>Classe archivée.</b> Elle reste consultable ; rouvrez-la dans Réglages pour la remettre dans la liste.</span></div>
-    <div class="rappel is-hidden" id="acRappelsJour" role="status"></div>
-
     <div class="notice" id="demoNotice">
       <span style="flex:1 1 220px"><b>Données d'exemple.</b> Une classe fictive montre le fonctionnement du registre.</span>
       <button class="btn btn-sm btn-primary" id="btnVider" type="button">Vider et saisir ma classe</button>
@@ -1176,63 +1291,51 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
     </div>
 
     <div class="tuiles anim" id="acTuiles">
-      <div class="tuile" style="--i:0"><span class="lbl"><svg class="ic"><use href="#i-eleves"/></svg>Élèves</span><div class="val" data-compte="t">0</div>
+      <div class="tuile" style="--i:0"><span class="t-ic"><svg class="ic"><use href="#i-eleves"/></svg></span><span class="lbl">Effectif</span><div class="val" data-compte="t">0</div>
         <div class="barre" aria-hidden="true"><i id="acBarG" style="width:0;background:var(--g)"></i><i id="acBarF" style="width:0;background:var(--f)"></i></div></div>
-      <div class="tuile" style="--i:1"><span class="lbl" style="color:var(--g)">Garçons</span><div class="val" data-compte="g">0</div><div class="sous" id="acPctG">—</div></div>
-      <div class="tuile" style="--i:2"><span class="lbl" style="color:var(--f)">Filles</span><div class="val" data-compte="f">0</div><div class="sous" id="acPctF">—</div></div>
-      <div class="tuile" style="--i:3"><span class="lbl">Redoublants</span><div class="val" data-compte="rt">0</div><div class="sous" id="acRed">—</div></div>
+      <div class="tuile" style="--i:1"><span class="t-ic g"><svg class="ic"><use href="#i-garcon"/></svg></span><span class="lbl">Garçons</span><div class="val" data-compte="g">0</div><div class="sous" id="acPctG">—</div></div>
+      <div class="tuile" style="--i:2"><span class="t-ic f"><svg class="ic"><use href="#i-fille"/></svg></span><span class="lbl">Filles</span><div class="val" data-compte="f">0</div><div class="sous" id="acPctF">—</div></div>
+      <div class="tuile" style="--i:3"><span class="t-ic"><svg class="ic"><use href="#i-boucle"/></svg></span><span class="lbl">Redoublants</span><div class="val" data-compte="rt">0</div><div class="sous" id="acRed">—</div></div>
     </div>
 
-    <h2 class="section-titre">Raccourcis</h2>
-    <div class="raccourcis anim">
-      <button class="raccourci" type="button" data-aller="saisie" style="--i:0"><span class="rond"><svg class="ic"><use href="#i-eleves"/></svg></span><span>Liste des élèves<small>Ajouter, modifier</small></span></button>
-      <button class="raccourci" type="button" data-aller="notes" style="--i:1"><span class="rond"><svg class="ic"><use href="#i-crayon"/></svg></span><span>Saisir des notes<small>Compositions</small></span></button>
-      <button class="raccourci" type="button" data-aller="feuille" style="--i:2"><span class="rond"><svg class="ic"><use href="#i-docs"/></svg></span><span>Tableau récapitulatif<small>À imprimer</small></span></button>
-      <button class="raccourci" type="button" data-aller="cartes" style="--i:3"><span class="rond"><svg class="ic"><use href="#i-notes"/></svg></span><span>Bulletins scolaires<small>2 par feuille</small></span></button>
+    <h2 class="section-titre">Actions rapides</h2>
+    <div class="actions anim">
+      <button class="action" type="button" data-aller="appel" style="--i:0"><span class="rond"><svg class="ic"><use href="#i-appel"/></svg></span>Faire l'appel</button>
+      <button class="action" type="button" data-aller="notes" style="--i:1"><span class="rond"><svg class="ic"><use href="#i-crayon"/></svg></span>Saisir les notes</button>
+      <button class="action" type="button" id="acAjoutEleve" style="--i:2"><span class="rond"><svg class="ic"><use href="#i-ajout-eleve"/></svg></span>Ajouter un élève</button>
+      <button class="action" type="button" data-go="documents|" style="--i:3"><span class="rond"><svg class="ic"><use href="#i-docs"/></svg></span>Documents</button>
     </div>
 
-    <h2 class="section-titre">Aujourd'hui</h2>
-    <div class="sheet auj">
-      <b id="acAujEquipe">—</b>
-      <div class="puces-el" id="acAujNoms"></div>
-      <span class="status" id="acAujResp"></span>
-      <div class="carte-info" style="margin-top:8px"><span class="status" id="acAujAppel">—</span>
-        <span class="btns"><button class="btn btn-sm" type="button" data-aller="appel"><svg class="ic"><use href="#i-appel"/></svg>Faire l'appel</button>
-        <button class="btn btn-sm" type="button" data-aller="vie"><svg class="ic"><use href="#i-balai"/></svg>Équipes</button></span></div>
-    </div>
-    <span id="acAuj"></span>
+    <h2 class="section-titre">Activités du jour <small id="acActSous"></small></h2>
+    <div class="sheet activites"><ul class="act-liste" id="acActivites"></ul><p class="act-cours is-hidden" id="acCours"></p></div>
 
     <h2 class="section-titre">Situation de la classe</h2>
-    <div class="sheet carte-info">
-      <span class="ci-txt"><b id="acCompo">Aucune composition saisie</b><span id="acCompoSous">Les résultats apparaîtront ici.</span></span>
-      <button class="btn btn-sm" type="button" data-aller="notes">Voir</button>
-    </div>
-    <div class="sheet carte-info" style="margin-top:10px">
-      <span class="ci-txt"><b id="acControles">Contrôles de cohérence</b><span id="acControlesSous">—</span></span>
-      <button class="btn btn-sm" type="button" data-aller="synthese">Voir</button>
-    </div>
-    <div class="sheet carte-info" style="margin-top:10px">
-      <span class="ci-txt"><b>Sauvegarde</b><span id="acSv">—</span></span>
-      <button class="btn btn-sm" type="button" id="acSvBtn">Sauvegarder</button>
-    </div>
-
-    <h2 class="section-titre">Outils de la classe</h2>
-    <div class="raccourcis anim">
-      <button class="raccourci" type="button" data-outil="agenda" style="--i:0"><span class="rond"><svg class="ic"><use href="#i-agenda"/></svg></span><span>Agenda<small>Compositions, congés, rappels</small></span></button>
-      <button class="raccourci" type="button" data-outil="edt" style="--i:1"><span class="rond"><svg class="ic"><use href="#i-horloge"/></svg></span><span>Emploi du temps<small>À imprimer et afficher</small></span></button>
-      <button class="raccourci" type="button" data-outil="fourn" style="--i:2"><span class="rond"><svg class="ic"><use href="#i-sac"/></svg></span><span>Fournitures<small>Liste de rentrée, manquants</small></span></button>
-      <button class="raccourci" type="button" data-outil="manuels" style="--i:3"><span class="rond"><svg class="ic"><use href="#i-livre"/></svg></span><span>Manuels et kits<small>Remis, rendus</small></span></button>
-      <button class="raccourci" type="button" data-outil="blocnotes" style="--i:4"><span class="rond"><svg class="ic"><use href="#i-crayon"/></svg></span><span>Bloc-notes<small>Idées, incidents</small></span></button>
-      <button class="raccourci" type="button" data-outil="textes" style="--i:5"><span class="rond"><svg class="ic"><use href="#i-musique"/></svg></span><span>Chants et récitations<small>Afficher en grand</small></span></button>
-      <button class="raccourci" type="button" data-outil="visites" style="--i:6"><span class="rond"><svg class="ic"><use href="#i-visite"/></svg></span><span>Registre des visites<small>Inspecteur, conseiller…</small></span></button>
-      <button class="raccourci" type="button" data-outil="inventaire" style="--i:7"><span class="rond"><svg class="ic"><use href="#i-boite"/></svg></span><span>Inventaire<small>Matériel de la classe</small></span></button>
-      <button class="raccourci" type="button" data-outil="taches" style="--i:8"><span class="rond"><svg class="ic"><use href="#i-check"/></svg></span><span>Tâches de l'année<small>Rentrée et fin d'année</small></span></button>
-      <button class="raccourci role-maitre" type="button" id="acEnvoyer" style="--i:6"><span class="rond"><svg class="ic"><use href="#i-envoyer"/></svg></span><span>Envoyer au directeur<small>Par WhatsApp</small></span></button>
-      <button class="raccourci role-directeur" type="button" data-outil="ecole" style="--i:6"><span class="rond"><svg class="ic"><use href="#i-ecole"/></svg></span><span>Mon école<small>Classes de vos collègues</small></span></button>
+    <div class="situation" id="acSituation"></div>
+    <div class="sheet carte-sauve" id="acSauve">
+      <span class="ci-txt"><b>Sauvegarde <span class="badge" id="acSvBadge">—</span></b><span id="acSv">—</span></span>
+      <span class="btns"><button class="btn btn-sm btn-primary" type="button" id="acSvBtn">Sauvegarder</button><button class="btn btn-sm" type="button" data-go="reglages|rgSauve">Exporter, restaurer</button></span>
     </div>
    </div>
    <button class="retour no-print is-hidden" id="acRetour" type="button"><svg class="ic"><use href="#i-retour"/></svg>Accueil</button>
 
+  </section>
+
+  <!-- =================== ORGANISATION =================== -->
+  <section class="rubrique is-hidden" id="rOrga">
+   <div id="orgHub" class="no-print">
+    <div class="page-titre"><div><h1>Organisation</h1><p>Agenda, emploi du temps et tâches de l'année</p></div></div>
+    <div class="liste-nav anim">
+      <button class="ln-item" type="button" data-outil="agenda"><span class="rond"><svg class="ic"><use href="#i-agenda"/></svg></span><span class="ln-txt"><b>Agenda</b><small><span id="orgAgSous">Compositions, congés, réunions, rappels</span></small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
+      <button class="ln-item" type="button" data-outil="edt"><span class="rond"><svg class="ic"><use href="#i-horloge"/></svg></span><span class="ln-txt"><b>Emploi du temps</b><small><span id="orgEdtSous">Les matières de chaque jour</span></small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
+      <button class="ln-item" type="button" data-outil="taches"><span class="rond"><svg class="ic"><use href="#i-check"/></svg></span><span class="ln-txt"><b>Tâches de l'année</b><small><span id="orgTaSous">Rentrée et fin d'année</span></small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
+    </div>
+    <h2 class="section-titre">Aujourd'hui</h2>
+    <div class="sheet"><ul class="act-liste" id="orgAuj"></ul></div>
+    <h2 class="section-titre">À venir <small>30 prochains jours</small></h2>
+    <div class="sheet"><ul class="act-liste" id="orgAvenir"></ul>
+      <div class="rowbtns"><button class="btn btn-sm btn-primary" type="button" id="orgAjout"><svg class="ic"><use href="#i-plus"/></svg>Ajouter à l'agenda</button></div></div>
+   </div>
+   <button class="retour no-print is-hidden" id="orgRetour" type="button"><svg class="ic"><use href="#i-retour"/></svg>Organisation</button>
    <section class="view is-hidden" id="vAgenda">
      <div class="page-titre no-print"><div><h1>Agenda</h1><p>Compositions, congés, réunions et rappels</p></div>
        <button class="btn btn-primary btn-sm" type="button" id="agAjout"><svg class="ic"><use href="#i-plus"/></svg>Ajouter</button></div>
@@ -1240,7 +1343,6 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
      <div class="sheet"><h2>Anniversaires des 30 prochains jours</h2><ul class="agenda" id="agAnniv"></ul></div>
      <div class="sheet no-print"><h2>Passés</h2><ul class="agenda passe" id="agPasses"></ul></div>
    </section>
-
    <section class="view is-hidden" id="vEdt">
      <div class="page-titre"><div><h1>Emploi du temps</h1><p id="edtSous">—</p></div></div>
      <div class="sheet"><div class="scroll"><table class="edt" id="edtTable"></table></div>
@@ -1248,7 +1350,53 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
          <button class="btn btn-sm btn-ghost" type="button" id="edtMoins">Retirer le dernier créneau</button></div>
        <p class="hint no-print">Touchez une case pour écrire la matière. Les horaires de la première colonne sont modifiables.</p></div>
    </section>
+   <section class="view is-hidden" id="vTaches">
+     <div class="page-titre"><div><h1>Tâches de l'année</h1><p id="taSous">—</p></div></div>
+     <div class="seg seg-mini no-print" role="tablist" id="taOnglets">
+       <button role="tab" data-ta="rentree" aria-selected="true">Rentrée</button>
+       <button role="tab" data-ta="fin" aria-selected="false">Fin d'année</button>
+     </div>
+     <div class="sheet"><ul class="taches" id="taListe"></ul>
+       <div class="mat-ajout no-print"><input id="taNouveau" placeholder="Ajouter une tâche" maxlength="100"><button class="btn btn-sm btn-primary" type="button" id="taAjout">Ajouter</button></div></div>
+   </section>
+  </section>
 
+  <!-- =================== PLUS =================== -->
+  <section class="rubrique is-hidden" id="rPlus">
+   <div id="plusHub" class="no-print">
+    <div class="page-titre"><div><h1>Plus</h1><p>Documents, ressources et administration</p></div></div>
+    <h2 class="section-titre">Documents</h2>
+    <div class="liste-nav">
+      <button class="ln-item" type="button" data-go="documents|"><span class="rond"><svg class="ic"><use href="#i-imprimer"/></svg></span><span class="ln-txt"><b>Tous les documents</b><small>Listes, attestations, convocations, rapports…</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
+      <button class="ln-item" type="button" data-go="documents|cartes"><span class="rond"><svg class="ic"><use href="#i-notes"/></svg></span><span class="ln-txt"><b>Bulletins scolaires</b><small>Pour la composition choisie</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
+      <button class="ln-item" type="button" data-go="documents|feuille"><span class="rond"><svg class="ic"><use href="#i-docs"/></svg></span><span class="ln-txt"><b>Tableau récapitulatif</b><small>Scolarité, effectifs, âges et visas</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
+      <button class="ln-item" type="button" data-go="documents|d:presence"><span class="rond"><svg class="ic"><use href="#i-appel"/></svg></span><span class="ln-txt"><b>Fiche de présence du mois</b><small>Appels du matin et du soir, taux</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
+    </div>
+    <h2 class="section-titre">Ressources pédagogiques et matérielles</h2>
+    <div class="liste-nav">
+      <button class="ln-item" type="button" data-outil="fourn"><span class="rond"><svg class="ic"><use href="#i-sac"/></svg></span><span class="ln-txt"><b>Fournitures</b><small>Liste de rentrée, ce qui manque</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
+      <button class="ln-item" type="button" data-outil="manuels"><span class="rond"><svg class="ic"><use href="#i-livre"/></svg></span><span class="ln-txt"><b>Manuels et kits</b><small>Remis, rendus</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
+      <button class="ln-item" type="button" data-outil="inventaire"><span class="rond"><svg class="ic"><use href="#i-boite"/></svg></span><span class="ln-txt"><b>Inventaire</b><small>Matériel de la classe</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
+      <button class="ln-item" type="button" data-outil="textes"><span class="rond"><svg class="ic"><use href="#i-musique"/></svg></span><span class="ln-txt"><b>Chants et récitations</b><small>Afficher en grand</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
+    </div>
+    <h2 class="section-titre">Vie professionnelle</h2>
+    <div class="liste-nav">
+      <button class="ln-item" type="button" data-outil="visites"><span class="rond"><svg class="ic"><use href="#i-visite"/></svg></span><span class="ln-txt"><b>Registre des visites</b><small>Inspecteur, conseiller, directeur</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
+      <button class="ln-item" type="button" data-outil="blocnotes"><span class="rond"><svg class="ic"><use href="#i-crayon"/></svg></span><span class="ln-txt"><b>Bloc-notes</b><small>Idées, incidents</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
+      <button class="ln-item role-maitre" type="button"  id="acEnvoyer"><span class="rond"><svg class="ic"><use href="#i-envoyer"/></svg></span><span class="ln-txt"><b>Envoyer au directeur</b><small>Votre classe, par WhatsApp</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
+      <button class="ln-item role-directeur" type="button" data-outil="ecole"><span class="rond"><svg class="ic"><use href="#i-ecole"/></svg></span><span class="ln-txt"><b>Mon école</b><small>Classes de vos collègues</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
+    </div>
+    <h2 class="section-titre">Administration</h2>
+    <div class="liste-nav">
+      <button class="ln-item" type="button" data-go="reglages|rgSauve"><span class="rond"><svg class="ic"><use href="#i-sauver"/></svg></span><span class="ln-txt"><b>Sauvegarde</b><small><span id="plusSv">Sauvegarder, restaurer, exporter</span></small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
+      <button class="ln-item" type="button" data-go="reglages|secEntete"><span class="rond"><svg class="ic"><use href="#i-ecole"/></svg></span><span class="ln-txt"><b>Classes et année scolaire</b><small>Nouvelle classe, archives, passage</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
+      <button class="ln-item" type="button" data-go="reglages|rgEtab"><span class="rond"><svg class="ic"><use href="#i-crayon"/></svg></span><span class="ln-txt"><b>Informations de l'établissement</b><small>École, DRENA, IEPP, en-tête, logo</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
+      <button class="ln-item" type="button" data-go="reglages|"><span class="rond"><svg class="ic"><use href="#i-reglages"/></svg></span><span class="ln-txt"><b>Paramètres</b><small>Apparence, rôle, maîtres, verrouillage</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
+      <button class="ln-item" type="button" data-go="reglages|rgAide"><span class="rond"><svg class="ic"><use href="#i-aide"/></svg></span><span class="ln-txt"><b>Aide</b><small>Comment utiliser le registre</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
+      <button class="ln-item is-hidden" type="button"  id="plusInstall"><span class="rond"><svg class="ic"><use href="#i-telecharger"/></svg></span><span class="ln-txt"><b>Installer l'application</b><small>Sur l'écran d'accueil du téléphone</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
+    </div>
+   </div>
+   <button class="retour no-print is-hidden" id="plusRetour" type="button"><svg class="ic"><use href="#i-retour"/></svg>Plus</button>
    <section class="view is-hidden" id="vFourn">
      <div class="page-titre"><div><h1>Fournitures</h1><p id="fnSous">—</p></div></div>
      <div class="sheet"><h2>Liste de rentrée</h2>
@@ -1258,7 +1406,6 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
      <div class="sheet"><h2>Ce qui manque <small>Touchez un élève pour cocher ce qui lui manque</small></h2>
        <ul class="suivi" id="fnSuivi"></ul></div>
    </section>
-
    <section class="view is-hidden" id="vManuels">
      <div class="page-titre"><div><h1>Manuels et kits</h1><p id="mnSous">—</p></div></div>
      <div class="sheet"><h2>Manuels et kits à suivre</h2>
@@ -1267,14 +1414,28 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
      <div class="sheet"><h2>Suivi par élève <small>Touchez un élève : remis, rendu</small></h2>
        <ul class="suivi" id="mnSuivi"></ul></div>
    </section>
-
    <section class="view is-hidden" id="vBlocnotes">
      <div class="page-titre"><div><h1>Bloc-notes</h1><p>Une idée, un incident, à noter tout de suite</p></div></div>
      <div class="sheet no-print"><div class="field"><label for="bnTexte">Nouvelle note</label><textarea id="bnTexte" rows="3" maxlength="2000" placeholder="Écrivez ou dictez votre note…"></textarea></div>
        <div class="rowbtns"><button class="btn btn-primary btn-sm" type="button" id="bnAjout">Enregistrer la note</button></div></div>
      <div class="sheet"><ul class="notes-perso" id="bnListe"></ul></div>
    </section>
-
+   <section class="view is-hidden" id="vTextes">
+     <div class="page-titre no-print"><div><h1>Chants et récitations</h1><p>Le texte complet, à afficher en grand en classe</p></div>
+       <button class="btn btn-primary btn-sm" type="button" id="txAjout"><svg class="ic"><use href="#i-plus"/></svg>Ajouter</button></div>
+     <div class="sheet"><ul class="textes" id="txListe"></ul></div>
+   </section>
+   <section class="view is-hidden" id="vVisites">
+     <div class="page-titre"><div><h1>Registre des visites</h1><p id="viSous">—</p></div>
+       <button class="btn btn-primary btn-sm no-print" type="button" id="viAjout"><svg class="ic"><use href="#i-plus"/></svg>Ajouter</button></div>
+     <div class="sheet"><ul class="visites" id="viListe"></ul></div>
+   </section>
+   <section class="view is-hidden" id="vInventaire">
+     <div class="page-titre"><div><h1>Inventaire de la classe</h1><p id="ivSous">—</p></div></div>
+     <div class="sheet"><div class="scroll"><table class="inv" id="ivTable"></table></div>
+       <div class="rowbtns no-print"><button class="btn btn-sm" type="button" id="ivAjout"><svg class="ic"><use href="#i-plus"/></svg>Ajouter une ligne</button>
+         <button class="btn btn-sm" type="button" id="ivType">Liste type</button></div></div>
+   </section>
    <section class="view is-hidden" id="vEcole">
      <div class="page-titre no-print"><div><h1>Mon école</h1><p id="ecSous">—</p></div>
        <label class="btn btn-primary btn-sm" style="cursor:pointer"><svg class="ic"><use href="#i-import"/></svg>Importer une classe<input type="file" id="ecImport" accept=".txt,.json,text/plain,application/json" style="display:none"></label></div>
@@ -1288,36 +1449,8 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
        <ul class="suivi" id="ecRecues"></ul>
        <p class="hint">Demandez à chaque maître de toucher « Envoyer au directeur » sur son téléphone, puis importez ici le fichier reçu sur WhatsApp.</p></div>
    </section>
-
-   <section class="view is-hidden" id="vVisites">
-     <div class="page-titre"><div><h1>Registre des visites</h1><p id="viSous">—</p></div>
-       <button class="btn btn-primary btn-sm no-print" type="button" id="viAjout"><svg class="ic"><use href="#i-plus"/></svg>Ajouter</button></div>
-     <div class="sheet"><ul class="visites" id="viListe"></ul></div>
-   </section>
-
-   <section class="view is-hidden" id="vInventaire">
-     <div class="page-titre"><div><h1>Inventaire de la classe</h1><p id="ivSous">—</p></div></div>
-     <div class="sheet"><div class="scroll"><table class="inv" id="ivTable"></table></div>
-       <div class="rowbtns no-print"><button class="btn btn-sm" type="button" id="ivAjout"><svg class="ic"><use href="#i-plus"/></svg>Ajouter une ligne</button>
-         <button class="btn btn-sm" type="button" id="ivType">Liste type</button></div></div>
-   </section>
-
-   <section class="view is-hidden" id="vTaches">
-     <div class="page-titre"><div><h1>Tâches de l'année</h1><p id="taSous">—</p></div></div>
-     <div class="seg seg-mini no-print" role="tablist" id="taOnglets">
-       <button role="tab" data-ta="rentree" aria-selected="true">Rentrée</button>
-       <button role="tab" data-ta="fin" aria-selected="false">Fin d'année</button>
-     </div>
-     <div class="sheet"><ul class="taches" id="taListe"></ul>
-       <div class="mat-ajout no-print"><input id="taNouveau" placeholder="Ajouter une tâche" maxlength="100"><button class="btn btn-sm btn-primary" type="button" id="taAjout">Ajouter</button></div></div>
-   </section>
-
-   <section class="view is-hidden" id="vTextes">
-     <div class="page-titre no-print"><div><h1>Chants et récitations</h1><p>Le texte complet, à afficher en grand en classe</p></div>
-       <button class="btn btn-primary btn-sm" type="button" id="txAjout"><svg class="ic"><use href="#i-plus"/></svg>Ajouter</button></div>
-     <div class="sheet"><ul class="textes" id="txListe"></ul></div>
-   </section>
   </section>
+
 
   <!-- =================== ÉLÈVES =================== -->
   <section class="rubrique is-hidden" id="rEleves">
@@ -1714,7 +1847,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
         <p class="hint" id="rgSalleInfo" style="margin:4px 0 0"></p></div>
     </section>
 
-    <section class="sheet">
+    <section class="sheet" id="rgEtab">
       <h2>En-tête du registre <small>Repris sur tous les documents. L'école, la DRENA, l'IEPP et le directeur sont retenus pour vos prochaines classes.</small></h2>
       <div class="entete">
         <div class="field"><label for="f_drena">DRENA</label><input id="f_drena" data-m="drena" autocomplete="off" placeholder="Ex. Bouna"></div>
@@ -1753,7 +1886,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
       </div>
     </section>
 
-    <section class="sheet">
+    <section class="sheet" id="rgSauve">
       <h2>Sauvegarde <small id="stStatus">—</small></h2>
       <p class="sv-info" id="svInfo">Dernière sauvegarde : jamais</p>
       <div class="btns" style="margin-top:12px">
@@ -1774,8 +1907,8 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
       <h2>Apparence</h2>
       <div class="reglage"><span class="r-txt"><b>Thème</b><small>Clair, sombre ou selon le téléphone</small></span>
         <select id="rgTheme"><option value="auto">Automatique</option><option value="light">Clair</option><option value="dark">Sombre</option></select></div>
-      <div class="reglage"><span class="r-txt"><b>Couleur</b><small>Bleu, ou orange et vert de la Côte d'Ivoire</small></span>
-        <select id="rgCouleur"><option value="bleu">Bleu</option><option value="ci">Côte d'Ivoire</option></select></div>
+      <div class="reglage"><span class="r-txt"><b>Couleur</b><small>Ambre (par défaut) ou bleu</small></span>
+        <select id="rgCouleur"><option value="registre">Registre (ambre)</option><option value="bleu">Bleu</option></select></div>
       <div class="reglage"><span class="r-txt"><b>Taille du texte</b><small>Pour lire plus facilement</small></span>
         <select id="rgTaille"><option value="normal">Normale</option><option value="grand">Grande</option><option value="tresgrand">Très grande</option></select></div>
       <div class="reglage"><span class="r-txt"><b>Mode léger</b><small>Sans animations, plus rapide sur les téléphones modestes</small></span>
@@ -1807,18 +1940,19 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
         <span class="interrupteur"><input type="checkbox" id="vrActif" aria-label="Code à l'ouverture"><span></span></span></div>
     </section>
 
-    <section class="sheet aide">
+    <section class="sheet aide" id="rgAide">
       <h2>Aide</h2>
       <details><summary>Par où commencer ?</summary>
         <p>Remplissez l'en-tête du registre ci-dessus (école, classe, année, maître), puis saisissez vos élèves dans la rubrique <b>Élèves</b>. Tout le reste (tableaux de scolarité, effectifs, âges, tableau récapitulatif) se calcule tout seul.</p></details>
-      <details><summary>Les cinq rubriques</summary>
+      <details><summary>La barre du bas</summary>
         <ul>
-          <li><b>Accueil</b> : l'essentiel de la classe en un coup d'œil et des raccourcis.</li>
-          <li><b>Élèves</b> : la liste, les tableaux de scolarité, la liste de classe et la synthèse.</li>
-          <li><b>Notes</b> : les compositions mensuelles, la composition de passage et les résultats de fin d'année.</li>
-          <li><b>Documents</b> : tout ce qui s'imprime. Chaque document a son bouton <b>Imprimer</b>.</li>
-          <li><b>Réglages</b> : la classe, l'en-tête, la sauvegarde et l'apparence.</li>
-        </ul></details>
+          <li><b>Accueil</b> : votre journée — actions rapides, appels du matin et du soir, équipe de nettoyage, agenda, situation de la classe.</li>
+          <li><b>Élèves</b> : la liste, le cahier d'appel, les groupes, la vie de classe, les tableaux de scolarité et la synthèse.</li>
+          <li><b>Notes</b> : les compositions, la fin d'année et les statistiques.</li>
+          <li><b>Organisation</b> : l'agenda, l'emploi du temps et les tâches de l'année.</li>
+          <li><b>Plus</b> : les documents à imprimer, les ressources (fournitures, manuels, inventaire, chants), la vie professionnelle et l'administration (sauvegarde, classes, paramètres).</li>
+        </ul>
+        <p>En haut : la loupe pour tout retrouver, la cloche pour les alertes, la roue pour les paramètres.</p></details>
       <details><summary>Saisir les élèves</summary>
         <p>Touchez « Ajouter un élève », remplissez sa fiche puis « Enregistrer ». « Enregistrer et ajouter » permet d'enchaîner. Touchez un élève pour modifier sa fiche. Sur grand écran, l'affichage « Tableau » permet une saisie ligne par ligne.</p></details>
       <details><summary>Saisir les notes</summary>
@@ -1840,8 +1974,8 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
     <button class="nav-btn" type="button" data-r="accueil" aria-current="page"><span class="pastille"><svg class="ic"><use href="#i-accueil"/></svg></span>Accueil</button>
     <button class="nav-btn" type="button" data-r="eleves"><span class="pastille"><svg class="ic"><use href="#i-eleves"/></svg></span>Élèves</button>
     <button class="nav-btn" type="button" data-r="notes"><span class="pastille"><svg class="ic"><use href="#i-notes"/></svg></span>Notes</button>
-    <button class="nav-btn" type="button" data-r="documents"><span class="pastille"><svg class="ic"><use href="#i-docs"/></svg></span>Documents</button>
-    <button class="nav-btn" type="button" data-r="reglages"><span class="pastille"><svg class="ic"><use href="#i-reglages"/></svg></span>Réglages</button>
+    <button class="nav-btn" type="button" data-r="organisation"><span class="pastille"><svg class="ic"><use href="#i-agenda"/></svg></span>Organisation</button>
+    <button class="nav-btn" type="button" data-r="plus"><span class="pastille"><svg class="ic"><use href="#i-grille"/></svg></span>Plus</button>
   </div>
 </nav>
 
@@ -2187,7 +2321,9 @@ function normVie(v, ids){
     if(id && (!ids || ids[id]) && n >= 0 && n < jours.length) equipes[id] = n;
   });
   var un = function(x){ x = idSur(x); return x && (!ids || ids[x]) ? x : ""; };
-  return {chef:un(v.chef), sousChef:un(v.sousChef), service:txt(v.service, 50).trim() || "Balayage et nettoyage", jours:jours, equipes:equipes};
+  var faits = {};
+  if(v.faits && typeof v.faits === "object") Object.keys(v.faits).filter(function(d){ return /^\d{4}-\d{2}-\d{2}$/.test(d) && v.faits[d]; }).sort().slice(-120).forEach(function(d){ faits[d] = 1; });
+  return {chef:un(v.chef), sousChef:un(v.sousChef), service:txt(v.service, 50).trim() || "Balayage et nettoyage", jours:jours, equipes:equipes, faits:faits};
 }
 function normAppel(a, ids){
   var r = {};
@@ -3385,6 +3521,8 @@ function render(){
     renderAccueil(false);
     if(rubriqueActive === "reglages"){ renderNiveaux(); renderSalle(); renderEnteteOfficiel(); }
     if(vueActive) renderVue(vueActive, true);
+  else if(rubriqueActive === "organisation") renderOrga();
+  else if(rubriqueActive === "plus") renderPlus();
   });
 }
 function renderAll(){ renderSaisie(); render(); }
@@ -3402,7 +3540,7 @@ function renderVue(v, depuisRender){
     case "vie": renderVie(); break;
     case "stats": renderStats(); break;
     case "doc": if(!depuisRender || !el("docOptions").contains(document.activeElement)){ renderDocOptions(); buildDoc(); fitDoc(); } break;
-    default: if(RUBRIQUE_DE[v] === "accueil") renderOutil(v);
+    default: if(HUBS[RUBRIQUE_DE[v]]) renderOutil(v);
   }
 }
 /* les aperçus A4 ne sont fabriqués que s'ils sont affichés ou imprimés */
@@ -3813,13 +3951,15 @@ function derniereCompo(){
   var r = periodesRenseignees(); return r.length ? r[r.length - 1] : null;
 }
 function renderAccueil(anime){
+  if(typeof majNotifs === "function") majNotifs();
   if(rubriqueActive !== "accueil" && !anime) { majSauvegardeInfo(); return; }
   var s = stats(), m = state.meta;
   var h = new Date().getHours();
   el("acBonjour").textContent = (h < 13 ? "Bonjour" : h < 18 ? "Bon après-midi" : "Bonsoir") + (m.maitre ? ", " + m.maitre : "");
   try{ el("acDate").textContent = new Date().toLocaleDateString("fr-FR", {weekday:"long", day:"numeric", month:"long", year:"numeric"}); }catch(e){}
   var an = (m.an1 || "") + (m.an2 ? "–" + m.an2 : "");
-  el("acClasse").textContent = [m.classe || nomClasse(state), m.ecole ? "EPP " + m.ecole : "", an].filter(Boolean).join(" · ");
+  el("acClasse").textContent = [m.classe || nomClasse(state), m.ecole ? "EPP " + m.ecole : ""].filter(Boolean).join(" · ");
+  el("acAn").textContent = an ? "Année " + an : "";
   document.querySelectorAll("[data-compte]").forEach(function(n){ compteur(n, s[n.getAttribute("data-compte")], anime); });
   var pc = function(x){ return s.t ? Math.round(x / s.t * 100) + " %" : "—"; };
   el("acPctG").textContent = pc(s.g); el("acPctF").textContent = pc(s.f);
@@ -3828,19 +3968,10 @@ function renderAccueil(anime){
     el("acBarG").style.width = s.t ? (s.g / s.t * 100) + "%" : "0";
     el("acBarF").style.width = s.t ? (s.f / s.t * 100) + "%" : "0";
   });
-  var mc = derniereCompo();
-  if(mc){
-    var cl = classement(mc);
-    el("acCompo").textContent = libellePeriode(mc);
-    el("acCompoSous").textContent = cl.moyenneClasse == null ? "Aucune moyenne calculée"
-      : "Moyenne de la classe : " + nombreFr(cl.moyenneClasse, 2) + " / " + echelleMoyenne() + " · " + cl.sur + " élève(s) noté(s)";
-  } else { el("acCompo").textContent = "Aucune composition saisie"; el("acCompoSous").textContent = "Les résultats apparaîtront ici."; }
-  var c = controles(), graves = c.filter(function(x){ return x.bad; }).length;
   renderAujourdhui();
   renderAccueil3B();
-  el("acControles").textContent = c.length ? c.length + " point(s) à vérifier" : "Registre cohérent";
-  el("acControlesSous").textContent = c.length ? (graves ? graves + " erreur(s) et " + (c.length - graves) + " remarque(s)" : "Des remarques sur les âges ou les scolarités") : "Effectifs, âges et scolarités sont cohérents.";
   majSauvegardeInfo();
+  renderSituation();
 }
 
 function classeVierge(modele){
@@ -4192,8 +4323,12 @@ el("f_cartesMode").addEventListener("change", function(){ majTitreCartes(); buil
 
 /* ---------- navigation : 5 rubriques, chacune avec ses vues ---------- */
 var VIEWS = {stats:"vStats", visites:"vVisites", inventaire:"vInventaire", taches:"vTaches", doc:"vDoc", ecole:"vEcole", agenda:"vAgenda", edt:"vEdt", fourn:"vFourn", manuels:"vManuels", blocnotes:"vBlocnotes", textes:"vTextes", saisie:"vSaisie", appel:"vAppel", groupes:"vGroupes", vie:"vVie", scolarite:"vScolarite", alpha:"vAlpha", synthese:"vSynthese", feuille:"vFeuille", notes:"vNotes", annee:"vAnnee", cartes:"vCartes"};
-var RUBRIQUES = {accueil:"rAccueil", eleves:"rEleves", notes:"rNotes", documents:"rDocuments", reglages:"rReglages"};
-var RUBRIQUE_DE = {stats:"notes", visites:"accueil", inventaire:"accueil", taches:"accueil", doc:"documents", ecole:"accueil", agenda:"accueil", edt:"accueil", fourn:"accueil", manuels:"accueil", blocnotes:"accueil", textes:"accueil", saisie:"eleves", appel:"eleves", groupes:"eleves", vie:"eleves", scolarite:"eleves", alpha:"eleves", synthese:"eleves", notes:"notes", annee:"notes", feuille:"documents", cartes:"documents"};
+var RUBRIQUES = {accueil:"rAccueil", eleves:"rEleves", notes:"rNotes", organisation:"rOrga", plus:"rPlus", documents:"rDocuments", reglages:"rReglages"};
+/* onglet de la barre du bas allumé pour chaque rubrique */
+var NAV_DE = {accueil:"accueil", eleves:"eleves", notes:"notes", organisation:"organisation", plus:"plus", documents:"plus", reglages:"plus"};
+/* rubriques à page d'accueil (hub) puis outils */
+var HUBS = {accueil:["acHub","acRetour"], organisation:["orgHub","orgRetour"], plus:["plusHub","plusRetour"]};
+var RUBRIQUE_DE = {stats:"notes", visites:"plus", inventaire:"plus", taches:"organisation", doc:"documents", ecole:"plus", agenda:"organisation", edt:"organisation", fourn:"plus", manuels:"plus", blocnotes:"plus", textes:"plus", saisie:"eleves", appel:"eleves", groupes:"eleves", vie:"eleves", scolarite:"eleves", alpha:"eleves", synthese:"eleves", notes:"notes", annee:"notes", feuille:"documents", cartes:"documents"};
 var DERNIERE_VUE = {eleves:"saisie", notes:"notes"};
 var vueActive = null, rubriqueActive = "accueil";
 var TITRES_CARTES = {cartes:"Bulletins scolaires", tableau:"Tableau des notes", annee:"Résultats de fin d'année"};
@@ -4216,12 +4351,15 @@ function allerRubrique(r, vue){
   rubriqueActive = r;
   Object.keys(RUBRIQUES).forEach(function(k){ el(RUBRIQUES[k]).classList.toggle("is-hidden", k !== r); });
   document.querySelectorAll("#nav .nav-btn").forEach(function(b){
-    if(b.getAttribute("data-r") === r) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current");
+    if(b.getAttribute("data-r") === NAV_DE[r]) b.setAttribute("aria-current", "page"); else b.removeAttribute("aria-current");
   });
   if(change) animer(el(RUBRIQUES[r]));
   if(r === "eleves" || r === "notes") montrerVue(vue || DERNIERE_VUE[r], !change);
   else if(r === "documents"){ if(vue) montrerVue(vue, !change); else fermerDocument(); }
-  else if(r === "accueil"){ if(vue) montrerVue(vue, !change); else { fermerOutil(); vueActive = null; renderAccueil(true); } }
+  else if(HUBS[r]){
+    if(vue) montrerVue(vue, !change);
+    else { fermerOutil(); vueActive = null; if(r === "accueil") renderAccueil(true); else if(r === "organisation") renderOrga(); else renderPlus(); }
+  }
   else if(r === "reglages"){ vueActive = null; renderNiveaux(); renderSalle(); renderEnteteOfficiel(); renderEspace(); }
   else vueActive = null;
   majFab();
@@ -4234,7 +4372,7 @@ function montrerVue(v, anim){
   zone.querySelectorAll(".view").forEach(function(n){ n.classList.toggle("is-hidden", n.id !== VIEWS[v]); });
   zone.querySelectorAll(".seg button").forEach(function(b){ b.setAttribute("aria-selected", String(b.getAttribute("data-v") === v)); });
   if(r === "documents"){ el("docsHub").classList.add("is-hidden"); el("docRetour").classList.remove("is-hidden"); }
-  else if(r === "accueil"){ el("acHub").classList.add("is-hidden"); el("acRetour").classList.remove("is-hidden"); renderOutil(v); }
+  else if(HUBS[r]){ el(HUBS[r][0]).classList.add("is-hidden"); el(HUBS[r][1]).classList.remove("is-hidden"); renderOutil(v); }
   else DERNIERE_VUE[r] = v;
   vueActive = v;
   if(anim) animer(el(VIEWS[v]));
@@ -4268,7 +4406,7 @@ el("nav").addEventListener("click", function(ev){
   var b = ev.target.closest(".nav-btn"); if(!b) return;
   var r = b.getAttribute("data-r");
   if(r === rubriqueActive && r === "documents" && vueActive){ fermerDocument(); return; }
-  if(r === rubriqueActive && r === "accueil" && vueActive){ allerRubrique("accueil"); return; }
+  if(r === NAV_DE[rubriqueActive] && HUBS[r] && vueActive){ allerRubrique(r); return; }
   allerRubrique(r);
 });
 document.querySelectorAll(".seg").forEach(function(seg){
@@ -5379,20 +5517,6 @@ el("tirGroupes").addEventListener("click", function(){
 });
 
 /* ---------- accueil : aujourd'hui ---------- */
-function renderAujourdhui(){
-  var zone = el("acAuj"); if(!zone) return;
-  var v = state.vie, jj = indexJourJ(), l = alpha();
-  var eq = (equipesFormees() && jj >= 0) ? l.filter(function(e){ return v.equipes[e.id] === jj; }) : null;
-  el("acAujEquipe").textContent = !equipesFormees() ? v.service + " : équipes pas encore formées"
-    : jj < 0 ? "Pas de " + v.service.toLowerCase() + " aujourd'hui" : v.service + " — " + JOURS_SEMAINE[new Date().getDay()].toLowerCase();
-  el("acAujNoms").innerHTML = eq ? eq.map(function(e){ return '<span class="puce-el sx-' + e.sexe + '" style="cursor:default">' + esc(e.nom) + '</span>'; }).join("") : "";
-  var j = state.appel[aujourdhuiISO()] || {};
-  var demi = function(k){ var x = j[k]; if(!x) return "pas fait"; var a = Object.keys(x).filter(function(id){ return x[id] === "A" && eleveExiste(id); }).length; return a ? a + " absent(s)" : "tous présents"; };
-  el("acAujAppel").textContent = "Appel — matin : " + demi("m") + " · soir : " + demi("s");
-  var resp = [v.chef && eleveParId(v.chef) ? "Chef : " + eleveParId(v.chef).nom : "", v.sousChef && eleveParId(v.sousChef) ? "Sous-chef : " + eleveParId(v.sousChef).nom : ""].filter(Boolean);
-  el("acAujResp").textContent = resp.join(" · ");
-  el("acAujResp").classList.toggle("is-hidden", !resp.length);
-}
 
 /* =====================================================================
    LOT 3B — mouvements, années, profils, verrouillage, outils de la classe
@@ -5598,11 +5722,11 @@ function ecranVerrou(){
 }
 
 /* ---------- outils de la classe (vues de l'accueil) ---------- */
-function ouvrirOutil(o){ allerRubrique("accueil", o); }
+function ouvrirOutil(o){ allerRubrique(RUBRIQUE_DE[o] || "plus", o); }
 document.querySelectorAll("[data-outil]").forEach(function(b){ b.addEventListener("click", function(){ ouvrirOutil(b.getAttribute("data-outil")); }); });
 el("acRetour").addEventListener("click", function(){ allerRubrique("accueil"); });
 function fermerOutil(){
-  el("acHub").classList.remove("is-hidden"); el("acRetour").classList.add("is-hidden");
+  Object.keys(HUBS).forEach(function(k){ el(HUBS[k][0]).classList.remove("is-hidden"); el(HUBS[k][1]).classList.add("is-hidden"); });
   ["vEcole","vAgenda","vEdt","vFourn","vManuels","vBlocnotes","vTextes","vVisites","vInventaire","vTaches"].forEach(function(id){ el(id).classList.add("is-hidden"); });
 }
 function renderOutil(v){
@@ -5872,14 +5996,9 @@ function renderAccueil3B(){
   var an = anniversaires(0);
   var morceaux = jour.map(function(a){ return '<b>' + esc(libType(a.type)) + ' :</b> ' + esc(a.titre); })
     .concat(an.map(function(x){ return '<b>Anniversaire :</b> ' + esc(x.e.nom) + ' a ' + x.age + ' ans aujourd\'hui'; }));
-  el("acRappelsJour").classList.toggle("is-hidden", !morceaux.length);
-  el("acRappelsJour").innerHTML = '<span>' + morceaux.join("<br>") + '</span><button class="btn btn-sm" type="button" data-outil-go="agenda">Agenda</button>';
   el("acArchive").classList.toggle("is-hidden", !state.archive);
-  var cours = edtDuJour();
-  if(cours.length) el("acAujResp").innerHTML = esc(el("acAujResp").textContent) + (el("acAujResp").textContent ? '<br>' : '') + '<b>Aujourd\'hui :</b> ' + cours.map(function(c){ return esc(c.m); }).join(" · ");
-  if(cours.length) el("acAujResp").classList.remove("is-hidden");
 }
-el("acRappelsJour").addEventListener("click", function(ev){ if(ev.target.closest("[data-outil-go]")) ouvrirOutil("agenda"); });
+
 
 /* =====================================================================
    LOT 4 — notes et bulletins
@@ -6437,7 +6556,7 @@ var DOC_BUILD = {
     if(!t) return [pageDoc(titreDoc("Bilan PNAPAS") + '<p style="text-align:center;margin-top:12mm">Aucune évaluation PNAPAS saisie.</p>')];
     var bloc = function(d){
       var niv = niveauxDisc(d);
-      return '<h3 style="font-family:Poppins;font-size:12px;margin:5mm 0 1mm">' + (d === "fr" ? "Français" : "Mathématiques") + '</h3>'
+      return '<h3 style="font-family:Inter;font-size:12px;margin:5mm 0 1mm">' + (d === "fr" ? "Français" : "Mathématiques") + '</h3>'
         + tableDoc(["Niveau"].concat(pn.tests.map(function(x){ return esc(x.libelle); })), niv.map(function(n){
             return '<tr><td>' + n[1] + '</td>' + pn.tests.map(function(x){ var c = 0; Object.keys(x[d]).forEach(function(id){ if(existeSalle(id) && x[d][id] === n[0]) c++; }); return '<td class="v">' + (c || "·") + '</td>'; }).join("") + '</tr>';
           }).concat(['<tr><td><b>Élèves évalués</b></td>' + pn.tests.map(function(x){ return '<td class="r">' + Object.keys(x[d]).filter(existeSalle).length + '</td>'; }).join("") + '</tr>']))
@@ -7009,59 +7128,10 @@ el("btnRetirerPhotos").addEventListener("click", function(){
     });
 });
 
-/* ---------- menu ☰ : tous les écrans ---------- */
-var MENU = [
-  {t:"", l:[["accueil|", "i-accueil", "Accueil"]]},
-  {t:"Élèves", l:[["eleves|saisie","i-eleves","Liste des élèves"],["eleves|appel","i-appel","Cahier d'appel"],["eleves|groupes","i-de","Groupes EPS et PNAPAS"],["eleves|vie","i-balai","Vie de classe"],
-    ["eleves|scolarite","i-tri","Tableaux de scolarité"],["eleves|alpha","i-livre","Liste de classe"],["eleves|synthese","i-check","Synthèse, effectifs, âges"]]},
-  {t:"Notes", l:[["notes|notes","i-notes","Compositions"],["notes|annee","i-etoile","Fin d'année"],["notes|stats","i-graphe","Statistiques"]]},
-  {t:"Documents", l:[["documents|feuille","i-docs","Tableau récapitulatif"],["documents|cartes","i-docs","Bulletins scolaires"],["documents|","i-imprimer","Tous les documents"]]},
-  {t:"", l:[["accueil|ecole","i-ecole","Mon école","dir"],["reglages|","i-reglages","Réglages"]]}
-];
-var coucheMenu = null;
-function renderMenu(){
-  var ici = rubriqueActive + "|" + (vueActive || "");
-  if(rubriqueActive === "documents" && vueActive === "doc") ici = "documents|";
-  el("menuClasse").textContent = nomClasse(state);
-  el("menuListe").innerHTML = MENU.map(function(g){
-    var items = g.l.filter(function(x){ return x[3] !== "dir" || dossier.role === "directeur"; });
-    return (g.t ? '<p class="menu-titre">' + g.t + '</p>' : '<div class="menu-sep"></div>')
-      + items.map(function(x){ return '<button type="button" class="menu-item' + (x[0] === ici ? ' on' : '') + '" data-go="' + x[0] + '"><svg class="ic"><use href="#' + x[1] + '"/></svg><span>' + esc(x[2]) + '</span></button>'; }).join("");
-  }).join("");
-}
-function ouvrirMenu(){
-  renderMenu();
-  el("menu").hidden = false;
-  requestAnimationFrame(function(){ el("menu").classList.add("on"); });
-  el("btnMenu").setAttribute("aria-expanded", "true");
-  coucheMenu = ouvrirCouche(function(){ fermerMenu(true); });
-  var actif = el("menuListe").querySelector(".on") || el("menuListe").querySelector("button"); if(actif) actif.focus({preventScroll:true});
-}
-function fermerMenu(parRetour){
-  if(el("menu").hidden) return;
-  el("menu").classList.remove("on"); el("btnMenu").setAttribute("aria-expanded", "false");
-  setTimeout(function(){ if(!el("menu").classList.contains("on")) el("menu").hidden = true; }, 260);
-  if(coucheMenu){ var c = coucheMenu; coucheMenu = null; fermerCouche(c, parRetour); }
-}
-el("btnMenu").addEventListener("click", function(){ if(el("menu").hidden) ouvrirMenu(); else fermerMenu(false); });
-el("menuFond").addEventListener("click", function(){ fermerMenu(false); });
-el("menuFermer").addEventListener("click", function(){ fermerMenu(false); });
-document.addEventListener("keydown", function(e){ if(e.key === "Escape" && !el("menu").hidden) fermerMenu(false); });
-el("menuListe").addEventListener("click", function(e){
-  var b = e.target.closest("[data-go]"); if(!b) return;
-  var p = b.getAttribute("data-go").split("|");
-  fermerMenu(false);
-  /* on attend que le retour d'historique du menu soit passé avant de naviguer */
-  setTimeout(function(){
-    if(p[1] === "feuille" || p[1] === "cartes") ouvrirDocument(p[1]);
-    else allerRubrique(p[0], p[1] || undefined);
-  }, 60);
-});
-
 /* ---------- bouton « Installer l'application » ---------- */
 var inviteInstall = null;
 function estInstallee(){ return (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || window.navigator.standalone === true; }
-function majInstall(){ el("acInstall").classList.toggle("is-hidden", !inviteInstall || estInstallee()); }
+function majInstall(){ el("acInstall").classList.toggle("is-hidden", !inviteInstall || estInstallee()); if(el("plusInstall")) el("plusInstall").classList.toggle("is-hidden", !inviteInstall || estInstallee()); }
 window.addEventListener("beforeinstallprompt", function(e){ e.preventDefault(); inviteInstall = e; majInstall(); });
 window.addEventListener("appinstalled", function(){ inviteInstall = null; majInstall(); toast("Application installée sur l'écran d'accueil."); });
 el("acInstallBtn").addEventListener("click", function(){
@@ -7072,6 +7142,7 @@ el("acInstallBtn").addEventListener("click", function(){
 
 /* ---------- « Quoi de neuf » après une mise à jour ---------- */
 var NOUVEAUTES = [
+  ["2.0.0", ["Nouvelle présentation : bleu nuit et ambre, une seule police, cartes plus compactes","Barre du bas : Accueil, Élèves, Notes, Organisation, Plus (barre latérale sur ordinateur)","Accueil repensé : actions rapides, activités du jour avec leur statut, situation de la classe","Cloche de notifications : sauvegarde, appels, compositions non terminées, rappels","Organisation : agenda, emploi du temps et tâches de l'année réunis","Plus : documents, ressources, vie professionnelle et administration","Recherche élargie aux compositions, à l'agenda et au bloc-notes"]],
   ["1.13.3", ["Appel : bilan de fin de mois pour toute la classe — présences possibles, présences effectives, absences, taux de présence et taux d'absence"]],
   ["1.13.1", ["Fiche de présence du mois à imprimer : appels du matin et du soir de chaque jour, totaux et taux (garçons, filles, classe)"]],
   ["1.13.0", ["Cahier d'appel : un appel le matin et un le soir (une journée = 2 présences ou 2 absences)","Total des présences et des absences, taux de présence et taux d'absence du mois","Bouton « Mêmes absents que le matin » pour l'appel du soir"]],
@@ -7097,8 +7168,219 @@ function quoiDeNeuf(force){
 }
 el("btnNouveautes").addEventListener("click", function(){ quoiDeNeuf(true); });
 
+/* =====================================================================
+   REFONTE 2.0 — tableau de bord, Organisation, Plus, notifications
+   ===================================================================== */
+/* ---------- liens génériques « data-go="rubrique|vue" » ---------- */
+function allerVers(go){
+  var p = String(go || "").split("|"), r = p[0], v = p[1] || "";
+  if(r === "documents"){ if(!v) allerRubrique("documents"); else ouvrirDocument(v); return; }
+  if(r === "reglages"){
+    allerRubrique("reglages");
+    if(v && el(v)) setTimeout(function(){ var n = el(v); var y = n.getBoundingClientRect().top + window.scrollY - 76; window.scrollTo({top:y, behavior:"smooth"}); n.classList.remove("eclair"); void n.offsetWidth; n.classList.add("eclair"); }, 80);
+    return;
+  }
+  if(v) allerRubrique(RUBRIQUE_DE[v] || r, v); else allerRubrique(r);
+}
+document.addEventListener("click", function(ev){ var b = ev.target.closest("[data-go]"); if(b){ ev.preventDefault(); allerVers(b.getAttribute("data-go")); } });
+el("btnReglages").addEventListener("click", function(){ allerRubrique("reglages"); });
+el("acAjoutEleve").addEventListener("click", function(){ allerRubrique("eleves", "saisie"); setTimeout(function(){ ouvrirFiche(null); }, 250); });
+el("orgRetour").addEventListener("click", function(){ allerRubrique("organisation"); });
+el("plusRetour").addEventListener("click", function(){ allerRubrique("plus"); });
+el("orgAjout").addEventListener("click", function(){ allerRubrique("organisation", "agenda"); setTimeout(function(){ el("agAjout").click(); }, 250); });
+el("plusInstall").addEventListener("click", function(){ el("acInstallBtn").click(); });
+
+/* ---------- statut des activités ---------- */
+var STATUTS = {afaire:"À faire", encours:"En cours", fait:"Terminé", retard:"En retard", info:"À venir"};
+function ligneActivite(a){
+  return '<li class="act"><span class="act-ic ' + a.st + '"><svg class="ic"><use href="#' + a.ic + '"/></svg></span>'
+    + '<span class="act-txt"><b>' + a.t + '</b>' + (a.s ? '<small>' + a.s + '</small>' : '') + '</span>'
+    + '<span class="act-droite"><span class="statut ' + a.st + '">' + (a.lib || STATUTS[a.st]) + '</span>'
+    + (a.btn ? '<button class="btn btn-sm' + (a.st === "retard" || a.st === "encours" ? ' btn-primary' : '') + '" type="button" data-act="' + a.act + '">' + a.btn + '</button>' : '') + '</span></li>';
+}
+function jourDeClasse(){ var j = new Date().getDay(); return j >= 1 && j <= 5; }
+function minutesMaintenant(){ var d = new Date(); return d.getHours() * 60 + d.getMinutes(); }
+function etatAppel(k){
+  var j = state.appel[aujourdhuiISO()], x = j && j[k];
+  if(x){ var a = Object.keys(x).filter(function(id){ return x[id] === "A" && eleveExiste(id); }).length; return {st:"fait", s: a ? a + " absent(s)" : "Tout le monde est présent"}; }
+  var m = minutesMaintenant();
+  if(k === "m") return m >= 10 * 60 ? {st:"retard", s:"À faire en début de matinée"} : m >= 7 * 60 + 15 ? {st:"encours", s:"C'est le moment"} : {st:"afaire", s:"Début des cours"};
+  return m >= 17 * 60 ? {st:"retard", s:"À faire en début d'après-midi"} : m >= 14 * 60 + 45 ? {st:"encours", s:"C'est le moment"} : {st:"afaire", s:"Reprise de l'après-midi"};
+}
+function activitesDuJour(){
+  var l = [], auj = aujourdhuiISO(), v = state.vie;
+  if(jourDeClasse() && nommes().length){
+    var am = etatAppel("m"), as = etatAppel("s");
+    l.push({ic:"i-appel", t:"Appel du matin", s:am.s, st:am.st, btn:am.st === "fait" ? "Voir" : "Faire l'appel", act:"appel-m"});
+    l.push({ic:"i-appel", t:"Appel du soir", s:as.s, st:as.st, btn:as.st === "fait" ? "Voir" : "Faire l'appel", act:"appel-s"});
+  }
+  if(jourDeClasse() || indexJourJ() >= 0){
+    if(!equipesFormees()) l.push({ic:"i-balai", t:v.service, s:"Les équipes ne sont pas encore formées", st:"afaire", btn:"Former", act:"vie"});
+    else {
+      var jj = indexJourJ(), eq = jj >= 0 ? alpha().filter(function(e){ return v.equipes[e.id] === jj; }) : [];
+      if(jj >= 0){
+        var fait = !!(v.faits && v.faits[auj]);
+        l.push({ic:"i-balai", t:v.service + " — équipe du jour", s:eq.length ? eq.map(function(e){ return esc(e.nom.split(" ").slice(0, 2).join(" ")); }).join(", ") : "Personne dans l'équipe du jour",
+          st:fait ? "fait" : "afaire", btn:fait ? "Annuler" : "Marquer fait", act:"nettoyage"});
+      }
+    }
+  }
+  dossier.agenda.filter(function(a){ return a.date <= auj && (a.fin || a.date) >= auj; }).forEach(function(a){
+    l.push({ic:"i-agenda", t:esc(a.titre), s:libType(a.type) + (a.fin && a.fin !== a.date ? " · jusqu'au " + dateFr(a.fin) : ""), st:a.fin && a.fin !== a.date ? "encours" : "afaire", lib:a.fin && a.fin !== a.date ? "En cours" : "Aujourd'hui", btn:"Agenda", act:"agenda"});
+  });
+  anniversaires(0).forEach(function(x){ l.push({ic:"i-etoile", t:"Anniversaire de " + esc(x.e.nom), s:x.age + " ans aujourd'hui", st:"info", lib:"Aujourd'hui"}); });
+  var ta = tacheSuivante();
+  if(ta) l.push({ic:"i-check", t:esc(ta.t.texte), s:"Tâches de " + (ta.o === "rentree" ? "rentrée" : "fin d'année") + " · " + ta.reste + " restante(s)", st:"afaire", btn:"Voir", act:"taches"});
+  return l;
+}
+function tacheSuivante(){
+  var mo = new Date().getMonth(), o = (mo >= 4 && mo <= 7) ? "fin" : "rentree";
+  var liste = state.taches && state.taches[o]; if(!liste) return null;
+  var reste = liste.filter(function(t){ return !t.fait; });
+  return reste.length && reste.length < liste.length + 1 ? {t:reste[0], o:o, reste:reste.length} : null;
+}
+function renderAujourdhui(){
+  if(!el("acActivites")) return;
+  var l = activitesDuJour();
+  var faits = l.filter(function(a){ return a.st === "fait"; }).length, total = l.filter(function(a){ return a.st !== "info"; }).length;
+  el("acActSous").textContent = total ? faits + " / " + total + " terminée(s)" : "";
+  el("acActivites").innerHTML = l.map(ligneActivite).join("") || '<li class="vide-etat" style="border:0">' + (jourDeClasse() ? "Rien de prévu aujourd'hui." : "Pas de classe aujourd'hui. Bon repos !") + '</li>';
+  var cours = edtDuJour();
+  el("acCours").classList.toggle("is-hidden", !cours.length);
+  el("acCours").innerHTML = cours.length ? '<b>Au programme :</b> ' + cours.map(function(c){ return esc(c.m); }).join(" · ") : "";
+}
+el("acActivites").addEventListener("click", function(ev){
+  var b = ev.target.closest("[data-act]"); if(!b) return;
+  var a = b.getAttribute("data-act");
+  if(a === "appel-m" || a === "appel-s"){ apDate = aujourdhuiISO(); apDemi = a.slice(-1); allerRubrique("eleves", "appel"); }
+  else if(a === "vie") allerRubrique("eleves", "vie");
+  else if(a === "agenda") allerRubrique("organisation", "agenda");
+  else if(a === "taches"){ var ta = tacheSuivante(); if(ta) taOnglet = ta.o; allerRubrique("organisation", "taches"); }
+  else if(a === "nettoyage"){
+    avantModif(false); var v = state.vie, auj = aujourdhuiISO(); v.faits = v.faits || {};
+    if(v.faits[auj]) delete v.faits[auj]; else v.faits[auj] = 1;
+    touch(); renderAujourdhui(); majNotifs();
+  }
+});
+
+/* ---------- situation de la classe ---------- */
+function renderSituation(){
+  if(!el("acSituation")) return;
+  var mc = derniereCompo(), cases = [];
+  if(mc){
+    var cl = classement(mc), b = echelleMoyenne(), seuil = state.notes.seuil != null ? state.notes.seuil : b / 2;
+    var reussis = cl.liste.filter(function(x){ return x.b.moy >= seuil; }).length, diff = cl.liste.filter(function(x){ return x.b.moy < seuil; });
+    var premier = cl.liste[0];
+    cases.push({l:"Dernière composition", v:esc(libellePeriode(mc)), s:cl.sur + " élève(s) noté(s)", go:"notes", large:true});
+    cases.push({l:"Moyenne de la classe", v:cl.moyenneClasse == null ? "—" : nombreFr(cl.moyenneClasse, 2) + '<small> / ' + b + '</small>', go:"notes"});
+    cases.push({l:"Taux de réussite", v:cl.sur ? nombreFr(reussis / cl.sur * 100, 1) + ' %' : "—", s:reussis + " sur " + cl.sur + " (moyenne ≥ " + nombreFr(seuil) + ")", cls:"ok", go:"annee"});
+    cases.push({l:"Meilleur résultat", v:premier ? nombreFr(premier.b.moy, 2) : "—", s:premier ? esc(premier.e.nom) : "", go:"notes"});
+    cases.push({l:"En difficulté", v:String(diff.length), s:diff.length ? "Moyenne sous " + nombreFr(seuil) : "Aucun élève", cls:diff.length ? "bad" : "ok", act:diff.length ? "difficulte" : ""});
+  } else cases.push({l:"Résultats", v:"Aucune composition", s:"Saisissez des notes pour voir la situation.", go:"notes", large:true});
+  var c = controles(), graves = c.filter(function(x){ return x.bad; }).length;
+  cases.push({l:"Points à vérifier", v:String(c.length), s:c.length ? (graves ? graves + " erreur(s)" : "Âges ou scolarités") : "Registre cohérent", cls:c.length ? (graves ? "bad" : "warn") : "ok", go:"synthese"});
+  el("acSituation").innerHTML = cases.map(function(x){
+    var attr = x.go ? ' data-aller="' + x.go + '"' : x.act ? ' data-sit="' + x.act + '"' : '';
+    return '<button type="button" class="sit' + (x.large ? ' large' : '') + (x.cls ? ' ' + x.cls : '') + '"' + attr + (attr ? '' : ' disabled') + '><small>' + x.l + '</small><b>' + x.v + '</b>' + (x.s ? '<span>' + x.s + '</span>' : '') + '</button>';
+  }).join("");
+  /* sauvegarde */
+  var d = dossier.derniereSauvegarde, jours = d ? Math.floor((Date.now() - Date.parse(d)) / 86400000) : null;
+  var st = !aDesDonnees() ? ["", "—"] : d == null ? ["bad", "Jamais"] : jours > JOURS_RAPPEL ? ["warn", "À refaire"] : ["ok", "À jour"];
+  if(/pleine/i.test(el("stStatus").textContent)) st = ["bad", "Erreur"];
+  el("acSvBadge").className = "badge " + st[0] + (st[1] === "—" ? " is-hidden" : ""); el("acSvBadge").textContent = st[1];
+}
+el("acSituation").addEventListener("click", function(ev){
+  var b = ev.target.closest("[data-sit]"); if(!b) return;
+  var mc = derniereCompo(); if(!mc) return;
+  var cl = classement(mc), seuil = state.notes.seuil != null ? state.notes.seuil : echelleMoyenne() / 2;
+  var diff = cl.liste.filter(function(x){ return x.b.moy < seuil; }).sort(function(a, b){ return a.b.moy - b.b.moy; });
+  dialogue("Élèves en difficulté", '<p style="margin:0 0 8px">' + esc(libellePeriode(mc)) + ' — moyenne sous ' + nombreFr(seuil) + ' :</p><ul class="imp" style="max-height:50vh;overflow:auto">'
+    + diff.map(function(x){ return '<li><b>' + esc(x.e.nom) + '</b> — ' + nombreFr(x.b.moy, 2) + ' / ' + echelleMoyenne() + '</li>'; }).join("") + '</ul>',
+    [{label:"Fermer", valeur:null, style:"btn-ghost"}, {label:"Voir les notes", valeur:"ok", style:"btn-primary"}], {feuille:true}).then(function(v){ if(v) allerRubrique("notes", "notes"); });
+});
+
+/* ---------- Organisation ---------- */
+function renderOrga(){
+  var auj = aujourdhuiISO();
+  var avenir = dossier.agenda.filter(function(a){ return (a.fin || a.date) >= auj; }).sort(function(a, b){ return a.date.localeCompare(b.date); });
+  el("orgAgSous").textContent = avenir.length ? avenir.length + " événement(s) à venir" : "Compositions, congés, réunions, rappels";
+  var cours = edtDuJour(); el("orgEdtSous").textContent = cours.length ? "Aujourd'hui : " + cours.map(function(c){ return c.m; }).join(" · ") : "Les matières de chaque jour";
+  var tf = ["rentree","fin"].map(function(o){ var x = state.taches[o] || []; return x.filter(function(t){ return t.fait; }).length + "/" + x.length; });
+  el("orgTaSous").textContent = "Rentrée " + tf[0] + " · fin d'année " + tf[1];
+  var lj = activitesDuJour().filter(function(a){ return a.act !== "appel-m" && a.act !== "appel-s"; });
+  if(cours.length) lj.unshift({ic:"i-horloge", t:"Emploi du temps du jour", s:cours.map(function(c){ return esc(c.m); }).join(" · "), st:"info", lib:"Aujourd'hui", btn:"Voir", act:"edt"});
+  el("orgAuj").innerHTML = lj.map(ligneActivite).join("") || '<li class="vide-etat" style="border:0">Rien de prévu aujourd\'hui.</li>';
+  var limite = decalerJour(auj, 30);
+  el("orgAvenir").innerHTML = avenir.filter(function(a){ return a.date > auj && a.date <= limite; }).slice(0, 12).map(function(a){
+    var j = joursAvant(a.date);
+    return ligneActivite({ic:"i-agenda", t:esc(a.titre), s:libType(a.type) + " · " + dateFr(a.date), st:j <= 3 ? "encours" : "info", lib:j === 1 ? "Demain" : "Dans " + j + " j"});
+  }).join("") || '<li class="vide-etat" style="border:0">Rien dans les 30 prochains jours.</li>';
+}
+["orgAuj","orgAvenir"].forEach(function(id){ el(id).addEventListener("click", function(ev){
+  var b = ev.target.closest("[data-act]"); if(!b) return; var a = b.getAttribute("data-act");
+  if(a === "edt") allerRubrique("organisation", "edt");
+  else if(a === "agenda") allerRubrique("organisation", "agenda");
+  else if(a === "taches"){ var ta = tacheSuivante(); if(ta) taOnglet = ta.o; allerRubrique("organisation", "taches"); }
+  else if(a === "vie") allerRubrique("eleves", "vie");
+  else if(a === "nettoyage"){ el("acActivites").querySelector('[data-act="nettoyage"]') ? null : null; avantModif(false); var v = state.vie, auj = aujourdhuiISO(); v.faits = v.faits || {}; if(v.faits[auj]) delete v.faits[auj]; else v.faits[auj] = 1; touch(); renderOrga(); majNotifs(); }
+}); });
+function renderPlus(){
+  var d = dossier.derniereSauvegarde;
+  el("plusSv").textContent = d ? "Dernière sauvegarde " + ilYa(d) : "Aucune sauvegarde pour l'instant";
+  el("plusInstall").classList.toggle("is-hidden", !inviteInstall || estInstallee());
+}
+
+/* ---------- centre de notifications ---------- */
+function notifications(){
+  var n = [], auj = aujourdhuiISO();
+  if(aDesDonnees()){
+    var d = dossier.derniereSauvegarde, j = d ? Math.floor((Date.now() - Date.parse(d)) / 86400000) : null;
+    if(d == null) n.push({niv:"bad", ic:"i-sauver", t:"Aucune sauvegarde", s:"Si le téléphone est perdu, vos classes le sont aussi.", btn:"Sauvegarder", v:"sauver"});
+    else if(j > JOURS_RAPPEL) n.push({niv:"warn", ic:"i-sauver", t:"Sauvegarde ancienne", s:"Dernière sauvegarde il y a " + j + " jours.", btn:"Sauvegarder", v:"sauver"});
+  }
+  if(/pleine/i.test(el("stStatus").textContent)) n.push({niv:"bad", ic:"i-alerte", t:"Mémoire pleine", s:"La dernière modification n'a pas été enregistrée.", btn:"Voir", v:"go:reglages|rgSauve"});
+  if(jourDeClasse() && nommes().length){
+    ["m","s"].forEach(function(k){ var e = etatAppel(k); if(e.st === "retard") n.push({niv:"warn", ic:"i-appel", t:"Appel du " + (k === "m" ? "matin" : "soir") + " pas fait", s:"Aujourd'hui", btn:"Faire l'appel", v:"appel-" + k}); });
+  }
+  /* compositions non terminées */
+  var act = matieresActives(), l = nommes().filter(function(e){ return !e.depart; });
+  periodesRenseignees().forEach(function(p){
+    var inc = l.filter(function(e){ var nb = act.filter(function(m){ return noteDe(e, m.code, p) != null; }).length; return nb < act.length; }).length;
+    if(inc) n.push({niv:"warn", ic:"i-notes", t:libellePeriode(p) + " non terminée", s:inc + " élève(s) sans toutes leurs notes", btn:"Compléter", v:"compo:" + p});
+  });
+  var sansAge = l.filter(function(e){ return e.age == null; }).length;
+  if(sansAge) n.push({niv:"info", ic:"i-eleves", t:"Informations à vérifier", s:sansAge + " élève(s) sans âge", btn:"Voir", v:"go:eleves|saisie"});
+  var c = controles(); if(c.length) n.push({niv:c.some(function(x){ return x.bad; }) ? "bad" : "info", ic:"i-alerte", t:c.length + " point(s) à vérifier", s:"Effectifs, âges, scolarités", btn:"Voir", v:"go:eleves|synthese"});
+  dossier.agenda.filter(function(a){ return a.date <= decalerJour(auj, 1) && (a.fin || a.date) >= auj; }).forEach(function(a){
+    n.push({niv:"info", ic:"i-agenda", t:a.titre, s:libType(a.type) + " · " + (a.date > auj ? "demain" : "aujourd'hui"), btn:"Agenda", v:"go:organisation|agenda"});
+  });
+  anniversaires(0).forEach(function(x){ n.push({niv:"info", ic:"i-etoile", t:"Anniversaire : " + x.e.nom, s:x.age + " ans aujourd'hui"}); });
+  var ta = tacheSuivante(); if(ta) n.push({niv:"info", ic:"i-check", t:ta.reste + " tâche(s) " + (ta.o === "rentree" ? "de rentrée" : "de fin d'année") + " en attente", s:ta.t.texte, btn:"Voir", v:"go:organisation|taches"});
+  return n;
+}
+function majNotifs(){
+  var n = notifications(), imp = n.filter(function(x){ return x.niv !== "info"; }).length;
+  el("notifNb").textContent = imp > 9 ? "9+" : String(imp || n.length);
+  el("notifNb").classList.toggle("is-hidden", !n.length);
+  el("notifNb").classList.toggle("doux", !imp);
+}
+el("btnNotif").addEventListener("click", function(){
+  var n = notifications();
+  dialogue("Notifications", n.length ? '<ul class="notifs">' + n.map(function(x){
+      return '<li class="' + x.niv + '"><span class="act-ic ' + ({bad:"retard", warn:"encours", info:"info"}[x.niv]) + '"><svg class="ic"><use href="#' + x.ic + '"/></svg></span><span class="act-txt"><b>' + esc(x.t) + '</b><small>' + esc(x.s || "") + '</small></span>'
+        + (x.btn ? '<button class="btn btn-sm" type="button" data-v="' + esc(x.v) + '">' + esc(x.btn) + '</button>' : '') + '</li>';
+    }).join("") + '</ul>' : '<p class="vide-etat" style="margin:0">Tout est en ordre. Aucune alerte.</p>',
+    [{label:"Fermer", valeur:null, style:"btn-ghost"}], {feuille:true}).then(function(v){
+      if(!v) return;
+      if(v === "sauver") faireSauvegarde();
+      else if(v === "appel-m" || v === "appel-s"){ apDate = aujourdhuiISO(); apDemi = v.slice(-1); allerRubrique("eleves", "appel"); }
+      else if(v.indexOf("compo:") === 0){ state.notes.mois = v.slice(6); allerRubrique("notes", "notes"); }
+      else if(v.indexOf("go:") === 0) allerVers(v.slice(3));
+    });
+});
+
 /* ---------- couleur de l'application ---------- */
-el("rgCouleur").addEventListener("change", function(){ changerPref("couleur", this.value === "ci" ? "ci" : "bleu"); });
+el("rgCouleur").addEventListener("change", function(){ changerPref("couleur", this.value === "bleu" ? "bleu" : "registre"); });
 
 /* ---------- recherche générale ---------- */
 function sansAccent(t){ return String(t || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); }
@@ -7113,7 +7395,10 @@ function entreesRecherche(){
     ["Bloc-notes","accueil","blocnotes"],["Chants et récitations","accueil","textes"],["Registre des visites","accueil","visites"],["Inventaire","accueil","inventaire"],["Tâches de l'année","accueil","taches"]];
   vues.forEach(function(x){ r.push({t:x[1] === "documents" ? "Document" : "Écran", l:x[0], s:"", v:"n|" + x[1] + "|" + x[2]}); });
   Object.keys(DOCS).forEach(function(k){ r.push({t:"Document", l:DOCS[k], s:"", v:"d|" + k}); });
-  [["Sauvegarde, restaurer, corbeille"],["En-tête du registre, école, classe"],["Matières, barèmes"],["Couleurs, thème, taille du texte"],["Maîtres, verrouillage, rôle directeur"]].forEach(function(x){ r.push({t:"Réglages", l:x[0], s:"", v:"r"}); });
+  periodesRenseignees().forEach(function(p){ r.push({t:"Composition", l:libellePeriode(p), s:nomClasse(state), v:"c|" + p}); });
+  dossier.agenda.forEach(function(a){ r.push({t:"Agenda", l:a.titre, s:libType(a.type) + " · " + dateFr(a.date), v:"n|organisation|agenda"}); });
+  (state.blocnotes || []).forEach(function(nt){ r.push({t:"Bloc-notes", l:nt.texte.slice(0, 70), s:"", v:"n|plus|blocnotes"}); });
+  [["Sauvegarde, restaurer, corbeille","rgSauve"],["En-tête du registre, école, établissement","rgEtab"],["Classes, archives, année suivante","secEntete"],["Couleurs, thème, taille du texte",""],["Maîtres, verrouillage, rôle directeur",""],["Aide","rgAide"]].forEach(function(x){ r.push({t:"Réglages", l:x[0], s:"", v:"r|" + x[1]}); });
   if(dossier.role === "directeur") r.push({t:"Écran", l:"Mon école", s:"Classes des collègues", v:"n|accueil|ecole"});
   return r;
 }
@@ -7131,9 +7416,10 @@ el("btnRecherche").addEventListener("click", function(){
     if(!v) return;
     var p = v.split("|");
     if(p[0] === "e"){ if(dossier.active !== p[1]) ouvrirClasse(p[1]); allerRubrique("eleves", "saisie"); setTimeout(function(){ ouvrirFiche(p[2]); }, 300); }
-    else if(p[0] === "n"){ if(p[2] === "feuille" || p[2] === "cartes") ouvrirDocument(p[2]); else allerRubrique(p[1], p[2]); }
+    else if(p[0] === "n"){ if(p[2] === "feuille" || p[2] === "cartes") ouvrirDocument(p[2]); else allerRubrique(RUBRIQUE_DE[p[2]] || p[1], p[2]); }
     else if(p[0] === "d") ouvrirDocument("d:" + p[1]);
-    else if(p[0] === "r") allerRubrique("reglages");
+    else if(p[0] === "c"){ state.notes.mois = p[1]; allerRubrique("notes", "notes"); }
+    else if(p[0] === "r") allerVers("reglages|" + (p[1] || ""));
   });
 });
 
@@ -7155,7 +7441,7 @@ function tableauMatieresEleve(e){
 }
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "1.13.3";
+var APP_VERSION = "2.0.0";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
@@ -7164,8 +7450,8 @@ function appliquerPrefs(){
   if(p.theme === "light" || p.theme === "dark") root.setAttribute("data-theme", p.theme); else root.removeAttribute("data-theme");
   if(p.taille === "grand" || p.taille === "tresgrand") root.setAttribute("data-taille", p.taille); else root.removeAttribute("data-taille");
   document.body.classList.toggle("leger", !!p.leger);
-  if(p.couleur === "ci") root.setAttribute("data-palette", "ci"); else root.removeAttribute("data-palette");
-  if(el("rgCouleur")) el("rgCouleur").value = p.couleur === "ci" ? "ci" : "bleu";
+  if(p.couleur === "bleu") root.setAttribute("data-palette", "bleu"); else root.removeAttribute("data-palette");
+  if(el("rgCouleur")) el("rgCouleur").value = p.couleur === "bleu" ? "bleu" : "registre";
   document.body.classList.toggle("eco", !!p.eco);
   el("rgTheme").value = p.theme || "auto";
   el("rgTaille").value = p.taille || "normal";
