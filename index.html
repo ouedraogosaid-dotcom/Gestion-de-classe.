@@ -95,8 +95,10 @@ svg.ic{width:1.25em; height:1.25em; flex:none; stroke:currentColor; fill:none; s
 /* ================= Barre du haut ================= */
 .appbar{
   position:sticky; top:0; z-index:30; padding-top:env(safe-area-inset-top,0px);
+  background:var(--fond);
   background:color-mix(in srgb, var(--fond) 82%, transparent);
   backdrop-filter:saturate(1.4) blur(14px); -webkit-backdrop-filter:saturate(1.4) blur(14px);
+  border-bottom:1px solid var(--bord);
   border-bottom:1px solid color-mix(in srgb, var(--bord) 70%, transparent);
 }
 .appbar-in{max-width:1180px; margin:0 auto; padding:10px 16px; display:flex; gap:10px; align-items:center}
@@ -130,6 +132,7 @@ svg.ic{width:1.25em; height:1.25em; flex:none; stroke:currentColor; fill:none; s
 .bottomnav{
   position:fixed; left:0; right:0; bottom:0; z-index:40;
   padding:0 8px env(safe-area-inset-bottom,0px);
+  background:var(--surface);
   background:color-mix(in srgb, var(--surface) 90%, transparent);
   backdrop-filter:saturate(1.4) blur(16px); -webkit-backdrop-filter:saturate(1.4) blur(16px);
   border-top:1px solid var(--bord);
@@ -190,10 +193,10 @@ svg.ic{width:1.25em; height:1.25em; flex:none; stroke:currentColor; fill:none; s
 .btn:hover{border-color:var(--bord-2)}
 .btn:active{transform:scale(.97)}
 .btn:disabled{opacity:.45; cursor:default; transform:none}
-.btn-primary{background:var(--bleu); color:var(--bleu-texte); border-color:var(--bleu); box-shadow:0 8px 18px -10px color-mix(in srgb, var(--bleu) 80%, transparent)}
+.btn-primary{background:var(--bleu); color:var(--bleu-texte); border-color:var(--bleu); box-shadow:0 8px 18px -10px rgba(0,0,0,.3); box-shadow:0 8px 18px -10px color-mix(in srgb, var(--bleu) 80%, transparent)}
 .btn-primary:hover{background:var(--bleu-fonce); border-color:var(--bleu-fonce)}
 .btn-ghost{background:transparent; border-color:transparent}
-.btn-danger{color:var(--bad); border-color:color-mix(in srgb, var(--bad) 35%, var(--bord))}
+.btn-danger{color:var(--bad); border-color:var(--bord); border-color:color-mix(in srgb, var(--bad) 35%, var(--bord))}
 .btn-sm{padding:7px 11px; font-size:.8rem; min-height:36px; border-radius:10px}
 .btns{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
 
@@ -202,7 +205,7 @@ svg.ic{width:1.25em; height:1.25em; flex:none; stroke:currentColor; fill:none; s
   position:fixed; z-index:35; right:16px; bottom:calc(var(--nav-h) + 16px + env(safe-area-inset-bottom,0px));
   appearance:none; border:0; cursor:pointer; display:inline-flex; align-items:center; gap:9px;
   background:var(--bleu); color:var(--bleu-texte); font:600 .95rem/1 "Inter",sans-serif;
-  padding:15px 20px; border-radius:18px; box-shadow:0 14px 30px -12px color-mix(in srgb, var(--bleu) 75%, #000);
+  padding:15px 20px; border-radius:18px; box-shadow:0 14px 30px -12px rgba(0,0,0,.4); box-shadow:0 14px 30px -12px color-mix(in srgb, var(--bleu) 75%, #000);
   transition:transform .3s cubic-bezier(.3,1.4,.6,1), opacity .25s ease;
 }
 .fab:active{transform:scale(.95)}
@@ -235,7 +238,7 @@ thead th{
 thead tr:first-child th:first-child{border-top-left-radius:10px}
 thead tr:first-child th:last-child{border-top-right-radius:10px}
 tbody tr{transition:background .15s ease}
-tbody tr:hover{background:color-mix(in srgb, var(--surface-2) 60%, transparent)}
+tbody tr:hover{background:var(--surface-2); background:color-mix(in srgb, var(--surface-2) 60%, transparent)}
 .num{text-align:center; width:38px; color:var(--texte-3); font-size:.78rem}
 .nom{font-weight:600; white-space:nowrap}
 .sx-G .nom,.sx-G .mat{color:var(--g)}
@@ -411,7 +414,7 @@ tbody tr:hover{background:color-mix(in srgb, var(--surface-2) 60%, transparent)}
 /* ================= Messages, boîtes de dialogue, fiche ================= */
 .rappel{
   display:flex; gap:10px 14px; align-items:center; flex-wrap:wrap; margin-top:14px; padding:14px 16px;
-  border:1px solid color-mix(in srgb, var(--or) 45%, var(--bord)); border-radius:var(--rayon);
+  border:1px solid var(--or); border:1px solid color-mix(in srgb, var(--or) 45%, var(--bord)); border-radius:var(--rayon);
   background:var(--warn-bg); color:var(--texte); font-size:.86rem; animation:glisse .4s ease-out;
 }
 .rappel > span:first-child{flex:1 1 240px}
@@ -490,7 +493,8 @@ tbody tr:hover{background:color-mix(in srgb, var(--surface-2) 60%, transparent)}
 #tNotes td.res{text-align:center; font-weight:600; background:var(--surface-2); white-space:nowrap}
 #tNotes td.res.vide{color:var(--texte-3); font-weight:400}
 #tNotes td.rg{text-align:center; font-weight:700; color:var(--bleu)}
-#tNotes td.nom, #tAnnee td.nom, #tbSaisie td:nth-child(3){position:sticky; left:0; background:var(--surface); z-index:1}
+#tNotes td.nom, #tAnnee td.nom, #tbSaisie td:nth-child(3), .edt td:first-child, .edt th:first-child{position:sticky; left:0; background:var(--surface); z-index:1; box-shadow:1px 0 0 var(--bord)}
+.edt th:first-child{background:var(--surface-2)}
 #tAnnee td.dec{text-align:center; font-weight:600; color:var(--ok); white-space:nowrap}
 #tAnnee td.dec.red{color:var(--bad)}
 #tAnnee table{min-width:900px}
@@ -541,8 +545,8 @@ tbody tr:hover{background:color-mix(in srgb, var(--surface-2) 60%, transparent)}
 .appel-resume .pas{background:var(--or-doux); color:var(--warn)}
 .appel-liste{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px}
 .appel-liste li{display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:12px; border:1px solid var(--bord); background:var(--surface); transition:background .2s ease, border-color .2s ease}
-.appel-liste li.A{background:var(--bad-bg); border-color:color-mix(in srgb, var(--bad) 35%, var(--bord))}
-.appel-liste li.R{background:var(--warn-bg); border-color:color-mix(in srgb, var(--or) 45%, var(--bord))}
+.appel-liste li.A{background:var(--bad-bg); border-color:var(--bad); border-color:color-mix(in srgb, var(--bad) 35%, var(--bord))}
+.appel-liste li.R{background:var(--warn-bg); border-color:var(--or); border-color:color-mix(in srgb, var(--or) 45%, var(--bord))}
 .appel-liste .avatar{width:34px; height:34px; font-size:.75rem}
 .appel-liste .ce-nom{flex:1; min-width:0; white-space:normal; line-height:1.25}
 .pa{display:flex; gap:4px}
@@ -681,7 +685,7 @@ td.faible{color:var(--bad); font-weight:700}
 .une-liste input.nt{width:84px; text-align:center; font:700 1.05rem/1 "Inter",sans-serif; padding:10px 6px}
 .une-liste input.nt.bad{background:var(--bad-bg); border-color:var(--bad)}
 .une-liste .sur{color:var(--texte-3); font-size:.8rem; min-width:28px}
-.une-liste li.fait{border-color:color-mix(in srgb, var(--ok) 40%, var(--bord))}
+.une-liste li.fait{border-color:var(--ok); border-color:color-mix(in srgb, var(--ok) 40%, var(--bord))}
 .appr-liste li{flex-wrap:wrap}
 .appr-liste .moy{font-size:.78rem; color:var(--texte-3); white-space:nowrap}
 .appr-liste select{width:auto; min-width:130px; padding:8px 10px}
@@ -737,6 +741,32 @@ body.est-directeur .role-maitre{display:none !important}
 .taches input[type=checkbox]{width:22px; height:22px; accent-color:var(--ok); flex:none}
 .taches li span{flex:1}
 @media print{ .graphe svg{max-height:85mm} .graphe .txt{fill:#333} .inv input, .inv select{font-size:9pt !important} }
+
+
+/* ================= Finitions ================= */
+:root[data-palette="ci"]{ --bleu:#B85000; --bleu-fonce:#9A4300; --bleu-doux:rgba(184,80,0,.11); --or:#009E60; --or-doux:rgba(0,158,96,.12);
+  --hero1:#FF9A3D; --hero2:#E06A00; --hero3:#007A4D; --logo2:#F7A440 }
+@media (prefers-color-scheme: dark){ :root[data-palette="ci"]:not([data-theme="light"]){ --bleu:#FF9B42; --bleu-fonce:#FFB46E; --bleu-doux:rgba(255,155,66,.16); --bleu-texte:#1F0F00; --or:#3CCB8C } }
+:root[data-palette="ci"][data-theme="dark"]{ --bleu:#FF9B42; --bleu-fonce:#FFB46E; --bleu-doux:rgba(255,155,66,.16); --bleu-texte:#1F0F00; --or:#3CCB8C }
+.hero{background:radial-gradient(120% 140% at 100% 0%, var(--hero1, #5A8DF2) 0%, var(--hero2, #1D5BD8) 45%, var(--hero3, #123C93) 100%)}
+.logo, .guide-ill{background:linear-gradient(140deg, var(--bleu) 0%, var(--logo2, #4F86F5) 100%)}
+.espace{margin-top:12px}
+.puces-cases{display:flex; flex-wrap:wrap; gap:6px 12px; padding-top:4px}
+.puces-cases .case{display:inline-flex; align-items:center; gap:5px; font-size:.88rem; cursor:pointer}
+.field .lbl{display:block; font-size:.8rem; font-weight:600; color:var(--texte-2); margin-bottom:4px}
+.jauge{height:10px; border-radius:10px; background:var(--surface-2); overflow:hidden; box-shadow:0 0 0 1px var(--bord) inset}
+.jauge i{display:block; height:100%; width:0; background:var(--ok); border-radius:10px; transition:width .6s ease}
+.jauge i.moyen{background:var(--or)} .jauge i.plein{background:var(--bad)}
+.espace small{display:block; margin-top:6px; color:var(--texte-3); font-size:.78rem}
+.resultats{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px; max-height:56vh; overflow:auto}
+.resultats li{display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; border:1px solid var(--bord); cursor:pointer}
+.resultats li:hover{border-color:var(--bord-2)}
+.resultats li span:last-child{display:flex; flex-direction:column; min-width:0}
+.resultats li small{color:var(--texte-3); font-size:.75rem}
+.mat-annee td{text-align:left !important; padding:7px 8px}
+.mat-annee tr.fort td{color:var(--ok); font-weight:600}
+.mat-annee tr.faible td{color:var(--bad); font-weight:600}
+@media (max-width:420px){ .appbar-in{gap:6px} .icon-btn{width:38px; height:38px} }
 
 /* ================= Animations ================= */
 @keyframes entre{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
@@ -1043,6 +1073,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
       <span class="brand-txt"><b>Registre</b><small id="brandSub">Gestion de classe</small></span>
     </div>
     <label class="classe-chip"><span class="sr">Classe ouverte</span><select id="f_classeSel"></select></label>
+    <button class="icon-btn" id="btnRecherche" type="button" aria-label="Rechercher" title="Rechercher"><svg class="ic"><use href="#i-recherche"/></svg></button>
     <button class="icon-btn" id="btnAnnuler" type="button" disabled aria-label="Annuler la dernière action" title="Annuler la dernière action"><svg class="ic"><use href="#i-annuler"/></svg></button>
   </div>
 </header>
@@ -1058,6 +1089,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
       <p id="acClasse">—</p>
       <p class="hero-compte is-hidden" id="acCompte"></p>
     </div>
+    <div class="notice is-hidden" id="acInstall"><span style="flex:1 1 200px"><b>Installez l'application</b> sur l'écran d'accueil : elle s'ouvrira d'un geste, même sans internet.</span><button class="btn btn-sm btn-primary" type="button" id="acInstallBtn">Installer</button></div>
     <div class="notice is-hidden" id="acArchive"><span style="flex:1 1 200px"><b>Classe archivée.</b> Elle reste consultable ; rouvrez-la dans Réglages pour la remettre dans la liste.</span></div>
     <div class="rappel is-hidden" id="acRappelsJour" role="status"></div>
 
@@ -1645,6 +1677,8 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
         <button class="btn" id="btnExcel" type="button">Exporter en Excel</button>
         <button class="btn is-hidden" id="btnCsv" type="button">Exporter en CSV</button>
       </div>
+      <div class="espace"><div class="jauge"><i id="espaceBarre"></i></div><small id="espaceTxt">—</small></div>
+      <div class="btns" style="margin-top:8px"><button class="btn btn-sm btn-ghost is-hidden" id="btnViderCorbeille" type="button">Vider la corbeille</button><button class="btn btn-sm btn-ghost is-hidden" id="btnRetirerPhotos" type="button">Retirer les photos</button></div>
       <p class="hint">Vos classes sont enregistrées dans ce téléphone. La sauvegarde crée un fichier à garder ailleurs (WhatsApp, Google Drive…) au cas où le téléphone serait perdu.</p>
     </section>
 
@@ -1652,6 +1686,8 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
       <h2>Apparence</h2>
       <div class="reglage"><span class="r-txt"><b>Thème</b><small>Clair, sombre ou selon le téléphone</small></span>
         <select id="rgTheme"><option value="auto">Automatique</option><option value="light">Clair</option><option value="dark">Sombre</option></select></div>
+      <div class="reglage"><span class="r-txt"><b>Couleur</b><small>Bleu, ou orange et vert de la Côte d'Ivoire</small></span>
+        <select id="rgCouleur"><option value="bleu">Bleu</option><option value="ci">Côte d'Ivoire</option></select></div>
       <div class="reglage"><span class="r-txt"><b>Taille du texte</b><small>Pour lire plus facilement</small></span>
         <select id="rgTaille"><option value="normal">Normale</option><option value="grand">Grande</option><option value="tresgrand">Très grande</option></select></div>
       <div class="reglage"><span class="r-txt"><b>Mode léger</b><small>Sans animations, plus rapide sur les téléphones modestes</small></span>
@@ -1707,7 +1743,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
         <p>Dans Chrome, menu ⋮ puis « Ajouter à l'écran d'accueil ». L'application fonctionne ensuite sans internet.</p></details>
     </section>
 
-    <p class="version">Registre récapitulatif — version <span id="appVersion"></span></p>
+    <p class="version">Registre récapitulatif — version <span id="appVersion"></span> · <button type="button" class="btn btn-sm btn-ghost" id="btnNouveautes" style="min-height:0;padding:2px 6px">Quoi de neuf ?</button></p>
   </section>
 </main>
 
@@ -2469,7 +2505,7 @@ function ouvrirFiche(id){
     + '<div class="field"><label for="fcMat">N° matricule</label><input id="fcMat" name="mat" value="' + esc(base.mat) + '" autocomplete="off"></div>'
     + '<div class="field plein"><span class="lbl">Scolarité dans la classe</span>' + radio("sc", base.sc, [[1,"1re fois"],[2,"Redoublant"],[3,"Triplant"]]) + '</div>'
     + '<div class="field plein"><label for="fcSt">Scolarité totale <small style="font-weight:400;color:var(--ink3)">(années d\'école depuis le CP1)</small></label><select id="fcSt" name="st">' + opts(SC_TOTALE, base.st) + '</select></div>'
-    + (e ? courbeEleve(e) : '')
+    + (e ? courbeEleve(e) + tableauMatieresEleve(e) : '')
     + '<div class="fiche-section">Naissance et famille</div>'
     + '<div class="field"><label for="fcNais">Date de naissance</label><input id="fcNais" name="naissance" type="date" value="' + esc(base.naissance || "") + '"></div>'
     + '<div class="field"><label for="fcLieu">Lieu de naissance</label><input id="fcLieu" name="lieu" value="' + esc(base.lieu || "") + '" autocomplete="off"></div>'
@@ -2816,7 +2852,7 @@ function pagesHtml(){
 
 function buildFeuille(){
   var stage = el("a4Stage");
-  if(!stage) return;
+  if(!stage || !vueOuImpression("feuille")) return;
   var pages = pagesHtml();
   stage.innerHTML = pages.map(function(html){
     return '<div class="a4"><div class="a4-inner">' + html + '</div></div>';
@@ -3173,7 +3209,7 @@ function pageTableauHtml(liste, cl, depart, total, pages){
 
 function buildCartes(){
   var stage = el("cartesStage");
-  if(!stage) return;
+  if(!stage || !vueOuImpression("cartes")) return;
   var mode = el("f_cartesMode").value, cl = classement(), liste = alpha(), html = "";
   if(!liste.length){
     stage.innerHTML = '<div class="a4"><div class="cartes-page"><p style="padding:10mm;font-size:12px">'
@@ -3239,40 +3275,45 @@ function render(){
   rafPending = true;
   requestAnimationFrame(function(){
     rafPending = false;
+    /* seul l'écran affiché est redessiné : l'application reste fluide avec de grandes classes */
     renderEntete();
-    renderGrille("gridG","G");
-    renderGrille("gridF","F");
-    renderAlpha();
-    renderSynthese();
     renderClasses();
-    renderAccueil(false);
-    renderNiveaux();
-    renderSalle();
-    renderEnteteOfficiel();
     appliquerRole();
-    if(vueActive === "appel") renderAppel();
-    if(vueActive === "groupes"){ renderEPS(); renderPnapas(); }
-    if(vueActive === "vie") renderVie();
-    if(RUBRIQUE_DE[vueActive] === "accueil") renderOutil(vueActive);
-    if(vueActive === "stats") renderStats();
-    if(vueActive === "doc" && !el("docOptions").contains(document.activeElement)){ renderDocOptions(); buildDoc(); fitDoc(); }
-    renderMouvements();
-    renderNotes();
-    renderAnnee();
-    buildFeuille();
-    fitFeuille();
-    buildCartes();
-    fitCartes();
+    renderAccueil(false);
+    if(rubriqueActive === "reglages"){ renderNiveaux(); renderSalle(); renderEnteteOfficiel(); }
+    if(vueActive) renderVue(vueActive, true);
   });
 }
 function renderAll(){ renderSaisie(); render(); }
+function renderVue(v, depuisRender){
+  switch(v){
+    case "scolarite": renderGrille("gridG","G"); renderGrille("gridF","F"); break;
+    case "alpha": renderAlpha(); break;
+    case "synthese": renderSynthese(); renderMouvements(); break;
+    case "notes": renderNotes(); break;
+    case "annee": renderAnnee(); break;
+    case "feuille": buildFeuille(); fitFeuille(); break;
+    case "cartes": majTitreCartes(); buildCartes(); fitCartes(); break;
+    case "appel": renderAppel(); break;
+    case "groupes": renderEPS(); renderPnapas(); break;
+    case "vie": renderVie(); break;
+    case "stats": renderStats(); break;
+    case "doc": if(!depuisRender || !el("docOptions").contains(document.activeElement)){ renderDocOptions(); buildDoc(); fitDoc(); } break;
+    default: if(RUBRIQUE_DE[v] === "accueil") renderOutil(v);
+  }
+}
+/* les aperçus A4 ne sont fabriqués que s'ils sont affichés ou imprimés */
+var impressionForcee = false;
+function vueOuImpression(v){ return impressionForcee || vueActive === v; }
 
 /* ---------- persistance ---------- */
 function setStatus(txt){ el("stStatus").textContent = txt; }
 
 function persist(){
   var body = JSON.parse(JSON.stringify(dossier));
-  try{ localStorage.setItem(cleProfil(profils.actif), JSON.stringify(body)); }catch(e){}
+  try{ localStorage.setItem(cleProfil(profils.actif), JSON.stringify(body)); }
+  catch(e){ setStatus("Mémoire pleine — non enregistré"); if(typeof espacePlein === "function") espacePlein(); return; }
+  if(typeof surveillerEspace === "function") surveillerEspace();
   if(!docRef) { setStatus("Enregistré sur cet appareil"); return; }
   if(saving){ dirtyLocal = true; return; }
   saving = true; setStatus("Enregistrement…");
@@ -3323,6 +3364,56 @@ function majBoutonAnnuler(){
   b.disabled = !pileAnnuler.length;
 }
 
+
+/* ---------- bouton retour du téléphone : revenir en arrière, pas quitter ----------
+   Chaque écran et chaque fenêtre ouverte laisse une trace dans l'historique.
+   Retour ferme la fenêtre, sinon revient à l'écran précédent ; à l'accueil, il
+   faut appuyer deux fois pour quitter. */
+var couches = [], navDepuisHistorique = false, retourEnCours = 0, etatsEnAttente = [], quitterArme = false;
+function etatEcran(){ return {r:rubriqueActive, v:vueActive || ""}; }
+function pousserEtat(st){
+  if(retourEnCours){ etatsEnAttente.push(st); return; }
+  try{ history.pushState(st, ""); }catch(e){}
+}
+function ouvrirCouche(fermer){ var c = {fermer:fermer}; couches.push(c); var st = etatEcran(); st.couche = couches.length; pousserEtat(st); return c; }
+function fermerCouche(c, parRetour){
+  var i = couches.indexOf(c); if(i < 0) return;
+  couches.splice(i, 1);
+  if(!parRetour){ retourEnCours++; try{ history.back(); }catch(e){ retourEnCours--; } }
+}
+function noterNavigation(){
+  if(navDepuisHistorique) return;
+  var h = history.state || {}, st = etatEcran();
+  if(h.r === st.r && (h.v || "") === st.v && !h.couche) return;
+  pousserEtat(st);
+}
+window.addEventListener("popstate", function(ev){
+  var st = ev.state || {};
+  if(retourEnCours){
+    retourEnCours--;
+    if(!retourEnCours && etatsEnAttente.length){ var a = etatsEnAttente; etatsEnAttente = []; a.forEach(function(x){ try{ history.pushState(x, ""); }catch(e){} }); }
+    return;
+  }
+  if(couches.length){ couches[couches.length - 1].fermer(); return; }
+  if(st.racine){
+    if(quitterArme){ try{ history.back(); }catch(e){} return; }
+    quitterArme = true; setTimeout(function(){ quitterArme = false; }, 2500);
+    toast("Appuyez encore sur Retour pour quitter l'application.");
+    try{ history.pushState({r:"accueil", v:""}, ""); }catch(e){}
+    if(rubriqueActive !== "accueil" || vueActive){ navDepuisHistorique = true; allerRubrique("accueil"); navDepuisHistorique = false; }
+    return;
+  }
+  if(!st.r) return;
+  navDepuisHistorique = true;
+  try{
+    if(st.r === "documents" && !st.v) allerRubrique("documents");
+    else allerRubrique(st.r, st.v || undefined);
+  } finally { navDepuisHistorique = false; }
+});
+function initHistorique(){
+  try{ history.replaceState({racine:true}, ""); history.pushState({r:"accueil", v:""}, ""); }catch(e){}
+}
+
 /* ---------- petits messages et boîtes de dialogue ---------- */
 var toastTimer = null;
 function toast(texte, action){
@@ -3334,8 +3425,10 @@ function toast(texte, action){
   toastTimer = setTimeout(function(){ t.classList.remove("on"); }, action ? 7000 : 3200);
 }
 /* boutons : [{label, valeur, style}] — renvoie une promesse avec la valeur choisie (null si fermé) */
+var fermerDialogueCourant = null;
 function dialogue(titre, corpsHtml, boutons, opt){
   opt = opt || {};
+  if(fermerDialogueCourant) fermerDialogueCourant(null, true);
   return new Promise(function(ok){
     var fond = el("modal");
     fond.classList.toggle("feuille-bas", !!opt.feuille);
@@ -3353,11 +3446,16 @@ function dialogue(titre, corpsHtml, boutons, opt){
       });
       return c;
     }
-    function fermer(v){
+    var couche = ouvrirCouche(function(){ fermer(null, true); });
+    function fermer(v, parRetour){
+      if(fermerDialogueCourant !== fermer) return;
+      fermerDialogueCourant = null;
       var champs = opt.champs ? lireChamps() : null;
       fond.classList.remove("on"); fond.innerHTML = ""; fond.onclick = null; document.removeEventListener("keydown", clavier);
+      fermerCouche(couche, parRetour);
       ok(opt.champs ? {valeur:v, champs:champs} : v);
     }
+    fermerDialogueCourant = fermer;
     function clavier(ev){ if(ev.key === "Escape") fermer(null); }
     document.addEventListener("keydown", clavier);
     fond.onclick = function(ev){
@@ -3818,8 +3916,6 @@ function majNotesCalculs(){
   el("ntMoyCl").textContent = cl.moyenneClasse == null ? "—" : nombreFr(cl.moyenneClasse,2) + " / " + b;
   el("ntMax").textContent = cl.liste.length ? nombreFr(cl.liste[0].b.moy,2) + " — " + cl.liste[0].e.nom : "—";
   el("ntMin").textContent = cl.liste.length ? nombreFr(cl.liste[cl.liste.length-1].b.moy,2) + " — " + cl.liste[cl.liste.length-1].e.nom : "—";
-  renderAnnee();
-  buildCartes(); fitCartes();
 }
 
 el("tbNotes").addEventListener("input", onNote);
@@ -4004,9 +4100,11 @@ function allerRubrique(r, vue){
   if(r === "eleves" || r === "notes") montrerVue(vue || DERNIERE_VUE[r], !change);
   else if(r === "documents"){ if(vue) montrerVue(vue, !change); else fermerDocument(); }
   else if(r === "accueil"){ if(vue) montrerVue(vue, !change); else { fermerOutil(); vueActive = null; renderAccueil(true); } }
+  else if(r === "reglages"){ vueActive = null; renderNiveaux(); renderSalle(); renderEnteteOfficiel(); renderEspace(); }
   else vueActive = null;
   majFab();
   window.scrollTo({top:0, behavior: change ? "auto" : "smooth"});
+  noterNavigation();
 }
 function montrerVue(v, anim){
   var r = RUBRIQUE_DE[v]; if(!r) return;
@@ -4018,16 +4116,12 @@ function montrerVue(v, anim){
   else DERNIERE_VUE[r] = v;
   vueActive = v;
   if(anim) animer(el(VIEWS[v]));
-  if(v === "feuille") fitFeuille();
-  if(v === "cartes"){ majTitreCartes(); buildCartes(); fitCartes(); }
-  if(v === "doc"){ renderDocOptions(); buildDoc(); fitDoc(); }
-  if(v === "stats") renderStats();
-  if(v === "appel") renderAppel();
-  if(v === "groupes"){ renderEPS(); renderPnapas(); }
-  if(v === "vie") renderVie();
+  setTimeout(noterNavigation, 0);
+  renderVue(v, false);
   majFab();
 }
 function fermerDocument(){
+  setTimeout(noterNavigation, 0);
   el("docsHub").classList.remove("is-hidden"); el("docRetour").classList.add("is-hidden");
   el("vFeuille").classList.add("is-hidden"); el("vCartes").classList.add("is-hidden"); el("vDoc").classList.add("is-hidden");
   vueActive = null; animer(el("docsHub")); majFab();
@@ -4117,7 +4211,7 @@ function imprimer(){
 
   if(printMode){
     el("f_cartesMode").value = printMode;
-    buildCartes(); fitCartes();
+    impressionForcee = true; buildCartes(); fitCartes(); impressionForcee = false;
     document.body.classList.add("pr-cartes");
   } else {
     document.body.classList.add("pr-"+requestedView);
@@ -4147,7 +4241,7 @@ function imprimer(){
     ["saisie","appel","groupes","vie","scolarite","alpha","synthese","feuille","notes","annee","cartes"].forEach(function(k){
       document.body.classList.remove("pr-"+k);
     });
-    if(printMode){ buildCartes(); fitCartes(); }
+    if(printMode && vueActive === "cartes"){ buildCartes(); fitCartes(); }
     window.__restorePrintState = null;
   };
 }
@@ -5387,6 +5481,7 @@ function afficherTexte(i){
   var t = l[gtIndex];
   el("gtTitre").textContent = t.titre; el("gtCorps").textContent = t.texte;
   el("grandTexte").style.setProperty("--gt", gtTaille + "px");
+  if(el("grandTexte").hidden) coucheGT = ouvrirCouche(function(){ el("grandTexte").hidden = true; coucheGT = null; });
   el("grandTexte").hidden = false; el("grandTexte").scrollTop = 0;
 }
 el("txListe").addEventListener("click", function(ev){
@@ -5394,12 +5489,14 @@ el("txListe").addEventListener("click", function(ev){
   if(v){ var t = state.textes[Number(v.getAttribute("data-tx-voir"))]; afficherTexte(state.textes.filter(function(x){ return x.texte; }).indexOf(t)); return; }
   var e = ev.target.closest("[data-tx-edit]"); if(e) editerTexte(e.getAttribute("data-tx-edit"));
 });
-el("gtFermer").addEventListener("click", function(){ el("grandTexte").hidden = true; });
+var coucheGT = null;
+function fermerGrandTexte(){ el("grandTexte").hidden = true; if(coucheGT){ var c = coucheGT; coucheGT = null; fermerCouche(c, false); } }
+el("gtFermer").addEventListener("click", fermerGrandTexte);
 el("gtPlus").addEventListener("click", function(){ gtTaille = Math.min(64, gtTaille + 4); el("grandTexte").style.setProperty("--gt", gtTaille + "px"); });
 el("gtMoins").addEventListener("click", function(){ gtTaille = Math.max(16, gtTaille - 4); el("grandTexte").style.setProperty("--gt", gtTaille + "px"); });
 el("gtPrec").addEventListener("click", function(){ afficherTexte(gtIndex - 1); });
 el("gtSuiv").addEventListener("click", function(){ afficherTexte(gtIndex + 1); });
-document.addEventListener("keydown", function(ev){ if(!el("grandTexte").hidden && ev.key === "Escape") el("grandTexte").hidden = true; });
+document.addEventListener("keydown", function(ev){ if(!el("grandTexte").hidden && ev.key === "Escape") fermerGrandTexte(); });
 
 /* ---------- accueil : compteur, rappels du jour, anniversaires, cours du jour ---------- */
 function renderAccueil3B(){
@@ -6468,8 +6565,138 @@ el("btnPartagerSauve").addEventListener("click", function(){
   });
 });
 
+/* =====================================================================
+   FINITIONS — mémoire, installation, nouveautés, couleurs, recherche
+   ===================================================================== */
+/* ---------- espace de stockage du téléphone ---------- */
+var QUOTA = 5 * 1024 * 1024, alerteEspaceVue = false;
+function espaceUtilise(){ var t = 0; try{ for(var i = 0; i < localStorage.length; i++){ var k = localStorage.key(i); t += k.length + (localStorage.getItem(k) || "").length; } }catch(e){} return t; }
+function renderEspace(){
+  var u = espaceUtilise(), pc = Math.min(100, Math.round(u / QUOTA * 100));
+  el("espaceBarre").style.width = pc + "%";
+  el("espaceBarre").className = pc >= 85 ? "plein" : pc >= 65 ? "moyen" : "";
+  el("espaceTxt").textContent = (u / 1048576).toFixed(2).replace(".", ",") + " Mo utilisés sur environ 5 Mo (" + pc + " %)";
+  var photos = 0; dossier.classes.forEach(function(c){ c.eleves.forEach(function(e){ if(e.photo) photos++; }); });
+  el("btnRetirerPhotos").classList.toggle("is-hidden", !photos);
+  el("btnRetirerPhotos").textContent = "Retirer les photos (" + photos + ")";
+  el("btnViderCorbeille").classList.toggle("is-hidden", !dossier.corbeille.length);
+}
+function espacePlein(){
+  dialogue("Mémoire pleine", '<p style="margin:0 0 8px"><b>La dernière modification n\'a pas pu être enregistrée</b> : l\'espace réservé à l\'application sur ce téléphone est plein.</p>'
+    + '<ul class="imp"><li>Faites tout de suite une sauvegarde (Réglages → Sauvegarde).</li><li>Videz la corbeille, retirez les photos des élèves ou supprimez d\'anciennes classes archivées.</li></ul>',
+    [{label:"Plus tard", valeur:null, style:"btn-ghost"}, {label:"Aller à la sauvegarde", valeur:"ok", style:"btn-primary"}]).then(function(v){ if(v) allerRubrique("reglages"); });
+}
+function surveillerEspace(){
+  var pc = espaceUtilise() / QUOTA;
+  if(pc > .85 && !alerteEspaceVue){ alerteEspaceVue = true; toast("Attention : la mémoire de l'application est presque pleine (" + Math.round(pc * 100) + " %). Voir Réglages."); }
+}
+el("btnViderCorbeille").addEventListener("click", function(){
+  dialogue("Vider la corbeille ?", '<p style="margin:0">Les ' + dossier.corbeille.length + ' élément(s) de la corbeille seront supprimés définitivement.</p>',
+    [{label:"Garder", valeur:false}, {label:"Vider", valeur:true, style:"btn-danger"}]).then(function(oui){
+      if(!oui) return; dossier.corbeille = []; persist(); majCorbeilleBouton(); renderEspace(); toast("Corbeille vidée.");
+    });
+});
+el("btnRetirerPhotos").addEventListener("click", function(){
+  dialogue("Retirer toutes les photos ?", '<p style="margin:0">Les photos des élèves de toutes vos classes seront retirées pour libérer de la mémoire. Le reste des fiches est conservé.</p>',
+    [{label:"Garder", valeur:false}, {label:"Retirer", valeur:true, style:"btn-danger"}]).then(function(oui){
+      if(!oui) return; avantModif(false);
+      dossier.classes.forEach(function(c){ c.eleves.forEach(function(e){ e.photo = ""; }); });
+      touch(); persist(); renderAll(); renderEspace(); toast("Photos retirées.", {label:"Annuler", fn:annuler});
+    });
+});
+
+/* ---------- bouton « Installer l'application » ---------- */
+var inviteInstall = null;
+function estInstallee(){ return (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || window.navigator.standalone === true; }
+function majInstall(){ el("acInstall").classList.toggle("is-hidden", !inviteInstall || estInstallee()); }
+window.addEventListener("beforeinstallprompt", function(e){ e.preventDefault(); inviteInstall = e; majInstall(); });
+window.addEventListener("appinstalled", function(){ inviteInstall = null; majInstall(); toast("Application installée sur l'écran d'accueil."); });
+el("acInstallBtn").addEventListener("click", function(){
+  if(!inviteInstall) return;
+  inviteInstall.prompt();
+  inviteInstall.userChoice.then(function(){ inviteInstall = null; majInstall(); });
+});
+
+/* ---------- « Quoi de neuf » après une mise à jour ---------- */
+var NOUVEAUTES = [
+  ["1.10.0", ["Le bouton Retour du téléphone revient à l'écran précédent au lieu de quitter","Bouton « Installer l'application » sur l'accueil","Couleurs au choix : bleu, ou orange et vert ivoiriens (Réglages)","Recherche générale (loupe en haut)","Moyennes de l'élève par matière sur l'année, avec ses points forts","Jauge de mémoire et alerte si le téléphone est plein","Application plus fluide et compatible avec les anciens téléphones"]],
+  ["1.9.0", ["Bouton PDF sur chaque document, à envoyer par WhatsApp","Résumé du bulletin envoyé aux parents par WhatsApp","Export Excel et sauvegarde vers Google Drive"]],
+  ["1.8.0", ["Statistiques avec graphiques (Notes → Statistiques)","Registre des visites, inventaire, tâches de l'année"]],
+  ["1.7.0", ["16 nouveaux documents : honneur, satisfecits, attestations, transfert, émargement…"]]
+];
+var VU = "tabrecap.vu";
+function comparerVersions(a, b){ var x = a.split("."), y = b.split("."); for(var i = 0; i < 3; i++){ var d = (Number(x[i]) || 0) - (Number(y[i]) || 0); if(d) return d; } return 0; }
+function quoiDeNeuf(force){
+  var vu = null; try{ vu = localStorage.getItem(VU); }catch(e){}
+  try{ localStorage.setItem(VU, APP_VERSION); }catch(e){}
+  if(!force && vu === APP_VERSION) return;
+  var l = NOUVEAUTES.filter(function(n){ return force || !vu || comparerVersions(n[0], vu) > 0; }).slice(0, force ? 4 : 3);
+  if(!l.length) return;
+  dialogue("Quoi de neuf ?", l.map(function(n, i){
+      return '<p style="margin:' + (i ? "14px" : "0") + ' 0 6px;font-weight:700;color:var(--bleu)">Version ' + n[0] + '</p><ul class="imp">' + n[1].map(function(t){ return '<li>' + esc(t) + '</li>'; }).join("") + '</ul>';
+    }).join(""), [{label:"Super !", valeur:null, style:"btn-primary"}], {feuille:true});
+}
+el("btnNouveautes").addEventListener("click", function(){ quoiDeNeuf(true); });
+
+/* ---------- couleur de l'application ---------- */
+el("rgCouleur").addEventListener("change", function(){ changerPref("couleur", this.value === "ci" ? "ci" : "bleu"); });
+
+/* ---------- recherche générale ---------- */
+function sansAccent(t){ return String(t || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); }
+function entreesRecherche(){
+  var r = [];
+  dossier.classes.forEach(function(c){
+    c.eleves.forEach(function(e){ if(e.nom.trim()) r.push({t:"Élève", l:e.nom, s:nomClasse(c) + (e.depart ? " · parti(e)" : ""), v:"e|" + c.id + "|" + e.id}); });
+  });
+  var vues = [["Liste des élèves","eleves","saisie"],["Cahier d'appel","eleves","appel"],["Groupes d'EPS et PNAPAS","eleves","groupes"],["Vie de classe, balayage, tirage au sort","eleves","vie"],["Tableaux de scolarité","eleves","scolarite"],
+    ["Liste de classe","eleves","alpha"],["Synthèse, effectifs, âges","eleves","synthese"],["Saisir des notes, compositions","notes","notes"],["Fin d'année, moyennes annuelles","notes","annee"],["Statistiques et graphiques","notes","stats"],
+    ["Tableau récapitulatif","documents","feuille"],["Bulletins scolaires","documents","cartes"],["Agenda","accueil","agenda"],["Emploi du temps","accueil","edt"],["Fournitures","accueil","fourn"],["Manuels et kits","accueil","manuels"],
+    ["Bloc-notes","accueil","blocnotes"],["Chants et récitations","accueil","textes"],["Registre des visites","accueil","visites"],["Inventaire","accueil","inventaire"],["Tâches de l'année","accueil","taches"]];
+  vues.forEach(function(x){ r.push({t:x[1] === "documents" ? "Document" : "Écran", l:x[0], s:"", v:"n|" + x[1] + "|" + x[2]}); });
+  Object.keys(DOCS).forEach(function(k){ r.push({t:"Document", l:DOCS[k], s:"", v:"d|" + k}); });
+  [["Sauvegarde, restaurer, corbeille"],["En-tête du registre, école, classe"],["Matières, barèmes"],["Couleurs, thème, taille du texte"],["Maîtres, verrouillage, rôle directeur"]].forEach(function(x){ r.push({t:"Réglages", l:x[0], s:"", v:"r"}); });
+  if(dossier.role === "directeur") r.push({t:"Écran", l:"Mon école", s:"Classes des collègues", v:"n|accueil|ecole"});
+  return r;
+}
+el("btnRecherche").addEventListener("click", function(){
+  var tout = entreesRecherche();
+  var promesse = dialogue("Rechercher", '<div class="recherche" style="margin-bottom:10px"><svg class="ic"><use href="#i-recherche"/></svg><input id="rqTexte" type="search" placeholder="Un élève, un document, un outil…" autocomplete="off"></div><ul class="resultats" id="rqRes"></ul>',
+    [{label:"Fermer", valeur:null, style:"btn-ghost"}], {feuille:true, focus:"rqTexte"});
+  var maj = function(){
+    var q = sansAccent(el("rqTexte").value).trim(), l = q ? tout.filter(function(x){ return sansAccent(x.l + " " + x.s).indexOf(q) >= 0; }).slice(0, 30) : [];
+    el("rqRes").innerHTML = q ? (l.map(function(x){ return '<li data-v="' + esc(x.v) + '"><span class="pill">' + x.t + '</span><span><b>' + esc(x.l) + '</b>' + (x.s ? '<small>' + esc(x.s) + '</small>' : '') + '</span></li>'; }).join("") || '<li class="vide-etat" style="cursor:default">Rien trouvé.</li>')
+      : '<li class="hint" style="cursor:default;border:0">Tapez au moins une lettre.</li>';
+  };
+  el("rqTexte").addEventListener("input", maj); maj();
+  promesse.then(function(v){
+    if(!v) return;
+    var p = v.split("|");
+    if(p[0] === "e"){ if(dossier.active !== p[1]) ouvrirClasse(p[1]); allerRubrique("eleves", "saisie"); setTimeout(function(){ ouvrirFiche(p[2]); }, 300); }
+    else if(p[0] === "n"){ if(p[2] === "feuille" || p[2] === "cartes") ouvrirDocument(p[2]); else allerRubrique(p[1], p[2]); }
+    else if(p[0] === "d") ouvrirDocument("d:" + p[1]);
+    else if(p[0] === "r") allerRubrique("reglages");
+  });
+});
+
+/* ---------- moyennes de l'élève par matière sur l'année ---------- */
+function moyennesParMatiere(e){
+  var per = periodesRenseignees(), b = echelleMoyenne();
+  return state.matieres.map(function(m){
+    var t = []; per.forEach(function(p){ var v = noteDe(e, m.code, p); if(v != null) t.push(v / baremeMat(m.code) * b); });
+    return {m:m, moy:t.length ? moyenneDe(t) : null, n:t.length};
+  }).filter(function(x){ return x.moy != null; });
+}
+function tableauMatieresEleve(e){
+  var l = moyennesParMatiere(e); if(!l.length) return "";
+  var tri = l.slice().sort(function(a, b){ return b.moy - a.moy; }), forts = tri.slice(0, 2).map(function(x){ return x.m.code; }), faibles = l.length > 3 ? tri.slice(-2).map(function(x){ return x.m.code; }) : [];
+  return '<div class="fiche-section">Moyennes par matière sur l\'année</div><div class="plein"><table class="recap mat-annee"><tbody>'
+    + l.map(function(x){ var cls = forts.indexOf(x.m.code) >= 0 ? "fort" : faibles.indexOf(x.m.code) >= 0 ? "faible" : "";
+        return '<tr class="' + cls + '"><td>' + esc(x.m.nom) + '</td><td>' + nombreFr(x.moy, 2) + ' / ' + echelleMoyenne() + '</td><td>' + (cls === "fort" ? "Point fort" : cls === "faible" ? "À renforcer" : "") + '</td></tr>'; }).join("")
+    + '</tbody></table><p class="hint" style="margin:4px 0 0">Moyenne de toutes les compositions et évaluations notées dans l\'année.</p></div>';
+}
+
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "1.9.0";
+var APP_VERSION = "1.10.0";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
@@ -6478,6 +6705,8 @@ function appliquerPrefs(){
   if(p.theme === "light" || p.theme === "dark") root.setAttribute("data-theme", p.theme); else root.removeAttribute("data-theme");
   if(p.taille === "grand" || p.taille === "tresgrand") root.setAttribute("data-taille", p.taille); else root.removeAttribute("data-taille");
   document.body.classList.toggle("leger", !!p.leger);
+  if(p.couleur === "ci") root.setAttribute("data-palette", "ci"); else root.removeAttribute("data-palette");
+  if(el("rgCouleur")) el("rgCouleur").value = p.couleur === "ci" ? "ci" : "bleu";
   document.body.classList.toggle("eco", !!p.eco);
   el("rgTheme").value = p.theme || "auto";
   el("rgTaille").value = p.taille || "normal";
@@ -6518,6 +6747,8 @@ function lancerGuide(){
       + '<div class="field"><label for="gClasse">Classe</label><input id="gClasse" name="classe" placeholder="Ex. CE2" autocomplete="off"></div>'
       + '<div class="field"><label for="gAn">Année scolaire</label><input id="gAn" name="annee" value="' + an[0] + '-' + an[1] + '" inputmode="numeric"></div>'
       + '<div class="field plein"><label for="gMaitre">Votre nom (le maître)</label><input id="gMaitre" name="maitre" autocomplete="off"></div>'
+      + '<div class="field"><label for="gRole">Vous êtes</label><select id="gRole" name="role"><option value="maitre">Maître</option><option value="directeur">Directeur</option></select></div>'
+      + '<div class="field"><span class="lbl">Niveau(x) de la classe</span><div class="puces-cases">' + NIVEAUX.map(function(n){ return '<label class="case"><input type="checkbox" name="n_' + n + '"> ' + n + '</label>'; }).join("") + '</div></div>'
       + '<div class="field"><label for="gDrena">DRENA</label><input id="gDrena" name="drena" autocomplete="off"></div>'
       + '<div class="field"><label for="gIepp">I.E.P.P.</label><input id="gIepp" name="iepp" autocomplete="off"></div>'
       + '</div><p class="hint">Tout reste modifiable plus tard dans Réglages.</p>',
@@ -6534,7 +6765,9 @@ function lancerGuide(){
       state.meta.an1 = ans[0] || ""; state.meta.an2 = ans[1] || "";
       state.meta.directeur = "";
       CHAMPS_ECOLE.forEach(function(k){ if(state.meta[k]) dossier.ecole[k] = state.meta[k]; });
-      state.niveaux = devinerNiveaux(state.meta.classe);
+      var nv = NIVEAUX.filter(function(n){ return c["n_" + n]; });
+      state.niveaux = nv.length ? nv : devinerNiveaux(state.meta.classe);
+      dossier.role = c.role === "directeur" ? "directeur" : "maitre";
       if(modeSaisie() === "tableau") for(var k = 0; k < 5; k++) state.eleves.push(eleveVide());
       touch(); persist(); renderAll();
       dialogue("C'est prêt !",
@@ -6547,14 +6780,16 @@ function lancerGuide(){
 
 boot(local || cloneDemo());
 if(ancienFormat) persist();   /* migration silencieuse de l'ancien enregistrement */
+initHistorique();
 allerRubrique("accueil");
 renderProfils(); renderVerrouReglage();
 ecranVerrou();
 (function(){
   var fait = null; try{ fait = localStorage.getItem(GUIDE); }catch(e){}
   var exempleSeul = dossier.classes.length === 1 && dossier.classes[0].demo;
-  if(!fait && exempleSeul) setTimeout(lancerGuide, 600);
-  else if(!fait) guideFait();
+  if(!fait && exempleSeul){ setTimeout(lancerGuide, 600); try{ localStorage.setItem(VU, APP_VERSION); }catch(e){} }
+  else { if(!fait) guideFait(); setTimeout(function(){ if(!lireVerrou() || el("verrou").hidden) quoiDeNeuf(false); }, 900); }
+  majInstall();
 })();
 setStatus(local ? "Enregistré sur cet appareil" : "Exemple — rien n'est encore enregistré");
 
