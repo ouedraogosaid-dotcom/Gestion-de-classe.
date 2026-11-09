@@ -43,6 +43,7 @@ Si le navigateur est réinitialisé ou le téléphone perdu, elles sont perdues 
 
 ## Historique
 
+- **2.4.4** — Cahier journal : éditeur des disciplines (ajouter, renommer, monter/descendre, supprimer avec « Rétablir »), jusqu'à 30 par classe ; les disciplines ajoutées sont reconnues à l'import de la répartition ; correction : la 15ᵉ discipline n'est plus coupée au rechargement.
 - **2.4.3** — Mises à jour recherchées au retour sur l'application, au retour d'internet et toutes les 30 minutes ; bouton « Vérifier les mises à jour » dans Réglages.
 - **2.4.2** — Cahier journal imprimé : nouvelle disposition « séances à la suite » (par défaut) — chaque jour, les séances se suivent avec le nom de la discipline dans la case, sans colonnes vides ; l'ancienne grille par discipline reste au choix. « Séance 1, Séance 2… » écrits en entier (les anciens « S1 » sont convertis).
 - **2.4.1** — Cahier journal : sur le téléphone, chaque jour n'affiche que les disciplines prévues (semaine type) ou déjà remplies, avec un bouton pour voir les autres ; à l'impression, les colonnes restées vides toute la semaine sont retirées.

@@ -1342,6 +1342,16 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
   body.eco .grid-wrap td.cell.on::after{content:"×"; color:#111}
   @page{size:A4 portrait; margin:4mm}
 }
+.jr-disc-liste{display:flex; flex-direction:column; gap:6px; max-height:46vh; overflow:auto; padding:2px}
+.jr-disc{display:flex; align-items:center; gap:4px}
+.jr-disc input{flex:1; min-width:0; font-size:16px; padding:10px 12px; border:1.5px solid var(--bord-2); border-radius:12px; background:var(--fond); color:inherit}
+.jr-disc .icon-btn{flex:none; width:38px; height:38px; font-size:13px}
+.jr-disc [data-act="retablir"]{display:none}
+.jr-disc.suppr input{text-decoration:line-through; opacity:.5}
+.jr-disc.suppr [data-act="haut"], .jr-disc.suppr [data-act="bas"], .jr-disc.suppr [data-act="suppr"]{display:none}
+.jr-disc.suppr [data-act="retablir"]{display:inline-flex}
+.jr-disc-ajout{display:flex; gap:6px; margin-top:10px}
+.jr-disc-ajout input{flex:1; min-width:0; font-size:16px; padding:10px 12px; border:1.5px dashed var(--bord-2); border-radius:12px; background:transparent; color:inherit}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -1493,7 +1503,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
    </section>
    <section class="view is-hidden" id="vJournal">
      <div class="page-titre no-print"><div><h1>Cahier journal</h1><p>Une page par semaine — <span id="jrProgres"></span></p></div>
-       <button class="btn btn-sm no-print" type="button" id="jrReglages">Colonnes et jours</button></div>
+       <button class="btn btn-sm no-print" type="button" id="jrReglages">Disciplines et jours</button></div>
      <div class="sheet no-print jr-nav">
        <div class="jr-ligne"><button class="icon-btn" type="button" id="jrPrec" aria-label="Semaine précédente"><svg class="ic"><use href="#i-retour"/></svg></button>
          <span class="jr-titre"><small>Semaine n° <input id="jrNum" maxlength="6" inputmode="numeric" aria-label="Numéro de la semaine"></small><b id="jrSemaine">—</b></span>
@@ -2526,10 +2536,11 @@ function normVie(v, ids){
   if(v.faits && typeof v.faits === "object") Object.keys(v.faits).filter(function(d){ return /^\d{4}-\d{2}-\d{2}$/.test(d) && v.faits[d]; }).sort().slice(-120).forEach(function(d){ faits[d] = 1; });
   return {chef:un(v.chef), sousChef:un(v.sousChef), service:txt(v.service, 50).trim() || "Balayage et nettoyage", jours:jours, equipes:equipes, faits:faits};
 }
+var JR_MAX_COLS = 30;
 function normJournal(j){
   j = (j && typeof j === "object") ? j : {};
   var JOURS_OK = ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
-  var cols = Array.isArray(j.cols) ? j.cols.slice(0, 14).map(function(c){ var n = txt(c && c.nom, 50).trim(); return n ? {id:idSur(c.id) || uid(), nom:n} : null; }).filter(Boolean) : [];
+  var cols = Array.isArray(j.cols) ? j.cols.slice(0, JR_MAX_COLS).map(function(c){ var n = txt(c && c.nom, 50).trim(); return n ? {id:idSur(c.id) || uid(), nom:n} : null; }).filter(Boolean) : [];
   var V8 = ["EDHC","Français — Expression orale","Français — Lecture","Français — Expression écrite","Mathématiques","Sciences et technologie","Histoire / Géographie","AEC (poésie, chant, dessin) / EPS"];
   var V12 = ["EDHC","Expression orale","Lecture","Expression écrite","Mathématiques","Sciences et technologie","Histoire","Géographie","Poésie","Chant","Dessin","EPS"];
   var V15 = ["Lecture","Vocabulaire","Orthographe","Grammaire","Conjugaison","Expression écrite","Expression orale","Poésie","Écriture","Mathématiques","Sciences","Histoire-Géographie","EDHC","AEC","EPS"];
@@ -2553,7 +2564,7 @@ function normJournal(j){
   if(j.semaines && typeof j.semaines === "object") Object.keys(j.semaines).filter(function(k){ return /^\d{4}-\d{2}-\d{2}$/.test(k); }).sort().slice(-80).forEach(function(k){
     var sm = j.semaines[k]; if(!sm || typeof sm !== "object") return;
     var cases = {};
-    if(sm.cases && typeof sm.cases === "object") Object.keys(sm.cases).slice(0, 120).forEach(function(c){
+    if(sm.cases && typeof sm.cases === "object") Object.keys(sm.cases).slice(0, 220).forEach(function(c){
       var p = c.split("|"), v = sm.cases[c]; if(p.length !== 2 || JOURS_OK.indexOf(p[0]) < 0 || !idSur(p[1]) || !v || typeof v !== "object") return;
       var o = {s:libSeance(txt(v.s, 20)), t:txt(v.t, 140).trim(), p:txt(v.p, 12).trim(), st:["fait","reporte"].indexOf(v.st) >= 0 ? v.st : ""};
       if(!(o.s || o.t || o.p || o.st)) return;
@@ -7471,6 +7482,7 @@ el("acInstallBtn").addEventListener("click", function(){
 
 /* ---------- « Quoi de neuf » après une mise à jour ---------- */
 var NOUVEAUTES = [
+  ["2.4.4", ["Cahier journal : ajoutez, renommez, déplacez ou supprimez vos disciplines (bouton « Disciplines et jours »), jusqu'à 30","Une discipline ajoutée est aussi reconnue à l'import de la répartition"]],
   ["2.4.3", ["Recherche des mises à jour plus fréquente, et bouton « Vérifier les mises à jour » dans Réglages"]],
   ["2.4.2", ["Cahier journal imprimé : les séances de chaque jour à la suite, sans colonnes vides (au choix : une colonne par discipline)","« Séance 1 », « Séance 2 »… écrits en entier"]],
   ["2.4.1", ["Cahier journal : chaque jour, seules les disciplines prévues ou remplies sont affichées ; les colonnes vides de la semaine ne sont plus imprimées"]],
@@ -8240,27 +8252,76 @@ el("jrCopier").addEventListener("click", function(){
   if(!plein) faire();
   else dialogue("Recopier la semaine précédente ?", '<p style="margin:0">Les cases déjà remplies de cette semaine seront remplacées par celles de la semaine du ' + esc(dateFr(avant)) + '.</p>', [{label:"Annuler", valeur:false}, {label:"Recopier", valeur:true, style:"btn-primary"}]).then(function(oui){ if(oui) faire(); });
 });
-el("jrReglages").addEventListener("click", function(){
-  var J = state.journal;
-  dialogue("Colonnes et jours", '<p class="hint" style="margin:0 0 8px">Une discipline par ligne, dans l\'ordre du cahier. Elles peuvent être différentes pour chaque classe.</p>'
-    + '<div class="field"><label for="jrColsTxt">Disciplines (colonnes)</label><textarea id="jrColsTxt" name="cols" rows="8">' + esc(J.cols.map(function(c){ return c.nom; }).join("\n")) + '</textarea></div>'
-    + '<div class="field" style="margin-top:10px"><span class="lbl">Jours de classe</span><div class="puces-cases">' + JR_JOURS.map(function(j){ return '<label class="case"><input type="checkbox" name="j_' + j + '"' + (J.jours.indexOf(j) >= 0 ? " checked" : "") + '> ' + j + '</label>'; }).join("") + '</div></div>',
-    [{label:"Par défaut", valeur:"def", style:"btn-ghost"}, {label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Enregistrer", valeur:"ok", style:"btn-primary"}], {champs:true, feuille:true}).then(function(r){
-      if(!r || !r.valeur) return;
-      avantModif(false);
-      var noms = r.valeur === "def" ? JR_COLS_DEF : String(r.champs.cols || "").split(/\n/).map(function(x){ return txt(x.trim(), 50); }).filter(Boolean).slice(0, 14);
-      if(!noms.length){ toast("Indiquez au moins une discipline."); return; }
-      var anciens = J.cols.slice();
-      var pris = {};
-      J.cols = noms.map(function(n, i){
-        var a = anciens.filter(function(c){ return c.nom === n && !pris[c.id]; })[0] || (anciens[i] && !pris[anciens[i].id] && !noms.some(function(x){ return x === anciens[i].nom; }) ? anciens[i] : null);
-        var id = a ? a.id : uid(); pris[id] = 1; return {id:id, nom:n};
-      });
-      var jours = r.valeur === "def" ? ["Lundi","Mardi","Jeudi","Vendredi"] : JR_JOURS.filter(function(j){ return r.champs["j_" + j]; });
-      J.jours = jours.length ? jours : ["Lundi","Mardi","Jeudi","Vendredi"];
-      touch(); renderJournal(); toast("Cahier journal mis à jour.");
+el("jrReglages").addEventListener("click", dialogueDisciplines);
+function ligneDisc(id, nom, neuve){
+  return '<div class="jr-disc" data-id="' + esc(id) + '"' + (neuve ? ' data-neuve="1"' : '') + '>'
+    + '<input name="d_' + esc(id) + '" value="' + esc(nom) + '" maxlength="50" aria-label="Nom de la discipline">'
+    + '<button type="button" class="icon-btn" data-act="haut" aria-label="Monter">▲</button>'
+    + '<button type="button" class="icon-btn" data-act="bas" aria-label="Descendre">▼</button>'
+    + '<button type="button" class="icon-btn danger" data-act="suppr" aria-label="Supprimer"><svg class="ic"><use href="#i-corbeille"/></svg></button>'
+    + '<button type="button" class="btn btn-sm btn-ghost" data-act="retablir">Rétablir</button></div>';
+}
+function dialogueDisciplines(){
+  var J = state.journal, compteur = 0;
+  var p = dialogue("Disciplines et jours", '<p class="hint" style="margin:0 0 8px">Propres à cette classe. Touchez un nom pour le corriger ; les séances déjà écrites restent attachées à la discipline.</p>'
+    + '<div id="jrDiscListe" class="jr-disc-liste">' + J.cols.map(function(c){ return ligneDisc(c.id, c.nom); }).join("") + '</div>'
+    + '<div class="jr-disc-ajout"><input id="jrDiscNouv" maxlength="50" placeholder="Nouvelle discipline (ex. Anglais)" aria-label="Nouvelle discipline"><button type="button" class="btn btn-sm btn-primary" id="jrDiscAjout"><svg class="ic"><use href="#i-plus"/></svg>Ajouter</button></div>'
+    + '<p class="hint" id="jrDiscInfo" style="margin:6px 0 0"></p>'
+    + '<div class="field" style="margin-top:12px"><span class="lbl">Jours de classe</span><div class="puces-cases">' + JR_JOURS.map(function(j){ return '<label class="case"><input type="checkbox" name="j_' + j + '"' + (J.jours.indexOf(j) >= 0 ? " checked" : "") + '> ' + j + '</label>'; }).join("") + '</div></div>',
+    [{label:"Par défaut", valeur:"def", style:"btn-ghost"}, {label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Enregistrer", valeur:"ok", style:"btn-primary"}], {champs:true, feuille:true});
+  var liste = el("jrDiscListe"), info = el("jrDiscInfo"), ordre = null, supprimes = {};
+  var compter = function(){ var n = liste.querySelectorAll(".jr-disc:not(.suppr)").length; info.textContent = n + " discipline" + (n > 1 ? "s" : "") + " (" + JR_MAX_COLS + " au plus)."; };
+  var ajouter = function(){
+    var ch = el("jrDiscNouv"), nom = txt(ch.value.trim(), 50); if(!nom){ ch.focus(); return; }
+    if(liste.querySelectorAll(".jr-disc:not(.suppr)").length >= JR_MAX_COLS){ toast(JR_MAX_COLS + " disciplines au plus."); return; }
+    var double = [].some.call(liste.querySelectorAll(".jr-disc:not(.suppr) input"), function(x){ return sansAccent(x.value.trim()) === sansAccent(nom); });
+    if(double){ toast("« " + nom + " » est déjà dans la liste."); return; }
+    liste.insertAdjacentHTML("beforeend", ligneDisc("n" + (++compteur), nom, true));
+    ch.value = ""; ch.focus(); compter();
+    liste.lastElementChild.scrollIntoView({block:"nearest"});
+  };
+  el("jrDiscAjout").addEventListener("click", ajouter);
+  el("jrDiscNouv").addEventListener("keydown", function(ev){ if(ev.key === "Enter"){ ev.preventDefault(); ev.stopPropagation(); ajouter(); } });
+  liste.addEventListener("click", function(ev){
+    var b = ev.target.closest("[data-act]"); if(!b) return;
+    var l = b.closest(".jr-disc"), act = b.getAttribute("data-act");
+    if(act === "haut" && l.previousElementSibling) liste.insertBefore(l, l.previousElementSibling);
+    else if(act === "bas" && l.nextElementSibling) liste.insertBefore(l.nextElementSibling, l);
+    else if(act === "suppr"){
+      if(l.getAttribute("data-neuve")){ l.remove(); }
+      else { l.classList.add("suppr"); l.querySelector("input").disabled = true; supprimes[l.getAttribute("data-id")] = 1; }
+    } else if(act === "retablir"){ l.classList.remove("suppr"); l.querySelector("input").disabled = false; delete supprimes[l.getAttribute("data-id")]; }
+    compter();
+  });
+  /* l'ordre est lu juste avant la fermeture (les champs désactivés ne sont pas relus) */
+  el("modal").querySelector(".modal-btns").addEventListener("click", function(){
+    ordre = [].map.call(liste.querySelectorAll(".jr-disc:not(.suppr)"), function(l){ return {id:l.getAttribute("data-id"), neuve:!!l.getAttribute("data-neuve"), nom:txt(l.querySelector("input").value.trim(), 50)}; });
+  }, true);
+  compter();
+  p.then(function(r){
+    if(!r || !r.valeur) return;
+    avantModif(false);
+    if(r.valeur === "def"){
+      var anc = J.cols.slice(), pris = {};
+      J.cols = JR_COLS_DEF.map(function(n){ var a = anc.filter(function(c){ return !pris[c.id] && canonMatiere(c.nom) === canonStd(sansAccentR(n)); })[0]; var id = a ? a.id : uid(); pris[id] = 1; return {id:id, nom:n}; });
+      J.jours = ["Lundi","Mardi","Jeudi","Vendredi"];
+      touch(); renderJournal(true); toast("Disciplines par défaut rétablies."); return;
+    }
+    var vues = {}, nouvelles = [];
+    var cols = (ordre || []).filter(function(o){ if(!o.nom || vues[sansAccent(o.nom)]) return false; vues[sansAccent(o.nom)] = 1; return true; }).slice(0, JR_MAX_COLS).map(function(o){
+      if(o.neuve){ var c = {id:uid(), nom:o.nom}; nouvelles.push(c); return c; }
+      return {id:o.id, nom:o.nom};
     });
-});
+    if(!cols.length){ toast("Gardez au moins une discipline."); return; }
+    var jours = JR_JOURS.filter(function(j){ return r.champs["j_" + j]; });
+    J.cols = cols;
+    J.jours = jours.length ? jours : ["Lundi","Mardi","Jeudi","Vendredi"];
+    /* une discipline nouvelle sans jours connus : tous les jours de classe, à ajuster dans « Semaine type » */
+    nouvelles.forEach(function(c){ if(!joursType(c).length) J.type[c.id] = J.jours.slice(); });
+    touch(); renderJournal(true);
+    toast(nouvelles.length ? (nouvelles.length > 1 ? nouvelles.length + " disciplines ajoutées" : "« " + nouvelles[0].nom + " » ajoutée") + ". Vérifiez ses jours dans « Semaine type »." : "Cahier journal mis à jour.", nouvelles.length ? {label:"Semaine type", fn:function(){ dialogueSemaineType().then(function(ok){ if(ok) renderJournal(true); }); }} : null);
+  });
+}
 function etatJournalDuJour(){
   var J = state.journal, auj = aujourdhuiISO(), jour = JR_JOURS[(new Date().getDay() + 6) % 7];
   if(J.jours.indexOf(jour) < 0 || congeDeSemaine(lundiDe(auj))) return null;
@@ -8276,7 +8337,17 @@ var CANON_MAT = [
   ["poesie", /poesie|recitation/], ["ecriture", /^ecriture|graphisme/], ["mathematiques", /math|calcul/], ["sciences", /science/],
   ["histoire-geographie", /histoire|geographie/], ["edhc", /edhc|citoyen/], ["aec", /^aec|expression et (de )?creation|dessin|chant|musique/], ["eps", /^eps|education physique/]
 ];
-function canonMatiere(t){ t = sansAccentR(t).replace(/\s+/g, " ").trim(); for(var i = 0; i < CANON_MAT.length; i++) if(CANON_MAT[i][1].test(t)) return CANON_MAT[i][0]; return ""; }
+function canonStd(t){ for(var i = 0; i < CANON_MAT.length; i++) if(CANON_MAT[i][1].test(t)) return CANON_MAT[i][0]; return ""; }
+/* matières officielles, puis disciplines ajoutées par le maître (reconnues par leur nom) */
+function canonMatiere(t){
+  t = sansAccentR(t).replace(/\s+/g, " ").trim(); var c = canonStd(t); if(c || !t) return c;
+  var cols = (state && state.journal && state.journal.cols) || [];
+  for(var i = 0; i < cols.length; i++){
+    var n = sansAccentR(cols[i].nom).replace(/\s+/g, " ").trim();
+    if(n.length >= 2 && !canonStd(n) && (t === n || t.indexOf(n + " ") === 0 || t.indexOf(n + ":") === 0 || t.indexOf(n + "(") === 0)) return "perso:" + n;
+  }
+  return "";
+}
 function dateFrVersIso(t){ var m = String(t).match(/(\d{1,2})\s*[\/.\-]\s*(\d{1,2})\s*[\/.\-]\s*(\d{2,4})/); if(!m) return ""; var an = m[3].length === 2 ? "20" + m[3] : m[3]; return an + "-" + ("0" + m[2]).slice(-2) + "-" + ("0" + m[1]).slice(-2); }
 /* découpe une case en leçons : « - » en début de ligne sépare plusieurs leçons ; « p.34 » donne la page */
 function lecons(texte){
@@ -8573,7 +8644,7 @@ function tableauMatieresEleve(e){
 }
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "2.4.3";
+var APP_VERSION = "2.4.4";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
