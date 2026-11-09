@@ -753,6 +753,11 @@ body.est-directeur .role-maitre{display:none !important}
 .espace{margin-top:12px}
 .aide-photo{background:var(--bleu-doux); border-radius:12px; padding:10px 12px; color:var(--texte) !important}
 .aide-photo ol{margin:4px 0 0; padding-left:18px}
+.nt-type{margin:4px 0 12px}
+.nt-type .lbl{display:block; font-size:.8rem; font-weight:600; color:var(--texte-2); margin-bottom:6px}
+.nt-compte{margin:8px 0 0; font-size:.82rem; padding:7px 10px; border-radius:10px; display:inline-block}
+.nt-compte.oui{background:var(--ok-bg); color:var(--ok)}
+.nt-compte.non{background:var(--surface-2); color:var(--texte-2)}
 .puces-cases{display:flex; flex-wrap:wrap; gap:6px 12px; padding-top:4px}
 .puces-cases .case{display:inline-flex; align-items:center; gap:5px; font-size:.88rem; cursor:pointer}
 .field .lbl{display:block; font-size:.8rem; font-weight:600; color:var(--texte-2); margin-bottom:4px}
@@ -1455,8 +1460,18 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
     <section class="view" id="vNotes">
       <div class="sheet">
         <h2 id="ntTitre">Composition du mois <small id="ntStatus">—</small></h2>
+        <div class="nt-type no-print">
+          <span class="lbl">Type de composition</span>
+          <div class="puces" id="ntTypes" role="group" aria-label="Type de composition">
+            <button type="button" class="puce" data-type="mens" aria-pressed="false">Mensuelle</button>
+            <button type="button" class="puce" data-type="trim" aria-pressed="false">Trimestrielle</button>
+            <button type="button" class="puce" data-type="pass" aria-pressed="false">Passage</button>
+          </div>
+          <p class="nt-compte" id="ntCompte"></p>
+        </div>
         <div class="nt-tools no-print">
-          <div class="field"><label for="f_mois">Composition</label><select id="f_mois"></select></div>
+          <div class="field is-hidden"><label for="f_mois">Composition</label><select id="f_mois"></select></div>
+          <div class="field mini" id="quandWrap"><label for="f_quand" id="quandLbl">Mois</label><select id="f_quand"></select></div>
           <div class="field mini is-hidden" id="moisTrimWrap"><label for="f_moisTrim">Mois de la composition</label><select id="f_moisTrim"></select></div>
           <div class="field mini"><label for="f_echelle_notes">Échelle</label>
             <select id="f_echelle_notes"><option value="10">Moyenne sur 10</option><option value="20">Moyenne sur 20</option></select>
@@ -2983,7 +2998,18 @@ function renderNotes(){
   /* les intitulés des trimestres affichent le mois choisi */
   TRIMESTRES.forEach(function(t){ [el("f_mois"), el("f_mois2")].forEach(function(sel){ var o = sel.querySelector('option[value="' + t + '"]'); if(o) o.textContent = libellePeriode(t); }); });
   el("f_mois").value = state.notes.mois;
-  var tri = estTrimestre(state.notes.mois);
+  var tri = estTrimestre(state.notes.mois), typ = typeCompo(state.notes.mois);
+  Array.prototype.forEach.call(el("ntTypes").children, function(b){ b.setAttribute("aria-pressed", b.getAttribute("data-type") === typ ? "true" : "false"); });
+  el("quandWrap").classList.toggle("is-hidden", typ === "pass");
+  el("quandLbl").textContent = typ === "trim" ? "Trimestre" : "Mois";
+  el("f_quand").innerHTML = typ === "trim"
+    ? TRIMESTRES.map(function(t, i){ return '<option value="' + t + '">' + (i ? (i + 1) + "e" : "1er") + ' trimestre</option>'; }).join("")
+    : MOIS.map(function(m){ return '<option value="' + m + '">' + m + '</option>'; }).join("");
+  if(typ !== "pass") el("f_quand").value = state.notes.mois;
+  el("ntCompte").className = "nt-compte " + (typ === "mens" ? "non" : "oui");
+  el("ntCompte").innerHTML = typ === "mens" ? "Évaluation de l'école : elle <b>ne compte pas</b> dans la moyenne annuelle."
+    : typ === "trim" ? "Elle <b>compte</b> dans la moyenne annuelle (moyenne des compositions trimestrielles)."
+    : "Composition finale : elle <b>compte</b> dans la moyenne annuelle (poids " + (state.notes.coefPassage || 2) + ").";
   el("moisTrimWrap").classList.toggle("is-hidden", !tri);
   if(tri){
     el("f_moisTrim").innerHTML = '<option value="">— Choisir —</option>' + MOIS.map(function(mm){ return '<option value="' + mm + '"' + (moisDuTrimestre(state.notes.mois) === mm ? ' selected' : '') + '>' + mm + '</option>'; }).join("");
@@ -3955,6 +3981,25 @@ el("f_moisTrim").addEventListener("change", function(){
 el("f_mois2").addEventListener("change", function(){
   state.notes.mois = this.value; touch(); renderNotes(); buildCartes(); fitCartes();
 });
+function typeCompo(m){ return m === PASSAGE ? "pass" : estTrimestre(m) ? "trim" : "mens"; }
+var dernierParType = {};
+function choisirComposition(m){ el("f_mois").value = m; el("f_mois").dispatchEvent(new Event("change")); }
+el("ntTypes").addEventListener("click", function(ev){
+  var b = ev.target.closest("[data-type]"); if(!b) return;
+  var typ = b.getAttribute("data-type"), act = state.notes.mois;
+  if(typ === typeCompo(act)) return;
+  dernierParType[typeCompo(act)] = act;
+  var avecNotes = function(liste){ return liste.filter(function(m){ var d = state.notes.data[m]; return d && Object.keys(d).length; }); };
+  var cible;
+  if(typ === "pass") cible = PASSAGE;
+  else if(typ === "trim"){
+    /* le trimestre dont c'est le mois, sinon le dernier saisi, sinon le 1er */
+    var moisAct = MOIS.indexOf(act) >= 0 ? act : "";
+    cible = dernierParType.trim || TRIMESTRES.filter(function(t){ return moisAct && moisDuTrimestre(t) === moisAct; })[0] || avecNotes(TRIMESTRES).pop() || TRIMESTRES[0];
+  } else cible = dernierParType.mens || avecNotes(MOIS).pop() || MOIS_DEF;
+  choisirComposition(cible);
+});
+el("f_quand").addEventListener("change", function(){ choisirComposition(this.value); });
 el("f_mois").addEventListener("change", function(){
   state.notes.mois = this.value; touch(); renderNotes(); buildCartes(); fitCartes();
 });
@@ -6821,6 +6866,7 @@ el("acInstallBtn").addEventListener("click", function(){
 
 /* ---------- « Quoi de neuf » après une mise à jour ---------- */
 var NOUVEAUTES = [
+  ["1.11.1", ["Notes : on choisit le type de composition (évaluation mensuelle, composition trimestrielle ou de passage) avec des boutons bien visibles"]],
   ["1.11.0", ["Charger une liste de classe depuis un fichier PDF, Excel ou Word (Élèves → Importer)","Aide pour une liste sur papier ou en photo (avec Google Lens)","Le bouton « PDF » s'appelle maintenant « Envoyer » : il envoie le document par WhatsApp"]],
   ["1.10.0", ["Le bouton Retour du téléphone revient à l'écran précédent au lieu de quitter","Bouton « Installer l'application » sur l'accueil","Couleurs au choix : bleu, ou orange et vert ivoiriens (Réglages)","Recherche générale (loupe en haut)","Moyennes de l'élève par matière sur l'année, avec ses points forts","Jauge de mémoire et alerte si le téléphone est plein","Application plus fluide et compatible avec les anciens téléphones"]],
   ["1.9.0", ["Bouton PDF sur chaque document, à envoyer par WhatsApp","Résumé du bulletin envoyé aux parents par WhatsApp","Export Excel et sauvegarde vers Google Drive"]],
@@ -6899,7 +6945,7 @@ function tableauMatieresEleve(e){
 }
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "1.11.0";
+var APP_VERSION = "1.11.1";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
