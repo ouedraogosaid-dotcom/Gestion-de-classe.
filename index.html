@@ -1535,7 +1535,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
       <button role="tab" data-v="saisie" aria-selected="true">Liste</button>
       <button role="tab" data-v="appel" aria-selected="false">Appel</button>
       <button role="tab" data-v="groupes" aria-selected="false">Groupes</button>
-      <button role="tab" data-v="vie" aria-selected="false">Vie de classe</button>
+      <button role="tab" data-v="vie" aria-selected="false">Tirage au sort</button>
       <button role="tab" data-v="scolarite" aria-selected="false">Scolarité</button>
       <button role="tab" data-v="alpha" aria-selected="false">Liste de classe</button>
       <button role="tab" data-v="synthese" aria-selected="false">Synthèse</button>
@@ -1640,23 +1640,6 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
     </section>
 
     <section class="view is-hidden" id="vVie">
-      <div class="sheet">
-        <h2>Responsables de la classe <small>Élus en début d'année, pour toute l'année</small></h2>
-        <div class="entete">
-          <div class="field"><label for="vieChef">Chef de classe</label><select id="vieChef"></select></div>
-          <div class="field"><label for="vieSous">Sous-chef</label><select id="vieSous"></select></div>
-        </div>
-      </div>
-      <div class="sheet">
-        <h2><span id="vieServiceTitre">Balayage et nettoyage</span> <small>Une équipe différente chaque jour</small></h2>
-        <div class="nt-tools no-print">
-          <div class="field"><label for="vieService">Nom du service</label><input id="vieService" maxlength="50"></div>
-          <div class="field mini"><label for="vieJours">Jours de classe</label><select id="vieJours"><option value="5">Lundi → Vendredi</option><option value="6">Lundi → Samedi</option><option value="4">Lundi, mardi, jeudi, vendredi</option></select></div>
-          <button class="btn btn-sm btn-primary" type="button" id="vieFormer">Former les équipes</button>
-        </div>
-        <div class="equipes" id="vieEquipes"></div>
-        <p class="hint no-print">Les équipes mélangent garçons et filles à parts égales. Un élève ajouté en cours d'année rejoint l'équipe la moins chargée. Touchez un nom pour le changer de jour.</p>
-      </div>
       <div class="sheet no-print">
         <h2>Tirage au sort</h2>
         <div class="tirage">
@@ -2047,8 +2030,8 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
         <p>Remplissez l'en-tête du registre ci-dessus (école, classe, année, maître), puis saisissez vos élèves dans la rubrique <b>Élèves</b>. Tout le reste (tableaux de scolarité, effectifs, âges, tableau récapitulatif) se calcule tout seul.</p></details>
       <details><summary>La barre du bas</summary>
         <ul>
-          <li><b>Accueil</b> : votre journée — actions rapides, appels du matin et du soir, équipe de nettoyage, agenda, situation de la classe.</li>
-          <li><b>Élèves</b> : la liste, le cahier d'appel, les groupes, la vie de classe, les tableaux de scolarité et la synthèse.</li>
+          <li><b>Accueil</b> : votre journée — actions rapides, appels du matin et du soir, agenda, tâches, situation de la classe.</li>
+          <li><b>Élèves</b> : la liste, le cahier d'appel, les groupes, le tirage au sort, les tableaux de scolarité et la synthèse.</li>
           <li><b>Notes</b> : les compositions, la fin d'année et les statistiques.</li>
           <li><b>Organisation</b> : l'agenda, l'emploi du temps et les tâches de l'année.</li>
           <li><b>Plus</b> : les documents à imprimer, les ressources (fournitures, manuels, inventaire, chants), la vie professionnelle et l'administration (sauvegarde, classes, paramètres).</li>
@@ -5590,50 +5573,8 @@ function formerEquipes(){
   v.equipes = eq;
 }
 function indexJourJ(){ return state.vie.jours.indexOf(JOURS_SEMAINE[new Date().getDay()]); }
-function renderVie(){
-  var v = state.vie, l = alpha();
-  var opts = function(sel, autre){ return '<option value="">— Choisir —</option>' + l.map(function(e){ return '<option value="' + e.id + '"' + (sel === e.id ? ' selected' : '') + (autre === e.id ? ' disabled' : '') + '>' + esc(e.nom) + '</option>'; }).join(""); };
-  el("vieChef").innerHTML = opts(v.chef, v.sousChef);
-  el("vieSous").innerHTML = opts(v.sousChef, v.chef);
-  if(document.activeElement !== el("vieService")) el("vieService").value = v.service;
-  el("vieServiceTitre").textContent = v.service;
-  var cle = Object.keys(JEUX_JOURS).filter(function(c){ return JEUX_JOURS[c].join() === v.jours.join(); })[0];
-  el("vieJours").value = cle || "5";
-  if(placerNouveaux()){ touch(); }
-  var formees = equipesFormees(), jj = indexJourJ();
-  el("vieFormer").textContent = formees ? "Reformer les équipes" : "Former les équipes";
-  if(!formees){ el("vieEquipes").innerHTML = '<div class="notice" style="margin:0;grid-column:1/-1">Les équipes ne sont pas encore formées. Touchez « Former les équipes » : la répartition est faite au hasard, garçons et filles à parts égales.</div>'; return; }
-  el("vieEquipes").innerHTML = v.jours.map(function(j, i){
-    var m = l.filter(function(e){ return v.equipes[e.id] === i; });
-    return '<div class="equipe' + (i === jj ? ' jour-j' : '') + '"><h4>' + esc(j) + (i === jj ? ' · aujourd\'hui' : '') + '<small>' + m.length + ' élève(s)</small></h4><div class="puces-el">'
-      + (m.map(function(e){ return puceEleve(e, 'data-eq="' + e.id + '"'); }).join("") || '<span class="hint">Personne</span>') + '</div></div>';
-  }).join("");
-}
-el("vieChef").addEventListener("change", function(){ avantModif(false); state.vie.chef = idSur(this.value); touch(); renderVie(); });
-el("vieSous").addEventListener("change", function(){ avantModif(false); state.vie.sousChef = idSur(this.value); touch(); renderVie(); });
-el("vieService").addEventListener("input", function(){ avantModif(true); state.vie.service = txt(this.value, 50).trim() || "Balayage et nettoyage"; el("vieServiceTitre").textContent = state.vie.service; touch(); });
-el("vieJours").addEventListener("change", function(){
-  avantModif(false);
-  state.vie.jours = (JEUX_JOURS[this.value] || JEUX_JOURS["5"]).slice();
-  if(equipesFormees()) formerEquipes();
-  touch(); renderVie(); renderAccueil(false);
-});
-el("vieFormer").addEventListener("click", function(){
-  var faire = function(){ avantModif(false); formerEquipes(); touch(); renderVie(); renderAccueil(false); toast("Équipes formées.", {label:"Annuler", fn:annuler}); };
-  if(!equipesFormees()){ faire(); return; }
-  dialogue("Reformer les équipes ?", '<p style="margin:0">Les équipes actuelles seront remplacées par une nouvelle répartition au hasard.</p>',
-    [{label:"Garder", valeur:false}, {label:"Reformer", valeur:true, style:"btn-primary"}]).then(function(oui){ if(oui) faire(); });
-});
-el("vieEquipes").addEventListener("click", function(ev){
-  var p = ev.target.closest("[data-eq]"); if(!p) return;
-  var id = p.getAttribute("data-eq"), e = eleveParId(id), v = state.vie;
-  dialogue(e.nom, '<p class="hint" style="margin:0 0 10px">Choisissez son jour de ' + esc(v.service.toLowerCase()) + ' :</p><div class="choix-groupes">'
-    + v.jours.map(function(j, i){ return '<button type="button" class="neutre" data-v="' + i + '">' + esc(j) + (v.equipes[id] === i ? ' ✓' : '') + '</button>'; }).join("") + '</div>',
-    [{label:"Fermer", valeur:null, style:"btn-ghost"}], {feuille:true}).then(function(r){
-      if(r == null || r === "") return;
-      avantModif(false); v.equipes[id] = Number(r); touch(); renderVie(); renderAccueil(false);
-    });
-});
+/* Responsables et équipes de service retirés de l'écran (v2.2.1) ; les anciennes données restent conservées. */
+function renderVie(){}
 
 /* ---------- tirage au sort ---------- */
 var dejaTires = [];
@@ -7354,6 +7295,7 @@ el("acInstallBtn").addEventListener("click", function(){
 
 /* ---------- « Quoi de neuf » après une mise à jour ---------- */
 var NOUVEAUTES = [
+  ["2.2.1", ["Chef de classe et équipes de balayage retirés ; l'onglet devient « Tirage au sort »"]],
   ["2.2.0", ["CM2 : examens blancs (ils comptent dans la moyenne annuelle) et pas de composition de passage ; onglet CEPE (candidats, résultats, taux de réussite)","Alerte quand un élève dépasse 6 absences dans le mois, avec convocation du parent","Dossier complet de l'élève à imprimer ; présence sur l'année","Message à tous les parents par WhatsApp ; rapport de fin d'année pour l'IEPP","Minuteur et chronomètre en grand ; actions rapides de l'accueil au choix ; passer la classe à un remplaçant ; témoin « hors ligne »"]],
   ["2.1.0", ["Organisation : calendrier de l'année — trimestres, compositions trimestrielles, congés et grandes vacances (calendrier officiel 2026-2027 à ajouter d'un geste)","Documents : rubrique « Compositions » avec chaque composition saisie (tableau des notes, bulletins, tableau d'honneur)"]],
   ["2.0.0", ["Nouvelle présentation : bleu nuit et ambre, une seule police, cartes plus compactes","Barre du bas : Accueil, Élèves, Notes, Organisation, Plus (barre latérale sur ordinateur)","Accueil repensé : actions rapides, activités du jour avec leur statut, situation de la classe","Cloche de notifications : sauvegarde, appels, compositions non terminées, rappels","Organisation : agenda, emploi du temps et tâches de l'année réunis","Plus : documents, ressources, vie professionnelle et administration","Recherche élargie aux compositions, à l'agenda et au bloc-notes"]],
@@ -7431,17 +7373,6 @@ function activitesDuJour(){
     l.push({ic:"i-appel", t:"Appel du matin", s:am.s, st:am.st, btn:am.st === "fait" ? "Voir" : "Faire l'appel", act:"appel-m"});
     l.push({ic:"i-appel", t:"Appel du soir", s:as.s, st:as.st, btn:as.st === "fait" ? "Voir" : "Faire l'appel", act:"appel-s"});
   }
-  if(jourDeClasse() || indexJourJ() >= 0){
-    if(!equipesFormees()) l.push({ic:"i-balai", t:v.service, s:"Les équipes ne sont pas encore formées", st:"afaire", btn:"Former", act:"vie"});
-    else {
-      var jj = indexJourJ(), eq = jj >= 0 ? alpha().filter(function(e){ return v.equipes[e.id] === jj; }) : [];
-      if(jj >= 0){
-        var fait = !!(v.faits && v.faits[auj]);
-        l.push({ic:"i-balai", t:v.service + " — équipe du jour", s:eq.length ? eq.map(function(e){ return esc(e.nom.split(" ").slice(0, 2).join(" ")); }).join(", ") : "Personne dans l'équipe du jour",
-          st:fait ? "fait" : "afaire", btn:fait ? "Annuler" : "Marquer fait", act:"nettoyage"});
-      }
-    }
-  }
   dossier.agenda.filter(function(a){ return a.type !== "trimestre" && a.date <= auj && (a.fin || a.date) >= auj; }).forEach(function(a){
     l.push({ic:"i-agenda", t:esc(a.titre), s:libType(a.type) + (a.fin && a.fin !== a.date ? " · jusqu'au " + dateFr(a.fin) : ""), st:a.fin && a.fin !== a.date ? "encours" : "afaire", lib:a.fin && a.fin !== a.date ? "En cours" : "Aujourd'hui", btn:"Agenda", act:"agenda"});
   });
@@ -7473,11 +7404,6 @@ el("acActivites").addEventListener("click", function(ev){
   else if(a === "vie") allerRubrique("eleves", "vie");
   else if(a === "agenda") allerRubrique("organisation", "agenda");
   else if(a === "taches"){ var ta = tacheSuivante(); if(ta) taOnglet = ta.o; allerRubrique("organisation", "taches"); }
-  else if(a === "nettoyage"){
-    avantModif(false); var v = state.vie, auj = aujourdhuiISO(); v.faits = v.faits || {};
-    if(v.faits[auj]) delete v.faits[auj]; else v.faits[auj] = 1;
-    touch(); renderAujourdhui(); majNotifs();
-  }
 });
 
 /* ---------- situation de la classe ---------- */
@@ -7541,7 +7467,6 @@ function renderOrga(){
   else if(a === "agenda") allerRubrique("organisation", "agenda");
   else if(a === "taches"){ var ta = tacheSuivante(); if(ta) taOnglet = ta.o; allerRubrique("organisation", "taches"); }
   else if(a === "vie") allerRubrique("eleves", "vie");
-  else if(a === "nettoyage"){ el("acActivites").querySelector('[data-act="nettoyage"]') ? null : null; avantModif(false); var v = state.vie, auj = aujourdhuiISO(); v.faits = v.faits || {}; if(v.faits[auj]) delete v.faits[auj]; else v.faits[auj] = 1; touch(); renderOrga(); majNotifs(); }
 }); });
 function renderPlus(){
   var d = dossier.derniereSauvegarde;
@@ -7945,7 +7870,7 @@ function entreesRecherche(){
   dossier.classes.forEach(function(c){
     c.eleves.forEach(function(e){ if(e.nom.trim()) r.push({t:"Élève", l:e.nom, s:nomClasse(c) + (e.depart ? " · parti(e)" : ""), v:"e|" + c.id + "|" + e.id}); });
   });
-  var vues = [["Liste des élèves","eleves","saisie"],["Cahier d'appel","eleves","appel"],["Groupes d'EPS et PNAPAS","eleves","groupes"],["Vie de classe, balayage, tirage au sort","eleves","vie"],["Tableaux de scolarité","eleves","scolarite"],
+  var vues = [["Liste des élèves","eleves","saisie"],["Cahier d'appel","eleves","appel"],["Groupes d'EPS et PNAPAS","eleves","groupes"],["Tirage au sort, groupes de travail","eleves","vie"],["Tableaux de scolarité","eleves","scolarite"],
     ["Liste de classe","eleves","alpha"],["Synthèse, effectifs, âges","eleves","synthese"],["Saisir des notes, compositions","notes","notes"],["Fin d'année, moyennes annuelles","notes","annee"],["Statistiques et graphiques","notes","stats"],
     ["Tableau récapitulatif","documents","feuille"],["Bulletins scolaires","documents","cartes"],["Calendrier de l'année, congés, vacances, trimestres","organisation","calendrier"],["CEPE, examen, candidats","notes","cepe"],["Agenda","accueil","agenda"],["Emploi du temps","accueil","edt"],["Fournitures","accueil","fourn"],["Manuels et kits","accueil","manuels"],
     ["Bloc-notes","accueil","blocnotes"],["Chants et récitations","accueil","textes"],["Registre des visites","accueil","visites"],["Inventaire","accueil","inventaire"],["Tâches de l'année","accueil","taches"]];
@@ -7997,7 +7922,7 @@ function tableauMatieresEleve(e){
 }
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "2.2.0";
+var APP_VERSION = "2.2.1";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
