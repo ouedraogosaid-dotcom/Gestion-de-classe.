@@ -1359,6 +1359,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
 .dbl-g{display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border:1.5px solid var(--bord-2); border-radius:12px}
 .dbl-g input{margin-top:3px; width:20px; height:20px; flex:none}
 .dbl-g small{color:var(--ink3)}
+.retire{display:none !important}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -1564,7 +1565,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
       <button class="ln-item" type="button" id="plusMinuteur"><span class="rond"><svg class="ic"><use href="#i-horloge"/></svg></span><span class="ln-txt"><b>Minuteur et chronomètre</b><small>En grand, pour une composition ou un exercice</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
       <button class="ln-item" type="button" id="plusMessage"><span class="rond"><svg class="ic"><use href="#i-envoyer"/></svg></span><span class="ln-txt"><b>Message aux parents</b><small>Un message, envoyé à chaque parent par WhatsApp</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
     </div>
-    <h2 class="section-titre">Ressources pédagogiques et matérielles</h2>
+    <h2 class="section-titre">Ressources pédagogiques</h2>
     <div class="liste-nav">
       <button class="ln-item" type="button" data-outil="fourn"><span class="rond"><svg class="ic"><use href="#i-sac"/></svg></span><span class="ln-txt"><b>Fournitures</b><small>Liste de rentrée, ce qui manque</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
       <button class="ln-item" type="button" data-outil="manuels"><span class="rond"><svg class="ic"><use href="#i-livre"/></svg></span><span class="ln-txt"><b>Manuels et kits</b><small>Remis, rendus</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
@@ -2152,7 +2153,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
       <details><summary>La barre du bas</summary>
         <ul>
           <li><b>Accueil</b> : votre journée — actions rapides, appels du matin et du soir, agenda, tâches, situation de la classe.</li>
-          <li><b>Élèves</b> : la liste, le cahier d'appel, les groupes, le tirage au sort, les tableaux de scolarité et la synthèse.</li>
+          <li><b>Élèves</b> : la liste, le cahier d'appel, les groupes, les tableaux de scolarité et la synthèse.</li>
           <li><b>Notes</b> : les compositions, la fin d'année et les statistiques.</li>
           <li><b>Organisation</b> : l'agenda, l'emploi du temps et les tâches de l'année.</li>
           <li><b>Plus</b> : les documents à imprimer, les ressources (fournitures, manuels, inventaire, chants), la vie professionnelle et l'administration (sauvegarde, classes, paramètres).</li>
@@ -4695,6 +4696,10 @@ el("btnViderMois").addEventListener("click", function(){
 el("f_cartesMode").addEventListener("change", function(){ majTitreCartes(); buildCartes(); fitCartes(); majFab(); });
 
 /* ---------- navigation : 5 rubriques, chacune avec ses vues ---------- */
+/* v2.5 : fonctions retirées à la demande du maître. Leurs données restent dans le dossier et la sauvegarde ;
+   pour en remettre une, il suffit de l'enlever de ces listes. */
+var RETIRES = {vues:["vie","taches","blocnotes","visites","fourn","manuels","inventaire"], docs:["etiquettes","satisfecit","pnapas","renseignements","rapport"], boutons:["plusMinuteur","plusMessage","plusRemplacant"], actions:["minuteur","message"]};
+function estRetire(v){ return RETIRES.vues.indexOf(v) >= 0 || RETIRES.docs.indexOf(String(v).replace(/^d:/, "")) >= 0 || RETIRES.actions.indexOf(v) >= 0; }
 var VIEWS = {journal:"vJournal", cepe:"vCepe", calendrier:"vCalendrier", stats:"vStats", visites:"vVisites", inventaire:"vInventaire", taches:"vTaches", doc:"vDoc", ecole:"vEcole", agenda:"vAgenda", edt:"vEdt", fourn:"vFourn", manuels:"vManuels", blocnotes:"vBlocnotes", textes:"vTextes", saisie:"vSaisie", appel:"vAppel", groupes:"vGroupes", vie:"vVie", scolarite:"vScolarite", alpha:"vAlpha", synthese:"vSynthese", feuille:"vFeuille", notes:"vNotes", annee:"vAnnee", cartes:"vCartes"};
 var RUBRIQUES = {accueil:"rAccueil", eleves:"rEleves", notes:"rNotes", organisation:"rOrga", plus:"rPlus", documents:"rDocuments", reglages:"rReglages"};
 /* onglet de la barre du bas allumé pour chaque rubrique */
@@ -4740,6 +4745,7 @@ function allerRubrique(r, vue){
   noterNavigation();
 }
 function montrerVue(v, anim){
+  if(estRetire(v)){ if(RUBRIQUE_DE[v] === "eleves") v = "saisie"; else return; }
   var r = RUBRIQUE_DE[v]; if(!r) return;
   var zone = el(RUBRIQUES[r]);
   zone.querySelectorAll(".view").forEach(function(n){ n.classList.toggle("is-hidden", n.id !== VIEWS[v]); });
@@ -7559,6 +7565,7 @@ el("acInstallBtn").addEventListener("click", function(){
 
 /* ---------- « Quoi de neuf » après une mise à jour ---------- */
 var NOUVEAUTES = [
+  ["2.5.0", ["Application allégée : tirage au sort, minuteur, message aux parents, tâches de l'année, bloc-notes, registre des visites, fournitures, manuels, inventaire et passage à un remplaçant sont retirés","Documents retirés : étiquettes, satisfecits, bilan PNAPAS, fiche de renseignements, rapport mensuel","Les données déjà saisies restent conservées dans votre sauvegarde"]],
   ["2.4.5", ["Élèves en double : ignorés à l'import (même avec accents ou nom/prénom inversés), signalés à la saisie, et bandeau « Corriger » pour regrouper ceux déjà présents"]],
   ["2.4.4", ["Cahier journal : ajoutez, renommez, déplacez ou supprimez vos disciplines (bouton « Disciplines et jours »), jusqu'à 30","Une discipline ajoutée est aussi reconnue à l'import de la répartition"]],
   ["2.4.3", ["Recherche des mises à jour plus fréquente, et bouton « Vérifier les mises à jour » dans Réglages"]],
@@ -7668,6 +7675,7 @@ function activitesDuJour(){
   return l;
 }
 function tacheSuivante(){
+  if(estRetire("taches")) return null;
   var mo = new Date().getMonth(), o = (mo >= 4 && mo <= 7) ? "fin" : "rentree";
   var liste = state.taches && state.taches[o]; if(!liste) return null;
   var reste = liste.filter(function(t){ return !t.fait; });
@@ -8674,11 +8682,11 @@ function entreesRecherche(){
     ["Liste de classe","eleves","alpha"],["Synthèse, effectifs, âges","eleves","synthese"],["Saisir des notes, compositions","notes","notes"],["Fin d'année, moyennes annuelles","notes","annee"],["Statistiques et graphiques","notes","stats"],
     ["Tableau récapitulatif","documents","feuille"],["Bulletins scolaires","documents","cartes"],["Calendrier de l'année, congés, vacances, trimestres","organisation","calendrier"],["CEPE, examen, candidats","notes","cepe"],["Cahier journal, séances de la semaine","organisation","journal"],["Agenda","accueil","agenda"],["Emploi du temps","accueil","edt"],["Fournitures","accueil","fourn"],["Manuels et kits","accueil","manuels"],
     ["Bloc-notes","accueil","blocnotes"],["Chants et récitations","accueil","textes"],["Registre des visites","accueil","visites"],["Inventaire","accueil","inventaire"],["Tâches de l'année","accueil","taches"]];
-  vues.forEach(function(x){ r.push({t:x[1] === "documents" ? "Document" : "Écran", l:x[0], s:"", v:"n|" + x[1] + "|" + x[2]}); });
+  vues.filter(function(x){ return !estRetire(x[2]); }).forEach(function(x){ r.push({t:x[1] === "documents" ? "Document" : "Écran", l:x[0], s:"", v:"n|" + x[1] + "|" + x[2]}); });
   Object.keys(DOCS).forEach(function(k){ r.push({t:"Document", l:DOCS[k], s:"", v:"d|" + k}); });
   periodesRenseignees().forEach(function(p){ r.push({t:"Composition", l:libellePeriode(p), s:nomClasse(state), v:"c|" + p}); });
   dossier.agenda.forEach(function(a){ r.push({t:"Agenda", l:a.titre, s:libType(a.type) + " · " + dateFr(a.date), v:"n|organisation|agenda"}); });
-  (state.blocnotes || []).forEach(function(nt){ r.push({t:"Bloc-notes", l:nt.texte.slice(0, 70), s:"", v:"n|plus|blocnotes"}); });
+  if(!estRetire("blocnotes")) (state.blocnotes || []).forEach(function(nt){ r.push({t:"Bloc-notes", l:nt.texte.slice(0, 70), s:"", v:"n|plus|blocnotes"}); });
   [["Sauvegarde, restaurer, corbeille","rgSauve"],["En-tête du registre, école, établissement","rgEtab"],["Classes, archives, année suivante","secEntete"],["Couleurs, thème, taille du texte",""],["Maîtres, verrouillage, rôle directeur",""],["Aide","rgAide"]].forEach(function(x){ r.push({t:"Réglages", l:x[0], s:"", v:"r|" + x[1]}); });
   if(dossier.role === "directeur") r.push({t:"Écran", l:"Mon école", s:"Classes des collègues", v:"n|accueil|ecole"});
   return r;
@@ -8722,7 +8730,7 @@ function tableauMatieresEleve(e){
 }
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "2.4.5";
+var APP_VERSION = "2.5.0";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
@@ -8804,6 +8812,19 @@ function lancerGuide(){
   });
 }
 
+/* masque les fonctions retirées (menus, onglets, documents, raccourcis) */
+(function(){
+  var cacher = function(n){ if(n) n.classList.add("retire"); };
+  RETIRES.vues.forEach(function(v){ document.querySelectorAll('[data-outil="' + v + '"], .seg [data-v="' + v + '"]').forEach(cacher); });
+  RETIRES.docs.forEach(function(d){ document.querySelectorAll('[data-doc="d:' + d + '"]').forEach(cacher); delete DOCS[d]; });
+  RETIRES.boutons.forEach(function(id){ cacher(el(id)); });
+  RETIRES.actions.forEach(function(a){ delete ACTIONS[a]; });
+  /* une rubrique devenue vide disparaît avec son titre */
+  document.querySelectorAll(".liste-nav").forEach(function(l){
+    if(l.querySelector(".ln-item:not(.retire)")) return;
+    cacher(l); var h = l.previousElementSibling; if(h && h.classList.contains("section-titre")) cacher(h);
+  });
+})();
 boot(local || cloneDemo());
 if(ancienFormat) persist();   /* migration silencieuse de l'ancien enregistrement */
 initHistorique();

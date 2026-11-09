@@ -1,7 +1,7 @@
 /* Registre récapitulatif — cache hors ligne
    À CHAQUE PUBLICATION : augmenter le numéro de VERSION ci-dessous.
    C'est ce qui fait apparaître « Nouvelle version disponible » sur les téléphones. */
-var VERSION = "2.4.5";
+var VERSION = "2.5.0";
 var CACHE = "registre-" + VERSION;
 
 var FICHIERS = [
