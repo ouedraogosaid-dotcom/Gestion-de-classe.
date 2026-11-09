@@ -912,9 +912,11 @@ h1,h2,h3,.titre{letter-spacing:-.015em}
 .jr-grille th, .jr-grille td{white-space:normal; overflow-wrap:anywhere; border:1px solid #555; padding:3px 4px; vertical-align:top; color:#111; background:#fff}
 .jr-grille thead th{white-space:normal; overflow-wrap:anywhere; hyphens:auto; font-size:8.5px; text-transform:uppercase; background:#f1efe9; text-align:center; vertical-align:middle}
 .jr-grille .jr-jour{text-align:center; vertical-align:middle; background:#f7f6f2}
-.jr-grille .jr-jour span{display:block; font-size:8.5px; letter-spacing:.04em}
+.jr-grille .jr-jour span{display:block; font-size:7.5px; letter-spacing:.02em; overflow-wrap:normal; word-break:keep-all}
 .jr-grille .jr-jour small{font-size:9px; color:#555}
 .jr-grille tbody tr{height:30mm}
+.jr-grille.serre{font-size:8.5px}
+.jr-grille.serre thead th{font-size:7.5px; padding:3px 2px}
 .jr-g-s{display:block; color:#B42318}
 .jr-g-t{display:block; color:#1D3A8A}
 .jr-g-p{display:block; font-size:8.5px; color:#333; margin-top:1px}
@@ -2494,7 +2496,14 @@ function normJournal(j){
   j = (j && typeof j === "object") ? j : {};
   var JOURS_OK = ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
   var cols = Array.isArray(j.cols) ? j.cols.slice(0, 14).map(function(c){ var n = txt(c && c.nom, 50).trim(); return n ? {id:idSur(c.id) || uid(), nom:n} : null; }).filter(Boolean) : [];
-  if(!cols.length) cols = ["EDHC","Français — Expression orale","Français — Lecture","Français — Expression écrite","Mathématiques","Sciences et technologie","Histoire / Géographie","AEC (poésie, chant, dessin) / EPS"].map(function(n, i){ return {id:"c" + (i + 1), nom:n}; });
+  var ANCIEN = ["EDHC","Français — Expression orale","Français — Lecture","Français — Expression écrite","Mathématiques","Sciences et technologie","Histoire / Géographie","AEC (poésie, chant, dessin) / EPS"];
+  var NOUVEAU = ["EDHC","Expression orale","Lecture","Expression écrite","Mathématiques","Sciences et technologie","Histoire","Géographie","Poésie","Chant","Dessin","EPS"];
+  /* v2.3.1 : chaque discipline dans sa propre colonne (les anciennes colonnes regroupées sont séparées, leurs séances restent dans la première) */
+  if(cols.length === ANCIEN.length && cols.every(function(c, i){ return c.nom === ANCIEN[i]; })){
+    var ids0 = cols.map(function(c){ return c.id; });
+    cols = NOUVEAU.map(function(n, i){ return {id: i < 7 ? ids0[i] : i === 8 ? ids0[7] : "c" + (i + 1) + "n", nom:n}; });
+  }
+  if(!cols.length) cols = NOUVEAU.map(function(n, i){ return {id:"c" + (i + 1), nom:n}; });
   var ids = {}; cols.forEach(function(c){ if(ids[c.id]) c.id = uid(); ids[c.id] = 1; });
   var jours = Array.isArray(j.jours) ? JOURS_OK.filter(function(x){ return j.jours.indexOf(x) >= 0; }) : [];
   if(!jours.length) jours = ["Lundi","Mardi","Jeudi","Vendredi"];
@@ -7385,6 +7394,7 @@ el("acInstallBtn").addEventListener("click", function(){
 
 /* ---------- « Quoi de neuf » après une mise à jour ---------- */
 var NOUVEAUTES = [
+  ["2.3.1", ["Cahier journal : chaque discipline a sa propre colonne (Histoire, Géographie, Poésie, Chant, Dessin, EPS séparés)"]],
   ["2.3.0", ["Cahier journal (Organisation) : une page par semaine, une colonne par discipline ; dans chaque case la séance (S1, S2…), le titre de la leçon et la page ; « Séance suivante » d'un geste ; impression comme le cahier"]],
   ["2.2.1", ["Chef de classe et équipes de balayage retirés ; l'onglet devient « Tirage au sort »"]],
   ["2.2.0", ["CM2 : examens blancs (ils comptent dans la moyenne annuelle) et pas de composition de passage ; onglet CEPE (candidats, résultats, taux de réussite)","Alerte quand un élève dépasse 6 absences dans le mois, avec convocation du parent","Dossier complet de l'élève à imprimer ; présence sur l'année","Message à tous les parents par WhatsApp ; rapport de fin d'année pour l'IEPP","Minuteur et chronomètre en grand ; actions rapides de l'accueil au choix ; passer la classe à un remplaçant ; témoin « hors ligne »"]],
@@ -7960,7 +7970,7 @@ window.addEventListener("online", function(){ majEnLigne(true); });
 el("horsLigne").addEventListener("click", function(){ toast("Pas d'internet en ce moment. L'application fonctionne quand même : rien n'est perdu."); });
 
 /* ---------- cahier journal : une page par semaine, une classe à la fois ---------- */
-var JR_COLS_DEF = ["EDHC","Français — Expression orale","Français — Lecture","Français — Expression écrite","Mathématiques","Sciences et technologie","Histoire / Géographie","AEC (poésie, chant, dessin) / EPS"];
+var JR_COLS_DEF = ["EDHC","Expression orale","Lecture","Expression écrite","Mathématiques","Sciences et technologie","Histoire","Géographie","Poésie","Chant","Dessin","EPS"];
 var JR_JOURS = ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
 var jrLundi = null, jrJour = null;
 function lundiDe(iso){ var d = new Date(iso + "T12:00:00"), k = (d.getDay() + 6) % 7; return decalerJour(iso, -k); }
@@ -8048,10 +8058,10 @@ function titresColonne(col){
   return l.slice(0, 40);
 }
 function grilleJournal(lundi){
-  var J = state.journal, m = state.meta, num = numeroSemaine(lundi), w = (86 / Math.max(1, J.cols.length)).toFixed(2) + "%";
+  var J = state.journal, m = state.meta, num = numeroSemaine(lundi), w = (87 / Math.max(1, J.cols.length)).toFixed(2) + "%";
   return '<div class="jr-page"><div class="jr-tete"><span>' + (num ? '<b class="jr-num">' + esc(num) + '</b>' : '') + '<b>SEMAINE ' + esc(libSemaine(lundi).toUpperCase()) + '</b></span>'
     + '<span>' + [m.ecole ? "EPP " + esc(m.ecole) : "", m.classe ? "Classe : " + esc(m.classe) : "", m.maitre ? "Maître : " + esc(m.maitre) : "", anneeTxt() ? esc(anneeTxt()) : ""].filter(Boolean).join(" · ") + '</span></div>'
-    + '<table class="jr-grille"><colgroup><col style="width:6%">' + J.cols.map(function(){ return '<col style="width:' + w + '">'; }).join("") + '<col style="width:8%"></colgroup>'
+    + '<table class="jr-grille' + (J.cols.length > 9 ? ' serre' : '') + '"><colgroup><col style="width:6%">' + J.cols.map(function(){ return '<col style="width:' + w + '">'; }).join("") + '<col style="width:7%"></colgroup>'
     + '<thead><tr><th>Jours</th>' + J.cols.map(function(c){ return '<th>' + esc(c.nom) + '</th>'; }).join("") + '<th>Visa du directeur</th></tr></thead><tbody>'
     + J.jours.map(function(j){
         return '<tr><th class="jr-jour"><span>' + j.toUpperCase() + '</span><small>' + Number(dateDuJour(lundi, j).slice(8, 10)) + '</small></th>' + J.cols.map(function(c){
@@ -8188,7 +8198,7 @@ function tableauMatieresEleve(e){
 }
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "2.3.0";
+var APP_VERSION = "2.3.1";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
