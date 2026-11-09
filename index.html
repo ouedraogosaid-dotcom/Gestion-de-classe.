@@ -671,6 +671,25 @@ td.faible{color:var(--bad); font-weight:700}
 .grand-texte h2{font-size:calc(var(--gt, 28px) * .9); margin:10px 0 18px; text-align:center}
 #gtCorps{font-size:var(--gt, 28px); line-height:1.55; white-space:pre-wrap; text-align:center; max-width:900px; margin:0 auto; font-weight:500}
 
+/* ================= Lot 4 : saisie des notes ================= */
+@media screen{ .ecran-cache{display:none !important} }
+.une-liste, .appr-liste{list-style:none; margin:0 0 6px; padding:0; display:flex; flex-direction:column; gap:6px}
+.une-liste li, .appr-liste li{display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:12px; border:1px solid var(--bord); background:var(--surface)}
+.une-liste .ce-nom, .appr-liste .ce-nom{flex:1; min-width:0; white-space:normal; line-height:1.25}
+.une-liste input.nt{width:84px; text-align:center; font:700 1.05rem/1 "Inter",sans-serif; padding:10px 6px}
+.une-liste input.nt.bad{background:var(--bad-bg); border-color:var(--bad)}
+.une-liste .sur{color:var(--texte-3); font-size:.8rem; min-width:28px}
+.une-liste li.fait{border-color:color-mix(in srgb, var(--ok) 40%, var(--bord))}
+.appr-liste li{flex-wrap:wrap}
+.appr-liste .moy{font-size:.78rem; color:var(--texte-3); white-space:nowrap}
+.appr-liste select{width:auto; min-width:130px; padding:8px 10px}
+.appr-liste input{flex:1 1 100%}
+.logo-apercu{width:64px; height:64px; border-radius:12px; border:1px dashed var(--bord-2); display:grid; place-items:center; overflow:hidden; flex:none; background:var(--surface-2)}
+.logo-apercu img{width:100%; height:100%; object-fit:contain}
+.select-eleves{display:flex; flex-direction:column; gap:6px; max-height:55vh; overflow:auto}
+.select-eleves label{display:flex; gap:10px; align-items:center; padding:9px 12px; border-radius:10px; background:var(--surface-2); cursor:pointer}
+.select-eleves input{width:20px; height:20px; accent-color:var(--bleu)}
+
 /* ================= Animations ================= */
 @keyframes entre{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
 @keyframes glisse{from{opacity:0; transform:translateY(-8px)} to{opacity:1; transform:none}}
@@ -796,6 +815,34 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
 .carte .carte-visa{margin-top:auto; display:flex; gap:8px; align-items:baseline;
   font-family:"Inter"; font-weight:600; text-transform:uppercase; letter-spacing:.09em; font-size:10px; color:#333}
 .carte .carte-visa i{flex:1; border-bottom:1px dotted #777 !important; font-style:normal}
+
+
+/* ---- lot 4 : en-tête officiel, bulletins enrichis ---- */
+.eo{display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:3mm; color:#111; text-align:center; line-height:1.2}
+.eo b{display:block; text-transform:uppercase; font-weight:700; letter-spacing:.03em}
+.eo i{display:block; font-style:italic}
+.eo-c img{display:block; height:12mm; width:auto; max-width:22mm; object-fit:contain; margin:0 auto}
+.eo-a4{font-size:7px; margin-bottom:1.5mm} .eo-a4 .eo-c img{height:10mm}
+.eo-np{font-size:8px; margin-bottom:2mm}
+.eo-carte{font-size:6.6px; margin:-.6mm 0 1mm} .eo-carte .eo-c img{height:9mm}
+.carte .bulletin-prec{text-align:center; font-size:8.5px; margin:0 0 1.2mm; color:#222}
+.carte .bulletin-mot{font-size:9px; margin:0 0 1mm; display:flex; gap:4px; align-items:baseline; max-height:7.6mm; overflow:hidden}
+.carte .bulletin-mot span{font-family:"Inter"; font-weight:700; text-transform:uppercase; letter-spacing:.06em; font-size:8px; white-space:nowrap}
+.carte .bulletin-mot i{flex:1; border-bottom:1px dotted #777 !important; min-height:3mm}
+.carte .bulletin-dir{font-size:9px; margin-top:1mm}
+.carte.grande{height:280mm; padding:6mm 7mm}
+.carte.grande .eo-carte{font-size:9px; margin-bottom:3mm} .carte.grande .eo-carte .eo-c img{height:16mm}
+.carte.grande .bulletin-entete{font-size:11px} .carte.grande .bulletin-entete .be-title{font-size:20px}
+.carte.grande .carte-top{font-size:14px} .carte.grande .carte-top .el-nom{font-size:17px}
+.carte.grande .carte-mois{font-size:15px} .carte.grande .carte-mois b{font-size:17px}
+.carte.grande table.carte-t th, .carte.grande table.carte-t td{height:10mm; font-size:13.5px}
+.carte.grande table.carte-t thead th{font-size:12.5px}
+.carte.grande .carte-bas{font-size:14px; padding-top:3mm} .carte.grande .carte-bas b{font-size:16px}
+.carte.grande .bulletin-resume{font-size:14px; padding:2.5mm; margin:3mm 0} .carte.grande .bulletin-resume b{font-size:16px}
+.carte.grande .bulletin-appreciation{font-size:13px; margin-bottom:3mm}
+.carte.grande .bulletin-prec{font-size:12px; margin-bottom:3mm}
+.carte.grande .bulletin-mot{font-size:13px; max-height:20mm; margin-bottom:4mm} .carte.grande .bulletin-mot span{font-size:11px}
+.carte.grande .carte-visa{font-size:13px} .carte.grande .bulletin-dir{font-size:12px}
 
 /* tableau de la classe, format A4 */
 .notes-page{padding:4mm}
@@ -1247,6 +1294,24 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
           <div class="lg" id="matList"></div>
           <p class="hint">Pour chaque matière, choisissez son barème : /10, /20 ou /50. La moyenne est calculée sur le total des points obtenus rapporté au total des points possibles, puis ramenée à l'échelle de la classe.</p>
         </div>
+        <div class="outils-liste no-print">
+          <span class="bascule" id="ntModes" role="group" aria-label="Mode de saisie">
+            <button type="button" data-ntm="une" aria-pressed="true">Une matière</button>
+            <button type="button" data-ntm="tableau" aria-pressed="false">Tableau</button>
+            <button type="button" data-ntm="appr" aria-pressed="false">Conduite et appréciations</button>
+          </span>
+        </div>
+        <div id="ntUne" class="no-print">
+          <div class="nt-tools" style="margin-bottom:8px"><div class="field"><label for="ntMat">Matière</label><select id="ntMat"></select></div>
+            <span class="status" id="ntProg"></span></div>
+          <ul class="une-liste" id="ntUneListe"></ul>
+        </div>
+        <div id="ntAppr" class="no-print is-hidden">
+          <div class="rowbtns" style="margin:0 0 10px"><button class="btn btn-sm" type="button" id="ntApprAuto">Remplir les appréciations vides</button></div>
+          <ul class="appr-liste" id="ntApprListe"></ul>
+          <datalist id="dlAppr"></datalist>
+          <p class="hint">Choisissez une appréciation proposée ou écrivez la vôtre : vos propres formules sont retenues pour les prochaines fois.</p>
+        </div>
         <div class="scroll" id="tNotes">
           <table><thead><tr id="ntHead"></tr></thead><tbody id="tbNotes"></tbody></table>
         </div>
@@ -1316,6 +1381,8 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
           </select>
         </div>
         <div class="field mini" style="min-width:200px" id="cartesMoisWrap"><label for="f_mois2">Composition</label><select id="f_mois2"></select></div>
+        <div class="field mini" style="min-width:190px" id="cartesModeleWrap"><label for="f_modele">Présentation</label><select id="f_modele"><option value="deux">2 bulletins par feuille</option><option value="un">1 bulletin par feuille (grand)</option></select></div>
+        <button class="btn btn-sm" type="button" id="btnSelection">Élèves : tous</button>
         <button class="btn btn-sm btn-primary is-hidden" id="btnPdf3" type="button">Enregistrer la feuille</button>
       </div>
       <div class="a4-stage" id="cartesStage"></div>
@@ -1361,6 +1428,17 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
           <div class="puces" id="rgNiveaux"></div></div>
         <div class="field"><label for="f_mai">Le Maître chargé du cours</label><input id="f_mai" data-m="maitre" autocomplete="off"></div>
       </div>
+    </section>
+
+    <section class="sheet">
+      <h2>En-tête officiel et logo <small>En haut des bulletins et des documents</small></h2>
+      <div class="reglage"><span class="r-txt"><b>En-tête officiel</b><small>République de Côte d'Ivoire — Union, Discipline, Travail</small></span>
+        <span class="interrupteur"><input type="checkbox" id="rgEntete" aria-label="En-tête officiel"><span></span></span></div>
+      <div class="field" style="margin-top:12px"><label for="rgMinistere">Ministère</label><input id="rgMinistere" maxlength="120"></div>
+      <div class="field" style="margin-top:14px"><span class="lbl">Logo ou emblème de l'école</span>
+        <div class="fiche-photo"><span id="rgLogoApercu" class="logo-apercu"></span>
+          <span class="btns"><label class="btn btn-sm" style="cursor:pointer"><svg class="ic"><use href="#i-photo"/></svg><span id="rgLogoTxt">Choisir une image</span><input type="file" id="rgLogo" accept="image/*" style="display:none"></label>
+          <button type="button" class="btn btn-sm btn-ghost is-hidden" id="rgLogoSuppr">Retirer</button></span></div></div>
     </section>
 
     <section class="sheet">
@@ -1593,6 +1671,8 @@ function normDossier(d){
     derniereSauvegarde: dateSure(d.derniereSauvegarde),
     ecole: normEcole(d.ecole, cls),
     salles: normSalles(d.salles, cls),
+    mesAppr: listeNorm(d.mesAppr, 60, function(a){ var t = txt(a, 160).trim(); return t || null; }),
+    modeleBulletin: d.modeleBulletin === "un" ? "un" : "deux",
     agenda: listeNorm(d.agenda, 300, function(a){
       var t = txt(a && a.titre, 80).trim(), dt = dateJour(a && a.date); if(!t || !dt) return null;
       return {id:idSur(a.id) || uid(), titre:t, date:dt, fin:dateJour(a.fin), type:["composition","conge","reunion","rappel","autre"].indexOf(a.type) >= 0 ? a.type : "autre"};
@@ -1623,8 +1703,12 @@ function normEcole(e, cls){
     r[k] = txt(e[k]).trim();
     if(!r[k] && cls) cls.forEach(function(c){ if(!r[k] && !c.demo && c.meta[k]) r[k] = c.meta[k]; });
   });
+  r.logo = typeof e.logo === "string" && e.logo.length < 160000 && RE_PHOTO.test(e.logo) ? e.logo : "";
+  r.ministere = txt(e.ministere, 120).trim() || MINISTERE_DEF;
+  r.entete = e.entete !== false;
   return r;
 }
+var MINISTERE_DEF = "Ministère de l'Éducation Nationale et de l'Alphabétisation";
 function normCorbeille(x){
   if(!x || typeof x !== "object") return null;
   var quand = dateSure(x.quand) || new Date().toISOString();
@@ -1781,6 +1865,7 @@ function nomClasse(c){
 }
 function ouvrirClasse(id){
   nettoyerSalles();
+  selectionBulletins = null;
   dossier.active = id;
   state = classeActive();
   persist();
@@ -1826,6 +1911,10 @@ function normalize(d){
   };
 }
 
+var CONDUITES = [["tb","Très bonne"],["b","Bonne"],["ab","Assez bonne"],["p","Passable"],["m","Mauvaise"]];
+var PREREMPLIES = ["Excellent travail, continue ainsi.","Très bon travail, félicitations.","Bon travail, continue.","Assez bien, tu peux mieux faire.",
+  "Travail passable, fournis plus d'efforts.","Résultats insuffisants, redouble d'efforts.","Élève sérieux et appliqué.","Des progrès, continue ainsi.",
+  "Bavard, doit être plus attentif en classe.","Doit apprendre ses leçons régulièrement."];
 function normNotes(n, codesClasse){
   n = (n && typeof n === "object") ? n : {};
   var CODES = codesClasse || MATIERES.map(function(m){ return m.code; });
@@ -1860,7 +1949,18 @@ function normNotes(n, codesClasse){
     data[m] = out;
   });
   var seuil = (n.seuil == null || isNaN(Number(n.seuil))) ? echelle / 2 : Math.min(20, Math.max(0, Number(n.seuil)));
-  return {bareme:ancienBareme, echelle:echelle, baremes:baremes, mois:mois, actives:actives, data:data, seuil:seuil};
+  var parPeriode = function(src, f){
+    var r = {}; if(!src || typeof src !== "object") return r;
+    PERIODES.forEach(function(m){
+      var b = src[m]; if(!b || typeof b !== "object") return;
+      var o = {}; Object.keys(b).slice(0, MAX_ELEVES * 2).forEach(function(k){ var id = idSur(k), v = f(b[k]); if(id && v) o[id] = v; });
+      r[m] = o;
+    });
+    return r;
+  };
+  var appr = parPeriode(n.appr, function(v){ return txt(v, 160).trim(); });
+  var conduite = parPeriode(n.conduite, function(v){ return CONDUITES.some(function(c){ return c[0] === v; }) ? v : ""; });
+  return {bareme:ancienBareme, echelle:echelle, baremes:baremes, mois:mois, actives:actives, data:data, seuil:seuil, appr:appr, conduite:conduite};
 }
 
 /* ---------- calculs : la logique du registre ---------- */
@@ -2408,11 +2508,21 @@ function blocVisas(){
     + '</div></div>';
 }
 
+/* en-tête officiel : République, devise, ministère et logo de l'école */
+function enteteOfficiel(cls){
+  var ec = dossier.ecole || {};
+  if(ec.entete === false && !ec.logo) return "";
+  return '<div class="eo ' + (cls || "") + '">'
+    + '<div class="eo-g">' + (ec.entete === false ? "" : '<b>République de Côte d\'Ivoire</b><i>Union – Discipline – Travail</i>') + '</div>'
+    + '<div class="eo-c">' + (ec.logo ? '<img src="' + ec.logo + '" alt="">' : '') + '</div>'
+    + '<div class="eo-d">' + (ec.entete === false ? "" : '<b>' + esc(ec.ministere || MINISTERE_DEF) + '</b>') + '</div>'
+    + '</div>';
+}
 function entetePage(no, total){
   var m = state.meta;
   var an = (m.an1 || m.an2) ? (m.an1 || "20…") + "–" + (m.an2 || "20…") : "20…–20…";
   var val = function(v){ return v ? esc(v) : '<span style="color:#999">…………………</span>'; };
-  return '<div class="a4-title">Tableau récapitulatif</div>'
+  return enteteOfficiel("eo-a4") + '<div class="a4-title">Tableau récapitulatif</div>'
     + '<div class="a4-meta">'
       + '<span><i>DRENA</i> <b>' + val(m.drena) + '</b></span>'
       + '<span><i>I.E.P.P.</i> <b>' + val(m.inspection) + '</b></span>'
@@ -2623,12 +2733,19 @@ function renderNotes(){
   el("ntMoyCl").textContent = cl.moyenneClasse == null ? "—" : nombreFr(cl.moyenneClasse,2) + " / " + b;
   el("ntMax").textContent = cl.liste.length ? nombreFr(cl.liste[0].b.moy,2) + " — " + cl.liste[0].e.nom : "—";
   el("ntMin").textContent = cl.liste.length ? nombreFr(cl.liste[cl.liste.length-1].b.moy,2) + " — " + cl.liste[cl.liste.length-1].e.nom : "—";
+  renderNotesModes();
   el("ntStatus").textContent = act.length + " matière" + (act.length>1?"s":"")
     + " notée" + (act.length>1?"s":"") + " — échelle de moyenne sur " + b;
 }
 
 /* ---------- notes : carte de l'eleve, au format du carnet ---------- */
-function carteHtml(e, rang, sur){
+function libConduite(k){ var c = CONDUITES.filter(function(x){ return x[0] === k; })[0]; return c ? c[1] : ""; }
+function moyennesPrecedentes(e){
+  var idx = PERIODES.indexOf(state.notes.mois), r = [];
+  MOIS.forEach(function(m, i){ if(i >= idx) return; var v = moyennePeriode(e, m); if(v != null) r.push({m:m, v:v}); });
+  return r;
+}
+function carteHtml(e, rang, sur, grande){
   var act = state.notes.actives, b = echelleMoyenne(), bi = bilan(e);
   var moitie = Math.ceil(state.matieres.length / 2);
   var g = state.matieres.slice(0, moitie), d = state.matieres.slice(moitie);
@@ -2652,7 +2769,10 @@ function carteHtml(e, rang, sur){
     lignes += '</tr>';
   }
   var annee = (state.meta.an1 || "") + (state.meta.an2 ? "–" + state.meta.an2 : "");
-  return '<div class="carte">'
+  var m = state.notes.mois, cond = libConduite((state.notes.conduite[m] || {})[e.id]), mot = (state.notes.appr[m] || {})[e.id] || "";
+  var prec = moyennesPrecedentes(e);
+  return '<div class="carte' + (grande ? ' grande' : '') + '">'
+    + enteteOfficiel("eo-carte")
     + '<div class="bulletin-entete">'
     + '<div class="be-title">BULLETIN SCOLAIRE</div>'
     + '<div>DRENA : <b>'+esc(state.meta.drena || "")+'</b> &nbsp; | &nbsp; I.E.P.P. : <b>'+esc(state.meta.inspection || "")+'</b> &nbsp; | &nbsp; E.P.P. : <b>'+esc(state.meta.ecole || "")+'</b></div>'
@@ -2668,14 +2788,16 @@ function carteHtml(e, rang, sur){
     +   '<span>Moyenne : <b>'+(bi.nb ? nombreFr(bi.moy,2) : "—")+'</b>/'+b+'</span>'
     +   '<span>Rang : <b>'+(rang || "—")+'</b> / '+(sur || "—")+'</span>'
     + '</div>'
-    + '<div class="bulletin-appreciation">Appréciation : <b>'+(bi.nb ? appreciation(bi.moy) : "—")+'</b></div>'
+    + '<div class="bulletin-appreciation">Appréciation : <b>'+(bi.nb ? appreciation(bi.moy) : "—")+'</b>' + (cond ? ' &nbsp;·&nbsp; Conduite : <b>' + esc(cond) + '</b>' : '') + '</div>'
+    + (prec.length ? '<div class="bulletin-prec">Moyennes précédentes : ' + prec.map(function(x){ return esc(abbrMois(x.m)) + ' <b>' + nombreFr(x.v, 2) + '</b>'; }).join(" · ") + '</div>' : '')
+    + '<div class="bulletin-mot"><span>Mot du maître :</span> ' + (mot ? esc(mot) : '<i></i>') + '</div>'
     + '<div class="carte-visa"><span>Visa des parents</span><i></i>'
     +   '<span>Le Maître : '+esc(state.meta.maitre || "")+'</span><i></i></div>'
     + '<div class="bulletin-dir">Directeur : '+esc(state.meta.directeur || "")+'</div>'
     + '</div>';
 }
 
-var CARTES_PAR_PAGE = 2, LIGNES_PAR_PAGE = 34;
+var CARTES_PAR_PAGE = 2, LIGNES_PAR_PAGE = 34, selectionBulletins = null;
 
 /* ---------- fin d'annee ---------- */
 var MOIS_AB = {"Octobre":"Oct.", "Novembre":"Nov.", "D\u00e9cembre":"D\u00e9c.", "Janvier":"Jan.",
@@ -2737,7 +2859,7 @@ function pageAnneeHtml(liste, cl, depart, pages){
       + '<td class="r">'+(cl.rangs[e.id]||"")+'</td>'
       + '<td class="v">'+esc(decision(a))+'</td></tr>';
   }).join("");
-  return '<div class="a4"><div class="notes-page">'
+  return '<div class="a4"><div class="notes-page">' + enteteOfficiel("eo-np")
     + '<div class="np-title">Résultats de fin d\'année</div>'
     + '<div class="np-meta"><span><i>DRENA</i> '+esc(state.meta.drena||"…")+'</span>' +
     '<span><i>I.E.P.P.</i> '+esc(state.meta.inspection||"…")+'</span>'
@@ -2776,7 +2898,7 @@ function pageTableauHtml(liste, cl, depart, total, pages){
   var cols = '<colgroup><col style="width:3.5%"><col style="width:24%">'
     + act.map(function(){ return '<col style="width:' + largeurMat + '">'; }).join("")
     + '<col style="width:6%"><col style="width:6%"><col style="width:5.5%"></colgroup>';
-  return '<div class="a4"><div class="notes-page">'
+  return '<div class="a4"><div class="notes-page">' + enteteOfficiel("eo-np")
     + '<div class="np-title">'+esc(libellePeriode(state.notes.mois))+'</div>'
     + '<div class="np-meta"><span><i>DRENA</i> '+esc(state.meta.drena||"…")+'</span>' +
     '<span><i>I.E.P.P.</i> '+esc(state.meta.inspection||"…")+'</span>'
@@ -2816,10 +2938,13 @@ function buildCartes(){
       html += pageTableauHtml(liste.slice(p*LIGNES_PAR_PAGE, (p+1)*LIGNES_PAR_PAGE), cl, p*LIGNES_PAR_PAGE, liste.length, pages);
     }
   } else {
-    for(var i = 0; i < liste.length; i += CARTES_PAR_PAGE){
+    var choisis = selectionBulletins ? liste.filter(function(e){ return selectionBulletins.indexOf(e.id) >= 0; }) : liste;
+    if(!choisis.length) choisis = liste;
+    var grande = dossier.modeleBulletin === "un", parPage = grande ? 1 : CARTES_PAR_PAGE;
+    for(var i = 0; i < choisis.length; i += parPage){
       html += '<div class="a4"><div class="cartes-page">'
-        + liste.slice(i, i+CARTES_PAR_PAGE).map(function(e){
-            return carteHtml(e, cl.rangs[e.id], cl.sur);
+        + choisis.slice(i, i+parPage).map(function(e){
+            return carteHtml(e, cl.rangs[e.id], cl.sur, grande);
           }).join("")
         + '</div></div>';
     }
@@ -2869,6 +2994,7 @@ function render(){
     renderAccueil(false);
     renderNiveaux();
     renderSalle();
+    renderEnteteOfficiel();
     if(vueActive === "appel") renderAppel();
     if(vueActive === "groupes"){ renderEPS(); renderPnapas(); }
     if(vueActive === "vie") renderVie();
@@ -3434,7 +3560,7 @@ el("tbNotes").addEventListener("input", onNote);
 el("tbNotes").addEventListener("change", onNote);
 function onNote(ev){
   var inp = ev.target.closest("[data-nt]"); if(!inp) return;
-  var tr = inp.closest("tr"), e = eleveParId(tr.getAttribute("data-nid")); if(!e) return;
+  var tr = inp.closest("[data-nid]"), e = tr ? eleveParId(tr.getAttribute("data-nid")) : null; if(!e) return;
   var brut = inp.value.replace(",", ".").trim();
   avantModif(true);
   if(brut === ""){ poserNote(e, inp.getAttribute("data-nt"), ""); inp.classList.remove("bad"); }
@@ -3640,6 +3766,10 @@ function majTitreCartes(){
   var m = el("f_cartesMode").value;
   el("cartesTitre").textContent = TITRES_CARTES[m] || "Document";
   el("cartesMoisWrap").classList.toggle("is-hidden", m === "annee");
+  el("cartesModeleWrap").classList.toggle("is-hidden", m !== "cartes");
+  el("btnSelection").classList.toggle("is-hidden", m !== "cartes");
+  el("f_modele").value = dossier.modeleBulletin;
+  majSelectionTxt();
 }
 el("nav").addEventListener("click", function(ev){
   var b = ev.target.closest(".nav-btn"); if(!b) return;
@@ -3662,7 +3792,10 @@ document.addEventListener("click", function(ev){
   var v = b.getAttribute("data-aller");
   if(v === "feuille" || v === "cartes") ouvrirDocument(v); else allerRubrique(RUBRIQUE_DE[v] || v, v);
 });
-el("fabPrint").addEventListener("click", function(){ if(vueActive) imprimer(); });
+el("fabPrint").addEventListener("click", function(){
+  if(!vueActive) return;
+  verifierAvantImpression().then(function(ok){ if(ok) imprimer(); });
+});
 function slug(s){
   return String(s || "").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^A-Za-z0-9]+/g,"-").replace(/^-+|-+$/g,"").toLowerCase() || "classe";
 }
@@ -5004,8 +5137,187 @@ function renderAccueil3B(){
 }
 el("acRappelsJour").addEventListener("click", function(ev){ if(ev.target.closest("[data-outil-go]")) ouvrirOutil("agenda"); });
 
+/* =====================================================================
+   LOT 4 — notes et bulletins
+   ===================================================================== */
+var PREF_NOTES = "tabrecap.modeNotes";
+function modeNotes(){
+  var m = null; try{ m = localStorage.getItem(PREF_NOTES); }catch(e){}
+  if(m === "une" || m === "tableau" || m === "appr") return m;
+  return window.matchMedia("(min-width: 900px)").matches ? "tableau" : "une";
+}
+var matUne = null;
+function renderNotesModes(){
+  var mode = modeNotes();
+  el("ntModes").querySelectorAll("[data-ntm]").forEach(function(b){ b.setAttribute("aria-pressed", String(b.getAttribute("data-ntm") === mode)); });
+  el("ntUne").classList.toggle("is-hidden", mode !== "une");
+  el("ntAppr").classList.toggle("is-hidden", mode !== "appr");
+  el("tNotes").classList.toggle("ecran-cache", mode !== "tableau");
+  if(mode === "une") renderUne();
+  if(mode === "appr") renderAppr();
+}
+function renderUne(){
+  if(el("ntUne").contains(document.activeElement) && document.activeElement.classList.contains("nt")) return;
+  var act = matieresActives();
+  if(!act.some(function(m){ return m.code === matUne; })) matUne = act.length ? act[0].code : null;
+  el("ntMat").innerHTML = act.map(function(m){ return '<option value="' + m.code + '"' + (m.code === matUne ? ' selected' : '') + '>' + esc(m.nom) + ' (/' + baremeMat(m.code) + ')</option>'; }).join("");
+  var l = alpha(), bar = matUne ? baremeMat(matUne) : 10;
+  el("ntUneListe").innerHTML = matUne ? l.map(function(e, i){
+    var v = noteDe(e, matUne);
+    return '<li class="sx-' + e.sexe + (v != null ? ' fait' : '') + '" data-nid="' + e.id + '"><span class="ce-n">' + (i + 1) + '</span><span class="ce-nom nom">' + esc(e.nom) + '</span>'
+      + '<input class="nt' + (noteHorsBareme(v, matUne) ? ' bad' : '') + '" inputmode="decimal" enterkeyhint="next" data-nt="' + matUne + '" aria-label="' + esc(nomMatiere(matUne) + " — " + e.nom) + '" value="' + (v == null ? "" : nombreFr(v)) + '"><span class="sur">/' + bar + '</span></li>';
+  }).join("") : "";
+  if(!l.length) el("ntUneListe").innerHTML = '<li class="vide-etat" style="border:0">Aucun élève nommé : renseignez d\'abord la liste des élèves.</li>';
+  majProgression();
+}
+function majProgression(){
+  if(!matUne){ el("ntProg").textContent = ""; return; }
+  var l = alpha(), n = l.filter(function(e){ return noteDe(e, matUne) != null; }).length;
+  el("ntProg").textContent = n + " / " + l.length + " élève(s) noté(s) en " + nomMatiere(matUne).toLowerCase();
+}
+el("ntModes").addEventListener("click", function(ev){
+  var b = ev.target.closest("[data-ntm]"); if(!b) return;
+  try{ localStorage.setItem(PREF_NOTES, b.getAttribute("data-ntm")); }catch(e){}
+  renderNotes();
+});
+el("ntMat").addEventListener("change", function(){ matUne = this.value; renderUne(); var p = el("ntUneListe").querySelector("input.nt"); if(p) p.focus(); });
+el("ntUneListe").addEventListener("input", function(ev){ onNote(ev); var li = ev.target.closest("[data-nid]"); if(li) li.classList.toggle("fait", ev.target.value.trim() !== ""); majProgression(); });
+el("ntUneListe").addEventListener("keydown", function(ev){
+  if(ev.key !== "Enter") return;
+  var inp = ev.target.closest("input.nt"); if(!inp) return;
+  ev.preventDefault();
+  var tous = [].slice.call(el("ntUneListe").querySelectorAll("input.nt")), i = tous.indexOf(inp);
+  if(tous[i + 1]){ tous[i + 1].focus(); tous[i + 1].select(); }
+  else { inp.blur(); toast("Dernier élève : la matière « " + nomMatiere(matUne) + " » est saisie."); }
+});
+
+/* conduite et appréciations */
+function suggestion(moy){
+  var a = appreciation(moy);
+  return {"Excellent":PREREMPLIES[0], "Très bien":PREREMPLIES[1], "Bien":PREREMPLIES[2], "Assez bien":PREREMPLIES[3], "Passable":PREREMPLIES[4], "Insuffisant":PREREMPLIES[5]}[a] || "";
+}
+function renderAppr(){
+  if(el("ntApprListe").contains(document.activeElement)) return;
+  var m = state.notes.mois, ap = state.notes.appr[m] || {}, co = state.notes.conduite[m] || {};
+  el("dlAppr").innerHTML = PREREMPLIES.concat(dossier.mesAppr.filter(function(x){ return PREREMPLIES.indexOf(x) < 0; })).map(function(t){ return '<option value="' + esc(t) + '"></option>'; }).join("");
+  el("ntApprListe").innerHTML = alpha().map(function(e){
+    var bi = bilan(e);
+    return '<li class="sx-' + e.sexe + '" data-apid="' + e.id + '"><span class="ce-nom nom">' + esc(e.nom) + '</span>'
+      + '<span class="moy">' + (bi.nb ? nombreFr(bi.moy, 2) + " / " + echelleMoyenne() + " · " + appreciation(bi.moy) : "pas de notes") + '</span>'
+      + '<select data-cond aria-label="Conduite de ' + esc(e.nom) + '"><option value="">Conduite —</option>' + CONDUITES.map(function(c){ return '<option value="' + c[0] + '"' + (co[e.id] === c[0] ? ' selected' : '') + '>' + c[1] + '</option>'; }).join("") + '</select>'
+      + '<input data-appr list="dlAppr" maxlength="160" placeholder="Mot du maître…" value="' + esc(ap[e.id] || "") + '" aria-label="Appréciation de ' + esc(e.nom) + '"></li>';
+  }).join("") || '<li class="vide-etat" style="border:0">Aucun élève nommé.</li>';
+}
+function blocPeriode(cle){ var m = state.notes.mois; if(!state.notes[cle][m]) state.notes[cle][m] = {}; return state.notes[cle][m]; }
+el("ntApprListe").addEventListener("change", function(ev){
+  var li = ev.target.closest("[data-apid]"); if(!li) return;
+  var id = li.getAttribute("data-apid");
+  if(ev.target.hasAttribute("data-cond")){
+    avantModif(false); var b = blocPeriode("conduite");
+    if(ev.target.value) b[id] = ev.target.value; else delete b[id];
+    touch(); buildCartes(); return;
+  }
+  if(ev.target.hasAttribute("data-appr")){
+    var t = txt(ev.target.value, 160).trim(); avantModif(false); var a = blocPeriode("appr");
+    if(t) a[id] = t; else delete a[id];
+    if(t && PREREMPLIES.indexOf(t) < 0 && dossier.mesAppr.indexOf(t) < 0){
+      dossier.mesAppr.unshift(t); if(dossier.mesAppr.length > 60) dossier.mesAppr.pop();
+      el("dlAppr").insertAdjacentHTML("beforeend", '<option value="' + esc(t) + '"></option>');
+    }
+    touch(); buildCartes();
+  }
+});
+el("ntApprListe").addEventListener("keydown", function(ev){
+  if(ev.key !== "Enter" || !ev.target.hasAttribute("data-appr")) return;
+  ev.preventDefault();
+  var tous = [].slice.call(el("ntApprListe").querySelectorAll("[data-appr]")), i = tous.indexOf(ev.target);
+  if(tous[i + 1]) tous[i + 1].focus(); else ev.target.blur();
+});
+el("ntApprAuto").addEventListener("click", function(){
+  var a = blocPeriode("appr"), n = 0;
+  avantModif(false);
+  alpha().forEach(function(e){ var bi = bilan(e); if(!a[e.id] && bi.nb){ var s = suggestion(bi.moy); if(s){ a[e.id] = s; n++; } } });
+  touch(); renderAppr(); buildCartes();
+  toast(n ? n + " appréciation(s) proposée(s) selon la moyenne : modifiez-les si besoin." : "Aucune appréciation vide à remplir.", n ? {label:"Annuler", fn:function(){ annuler(); renderAppr(); }} : null);
+});
+
+/* bulletins : présentation et impression sélective */
+el("f_modele").addEventListener("change", function(){ dossier.modeleBulletin = this.value === "un" ? "un" : "deux"; persist(); buildCartes(); fitCartes(); });
+function majSelectionTxt(){
+  var n = alpha().length, k = selectionBulletins ? selectionBulletins.filter(function(id){ return eleveExiste(id); }).length : n;
+  el("btnSelection").textContent = "Élèves : " + (selectionBulletins && k < n ? k + " sur " + n : "tous (" + n + ")");
+}
+el("btnSelection").addEventListener("click", function(){
+  var l = alpha(), sel = selectionBulletins || l.map(function(e){ return e.id; });
+  dialogue("Bulletins à imprimer", '<div class="btns" style="margin-bottom:10px"><button type="button" class="btn btn-sm" id="selTous">Tout cocher</button><button type="button" class="btn btn-sm" id="selAucun">Tout décocher</button></div>'
+    + '<div class="select-eleves">' + l.map(function(e){ return '<label><input type="checkbox" name="s_' + e.id + '" value="1"' + (sel.indexOf(e.id) >= 0 ? ' checked' : '') + '>' + esc(e.nom) + '</label>'; }).join("") + '</div>',
+    [{label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Valider", valeur:"ok", style:"btn-primary"}], {champs:true, feuille:true}).then(function(r){
+      if(!r || r.valeur !== "ok") return;
+      var ids = l.filter(function(e){ return r.champs["s_" + e.id]; }).map(function(e){ return e.id; });
+      selectionBulletins = (!ids.length || ids.length === l.length) ? null : ids;
+      majSelectionTxt(); buildCartes(); fitCartes();
+      if(!ids.length) toast("Aucun élève coché : tous les bulletins sont gardés.");
+    });
+  el("selTous").onclick = function(){ el("modal").querySelectorAll(".select-eleves input").forEach(function(c){ c.checked = true; }); };
+  el("selAucun").onclick = function(){ el("modal").querySelectorAll(".select-eleves input").forEach(function(c){ c.checked = false; }); };
+});
+
+/* contrôle avant impression : notes manquantes, âges manquants */
+function verifierAvantImpression(){
+  var v = vueActive, mode = el("f_cartesMode").value, l = alpha(), pb = [], titre = "", lien = null;
+  if(v === "notes" || (v === "cartes" && mode !== "annee")){
+    var act = matieresActives();
+    l.forEach(function(e){ var manque = act.filter(function(m){ return noteDe(e, m.code) == null; }); if(manque.length && manque.length < act.length) pb.push(e.nom + " : " + manque.map(function(m){ return m.nom; }).join(", ")); });
+    var sansNote = l.filter(function(e){ return !bilan(e).nb; });
+    if(sansNote.length) pb.push(sansNote.length + " élève(s) sans aucune note (" + sansNote.slice(0, 4).map(function(e){ return e.nom; }).join(", ") + (sansNote.length > 4 ? "…" : "") + ")");
+    titre = "Des notes manquent"; lien = "notes";
+  } else if(v === "feuille" || v === "scolarite" || v === "synthese"){
+    l.forEach(function(e){ if(e.age == null) pb.push(e.nom + " : âge non renseigné"); });
+    titre = "Des âges manquent"; lien = "saisie";
+  }
+  if(!pb.length) return Promise.resolve(true);
+  return dialogue(titre, '<p style="margin:0 0 8px">Avant d\'imprimer, vérifiez :</p><ul class="imp" style="max-height:44vh;overflow:auto">' + pb.slice(0, 12).map(function(t){ return '<li>' + esc(t) + '</li>'; }).join("") + (pb.length > 12 ? '<li>… et ' + (pb.length - 12) + ' autre(s)</li>' : '') + '</ul>',
+    [{label:"Compléter", valeur:"completer", style:"btn-ghost"}, {label:"Imprimer quand même", valeur:"ok", style:"btn-primary"}]).then(function(r){
+      if(r === "completer"){ allerRubrique(RUBRIQUE_DE[lien], lien); return false; }
+      return r === "ok";
+    });
+}
+
+/* en-tête officiel et logo (Réglages) */
+function renderEnteteOfficiel(){
+  var ec = dossier.ecole;
+  el("rgEntete").checked = ec.entete !== false;
+  if(document.activeElement !== el("rgMinistere")) el("rgMinistere").value = ec.ministere || MINISTERE_DEF;
+  el("rgLogoApercu").innerHTML = ec.logo ? '<img src="' + ec.logo + '" alt="Logo">' : '<svg class="ic" style="color:var(--ink3)"><use href="#i-ecole"/></svg>';
+  el("rgLogoSuppr").classList.toggle("is-hidden", !ec.logo);
+  el("rgLogoTxt").textContent = ec.logo ? "Changer" : "Choisir une image";
+}
+function apresEntete(){ persist(); renderEnteteOfficiel(); buildFeuille(); fitFeuille(); buildCartes(); fitCartes(); }
+el("rgEntete").addEventListener("change", function(){ avantModif(false); dossier.ecole.entete = this.checked; apresEntete(); });
+el("rgMinistere").addEventListener("change", function(){ avantModif(false); dossier.ecole.ministere = txt(this.value, 120).trim() || MINISTERE_DEF; apresEntete(); });
+function reduireLogo(f){
+  return new Promise(function(ok, ko){
+    if(!f || !/^image\//.test(f.type) || f.size > 15 * 1024 * 1024) return ko(new Error("image"));
+    var url = URL.createObjectURL(f), img = new Image();
+    img.onload = function(){
+      var max = 240, k = Math.min(1, max / Math.max(img.width, img.height)), w = Math.round(img.width * k), h = Math.round(img.height * k);
+      var c = document.createElement("canvas"); c.width = w; c.height = h;
+      var x = c.getContext("2d"); x.fillStyle = "#fff"; x.fillRect(0, 0, w, h); x.drawImage(img, 0, 0, w, h);
+      URL.revokeObjectURL(url); ok(c.toDataURL("image/jpeg", 0.85));
+    };
+    img.onerror = function(){ URL.revokeObjectURL(url); ko(new Error("lecture")); };
+    img.src = url;
+  });
+}
+el("rgLogo").addEventListener("change", function(){
+  var f = this.files && this.files[0]; this.value = ""; if(!f) return;
+  reduireLogo(f).then(function(d){ avantModif(false); dossier.ecole.logo = d; apresEntete(); toast("Logo ajouté aux documents."); })
+    .catch(function(){ toast("Cette image n'a pas pu être lue."); });
+});
+el("rgLogoSuppr").addEventListener("click", function(){ avantModif(false); dossier.ecole.logo = ""; apresEntete(); toast("Logo retiré.", {label:"Annuler", fn:function(){ annuler(); renderEnteteOfficiel(); }}); });
+
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "1.4.0";
+var APP_VERSION = "1.5.0";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
