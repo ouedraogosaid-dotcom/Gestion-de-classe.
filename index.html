@@ -7567,6 +7567,7 @@ el("acInstallBtn").addEventListener("click", function(){
 
 /* ---------- « Quoi de neuf » après une mise à jour ---------- */
 var NOUVEAUTES = [
+  ["2.5.2", ["Comptage anonyme des ouvertures de l'application (aucune donnée d'élève) — voir Aide → Vos données"]],
   ["2.5.1", ["Aide mise à jour après l'allègement de l'application"]],
   ["2.5.0", ["Application allégée : tirage au sort, minuteur, message aux parents, tâches de l'année, bloc-notes, registre des visites, fournitures, manuels, inventaire et passage à un remplaçant sont retirés","Documents retirés : étiquettes, satisfecits, bilan PNAPAS, fiche de renseignements, rapport mensuel","Les données déjà saisies restent conservées dans votre sauvegarde"]],
   ["2.4.5", ["Élèves en double : ignorés à l'import (même avec accents ou nom/prénom inversés), signalés à la saisie, et bandeau « Corriger » pour regrouper ceux déjà présents"]],
@@ -8733,7 +8734,7 @@ function tableauMatieresEleve(e){
 }
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "2.5.1";
+var APP_VERSION = "2.5.2";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
@@ -8816,7 +8817,7 @@ function lancerGuide(){
 }
 
 /* compteur de visites anonyme (GoatCounter) : seule l'ouverture de l'application est comptée, aucune donnée d'élève n'est envoyée */
-var COMPTEUR = "";
+var COMPTEUR = "registreouedraogo";
 (function(){
   if(!COMPTEUR){ el("aideDonnees").classList.add("retire"); return; }
   if(!/\.github\.io$/.test(location.hostname)) return;

@@ -43,6 +43,7 @@ Si le navigateur est réinitialisé ou le téléphone perdu, elles sont perdues 
 
 ## Historique
 
+- **2.5.2** — Compteur GoatCounter activé (registreouedraogo.goatcounter.com), ouvertures seulement, anonyme.
 - **2.5.1** — Aide mise à jour ; compteur de visites anonyme GoatCounter préparé (inactif tant que COMPTEUR est vide, ne s'active que sur github.io).
 - **2.5.0** — Application allégée (liste RETIRES dans index.html) : retrait des menus du tirage au sort, minuteur, message aux parents, tâches, bloc-notes, visites, fournitures, manuels, inventaire, passage à un remplaçant, et des documents étiquettes, satisfecits, bilan PNAPAS, renseignements, rapport mensuel. Données et code conservés : enlever un élément de RETIRES le rétablit.
 - **2.4.5** — Doublons d'élèves : clé de nom souple (accents, ponctuation, ordre des mots) ; import filtré (classe + liste elle-même, noms ignorés visibles) ; avertissement à la fiche et au tableau ; bandeau dans la liste avec regroupement (notes, appel et infos fusionnés, double à la corbeille, annulable). Homonymes aux matricules différents non signalés.
