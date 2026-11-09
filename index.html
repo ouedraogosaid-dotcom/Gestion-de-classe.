@@ -843,6 +843,40 @@ h1,h2,h3,.titre{letter-spacing:-.015em}
 .doc-btns{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px}
 .doc-btns .btn{min-height:30px; padding:5px 10px; font-size:.76rem}
 @media print{ .cal-tri{break-inside:avoid; opacity:1 !important} .cal-resume{display:none !important} }
+/* 2.2 */
+.lien-mini{appearance:none; border:0; background:none; color:var(--bleu); font:600 .76rem/1 "Inter",sans-serif; text-transform:none; letter-spacing:0; margin-left:auto; cursor:pointer; padding:4px 2px}
+.choix-actions{display:grid; grid-template-columns:1fr 1fr; gap:8px 10px}
+.choix-actions .case{display:flex; align-items:center; gap:6px; font-size:.86rem; cursor:pointer}
+.choix-actions .case svg{width:16px; height:16px; color:var(--bleu)}
+#apMois tr.alerte-abs td{background:var(--bad-bg)}
+#apMois tr.alerte-abs td.nom::after{content:" ⚠"; color:var(--bad)}
+.sous-titre{font-size:.86rem; margin:14px 0 6px; color:var(--texte-2)}
+.ap-top li{display:flex; gap:8px; align-items:center; flex-wrap:wrap; cursor:default}
+.ap-top .ce-nom{flex:1 1 140px}
+.cp-liste .ce-nom small{display:block; font-size:.72rem; color:var(--texte-3)}
+.cp-liste li.exclu{opacity:.6}
+.cp-liste li{flex-wrap:wrap}
+.cp-liste .ce-nom{flex:1 1 60%}
+.cp-res{flex:1 1 100%; display:flex; gap:6px; margin-left:44px}
+.cp-res button{width:auto !important; min-width:0; flex:1; padding:0 8px; font-size:.78rem}
+.cp-res button[data-cp-cand="0"]{flex:0 0 38px}
+.cp-liste li.exclu .cp-res{flex:0 0 auto; margin-left:auto}
+.cp-res .r-admis[aria-pressed="true"]{background:var(--ok); border-color:var(--ok); color:#fff}
+.cp-res .r-ajourne[aria-pressed="true"]{background:var(--bad); border-color:var(--bad); color:#fff}
+.cp-res .r-absent[aria-pressed="true"]{background:var(--texte-3); border-color:var(--texte-3); color:#fff}
+.hors-ligne{appearance:none; border:1px solid var(--bad); background:var(--bad-bg); color:var(--bad); font:700 .68rem/1 "Inter",sans-serif; padding:6px 8px; border-radius:999px; cursor:pointer; flex:none}
+.minuteur{position:fixed; inset:0; z-index:90; background:var(--fond); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:22px; padding:20px 16px calc(20px + env(safe-area-inset-bottom,0px))}
+.minuteur[hidden]{display:none}
+.mn-haut{position:absolute; top:calc(14px + env(safe-area-inset-top,0px)); left:16px; right:16px; display:flex; justify-content:space-between; align-items:center; gap:10px}
+.mn-temps{font:800 clamp(4.5rem, 24vw, 13rem)/1 "Inter",sans-serif; letter-spacing:-.04em; font-variant-numeric:tabular-nums; color:var(--texte)}
+.mn-temps.fin{color:var(--warn)}
+.mn-temps.sonne{color:var(--bad); animation:clignote 1s steps(2) infinite}
+@keyframes clignote{50%{opacity:.25}}
+.mn-barre{width:min(560px, 90vw); height:8px; border-radius:8px; background:var(--surface-2); overflow:hidden}
+.mn-barre i{display:block; height:100%; width:0; background:var(--bleu); transition:width .25s linear}
+.mn-presets{justify-content:center; max-width:560px}
+.mn-btns{display:flex; gap:10px; flex-wrap:wrap; justify-content:center}
+.mn-btns .btn{min-width:150px; min-height:52px; font-size:1.05rem}
 /* notifications */
 .notifs{list-style:none; margin:0; padding:0; display:flex; flex-direction:column}
 .notifs li{display:grid; grid-template-columns:auto 1fr auto; gap:10px; align-items:center; padding:10px 0; border-bottom:1px solid var(--bord)}
@@ -873,6 +907,8 @@ h1,h2,h3,.titre{letter-spacing:-.015em}
 
 @media print{ .print-seul{display:block; margin-bottom:6mm} .print-seul .eo{font-size:9px} .print-seul p{text-align:center; font-size:10px; margin:2mm 0 0} }
 body:not(.est-directeur) .role-directeur{display:none !important}
+body:not(.est-cm2) .que-cm2{display:none !important}
+body.est-cm2 .sauf-cm2{display:none !important}
 body.est-directeur .role-maitre{display:none !important}
 .suivi li.retard .etat{color:var(--warn)}
 .suivi li.recent .etat{color:var(--ok)}
@@ -945,6 +981,8 @@ body.est-directeur .role-maitre{display:none !important}
 .a4 td.ms.rempli .ab{color:#B42318}
 .a4 td.ms.rempli .pas{color:#9a9a9a}
 .a4 .pr-bilan td, .a4 .pr-bilan th{text-align:center}
+.a4 .doss-h{font-family:"Inter"; font-size:11px; font-weight:700; margin:3.5mm 0 0; text-transform:uppercase; letter-spacing:.05em}
+.a4 table.np.doss-id td{padding:1mm 2mm; font-size:10px}
 .a4 .pr-bilan tr.tot td{font-weight:700}
 .a4 .ms-tete{display:flex; font-size:6px; font-weight:400; border-top:1px dotted #777; margin-top:1px}
 .a4 .ms-tete span{flex:1}
@@ -1187,7 +1225,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
   body.pr-saisie #vSaisie, body.pr-scolarite #vScolarite, body.pr-alpha #vAlpha,
   body.pr-synthese #vSynthese, body.pr-feuille #vFeuille, body.pr-notes #vNotes,
   body.pr-annee #vAnnee, body.pr-cartes #vCartes, body.pr-doc #vDoc, body.pr-appel #vAppel, body.pr-groupes #vGroupes,
-  body.pr-vie #vVie, body.pr-agenda #vAgenda, body.pr-calendrier #vCalendrier, body.pr-edt #vEdt, body.pr-fourn #vFourn, body.pr-manuels #vManuels,
+  body.pr-vie #vVie, body.pr-agenda #vAgenda, body.pr-calendrier #vCalendrier, body.pr-cepe #vCepe, body.pr-edt #vEdt, body.pr-fourn #vFourn, body.pr-manuels #vManuels,
   body.pr-blocnotes #vBlocnotes, body.pr-textes #vTextes, body.pr-ecole #vEcole, body.pr-stats #vStats,
   body.pr-visites #vVisites, body.pr-inventaire #vInventaire, body.pr-taches #vTaches{display:block !important; animation:none !important}
   .edt input{font-size:9pt !important; padding:4px !important}
@@ -1283,6 +1321,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
       <span class="logo" aria-hidden="true">R</span>
       <span class="brand-txt"><b>Registre</b><small id="brandSub">Gestion de classe</small></span>
     </div>
+    <button class="hors-ligne is-hidden" type="button" id="horsLigne" title="Pas d'internet">Hors ligne</button>
     <label class="classe-chip"><span class="sr">Classe ouverte</span><select id="f_classeSel"></select></label>
     <button class="icon-btn" id="btnRecherche" type="button" aria-label="Rechercher" title="Rechercher"><svg class="ic"><use href="#i-recherche"/></svg></button>
     <button class="icon-btn" id="btnAnnuler" type="button" disabled aria-label="Annuler la dernière action" title="Annuler la dernière action"><svg class="ic"><use href="#i-annuler"/></svg></button>
@@ -1324,13 +1363,8 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
       <div class="tuile" style="--i:3"><span class="t-ic"><svg class="ic"><use href="#i-boucle"/></svg></span><span class="lbl">Redoublants</span><div class="val" data-compte="rt">0</div><div class="sous" id="acRed">—</div></div>
     </div>
 
-    <h2 class="section-titre">Actions rapides</h2>
-    <div class="actions anim">
-      <button class="action" type="button" data-aller="appel" style="--i:0"><span class="rond"><svg class="ic"><use href="#i-appel"/></svg></span>Faire l'appel</button>
-      <button class="action" type="button" data-aller="notes" style="--i:1"><span class="rond"><svg class="ic"><use href="#i-crayon"/></svg></span>Saisir les notes</button>
-      <button class="action" type="button" id="acAjoutEleve" style="--i:2"><span class="rond"><svg class="ic"><use href="#i-ajout-eleve"/></svg></span>Ajouter un élève</button>
-      <button class="action" type="button" data-go="documents|" style="--i:3"><span class="rond"><svg class="ic"><use href="#i-docs"/></svg></span>Documents</button>
-    </div>
+    <h2 class="section-titre">Actions rapides <button type="button" class="lien-mini" id="acActionsModif">Modifier</button></h2>
+    <div class="actions anim" id="acActions"></div>
 
     <h2 class="section-titre">Activités du jour <small id="acActSous"></small></h2>
     <div class="sheet activites"><ul class="act-liste" id="acActivites"></ul><p class="act-cours is-hidden" id="acCours"></p></div>
@@ -1408,6 +1442,11 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
       <button class="ln-item" type="button" data-go="documents|feuille"><span class="rond"><svg class="ic"><use href="#i-docs"/></svg></span><span class="ln-txt"><b>Tableau récapitulatif</b><small>Scolarité, effectifs, âges et visas</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
       <button class="ln-item" type="button" data-go="documents|d:presence"><span class="rond"><svg class="ic"><use href="#i-appel"/></svg></span><span class="ln-txt"><b>Fiche de présence du mois</b><small>Appels du matin et du soir, taux</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
     </div>
+    <h2 class="section-titre">En classe</h2>
+    <div class="liste-nav">
+      <button class="ln-item" type="button" id="plusMinuteur"><span class="rond"><svg class="ic"><use href="#i-horloge"/></svg></span><span class="ln-txt"><b>Minuteur et chronomètre</b><small>En grand, pour une composition ou un exercice</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
+      <button class="ln-item" type="button" id="plusMessage"><span class="rond"><svg class="ic"><use href="#i-envoyer"/></svg></span><span class="ln-txt"><b>Message aux parents</b><small>Un message, envoyé à chaque parent par WhatsApp</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
+    </div>
     <h2 class="section-titre">Ressources pédagogiques et matérielles</h2>
     <div class="liste-nav">
       <button class="ln-item" type="button" data-outil="fourn"><span class="rond"><svg class="ic"><use href="#i-sac"/></svg></span><span class="ln-txt"><b>Fournitures</b><small>Liste de rentrée, ce qui manque</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
@@ -1420,6 +1459,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
       <button class="ln-item" type="button" data-outil="visites"><span class="rond"><svg class="ic"><use href="#i-visite"/></svg></span><span class="ln-txt"><b>Registre des visites</b><small>Inspecteur, conseiller, directeur</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
       <button class="ln-item" type="button" data-outil="blocnotes"><span class="rond"><svg class="ic"><use href="#i-crayon"/></svg></span><span class="ln-txt"><b>Bloc-notes</b><small>Idées, incidents</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
       <button class="ln-item role-maitre" type="button"  id="acEnvoyer"><span class="rond"><svg class="ic"><use href="#i-envoyer"/></svg></span><span class="ln-txt"><b>Envoyer au directeur</b><small>Votre classe, par WhatsApp</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
+      <button class="ln-item" type="button" id="plusRemplacant"><span class="rond"><svg class="ic"><use href="#i-eleves"/></svg></span><span class="ln-txt"><b>Passer la classe à un remplaçant</b><small>Un fichier à lui envoyer</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
       <button class="ln-item role-directeur" type="button" data-outil="ecole"><span class="rond"><svg class="ic"><use href="#i-ecole"/></svg></span><span class="ln-txt"><b>Mon école</b><small>Classes de vos collègues</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
     </div>
     <h2 class="section-titre">Administration</h2>
@@ -1557,8 +1597,15 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
       </div>
       <div class="sheet">
         <h2>Présence du mois <small id="apMoisLbl"></small></h2>
+        <div class="field mini no-print" style="max-width:260px;margin-bottom:10px"><label for="apSeuil">Alerte à partir de</label><select id="apSeuil"><option value="4">4 absences dans le mois</option><option value="6">6 absences dans le mois</option><option value="8">8 absences dans le mois</option><option value="10">10 absences dans le mois</option></select></div>
         <div class="appel-resume" id="apMoisResume"></div>
         <div class="scroll"><table class="recap" id="apMois"></table></div>
+      </div>
+      <div class="sheet">
+        <h2>Présence sur l'année <small id="apAnneeLbl"></small></h2>
+        <div class="graphe" id="apAnneeGraphe"></div>
+        <h3 class="sous-titre">Élèves les plus absents</h3>
+        <ul class="suivi ap-top" id="apTop"></ul>
       </div>
     </section>
 
@@ -1694,6 +1741,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
       <button role="tab" data-v="notes" aria-selected="true">Compositions</button>
       <button role="tab" data-v="annee" aria-selected="false">Fin d'année</button>
       <button role="tab" data-v="stats" aria-selected="false">Statistiques</button>
+      <button role="tab" data-v="cepe" aria-selected="false" class="que-cm2">CEPE</button>
     </div>
 
     <section class="view" id="vNotes">
@@ -1704,7 +1752,8 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
           <div class="puces" id="ntTypes" role="group" aria-label="Type de composition">
             <button type="button" class="puce" data-type="mens" aria-pressed="false">Mensuelle</button>
             <button type="button" class="puce" data-type="trim" aria-pressed="false">Trimestrielle</button>
-            <button type="button" class="puce" data-type="pass" aria-pressed="false">Passage</button>
+            <button type="button" class="puce sauf-cm2" data-type="pass" aria-pressed="false">Passage</button>
+            <button type="button" class="puce que-cm2" data-type="eb" aria-pressed="false">Examen blanc</button>
           </div>
           <p class="nt-compte" id="ntCompte"></p>
         </div>
@@ -1753,6 +1802,18 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
       </div>
     </section>
 
+    <section class="view is-hidden" id="vCepe">
+      <div class="sheet">
+        <h2>Examen du CEPE <small>Classe de CM2 : candidats et résultats</small></h2>
+        <div class="fiche-grille no-print" style="margin-bottom:10px"><div class="field"><label for="cpCentre">Centre d'examen</label><input id="cpCentre" maxlength="80" autocomplete="off"></div>
+          <div class="field"><label for="cpDate">Date de l'examen</label><input id="cpDate" type="date"></div></div>
+        <div class="scroll"><table class="recap" id="cpBilan"></table></div>
+      </div>
+      <div class="sheet">
+        <h2>Candidats <small>Touchez le résultat de chaque élève ; ✕ s'il ne se présente pas comme candidat</small></h2>
+        <ul class="appel-liste cp-liste" id="cpListe"></ul>
+      </div>
+    </section>
     <section class="view is-hidden" id="vStats">
       <div class="print-seul" id="stEntete"></div>
       <div class="sheet no-print"><div class="nt-tools" style="margin:0"><div class="field"><label for="stCompo">Composition étudiée</label><select id="stCompo"></select></div><span class="status" id="stInfo"></span></div></div>
@@ -1809,6 +1870,8 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
         <button class="doc" type="button" data-doc="d:emargement" style="--i:7"><span class="feuille"></span><span><b>Liste d'émargement</b><small>Noms et colonne de signature, pour une réunion ou une remise</small></span></button>
         <button class="doc" type="button" data-doc="d:etiquettes" style="--i:8"><span class="feuille"></span><span><b>Étiquettes de noms</b><small>Pour les cahiers, 24 par feuille</small></span></button>
         <button class="doc" type="button" data-doc="d:releve" style="--i:9"><span class="feuille"></span><span><b>Relevé de notes vierge</b><small>Noms déjà inscrits, colonnes à remplir à la main</small></span></button>
+        <button class="doc" type="button" data-doc="d:dossier" style="--i:10"><span class="feuille"></span><span><b>Dossier de l'élève</b><small>Informations, résultats de l'année, moyennes par matière, présence, observations</small></span></button>
+        <button class="doc" type="button" data-doc="d:finannee" style="--i:10"><span class="feuille"></span><span><b>Rapport de fin d'année</b><small>Effectifs, mouvements, résultats (ou CEPE), assiduité — pour l'IEPP</small></span></button>
         <button class="doc" type="button" data-doc="d:presence" style="--i:10"><span class="feuille"></span><span><b>Fiche de présence du mois</b><small>Appels du matin et du soir, totaux et taux de présence</small></span></button>
         <button class="doc" type="button" data-doc="d:appelvierge" style="--i:10"><span class="feuille"></span><span><b>Feuille d'appel du mois</b><small>Noms et jours de classe, à remplir à la main</small></span></button>
         <button class="doc" type="button" data-doc="d:perso" style="--i:11"><span class="feuille"></span><span><b>Liste personnalisée</b><small>Vous choisissez les colonnes</small></span></button>
@@ -2035,6 +2098,14 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
     <button class="btn btn-ghost btn-sm" type="button" id="vrOubli">Code oublié ?</button>
   </div>
 </div>
+<div class="minuteur no-print" id="minuteur" hidden role="dialog" aria-label="Minuteur">
+  <div class="mn-haut"><div class="puces" id="mnModes"><button type="button" class="puce" data-mn="minuteur" aria-pressed="true">Minuteur</button><button type="button" class="puce" data-mn="chrono" aria-pressed="false">Chronomètre</button></div>
+    <button class="btn btn-sm" type="button" id="mnFermer">Fermer</button></div>
+  <div class="mn-temps" id="mnTemps">15:00</div>
+  <div class="mn-barre"><i id="mnBarre"></i></div>
+  <div class="puces mn-presets" id="mnPresets"><button type="button" class="puce" data-min="5">5 min</button><button type="button" class="puce" data-min="10">10 min</button><button type="button" class="puce" data-min="15">15 min</button><button type="button" class="puce" data-min="30">30 min</button><button type="button" class="puce" data-min="45">45 min</button><button type="button" class="puce" data-min="60">1 h</button><button type="button" class="puce" data-min="autre">Autre…</button></div>
+  <div class="mn-btns"><button class="btn btn-primary" type="button" id="mnGo">Démarrer</button><button class="btn" type="button" id="mnRaz">Remettre à zéro</button></div>
+</div>
 <div class="grand-texte no-print" id="grandTexte" hidden>
   <div class="gt-barre"><button class="btn btn-sm" type="button" id="gtMoins">A−</button><button class="btn btn-sm" type="button" id="gtPlus">A+</button>
     <button class="btn btn-sm" type="button" id="gtPrec" aria-label="Texte précédent">‹</button><button class="btn btn-sm" type="button" id="gtSuiv" aria-label="Texte suivant">›</button>
@@ -2084,8 +2155,14 @@ var MOIS = ["Octobre","Novembre","D\u00e9cembre","Janvier","F\u00e9vrier","Mars"
 var PASSAGE = "Passage";
 var TRIMESTRES = ["Trimestre 1","Trimestre 2","Trimestre 3"];
 /* ordre chronologique : évaluations mensuelles, compositions trimestrielles, passage */
-var PERIODES = ["Octobre","Novembre","D\u00e9cembre","Trimestre 1","Janvier","F\u00e9vrier","Mars","Trimestre 2","Avril","Mai","Juin","Trimestre 3",PASSAGE];
+/* CM2 : pas de composition de passage (examen de fin d'année), mais des examens blancs qui comptent */
+var EXAMENS_BLANCS = ["Examen blanc 1","Examen blanc 2"];
+var PERIODES = ["Octobre","Novembre","D\u00e9cembre","Trimestre 1","Janvier","F\u00e9vrier","Mars","Trimestre 2","Avril","Examen blanc 1","Mai","Examen blanc 2","Juin","Trimestre 3",PASSAGE];
 function estTrimestre(m){ return TRIMESTRES.indexOf(m) >= 0; }
+function estExamenBlanc(m){ return EXAMENS_BLANCS.indexOf(m) >= 0; }
+function estCM2(c){ c = c || state; return !!(c && c.niveaux && c.niveaux.indexOf("CM2") >= 0); }
+/* compositions qui entrent dans la moyenne annuelle */
+function comptePourAnnee(m){ return estTrimestre(m) || (estCM2() ? estExamenBlanc(m) : m === PASSAGE); }
 var BAREMES = [10,20,40,50];
 var MOIS_DEF = MOIS[0];
 
@@ -2363,6 +2440,14 @@ function normVie(v, ids){
   if(v.faits && typeof v.faits === "object") Object.keys(v.faits).filter(function(d){ return /^\d{4}-\d{2}-\d{2}$/.test(d) && v.faits[d]; }).sort().slice(-120).forEach(function(d){ faits[d] = 1; });
   return {chef:un(v.chef), sousChef:un(v.sousChef), service:txt(v.service, 50).trim() || "Balayage et nettoyage", jours:jours, equipes:equipes, faits:faits};
 }
+function normCepe(c, ids){
+  c = (c && typeof c === "object") ? c : {};
+  var ok = function(k){ var id = idSur(k); return id && (!ids || ids[id]) ? id : ""; };
+  var exclus = {}, res = {};
+  if(c.exclus && typeof c.exclus === "object") Object.keys(c.exclus).forEach(function(k){ var id = ok(k); if(id && c.exclus[k]) exclus[id] = 1; });
+  if(c.res && typeof c.res === "object") Object.keys(c.res).forEach(function(k){ var id = ok(k); if(id && ["admis","ajourne","absent"].indexOf(c.res[k]) >= 0) res[id] = c.res[k]; });
+  return {centre:txt(c.centre, 80).trim(), date:dateJour(c.date), exclus:exclus, res:res};
+}
 function normAppel(a, ids){
   var r = {};
   if(!a || typeof a !== "object") return r;
@@ -2428,6 +2513,7 @@ function normalize(d){
     pnapas: normPnapas(d.pnapas, vus),
     vie: normVie(d.vie, vus),
     appel: normAppel(d.appel, vus),
+    cepe: normCepe(d.cepe, vus),
     archive: !!d.archive,
     edt: normEdt(d.edt),
     fourn: {items:normItems(d.fourn && d.fourn.items), manque:normSuivi(d.fourn && d.fourn.manque, vus, [])},
@@ -2491,7 +2577,7 @@ function normNotes(n, codesClasse){
   var conduite = parPeriode(n.conduite, function(v){ return CONDUITES.some(function(c){ return c[0] === v; }) ? v : ""; });
   var coefPassage = [1,2,3].indexOf(Number(n.coefPassage)) >= 0 ? Number(n.coefPassage) : 2;
   var moisTrim = {};
-  if(n.moisTrim && typeof n.moisTrim === "object") TRIMESTRES.forEach(function(t){ if(MOIS.indexOf(n.moisTrim[t]) >= 0) moisTrim[t] = n.moisTrim[t]; });
+  if(n.moisTrim && typeof n.moisTrim === "object") TRIMESTRES.concat(EXAMENS_BLANCS).forEach(function(t){ if(MOIS.indexOf(n.moisTrim[t]) >= 0) moisTrim[t] = n.moisTrim[t]; });
   return {bareme:ancienBareme, echelle:echelle, baremes:baremes, mois:mois, actives:actives, data:data, seuil:seuil, appr:appr, conduite:conduite, coefPassage:coefPassage, moisTrim:moisTrim};
 }
 
@@ -2580,6 +2666,7 @@ function libelleMois(m){
 /* « Composition du mois d'octobre », « Composition de passage » */
 function libellePeriode(m, majDebut){
   var t = (m === PASSAGE) ? "composition de passage"
+        : estExamenBlanc(m) ? (m.slice(-1) === "1" ? "1er" : m.slice(-1) + "e") + " examen blanc" + (moisDuTrimestre(m) ? " (" + moisDuTrimestre(m).toLowerCase() + ")" : "")
         : estTrimestre(m) ? "composition du " + (m.slice(-1) === "1" ? "1er" : m.slice(-1) + "e") + " trimestre" + (moisDuTrimestre(m) ? " (" + moisDuTrimestre(m).toLowerCase() + ")" : "")
         : ("évaluation du mois " + libelleMois(m));
   return majDebut === false ? t : t.charAt(0).toUpperCase() + t.slice(1);
@@ -2598,12 +2685,13 @@ function periodesRenseignees(liste){
   return (liste || PERIODES).filter(function(m){ var b = state.notes.data[m]; return b && Object.keys(b).length; });
 }
 function moisRenseignes(){
-  return TRIMESTRES.filter(function(m){
+  return PERIODES.filter(function(m){ return estTrimestre(m) || (estCM2() && estExamenBlanc(m)); }).filter(function(m){
     var bloc = state.notes.data[m];
     return bloc && Object.keys(bloc).length;
   });
 }
 function formuleAnnuelle(){
+  if(estCM2()) return "moyenne des compositions trimestrielles et des examens blancs (en CM2, pas de composition de passage)";
   var k = state.notes.coefPassage || 2;
   return "(moyenne des compositions trimestrielles + composition de passage" + (k > 1 ? " × " + k : "") + ") ÷ " + (1 + k);
 }
@@ -2613,6 +2701,7 @@ function bilanAnnuel(e){
   mois.forEach(function(m){ var v = moyennePeriode(e, m); if(v != null) moys.push(v); });
   var somme = 0; moys.forEach(function(v){ somme += v; });
   var moyComp = moys.length ? somme / moys.length : null;
+  if(estCM2()) return {nbComp:moys.length, moyComp:moyComp, passage:null, annuelle:moyComp};
   var pass = moyennePeriode(e, PASSAGE);
   var k = state.notes.coefPassage || 2;
   var annuelle = pass == null ? null : (moyComp != null ? (moyComp + pass * k) / (1 + k) : pass);
@@ -2631,7 +2720,9 @@ function classementAnnuel(){
   var admis = l.filter(function(x){ return x.a.annuelle >= state.notes.seuil; }).length;
   return {rangs:rangs, sur:l.length, liste:l, moyenneClasse: l.length ? somme / l.length : null, admis:admis};
 }
-function decision(a){
+function resultatCepe(e){ var r = e && state.cepe && state.cepe.res[e.id]; return r === "admis" ? "Admis(e)" : r === "ajourne" ? "Ajourné(e)" : r === "absent" ? "Absent(e)" : ""; }
+function decision(a, e){
+  if(estCM2()){ var r = e && state.cepe && state.cepe.res[e.id]; return r === "admis" ? "Admis(e) au CEPE" : r === "ajourne" ? "Ajourné(e) au CEPE" : r === "absent" ? "Absent(e) au CEPE" : ""; }
   if(a.annuelle == null) return "";
   return a.annuelle >= state.notes.seuil ? "Admis(e)" : "Redouble";
 }
@@ -2783,11 +2874,13 @@ function ouvrirFiche(id){
     + '<div class="field"><label for="fcMotif">Motif du départ</label><select id="fcMotif" name="depMotif">' + ["","Transfert","Abandon","Autre"].map(function(m){ return '<option value="' + m + '"' + ((base.depart && base.depart.motif === m) ? ' selected' : '') + '>' + (m || "—") + '</option>'; }).join("") + '</select></div>'
     + '<div class="field"><label for="fcVers">Vers (école)</label><input id="fcVers" name="depVers" value="' + esc(base.depart ? base.depart.vers : "") + '" autocomplete="off"></div>'
     + '<div class="field plein"><label for="fcObs">Observations</label><textarea id="fcObs" name="obs" rows="3" placeholder="Santé, comportement, situation familiale…" style="min-height:76px">' + esc(base.obs || "") + '</textarea></div>'
+    + (e ? '<div class="field plein"><button type="button" class="btn btn-sm" id="fcDossier"><svg class="ic"><use href="#i-imprimer"/></svg>Imprimer son dossier complet</button></div>' : '')
     + '</div>';
   var boutons = neuf
     ? [{label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Enregistrer et ajouter", valeur:"encore"}, {label:"Enregistrer", valeur:"ok", style:"btn-primary"}]
     : [{label:"Supprimer", valeur:"suppr", style:"btn-danger"}, {label:"Fermer", valeur:null, style:"btn-ghost"}, {label:"Enregistrer", valeur:"ok", style:"btn-primary"}];
   var promesse = dialogue(neuf ? "Nouvel élève" : "Fiche de l'élève", corps, boutons, {champs:true, feuille:true, focus:neuf ? "fcNom" : null});
+  if(el("fcDossier")) el("fcDossier").addEventListener("click", function(){ var idE = e.id; fermerPuis(function(){ docOpts.dossier = {eleve:idE}; ouvrirDocument("d:dossier"); }); });
   el("fcPhotoFichier").addEventListener("change", function(){
     var f = this.files && this.files[0]; if(!f) return;
     reduirePhoto(f).then(function(data){
@@ -3231,33 +3324,38 @@ function fitFeuille(){
 }
 
 /* ---------- notes : saisie a l'ecran ---------- */
-var moisPret = false;
+var moisPret = null;
 function renderNotes(){
-  if(!moisPret){
+  if(estCM2() && state.notes.mois === PASSAGE) state.notes.mois = EXAMENS_BLANCS[0];
+  if(!estCM2() && estExamenBlanc(state.notes.mois)) state.notes.mois = TRIMESTRES[0];
+  if(moisPret !== estCM2()){
     el("f_mois").innerHTML =
       '<optgroup label="Compositions trimestrielles (comptent pour l\'année)">'
       + TRIMESTRES.map(function(m){ return '<option value="'+m+'">'+esc(libellePeriode(m))+'</option>'; }).join("")
-      + '</optgroup><optgroup label="Composition de passage (finale)">'
-      + '<option value="'+PASSAGE+'">Composition de passage</option></optgroup>'
+      + '</optgroup>' + (estCM2()
+        ? '<optgroup label="Examens blancs (comptent pour l\'année)">' + EXAMENS_BLANCS.map(function(m){ return '<option value="'+m+'">'+esc(libellePeriode(m))+'</option>'; }).join("") + '</optgroup>'
+        : '<optgroup label="Composition de passage (finale)"><option value="'+PASSAGE+'">Composition de passage</option></optgroup>')
       + '<optgroup label="Évaluations mensuelles (ne comptent pas)">'
       + MOIS.map(function(m){ return '<option value="'+m+'">'+m+'</option>'; }).join("")
       + '</optgroup>';
-    moisPret = true;
+    moisPret = estCM2(); el("f_mois2").innerHTML = el("f_mois").innerHTML;
   }
   /* les intitulés des trimestres affichent le mois choisi */
-  TRIMESTRES.forEach(function(t){ [el("f_mois"), el("f_mois2")].forEach(function(sel){ var o = sel.querySelector('option[value="' + t + '"]'); if(o) o.textContent = libellePeriode(t); }); });
+  TRIMESTRES.concat(EXAMENS_BLANCS).forEach(function(t){ [el("f_mois"), el("f_mois2")].forEach(function(sel){ var o = sel.querySelector('option[value="' + t + '"]'); if(o) o.textContent = libellePeriode(t); }); });
   el("f_mois").value = state.notes.mois;
-  var tri = estTrimestre(state.notes.mois), typ = typeCompo(state.notes.mois);
+  var typ = typeCompo(state.notes.mois), tri = typ === "trim" || typ === "eb";
   Array.prototype.forEach.call(el("ntTypes").children, function(b){ b.setAttribute("aria-pressed", b.getAttribute("data-type") === typ ? "true" : "false"); });
   el("quandWrap").classList.toggle("is-hidden", typ === "pass");
-  el("quandLbl").textContent = typ === "trim" ? "Trimestre" : "Mois";
+  el("quandLbl").textContent = typ === "trim" ? "Trimestre" : typ === "eb" ? "Examen blanc" : "Mois";
   el("f_quand").innerHTML = typ === "trim"
     ? TRIMESTRES.map(function(t, i){ return '<option value="' + t + '">' + (i ? (i + 1) + "e" : "1er") + ' trimestre</option>'; }).join("")
+    : typ === "eb" ? EXAMENS_BLANCS.map(function(t, i){ return '<option value="' + t + '">' + (i ? (i + 1) + "e" : "1er") + ' examen blanc</option>'; }).join("")
     : MOIS.map(function(m){ return '<option value="' + m + '">' + m + '</option>'; }).join("");
   if(typ !== "pass") el("f_quand").value = state.notes.mois;
   el("ntCompte").className = "nt-compte " + (typ === "mens" ? "non" : "oui");
   el("ntCompte").innerHTML = typ === "mens" ? "Évaluation de l'école : elle <b>ne compte pas</b> dans la moyenne annuelle."
-    : typ === "trim" ? "Elle <b>compte</b> dans la moyenne annuelle (moyenne des compositions trimestrielles)."
+    : typ === "trim" ? "Elle <b>compte</b> dans la moyenne annuelle (moyenne des compositions trimestrielles" + (estCM2() ? " et des examens blancs" : "") + ")."
+    : typ === "eb" ? "Examen blanc : il <b>compte</b> dans la moyenne annuelle, comme une composition trimestrielle (CM2 : pas de composition de passage)."
     : "Composition finale : elle <b>compte</b> dans la moyenne annuelle (poids " + (state.notes.coefPassage || 2) + ").";
   el("moisTrimWrap").classList.toggle("is-hidden", !tri);
   if(tri){
@@ -3368,7 +3466,7 @@ var CARTES_PAR_PAGE = 2, LIGNES_PAR_PAGE = 34, selectionBulletins = null;
 var MOIS_AB = {"Octobre":"Oct.", "Novembre":"Nov.", "D\u00e9cembre":"D\u00e9c.", "Janvier":"Jan.",
   "F\u00e9vrier":"F\u00e9v.", "Mars":"Mars", "Avril":"Avr.", "Mai":"Mai", "Juin":"Juin"};
 function moisDuTrimestre(t){ return state && state.notes && state.notes.moisTrim ? state.notes.moisTrim[t] || "" : ""; }
-function abbrMois(m){ return m === PASSAGE ? "Passage" : estTrimestre(m) ? "T" + m.slice(-1) + (moisDuTrimestre(m) ? " " + (MOIS_AB[moisDuTrimestre(m)] || "") : "") : (MOIS_AB[m] || m.slice(0,4) + "."); }
+function abbrMois(m){ return m === PASSAGE ? "Passage" : estExamenBlanc(m) ? "EB" + m.slice(-1) + (moisDuTrimestre(m) ? " " + (MOIS_AB[moisDuTrimestre(m)] || "") : "") : estTrimestre(m) ? "T" + m.slice(-1) + (moisDuTrimestre(m) ? " " + (MOIS_AB[moisDuTrimestre(m)] || "") : "") : (MOIS_AB[m] || m.slice(0,4) + "."); }
 
 function renderAnnee(){
   var mois = moisRenseignes(), cl = classementAnnuel(), b = echelleMoyenne();
@@ -3376,16 +3474,16 @@ function renderAnnee(){
 
   el("anHead").innerHTML = '<th class="num">N°</th><th>Nom et prénoms</th>'
     + mois.map(function(m){ return '<th class="mt" title="'+esc(libellePeriode(m))+'">'+esc(abbrMois(m))+'</th>'; }).join("")
-    + '<th>Moy. trim.</th><th>Passage</th><th>Moy. ann. /'+b+'</th><th>Rang</th><th>Décision</th>';
+    + '<th>' + (estCM2() ? "Moy. compos." : "Moy. trim.") + '</th><th>' + (estCM2() ? "CEPE" : "Passage") + '</th><th>Moy. ann. /'+b+'</th><th>Rang</th><th>Décision</th>';
 
   var liste = alpha(), html = "";
   liste.forEach(function(e, i){
-    var a = bilanAnnuel(e), d = decision(a);
+    var a = bilanAnnuel(e), d = decision(a, e);
     html += '<tr class="sx-'+e.sexe+'">'
       + '<td class="num">'+(i+1)+'</td><td class="nom">'+esc(e.nom)+'</td>'
       + mois.map(function(m){ var v = moyennePeriode(e, m); return '<td class="nt-c" style="text-align:center">'+(v==null?"—":nombreFr(v,2))+'</td>'; }).join("")
       + '<td class="res'+(a.moyComp==null?" vide":"")+'">'+(a.moyComp==null?"—":nombreFr(a.moyComp,2))+'</td>'
-      + '<td class="res'+(a.passage==null?" vide":"")+'">'+(a.passage==null?"—":nombreFr(a.passage,2))+'</td>'
+      + (estCM2() ? '<td class="res'+(resultatCepe(e)?"":" vide")+'">'+esc(resultatCepe(e)||"—")+'</td>' : '<td class="res'+(a.passage==null?" vide":"")+'">'+(a.passage==null?"—":nombreFr(a.passage,2))+'</td>')
       + '<td class="res'+(a.annuelle==null?" vide":"")+'">'+(a.annuelle==null?"—":nombreFr(a.annuelle,2))+'</td>'
       + '<td class="rg">'+(cl.rangs[e.id] ? cl.rangs[e.id]+"<sup>"+(cl.rangs[e.id]===1?"er":"e")+"</sup>" : "—")+'</td>'
       + '<td class="dec'+(d==="Redouble"?" red":"")+'">'+esc(d||"—")+'</td>'
@@ -3399,8 +3497,12 @@ function renderAnnee(){
   el("anMoy").textContent = cl.moyenneClasse == null ? "—" : nombreFr(cl.moyenneClasse,2) + " / " + b;
   el("anAdmis").textContent = cl.admis + (cl.sur ? " / " + cl.sur : "");
   var aPassage = !!(state.notes.data[PASSAGE] && Object.keys(state.notes.data[PASSAGE]).length);
-  el("anStatus").textContent = (mois.length ? mois.length + " composition" + (mois.length>1?"s":"") + " trimestrielle" + (mois.length>1?"s":"") : "aucune composition trimestrielle")
+  var nEB = mois.filter(estExamenBlanc).length, nT = mois.length - nEB;
+  el("anStatus").textContent = estCM2()
+    ? (nT ? nT + " composition(s) trimestrielle(s)" : "aucune composition trimestrielle") + (nEB ? " + " + nEB + " examen(s) blanc(s)" : " — examens blancs non saisis") + " · CM2 : pas de composition de passage"
+    : (mois.length ? mois.length + " composition" + (mois.length>1?"s":"") + " trimestrielle" + (mois.length>1?"s":"") : "aucune composition trimestrielle")
       + (aPassage ? " + la composition de passage" : " — composition de passage non saisie");
+  el("f_coef").closest(".field").classList.toggle("is-hidden", estCM2());
   el("f_coef").value = String(state.notes.coefPassage || 2);
   if(el("anFormule")) el("anFormule").textContent = "Moyenne annuelle = " + formuleAnnuelle() + ".";
 }
@@ -3415,16 +3517,16 @@ function pageAnneeHtml(liste, cl, depart, pages){
     + '<col style="width:8%"><col style="width:8%"><col style="width:8%"><col style="width:5.5%"><col style="width:8%"></colgroup>';
   var head = '<tr><th class="n">N°</th><th>Nom et prénoms</th>'
     + mois.map(function(m){ return '<th class="v">'+esc(abbrMois(m))+'</th>'; }).join("")
-    + '<th class="v">Moy. trim.</th><th class="v">Passage</th><th class="v">Moy. ann.</th><th class="v">Rang</th><th class="v">Décision</th></tr>';
+    + '<th class="v">' + (estCM2() ? "Moy. compos." : "Moy. trim.") + '</th><th class="v">' + (estCM2() ? "CEPE" : "Passage") + '</th><th class="v">Moy. ann.</th><th class="v">Rang</th><th class="v">Décision</th></tr>';
   var corps = liste.map(function(e, i){
     var a = bilanAnnuel(e);
     return '<tr><td class="n">'+(depart+i+1)+'</td><td class="nm2">'+esc(e.nom)+'</td>'
       + mois.map(function(m){ var v = moyennePeriode(e, m); return '<td class="v">'+(v==null?"":nombreFr(v,2))+'</td>'; }).join("")
       + '<td class="r">'+(a.moyComp==null?"":nombreFr(a.moyComp,2))+'</td>'
-      + '<td class="r">'+(a.passage==null?"":nombreFr(a.passage,2))+'</td>'
+      + '<td class="r">'+(estCM2() ? esc(resultatCepe(e)) : (a.passage==null?"":nombreFr(a.passage,2)))+'</td>'
       + '<td class="r">'+(a.annuelle==null?"":nombreFr(a.annuelle,2))+'</td>'
       + '<td class="r">'+(cl.rangs[e.id]||"")+'</td>'
-      + '<td class="v">'+esc(decision(a))+'</td></tr>';
+      + '<td class="v">'+esc(decision(a, e))+'</td></tr>';
   }).join("");
   return '<div class="a4"><div class="notes-page">' + enteteOfficiel("eo-np")
     + '<div class="np-title">Résultats de fin d\'année</div>'
@@ -3573,10 +3675,11 @@ function renderVue(v, depuisRender){
     case "annee": renderAnnee(); break;
     case "feuille": buildFeuille(); fitFeuille(); break;
     case "cartes": majTitreCartes(); buildCartes(); fitCartes(); break;
-    case "appel": renderAppel(); break;
+    case "appel": renderAppel(); renderPresenceAnnee(); break;
     case "groupes": renderEPS(); renderPnapas(); break;
     case "vie": renderVie(); break;
     case "stats": renderStats(); break;
+    case "cepe": renderCepe(); break;
     case "doc": if(!depuisRender || !el("docOptions").contains(document.activeElement)){ renderDocOptions(); buildDoc(); fitDoc(); } break;
     default: if(HUBS[RUBRIQUE_DE[v]]) renderOutil(v);
   }
@@ -4006,6 +4109,7 @@ function renderAccueil(anime){
     el("acBarG").style.width = s.t ? (s.g / s.t * 100) + "%" : "0";
     el("acBarF").style.width = s.t ? (s.f / s.t * 100) + "%" : "0";
   });
+  renderActions();
   renderAujourdhui();
   renderAccueil3B();
   majSauvegardeInfo();
@@ -4218,14 +4322,14 @@ el("tbNotes").addEventListener("keydown", function(ev){
 
 el("f_moisTrim").addEventListener("change", function(){
   avantModif(false);
-  var t = state.notes.mois; if(!estTrimestre(t)) return;
+  var t = state.notes.mois; if(!estTrimestre(t) && !estExamenBlanc(t)) return;
   if(MOIS.indexOf(this.value) >= 0) state.notes.moisTrim[t] = this.value; else delete state.notes.moisTrim[t];
   touch(); renderNotes(); renderAnnee(); buildCartes(); fitCartes();
 });
 el("f_mois2").addEventListener("change", function(){
   state.notes.mois = this.value; touch(); renderNotes(); buildCartes(); fitCartes();
 });
-function typeCompo(m){ return m === PASSAGE ? "pass" : estTrimestre(m) ? "trim" : "mens"; }
+function typeCompo(m){ return m === PASSAGE ? "pass" : estTrimestre(m) ? "trim" : estExamenBlanc(m) ? "eb" : "mens"; }
 var dernierParType = {};
 function choisirComposition(m){ el("f_mois").value = m; el("f_mois").dispatchEvent(new Event("change")); }
 el("ntTypes").addEventListener("click", function(ev){
@@ -4236,6 +4340,7 @@ el("ntTypes").addEventListener("click", function(ev){
   var avecNotes = function(liste){ return liste.filter(function(m){ var d = state.notes.data[m]; return d && Object.keys(d).length; }); };
   var cible;
   if(typ === "pass") cible = PASSAGE;
+  else if(typ === "eb") cible = dernierParType.eb || avecNotes(EXAMENS_BLANCS).pop() || EXAMENS_BLANCS[0];
   else if(typ === "trim"){
     /* le trimestre dont c'est le mois, sinon le dernier saisi, sinon le 1er */
     var moisAct = MOIS.indexOf(act) >= 0 ? act : "";
@@ -4360,13 +4465,13 @@ el("btnViderMois").addEventListener("click", function(){
 el("f_cartesMode").addEventListener("change", function(){ majTitreCartes(); buildCartes(); fitCartes(); majFab(); });
 
 /* ---------- navigation : 5 rubriques, chacune avec ses vues ---------- */
-var VIEWS = {calendrier:"vCalendrier", stats:"vStats", visites:"vVisites", inventaire:"vInventaire", taches:"vTaches", doc:"vDoc", ecole:"vEcole", agenda:"vAgenda", edt:"vEdt", fourn:"vFourn", manuels:"vManuels", blocnotes:"vBlocnotes", textes:"vTextes", saisie:"vSaisie", appel:"vAppel", groupes:"vGroupes", vie:"vVie", scolarite:"vScolarite", alpha:"vAlpha", synthese:"vSynthese", feuille:"vFeuille", notes:"vNotes", annee:"vAnnee", cartes:"vCartes"};
+var VIEWS = {cepe:"vCepe", calendrier:"vCalendrier", stats:"vStats", visites:"vVisites", inventaire:"vInventaire", taches:"vTaches", doc:"vDoc", ecole:"vEcole", agenda:"vAgenda", edt:"vEdt", fourn:"vFourn", manuels:"vManuels", blocnotes:"vBlocnotes", textes:"vTextes", saisie:"vSaisie", appel:"vAppel", groupes:"vGroupes", vie:"vVie", scolarite:"vScolarite", alpha:"vAlpha", synthese:"vSynthese", feuille:"vFeuille", notes:"vNotes", annee:"vAnnee", cartes:"vCartes"};
 var RUBRIQUES = {accueil:"rAccueil", eleves:"rEleves", notes:"rNotes", organisation:"rOrga", plus:"rPlus", documents:"rDocuments", reglages:"rReglages"};
 /* onglet de la barre du bas allumé pour chaque rubrique */
 var NAV_DE = {accueil:"accueil", eleves:"eleves", notes:"notes", organisation:"organisation", plus:"plus", documents:"plus", reglages:"plus"};
 /* rubriques à page d'accueil (hub) puis outils */
 var HUBS = {accueil:["acHub","acRetour"], organisation:["orgHub","orgRetour"], plus:["plusHub","plusRetour"]};
-var RUBRIQUE_DE = {calendrier:"organisation", stats:"notes", visites:"plus", inventaire:"plus", taches:"organisation", doc:"documents", ecole:"plus", agenda:"organisation", edt:"organisation", fourn:"plus", manuels:"plus", blocnotes:"plus", textes:"plus", saisie:"eleves", appel:"eleves", groupes:"eleves", vie:"eleves", scolarite:"eleves", alpha:"eleves", synthese:"eleves", notes:"notes", annee:"notes", feuille:"documents", cartes:"documents"};
+var RUBRIQUE_DE = {cepe:"notes", calendrier:"organisation", stats:"notes", visites:"plus", inventaire:"plus", taches:"organisation", doc:"documents", ecole:"plus", agenda:"organisation", edt:"organisation", fourn:"plus", manuels:"plus", blocnotes:"plus", textes:"plus", saisie:"eleves", appel:"eleves", groupes:"eleves", vie:"eleves", scolarite:"eleves", alpha:"eleves", synthese:"eleves", notes:"notes", annee:"notes", feuille:"documents", cartes:"documents"};
 var DERNIERE_VUE = {eleves:"saisie", notes:"notes"};
 var vueActive = null, rubriqueActive = "accueil";
 var TITRES_CARTES = {cartes:"Bulletins scolaires", tableau:"Tableau des notes", annee:"Résultats de fin d'année"};
@@ -4742,13 +4847,13 @@ function csv(){
   var moisR = moisRenseignes(), cla = classementAnnuel();
   L.push("");
   L.push(["Resultats de fin d'annee", "Moyenne d'admission", nombreFr(state.notes.seuil,2)].map(q).join(";"));
-  L.push(["N","Nom et prenoms"].concat(moisR).concat(["Moyenne des compositions trimestrielles","Passage","Moyenne annuelle","Rang","Decision"]).map(q).join(";"));
+  L.push(["N","Nom et prenoms"].concat(moisR).concat([estCM2() ? "Moyenne des compositions et examens blancs" : "Moyenne des compositions trimestrielles", estCM2() ? "CEPE" : "Passage","Moyenne annuelle","Rang","Decision"]).map(q).join(";"));
   alpha().forEach(function(e, i){
     var a = bilanAnnuel(e);
     L.push([i+1, e.nom]
       .concat(moisR.map(function(m){ var v = moyennePeriode(e, m); return v == null ? "" : nombreFr(v,2); }))
-      .concat([a.moyComp==null?"":nombreFr(a.moyComp,2), a.passage==null?"":nombreFr(a.passage,2),
-               a.annuelle==null?"":nombreFr(a.annuelle,2), cla.rangs[e.id]||"", decision(a)])
+      .concat([a.moyComp==null?"":nombreFr(a.moyComp,2), estCM2() ? resultatCepe(e) : (a.passage==null?"":nombreFr(a.passage,2)),
+               a.annuelle==null?"":nombreFr(a.annuelle,2), cla.rangs[e.id]||"", decision(a, e)])
       .map(q).join(";"));
   });
   return "﻿" + L.join("\r\n");
@@ -5269,9 +5374,10 @@ function renderAppel(){
   if(!nApp){ el("apMois").innerHTML = '<tbody><tr><td class="vide-etat" style="border:0">Aucun appel ce mois-ci.</td></tr></tbody>'; el("apMoisResume").innerHTML = ""; return; }
   var T = {pres:0, abs:0, ret:0, total:0};
   var h = '<thead><tr><th>Élève</th><th>Présences</th><th>Absences</th><th>Retards</th></tr></thead><tbody>';
+  var seuilA = seuilAbsences(); if(el("apSeuil").value !== String(seuilA)) el("apSeuil").value = String(seuilA);
   l.forEach(function(e){
     var b = bilanAppel(e, jours); ["pres","abs","ret","total"].forEach(function(k){ T[k] += b[k]; });
-    h += '<tr class="sx-' + e.sexe + '"><td class="nom">' + esc(e.nom) + '</td><td>' + b.pres + '</td><td>' + (b.abs || "·") + '</td><td>' + (b.ret || "·") + '</td></tr>';
+    h += '<tr class="sx-' + e.sexe + (b.abs >= seuilA ? ' alerte-abs' : '') + '"><td class="nom">' + esc(e.nom) + '</td><td>' + b.pres + '</td><td>' + (b.abs || "·") + '</td><td>' + (b.ret || "·") + '</td></tr>';
   });
   h += '<tr class="total"><td class="nom"><b>Total de la classe</b></td><td><b>' + T.pres + '</b></td><td><b>' + T.abs + '</b></td><td><b>' + T.ret + '</b></td></tr>';
   el("apMois").innerHTML = h + '</tbody>';
@@ -6227,6 +6333,7 @@ el("rgLogoSuppr").addEventListener("click", function(){ avantModif(false); dossi
    ===================================================================== */
 function appliquerRole(){
   document.body.classList.toggle("est-directeur", dossier.role === "directeur");
+  document.body.classList.toggle("est-cm2", estCM2());
   el("rgRole").value = dossier.role;
   el("rgRoleInfo").textContent = dossier.role === "directeur"
     ? "Vous recevez les classes de vos collègues dans « Mon école », sur l'accueil"
@@ -6355,7 +6462,7 @@ el("ecRecues").addEventListener("click", function(ev){
    LOT 5A — documents à imprimer (moteur générique)
    ===================================================================== */
 var DOCS = {
-  emargement:"Liste d'émargement", etiquettes:"Étiquettes de noms", releve:"Relevé de notes vierge", appelvierge:"Feuille d'appel du mois", presence:"Fiche de présence du mois",
+  emargement:"Liste d'émargement", etiquettes:"Étiquettes de noms", releve:"Relevé de notes vierge", appelvierge:"Feuille d'appel du mois", presence:"Fiche de présence du mois", dossier:"Dossier de l'élève", finannee:"Rapport de fin d'année",
   perso:"Liste personnalisée", redoublants:"Liste des redoublants", honneur:"Tableau d'honneur", satisfecit:"Satisfecits", admis:"Liste des admis",
   recap:"Récapitulatif annuel des moyennes", pnapas:"Bilan PNAPAS", renseignements:"Fiche de renseignements", attestation:"Attestation de scolarité",
   transfert:"Fiche de transfert", convocation:"Convocation des parents", rapport:"Rapport mensuel du maître"
@@ -6396,6 +6503,8 @@ function specsDoc(){
     case "emargement": return [{k:"titre", l:"Objet", t:"text", d:"Réunion des parents d'élèves"},{k:"date", l:"Date", t:"date", d:aujourdhuiISO()},{k:"col", l:"Colonne", t:"select", d:"parent", o:[["parent","Parent + signature"],["sig","Signature seule"]]}];
     case "etiquettes": return [{k:"n", l:"Par élève", t:"select", d:"1", o:[["1","1 étiquette"],["2","2 étiquettes"],["3","3 étiquettes"]]}];
     case "releve": return [{k:"titre", l:"Titre", t:"text", d:"Relevé de notes"},{k:"cols", l:"Colonnes", t:"select", d:"mat", o:[["mat","Matières de la classe"],["5","5 colonnes vides"],["8","8 colonnes vides"],["10","10 colonnes vides"]]}];
+    case "dossier": return [{k:"eleve", l:"Élève", t:"select", d:"", o:choixEleves()}];
+    case "finannee": return [];
     case "presence": return [{k:"mois", l:"Mois", t:"select", d:moisActuel(), o:MOIS.map(function(m){ return [m, m + " " + isoMois(m).slice(0, 4)]; })}];
     case "appelvierge": return [{k:"mois", l:"Mois", t:"select", d:moisActuel(), o:MOIS.map(function(m){ return [m, m + " " + isoMois(m).slice(0, 4)]; })}];
     case "perso": return [{k:"titre", l:"Titre", t:"text", d:"Liste de la classe"},{k:"c_mat", l:"Matricule", t:"check", d:false},{k:"c_sexe", l:"Sexe", t:"check", d:true},{k:"c_age", l:"Âge", t:"check", d:true},
@@ -6460,6 +6569,66 @@ function dateLongue(iso){ try{ return new Date((iso || aujourdhuiISO()) + "T12:0
 function naissanceTxt(e){ return e.naissance ? dateLongue(e.naissance) + (e.lieu ? " à " + e.lieu : "") : (e.lieu ? "à " + e.lieu : "…………………………"); }
 
 var DOC_BUILD = {
+  dossier: function(l){
+    var id = opt("eleve", ""), liste = id ? l.filter(function(e){ return e.id === id; }) : l;
+    var per = periodesRenseignees(), ca = classementAnnuel(), an = anneeDebut();
+    return liste.map(function(e){
+      var a = bilanAnnuel(e), ligne = function(k, v){ return '<tr><td style="width:34%;text-align:left;font-weight:600">' + k + '</td><td style="text-align:left">' + (v || "—") + '</td></tr>'; };
+      var ident = '<table class="np doss-id"><tbody>'
+        + ligne("Nom et prénoms", '<b>' + esc(e.nom) + '</b>') + ligne("Sexe", e.sexe === "F" ? "Fille" : "Garçon") + ligne("Matricule", esc(e.mat))
+        + ligne("Né(e) le", e.naissance ? esc(dateFr(e.naissance)) + (e.lieu ? " à " + esc(e.lieu) : "") : (e.age != null ? e.age + " ans" : ""))
+        + ligne("Statut", e.st === 2 ? "Redoublant(e)" : "Non redoublant(e)") + ligne("Parent ou tuteur", esc(e.parent || "")) + ligne("Téléphone", esc(e.tel || ""))
+        + ligne("Mouvements", [e.arrivee ? "Arrivé(e) le " + esc(dateFr(e.arrivee)) : "", e.depart ? "Parti(e) le " + esc(dateFr(e.depart.date)) + (e.depart.motif ? " (" + esc(e.depart.motif) + ")" : "") : ""].filter(Boolean).join(" · "))
+        + '</tbody></table>';
+      var photo = e.photo ? '<img src="' + e.photo + '" alt="" style="width:26mm;height:26mm;object-fit:cover;border:1px solid #8a8272;border-radius:2mm">' : '';
+      var res = per.length ? tableDoc(["Composition","Moyenne","Rang"], per.map(function(m){ var v = moyennePeriode(e, m), cl = classement(m); return '<tr><td style="text-align:left' + (comptePourAnnee(m) ? ';font-weight:700' : '') + '">' + esc(libellePeriode(m)) + '</td><td class="v">' + (v == null ? "—" : nombreFr(v, 2) + " / " + echelleMoyenne()) + '</td><td class="v">' + (cl.rangs[e.id] ? cl.rangs[e.id] + " / " + cl.sur : "—") + '</td></tr>'; })
+          .concat(['<tr><td style="text-align:left"><b>Moyenne annuelle</b></td><td class="r">' + (a.annuelle == null ? "—" : nombreFr(a.annuelle, 2)) + '</td><td class="r">' + (ca.rangs[e.id] ? ca.rangs[e.id] + " / " + ca.sur : "—") + '</td></tr>']), ["56%","24%","20%"])
+        + (decision(a, e) ? '<p class="np-sous" style="text-align:left;margin-top:1mm"><b>Décision :</b> ' + esc(decision(a, e)) + '</p>' : '') : '<p class="np-sous" style="text-align:left">Aucune composition saisie.</p>';
+      var mats = moyennesParMatiere(e);
+      var matTab = mats.length ? tableDoc(["Matière","Moyenne de l'année"], mats.map(function(x){ return '<tr><td style="text-align:left">' + esc(x.m.nom) + '</td><td class="v">' + nombreFr(x.moy, 2) + " / " + echelleMoyenne() + '</td></tr>'; }), ["60%","40%"]) : '';
+      var moisP = MOIS.map(function(m){ var iso = isoMois(m), j = Object.keys(state.appel).filter(function(d){ return d.slice(0, 7) === iso; }); return {m:m, b:bilanAppel(e, j)}; }).filter(function(x){ return x.b.total; });
+      var T = {pres:0, abs:0, ret:0, total:0}; moisP.forEach(function(x){ ["pres","abs","ret","total"].forEach(function(k){ T[k] += x.b[k]; }); });
+      var pres = moisP.length ? tableDoc(["Mois"].concat(moisP.map(function(x){ return MOIS_AB[x.m] || x.m; })).concat(["Total"]),
+          [["Présences","pres"],["Absences","abs"],["Retards","ret"]].map(function(r){ return '<tr><td style="text-align:left">' + r[0] + '</td>' + moisP.map(function(x){ return '<td class="v">' + (x.b[r[1]] || "·") + '</td>'; }).join("") + '<td class="r">' + T[r[1]] + '</td></tr>'; }))
+        + '<p class="np-sous" style="text-align:left;margin-top:1mm">Taux de présence : ' + nombreFr(pct(T.pres, T.total), 2) + ' % (' + T.pres + ' présences sur ' + T.total + ' appels, matin et soir)</p>' : '<p class="np-sous" style="text-align:left">Aucun appel enregistré.</p>';
+      return pageDoc(titreDoc("Dossier de l'élève", "Année scolaire " + an + "–" + (an + 1))
+        + '<div style="display:flex;gap:4mm;align-items:flex-start;margin-top:2.5mm"><div style="flex:1">' + ident + '</div>' + photo + '</div>'
+        + '<h3 class="doss-h">Résultats</h3>' + res + (matTab ? '<h3 class="doss-h">Moyennes par matière</h3>' + matTab : '')
+        + '<h3 class="doss-h">Présence</h3>' + pres
+        + '<h3 class="doss-h">Observations</h3><p style="font-size:10px;min-height:14mm;border:1px solid #8a8272;padding:2mm;margin:1mm 0;white-space:pre-wrap">' + esc(e.obs || "") + '</p>'
+        + pied(signatures()), "doc-moyen");
+    });
+  },
+  finannee: function(){
+    var tous = state.eleves.filter(function(e){ return e.nom.trim(); }), an = anneeDebut();
+    var rentree = (dossier.agenda.filter(function(a){ return /rentr/i.test(a.titre) && a.date.slice(0, 4) === String(an); })[0] || {}).date || (an + "-09-14");
+    var debut = tous.filter(function(e){ return (!e.arrivee || e.arrivee <= rentree) && (!e.depart || e.depart.date > rentree); });
+    var arr = tous.filter(function(e){ return e.arrivee && e.arrivee > rentree; });
+    var dep = function(m){ return tous.filter(function(e){ return e.depart && e.depart.date > rentree && (m === "Autre" ? (e.depart.motif !== "Transfert" && e.depart.motif !== "Abandon") : e.depart.motif === m); }); };
+    var fin = tous.filter(function(e){ return !e.depart; });
+    var gf = function(x){ var g = x.filter(function(e){ return e.sexe === "G"; }).length; return '<td class="v">' + g + '</td><td class="v">' + (x.length - g) + '</td><td class="r">' + x.length + '</td>'; };
+    var mouv = tableDoc(["","Garçons","Filles","Total"], [["Effectif à la rentrée", debut], ["Arrivées en cours d'année", arr], ["Transferts", dep("Transfert")], ["Abandons", dep("Abandon")], ["Autres départs", dep("Autre")], ["<b>Effectif en fin d'année</b>", fin]]
+      .map(function(r){ return '<tr><td style="text-align:left">' + r[0] + '</td>' + gf(r[1]) + '</tr>'; }), ["46%","18%","18%","18%"]);
+    var resultats;
+    if(estCM2()){
+      var cand = candidatsCepe(), sx = function(s){ return cand.filter(function(e){ return !s || e.sexe === s; }); };
+      resultats = tableDoc(["CEPE","Candidats","Présents","Admis","Taux de réussite"], [["Garçons","G"],["Filles","F"],["<b>Total</b>",""]].map(function(r){ var b = bilanCepe(sx(r[1])); return '<tr><td style="text-align:left">' + r[0] + '</td><td class="v">' + b.cand + '</td><td class="v">' + b.pres + '</td><td class="v">' + b.admis + '</td><td class="r">' + (b.pres ? nombreFr(pct(b.admis, b.pres), 2) + " %" : "—") + '</td></tr>'; }), ["30%","17%","17%","17%","19%"]);
+    } else {
+      var ca = classementAnnuel(), seuil = state.notes.seuil;
+      var cls = function(s){ return ca.liste.filter(function(x){ return !s || x.e.sexe === s; }); };
+      resultats = tableDoc(["","Classés","Admis","Redoublants","Taux de réussite"], [["Garçons","G"],["Filles","F"],["<b>Total</b>",""]].map(function(r){ var x = cls(r[1]), ad = x.filter(function(y){ return y.a.annuelle >= seuil; }).length; return '<tr><td style="text-align:left">' + r[0] + '</td><td class="v">' + x.length + '</td><td class="v">' + ad + '</td><td class="v">' + (x.length - ad) + '</td><td class="r">' + (x.length ? nombreFr(pct(ad, x.length), 2) + " %" : "—") + '</td></tr>'; }), ["30%","17%","17%","17%","19%"])
+        + (ca.sur ? '<p class="np-sous" style="text-align:left;margin-top:1mm">Moyenne annuelle de la classe : <b>' + nombreFr(ca.moyenneClasse, 2) + ' / ' + echelleMoyenne() + '</b> · plus forte : ' + nombreFr(ca.liste[0].a.annuelle, 2) + ' (' + esc(ca.liste[0].e.nom) + ') · plus faible : ' + nombreFr(ca.liste[ca.liste.length - 1].a.annuelle, 2) + ' · moyenne d\'admission : ' + nombreFr(seuil, 2) + '</p>' : '<p class="np-sous" style="text-align:left">Moyennes annuelles pas encore calculées.</p>');
+    }
+    var isos = Object.keys(state.appel).filter(function(d){ return d >= an + "-08-01" && d <= (an + 1) + "-07-31"; }), T = {pres:0, abs:0, total:0};
+    tous.forEach(function(e){ var b = bilanAppel(e, isos); T.pres += b.pres; T.abs += b.abs; T.total += b.total; });
+    var pres = T.total ? tableDoc(["Présences possibles","Présences effectives","Absences","Taux de présence","Taux d'absence"], ['<tr><td class="v">' + T.total + '</td><td class="v">' + T.pres + '</td><td class="v">' + T.abs + '</td><td class="r">' + nombreFr(pct(T.pres, T.total), 2) + ' %</td><td class="r">' + nombreFr(pct(T.abs, T.total), 2) + ' %</td></tr>']) : '<p class="np-sous" style="text-align:left">Aucun appel enregistré cette année.</p>';
+    return [pageDoc(titreDoc("Rapport de fin d'année", "Année scolaire " + an + "–" + (an + 1) + " — classe de " + esc(state.meta.classe || nomClasse(state)) + " — maître : " + esc(state.meta.maitre || "…"))
+      + '<h3 class="doss-h">1. Effectifs et mouvements</h3>' + mouv
+      + '<h3 class="doss-h">2. ' + (estCM2() ? "Résultats au CEPE" + (state.cepe.centre ? " (centre : " + esc(state.cepe.centre) + ")" : "") : "Résultats de fin d'année") + '</h3>' + resultats
+      + '<h3 class="doss-h">3. Assiduité sur l\'année</h3>' + pres
+      + '<h3 class="doss-h">4. Observations du maître</h3><div style="border:1px solid #8a8272;min-height:28mm;margin-top:1mm"></div>'
+      + pied(signatures()), "doc-moyen")];
+  },
   emargement: function(l){
     var sig = opt("col", "parent") === "sig";
     return paginer(l, 24).map(function(p, k){
@@ -6588,7 +6757,7 @@ var DOC_BUILD = {
     return paginer(l, 32).map(function(p, k){
       return pageDoc(titreDoc("Récapitulatif annuel des moyennes", "Évaluations mensuelles (indicatives), compositions trimestrielles et passage — sur " + echelleMoyenne())
         + tableDoc(["N°","Nom et prénoms"].concat(per.map(function(m){ return esc(abbrMois(m)); })).concat(["Moy. ann.","Rang"]),
-            p.map(function(e, i){ var a = bilanAnnuel(e); return '<tr>' + ligneNom(e, k * 32 + i) + per.map(function(m){ var v = moyennePeriode(e, m); return '<td class="v"' + (estTrimestre(m) || m === PASSAGE ? ' style="font-weight:700"' : '') + '>' + (v == null ? "" : nombreFr(v, 2)) + '</td>'; }).join("")
+            p.map(function(e, i){ var a = bilanAnnuel(e); return '<tr>' + ligneNom(e, k * 32 + i) + per.map(function(m){ var v = moyennePeriode(e, m); return '<td class="v"' + (comptePourAnnee(m) ? ' style="font-weight:700"' : '') + '>' + (v == null ? "" : nombreFr(v, 2)) + '</td>'; }).join("")
               + '<td class="r">' + (a.annuelle == null ? "" : nombreFr(a.annuelle, 2)) + '</td><td class="r">' + (ca.rangs[e.id] || "") + '</td></tr>'; }),
             ["4%","26%"].concat(per.map(function(){ return lg; })).concat(["11%","9%"]))
         + pied('<span>En gras : compositions qui comptent pour la moyenne annuelle.</span>' + signatures()));
@@ -7106,15 +7275,15 @@ function exporterExcel(){
   }))});
   periodesRenseignees().forEach(function(m){
     var cl = classement(m), act = matieresActives();
-    feuilles.push({nom:abbrMois(m).replace(/\./g, "") + " " + (estTrimestre(m) ? "trimestre" : m === PASSAGE ? "" : "éval."), largeurs:[5,32].concat(act.map(function(){ return 9; })).concat([9,9,7]),
+    feuilles.push({nom:abbrMois(m).replace(/\./g, "") + " " + (estTrimestre(m) ? "trimestre" : m === PASSAGE || estExamenBlanc(m) ? "" : "éval."), largeurs:[5,32].concat(act.map(function(){ return 9; })).concat([9,9,7]),
       lignes:[["N°","Nom et prénoms"].concat(act.map(function(x){ return x.nom + " /" + baremeMat(x.code); })).concat(["Total","Moyenne /" + echelleMoyenne(),"Rang"])].concat(l.map(function(e, i){
         var b = bilan(e, m); return [i + 1, e.nom].concat(act.map(function(x){ return noteDe(e, x.code, m); })).concat([b.nb ? b.tot : null, b.nb ? b.moy : null, cl.rangs[e.id] || null]);
       }))});
   });
   var ca = classementAnnuel(), tri = moisRenseignes();
   if(ca.sur) feuilles.push({nom:"Fin d'année", largeurs:[5,32].concat(tri.map(function(){ return 9; })).concat([11,9,11,7,12]),
-    lignes:[["N°","Nom et prénoms"].concat(tri.map(abbrMois)).concat(["Moy. trimestres","Passage","Moy. annuelle","Rang","Décision"])].concat(l.map(function(e, i){
-      var a = bilanAnnuel(e); return [i + 1, e.nom].concat(tri.map(function(m){ return moyennePeriode(e, m); })).concat([a.moyComp, a.passage, a.annuelle, ca.rangs[e.id] || null, decision(a)]);
+    lignes:[["N°","Nom et prénoms"].concat(tri.map(abbrMois)).concat([estCM2() ? "Moy. compositions" : "Moy. trimestres", estCM2() ? "CEPE" : "Passage","Moy. annuelle","Rang","Décision"])].concat(l.map(function(e, i){
+      var a = bilanAnnuel(e); return [i + 1, e.nom].concat(tri.map(function(m){ return moyennePeriode(e, m); })).concat([a.moyComp, estCM2() ? resultatCepe(e) : a.passage, a.annuelle, ca.rangs[e.id] || null, decision(a, e)]);
     }))});
   var nom = "registre-" + slug(state.meta.classe || nomClasse(state)) + "-" + aujourdhuiISO() + ".xlsx";
   return partagerFichier(nom, classeurXlsx(feuilles), "Registre " + (state.meta.classe || ""), "").then(function(r){ if(r === "telecharge") toast("Fichier Excel enregistré : " + nom); });
@@ -7185,6 +7354,7 @@ el("acInstallBtn").addEventListener("click", function(){
 
 /* ---------- « Quoi de neuf » après une mise à jour ---------- */
 var NOUVEAUTES = [
+  ["2.2.0", ["CM2 : examens blancs (ils comptent dans la moyenne annuelle) et pas de composition de passage ; onglet CEPE (candidats, résultats, taux de réussite)","Alerte quand un élève dépasse 6 absences dans le mois, avec convocation du parent","Dossier complet de l'élève à imprimer ; présence sur l'année","Message à tous les parents par WhatsApp ; rapport de fin d'année pour l'IEPP","Minuteur et chronomètre en grand ; actions rapides de l'accueil au choix ; passer la classe à un remplaçant ; témoin « hors ligne »"]],
   ["2.1.0", ["Organisation : calendrier de l'année — trimestres, compositions trimestrielles, congés et grandes vacances (calendrier officiel 2026-2027 à ajouter d'un geste)","Documents : rubrique « Compositions » avec chaque composition saisie (tableau des notes, bulletins, tableau d'honneur)"]],
   ["2.0.0", ["Nouvelle présentation : bleu nuit et ambre, une seule police, cartes plus compactes","Barre du bas : Accueil, Élèves, Notes, Organisation, Plus (barre latérale sur ordinateur)","Accueil repensé : actions rapides, activités du jour avec leur statut, situation de la classe","Cloche de notifications : sauvegarde, appels, compositions non terminées, rappels","Organisation : agenda, emploi du temps et tâches de l'année réunis","Plus : documents, ressources, vie professionnelle et administration","Recherche élargie aux compositions, à l'agenda et au bloc-notes"]],
   ["1.13.3", ["Appel : bilan de fin de mois pour toute la classe — présences possibles, présences effectives, absences, taux de présence et taux d'absence"]],
@@ -7231,7 +7401,7 @@ function allerVers(go){
 }
 document.addEventListener("click", function(ev){ var b = ev.target.closest("[data-go]"); if(b){ ev.preventDefault(); allerVers(b.getAttribute("data-go")); } });
 el("btnReglages").addEventListener("click", function(){ allerRubrique("reglages"); });
-el("acAjoutEleve").addEventListener("click", function(){ allerRubrique("eleves", "saisie"); setTimeout(function(){ ouvrirFiche(null); }, 250); });
+
 el("orgRetour").addEventListener("click", function(){ allerRubrique("organisation"); });
 el("plusRetour").addEventListener("click", function(){ allerRubrique("plus"); });
 el("orgAjout").addEventListener("click", function(){ allerRubrique("organisation", "agenda"); setTimeout(function(){ el("agAjout").click(); }, 250); });
@@ -7397,6 +7567,8 @@ function notifications(){
     var inc = l.filter(function(e){ var nb = act.filter(function(m){ return noteDe(e, m.code, p) != null; }).length; return nb < act.length; }).length;
     if(inc) n.push({niv:"warn", ic:"i-notes", t:libellePeriode(p) + " non terminée", s:inc + " élève(s) sans toutes leurs notes", btn:"Compléter", v:"compo:" + p});
   });
+  var mIso = aujourdhuiISO().slice(0, 7);
+  absentsRepetes(mIso).forEach(function(x){ n.push({niv:"warn", ic:"i-appel", t:x.e.nom + " : " + x.b.abs + " absences", s:"En " + nomDuMois(mIso) + " (alerte à partir de " + seuilAbsences() + ")", btn:"Convoquer", v:"conv:" + x.e.id + ":" + x.b.abs}); });
   var sansAge = l.filter(function(e){ return e.age == null; }).length;
   if(sansAge) n.push({niv:"info", ic:"i-eleves", t:"Informations à vérifier", s:sansAge + " élève(s) sans âge", btn:"Voir", v:"go:eleves|saisie"});
   var c = controles(); if(c.length) n.push({niv:c.some(function(x){ return x.bad; }) ? "bad" : "info", ic:"i-alerte", t:c.length + " point(s) à vérifier", s:"Effectifs, âges, scolarités", btn:"Voir", v:"go:eleves|synthese"});
@@ -7423,6 +7595,7 @@ el("btnNotif").addEventListener("click", function(){
       if(!v) return;
       if(v === "sauver") faireSauvegarde();
       else if(v === "appel-m" || v === "appel-s"){ apDate = aujourdhuiISO(); apDemi = v.slice(-1); allerRubrique("eleves", "appel"); }
+      else if(v.indexOf("conv:") === 0){ var pz = v.split(":"), ee = eleveParId(pz[1]); if(ee) convoquerPourAbsences(ee, pz[2]); }
       else if(v.indexOf("compo:") === 0){ state.notes.mois = v.slice(6); allerRubrique("notes", "notes"); }
       else if(v.indexOf("go:") === 0) allerVers(v.slice(3));
     });
@@ -7529,7 +7702,7 @@ function renderDocsCompos(){
   var per = periodesRenseignees();
   el("docsCompos").innerHTML = per.length ? per.slice().reverse().map(function(p, i){
     var cl = classement(p);
-    return '<div class="doc doc-compo" style="--i:' + i + '"><span class="feuille"></span><span><b>' + esc(libellePeriode(p)) + '</b><small>' + (estTrimestre(p) || p === PASSAGE ? "Compte pour l'année" : "Ne compte pas") + ' · ' + cl.sur + ' élève(s) · moyenne ' + (cl.moyenneClasse == null ? "—" : nombreFr(cl.moyenneClasse, 2)) + '</small>'
+    return '<div class="doc doc-compo" style="--i:' + i + '"><span class="feuille"></span><span><b>' + esc(libellePeriode(p)) + '</b><small>' + (comptePourAnnee(p) ? "Compte pour l'année" : "Ne compte pas") + ' · ' + cl.sur + ' élève(s) · moyenne ' + (cl.moyenneClasse == null ? "—" : nombreFr(cl.moyenneClasse, 2)) + '</small>'
       + '<span class="doc-btns"><button type="button" class="btn btn-sm" data-compo-doc="tableau" data-p="' + esc(p) + '">Tableau des notes</button><button type="button" class="btn btn-sm" data-compo-doc="cartes" data-p="' + esc(p) + '">Bulletins</button><button type="button" class="btn btn-sm" data-compo-doc="honneur" data-p="' + esc(p) + '">Tableau d\'honneur</button></span></span></div>';
   }).join("") + '<button class="doc" type="button" data-doc="d:recap"><span class="feuille"></span><span><b>Toutes les compositions</b><small>Moyennes de chaque composition, moyenne annuelle et rang, sur une feuille</small></span></button>'
   : '<p class="hint" style="grid-column:1/-1;margin:0">Aucune composition saisie pour l\'instant. Elles apparaîtront ici dès que des notes seront entrées.</p>';
@@ -7543,6 +7716,225 @@ el("docsCompos").addEventListener("click", function(ev){
   else ouvrirDocument(d);
 });
 
+/* =====================================================================
+   VERSION 2.2 — CEPE, alertes d'absences, dossier élève, parents,
+   rapport de fin d'année, minuteur, raccourcis, remplaçant, hors ligne
+   ===================================================================== */
+function apres(fn){ setTimeout(fn, 80); }
+function fermerPuis(fn){ if(fermerDialogueCourant) fermerDialogueCourant(null); apres(fn); }
+
+/* ---------- CEPE (classe de CM2) ---------- */
+var RES_CEPE = [["admis","Admis"],["ajourne","Ajourné"],["absent","Absent"]];
+function candidatsCepe(){ return alpha().filter(function(e){ return !e.depart && !state.cepe.exclus[e.id]; }); }
+function bilanCepe(l){
+  var r = {cand:l.length, pres:0, admis:0};
+  l.forEach(function(e){ var v = state.cepe.res[e.id]; if(v === "admis" || v === "ajourne") r.pres++; if(v === "admis") r.admis++; });
+  return r;
+}
+function renderCepe(){
+  var c = state.cepe, l = alpha().filter(function(e){ return !e.depart; });
+  if(document.activeElement !== el("cpCentre")) el("cpCentre").value = c.centre || "";
+  if(document.activeElement !== el("cpDate")) el("cpDate").value = c.date || "";
+  var cand = candidatsCepe(), g = cand.filter(function(e){ return e.sexe === "G"; }), f = cand.filter(function(e){ return e.sexe === "F"; });
+  var lig = function(nom, x){ var b = bilanCepe(x); return '<tr><td class="nom">' + nom + '</td><td>' + b.cand + '</td><td>' + b.pres + '</td><td>' + b.admis + '</td><td>' + (b.pres ? nombreFr(pct(b.admis, b.pres), 2) + " %" : "—") + '</td></tr>'; };
+  el("cpBilan").innerHTML = '<thead><tr><th></th><th>Candidats</th><th>Présents</th><th>Admis</th><th>Taux de réussite</th></tr></thead><tbody>' + lig("Garçons", g) + lig("Filles", f) + '<tr class="total">' + lig("<b>Total</b>", cand).slice(4) + '</tbody>';
+  el("cpListe").innerHTML = l.map(function(e, i){
+    var ex = !!c.exclus[e.id], v = c.res[e.id] || "";
+    return '<li class="sx-' + e.sexe + (ex ? " exclu" : "") + '" data-cp="' + e.id + '">' + avatarHtml(e, i + 1) + '<span class="ce-nom">' + esc(e.nom) + '<small>' + (ex ? "Non candidat" : "Candidat") + '</small></span>'
+      + '<span class="pa cp-res">' + (ex ? '<button type="button" data-cp-cand="1">Inscrire</button>' : RES_CEPE.map(function(r){ return '<button type="button" data-cp-res="' + r[0] + '" aria-pressed="' + (v === r[0]) + '" class="r-' + r[0] + '">' + r[1] + '</button>'; }).join("") + '<button type="button" data-cp-cand="0" aria-label="Retirer des candidats" title="Pas candidat">✕</button>') + '</span></li>';
+  }).join("") || '<li class="vide-etat" style="border:0">Aucun élève dans la classe.</li>';
+}
+el("cpListe").addEventListener("click", function(ev){
+  var li = ev.target.closest("[data-cp]"); if(!li) return; var id = li.getAttribute("data-cp"), b;
+  if((b = ev.target.closest("[data-cp-res]"))){ avantModif(false); var r = b.getAttribute("data-cp-res"); if(state.cepe.res[id] === r) delete state.cepe.res[id]; else state.cepe.res[id] = r; }
+  else if((b = ev.target.closest("[data-cp-cand]"))){ avantModif(false); if(b.getAttribute("data-cp-cand") === "1") delete state.cepe.exclus[id]; else { state.cepe.exclus[id] = 1; delete state.cepe.res[id]; } }
+  else return;
+  touch(); renderCepe();
+});
+el("cpCentre").addEventListener("input", function(){ avantModif(true); state.cepe.centre = txt(this.value, 80); touch(); });
+el("cpDate").addEventListener("change", function(){ avantModif(false); state.cepe.date = dateJour(this.value); touch(); });
+
+/* ---------- alerte d'absences répétées ---------- */
+function seuilAbsences(){ var v = Number(lirePrefs().alerteAbs); return [4,6,8,10].indexOf(v) >= 0 ? v : 6; }
+function absentsRepetes(iso){
+  iso = iso || aujourdhuiISO().slice(0, 7);
+  var jours = Object.keys(state.appel).filter(function(d){ return d.slice(0, 7) === iso; }), s = seuilAbsences();
+  return alpha().map(function(e){ return {e:e, b:bilanAppel(e, jours)}; }).filter(function(x){ return x.b.abs >= s; }).sort(function(a, b){ return b.b.abs - a.b.abs; });
+}
+function nomDuMois(iso){ try{ return new Date(iso + "-15T12:00:00").toLocaleDateString("fr-FR", {month:"long"}); }catch(e){ return iso; } }
+function convoquerPourAbsences(e, nb){
+  docOpts.convocation = {eleve:e.id, objet:"Absences répétées de votre enfant (" + nb + " absences ce mois-ci)", date:aujourdhuiISO(), heure:"8h00"};
+  ouvrirDocument("d:convocation");
+}
+el("apSeuil").addEventListener("change", function(){ changerPref("alerteAbs", Number(this.value)); renderAppel(); majNotifs(); });
+
+/* ---------- présence sur l'année ---------- */
+function renderPresenceAnnee(){
+  var an = anneeDebut(), mois = MOIS.map(function(m){ return {m:m, iso:isoMois(m)}; });
+  var l = alpha(), pts = mois.map(function(x){
+    var jours = Object.keys(state.appel).filter(function(d){ return d.slice(0, 7) === x.iso; }), t = {p:0, tot:0};
+    l.forEach(function(e){ var b = bilanAppel(e, jours); t.p += b.pres; t.tot += b.total; });
+    return t.tot ? pct(t.p, t.tot) : null;
+  });
+  var avec = pts.filter(function(v){ return v != null; }).length;
+  el("apAnneeLbl").textContent = an + "–" + (an + 1);
+  el("apAnneeGraphe").innerHTML = avec ? courbes(mois.map(function(x){ return MOIS_AB[x.m] || x.m.slice(0, 3); }), [{c:"c", v:pts}], 100, 190) : '<p class="vide-etat" style="margin:0">Le graphique apparaîtra avec les premiers appels.</p>';
+  var isos = Object.keys(state.appel).filter(function(d){ return d >= an + "-08-01" && d <= (an + 1) + "-07-31"; });
+  var top = l.map(function(e){ return {e:e, b:bilanAppel(e, isos)}; }).filter(function(x){ return x.b.abs; }).sort(function(a, b){ return b.b.abs - a.b.abs; }).slice(0, 8);
+  el("apTop").innerHTML = top.map(function(x){ return '<li class="sx-' + x.e.sexe + '"><span class="ce-nom">' + esc(x.e.nom) + '</span><span class="pill">' + x.b.abs + ' absence(s)</span><span class="pill">' + nombreFr(pct(x.b.pres, x.b.total), 1) + ' % de présence</span></li>'; }).join("") || '<li class="vide-etat" style="border:0">Aucune absence cette année.</li>';
+}
+
+/* ---------- message à tous les parents ---------- */
+var MODELES_MSG = [
+  ["Réunion", "Bonjour, vous êtes invité(e) à une réunion des parents d'élèves le … à … heures, à l'EPP " + "{ecole}" + ". Votre présence est importante. Le maître de la classe de {classe}."],
+  ["Congés", "Bonjour, les congés commencent le … après les cours. La reprise est fixée au … Merci de veiller au travail de votre enfant pendant les congés. Le maître de {classe}."],
+  ["Composition", "Bonjour, la composition aura lieu le … Aidez votre enfant à bien réviser et veillez à ce qu'il soit à l'heure. Le maître de {classe}."],
+  ["Fournitures", "Bonjour, merci de compléter les fournitures de votre enfant dès que possible (cahiers, stylos, ardoise…). Le maître de {classe}."]
+];
+function texteModele(t){ return t.replace(/\{ecole\}/g, state.meta.ecole || "…").replace(/\{classe\}/g, state.meta.classe || nomClasse(state)); }
+function messageParents(){
+  if(!nommes().length){ toast("Saisissez d'abord les élèves de votre classe."); return; }
+  var corps = '<div class="field"><label for="mpTexte">Votre message</label><textarea id="mpTexte" rows="5" maxlength="1000" placeholder="Écrivez ou dictez votre message…"></textarea></div>'
+    + '<div class="puces" style="margin:8px 0 2px">' + MODELES_MSG.map(function(m, i){ return '<button type="button" class="puce" data-mp-mod="' + i + '">' + m[0] + '</button>'; }).join("") + '</div>'
+    + '<p class="hint" style="margin:6px 0 10px">Touchez « Envoyer » devant chaque parent : WhatsApp s\'ouvre avec le message prêt, vous n\'avez plus qu\'à l\'envoyer.</p>'
+    + '<ul class="suivi" style="max-height:40vh;overflow:auto">' + alpha().map(function(e){
+        var n = numeroWhatsApp(e.tel);
+        return '<li style="cursor:default"><span class="ce-nom"><b>' + esc(e.parent || "Parent de " + e.nom) + '</b><br><small>' + esc(e.nom) + (n ? " · " + esc(e.tel) : " · pas de numéro") + '</small></span>'
+          + (n ? '<button type="button" class="btn btn-sm btn-primary" data-mp="' + e.id + '">Envoyer</button>' : '<span class="pill">—</span>') + '</li>';
+      }).join("") + '</ul>';
+  dialogue("Message aux parents", corps, [{label:"Fermer", valeur:null, style:"btn-ghost"}], {feuille:true, focus:"mpTexte"});
+  try{ el("mpTexte").value = sessionStorage.getItem("registre.msgParents") || ""; }catch(e){}
+  el("mpTexte").addEventListener("input", function(){ try{ sessionStorage.setItem("registre.msgParents", this.value); }catch(e){} });
+  el("modal").querySelectorAll("[data-mp-mod]").forEach(function(b){ b.addEventListener("click", function(ev){ ev.stopPropagation(); el("mpTexte").value = texteModele(MODELES_MSG[Number(b.getAttribute("data-mp-mod"))][1]); el("mpTexte").focus(); }); });
+  el("modal").querySelectorAll("[data-mp]").forEach(function(b){
+    b.addEventListener("click", function(ev){
+      ev.stopPropagation();
+      var t = el("mpTexte").value.trim(); if(!t){ toast("Écrivez d'abord le message."); el("mpTexte").focus(); return; }
+      var e = eleveParId(b.getAttribute("data-mp"));
+      window.open("https://wa.me/" + numeroWhatsApp(e.tel) + "?text=" + encodeURIComponent(t), "_blank");
+      b.textContent = "Envoyé ✓"; b.classList.remove("btn-primary");
+    });
+  });
+}
+el("plusMessage").addEventListener("click", messageParents);
+
+/* ---------- passer la classe à un remplaçant ---------- */
+function passerRemplacant(){
+  if(state.demo || !nommes().length){ toast("Saisissez d'abord les élèves de votre classe."); return; }
+  var c = JSON.parse(JSON.stringify(state));
+  var paquet = {v:3, classes:[c], active:c.id, ecole:dossier.ecole, agenda:dossier.agenda, corbeille:[]};
+  var nom = "classe-" + slug(state.meta.classe || nomClasse(state)) + "-pour-remplacant-" + aujourdhuiISO() + ".json";
+  var blob = new Blob([JSON.stringify(paquet)], {type:"application/json"});
+  dialogue("Passer la classe à un remplaçant", '<p style="margin:0 0 8px">Un fichier avec <b>toute la classe</b> (élèves, notes, appel, groupes, agenda) va être préparé.</p>'
+    + '<ol class="imp"><li>Envoyez-le au remplaçant par WhatsApp.</li><li>Sur son téléphone, il ouvre le registre, puis <b>Réglages → Sauvegarde → Restaurer</b>, et choisit ce fichier.</li><li>La classe s\'ajoute à ses classes, sans rien effacer.</li></ol>'
+    + '<p class="hint" style="margin:6px 0 0">À son retour, le maître titulaire peut récupérer la classe de la même façon.</p>',
+    [{label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Préparer le fichier", valeur:"ok", style:"btn-primary"}], {feuille:true}).then(function(v){
+      if(!v) return;
+      partagerFichier(nom, blob, "Classe " + (state.meta.classe || ""), "Registre de la classe " + (state.meta.classe || nomClasse(state)) + " : à ouvrir dans Réglages → Sauvegarde → Restaurer.")
+        .then(function(r){ if(r === "partage") toast("Fichier envoyé."); else toast("Fichier enregistré dans vos téléchargements : " + nom); })
+        .catch(function(){ sauvegarder(nom, JSON.stringify(paquet), "application/json").then(function(){ toast("Fichier enregistré : " + nom); }); });
+    });
+}
+el("plusRemplacant").addEventListener("click", passerRemplacant);
+
+/* ---------- minuteur et chronomètre en grand ---------- */
+var mnt = {mode:"minuteur", total:15 * 60, reste:15 * 60, depart:0, ecoule:0, tourne:false, timer:null, verrou:null, couche:null};
+function fmtTemps(s){ s = Math.max(0, Math.round(s)); var h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60; return (h ? h + ":" + ("0" + m).slice(-2) : m) + ":" + ("0" + x).slice(-2); }
+function valeurMinuteur(){
+  if(mnt.mode === "chrono") return mnt.ecoule + (mnt.tourne ? (Date.now() - mnt.depart) / 1000 : 0);
+  return mnt.tourne ? mnt.reste - (Date.now() - mnt.depart) / 1000 : mnt.reste;
+}
+function afficherMinuteur(){
+  var v = valeurMinuteur();
+  if(mnt.mode === "minuteur" && v <= 0 && mnt.tourne){ finMinuteur(); v = 0; }
+  el("mnTemps").textContent = fmtTemps(mnt.mode === "chrono" ? Math.floor(v) : Math.ceil(v));
+  el("mnTemps").classList.toggle("fin", mnt.mode === "minuteur" && v <= 60 && mnt.tourne);
+  el("mnBarre").style.width = mnt.mode === "minuteur" && mnt.total ? (100 - Math.max(0, v) / mnt.total * 100) + "%" : "0";
+  el("mnGo").textContent = mnt.tourne ? "Pause" : (mnt.mode === "minuteur" ? (mnt.reste < mnt.total ? "Reprendre" : "Démarrer") : (mnt.ecoule ? "Reprendre" : "Démarrer"));
+  el("mnPresets").classList.toggle("is-hidden", mnt.mode !== "minuteur");
+  Array.prototype.forEach.call(el("mnModes").children, function(b){ b.setAttribute("aria-pressed", String(b.getAttribute("data-mn") === mnt.mode)); });
+}
+function bip(){
+  try{ var C = window.AudioContext || window.webkitAudioContext, ctx = new C(); [0, .45, .9].forEach(function(t){ var o = ctx.createOscillator(), g = ctx.createGain(); o.frequency.value = 880; o.connect(g); g.connect(ctx.destination); g.gain.setValueAtTime(.001, ctx.currentTime + t); g.gain.exponentialRampToValueAtTime(.5, ctx.currentTime + t + .02); g.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + t + .35); o.start(ctx.currentTime + t); o.stop(ctx.currentTime + t + .4); }); }catch(e){}
+  try{ if(navigator.vibrate) navigator.vibrate([300, 150, 300, 150, 600]); }catch(e){}
+}
+function finMinuteur(){ mnt.tourne = false; mnt.reste = 0; clearInterval(mnt.timer); bip(); el("mnTemps").classList.add("sonne"); toast("Temps écoulé !"); libererEcran(); }
+function garderEcran(){ try{ if(navigator.wakeLock) navigator.wakeLock.request("screen").then(function(l){ mnt.verrou = l; }).catch(function(){}); }catch(e){} }
+function libererEcran(){ try{ if(mnt.verrou){ mnt.verrou.release(); mnt.verrou = null; } }catch(e){} }
+function basculerMinuteur(){
+  el("mnTemps").classList.remove("sonne");
+  if(mnt.tourne){
+    if(mnt.mode === "chrono") mnt.ecoule += (Date.now() - mnt.depart) / 1000; else mnt.reste -= (Date.now() - mnt.depart) / 1000;
+    mnt.tourne = false; clearInterval(mnt.timer); libererEcran();
+  } else {
+    if(mnt.mode === "minuteur" && mnt.reste <= 0) mnt.reste = mnt.total;
+    mnt.depart = Date.now(); mnt.tourne = true; mnt.timer = setInterval(afficherMinuteur, 250); garderEcran();
+  }
+  afficherMinuteur();
+}
+function remettreMinuteur(){ mnt.tourne = false; clearInterval(mnt.timer); mnt.reste = mnt.total; mnt.ecoule = 0; el("mnTemps").classList.remove("sonne"); libererEcran(); afficherMinuteur(); }
+function ouvrirMinuteur(){ el("minuteur").hidden = false; mnt.couche = ouvrirCouche(function(){ fermerMinuteur(true); }); afficherMinuteur(); }
+function fermerMinuteur(parRetour){ el("minuteur").hidden = true; if(mnt.couche){ var c = mnt.couche; mnt.couche = null; fermerCouche(c, parRetour); } }
+el("mnGo").addEventListener("click", basculerMinuteur);
+el("mnRaz").addEventListener("click", remettreMinuteur);
+el("mnFermer").addEventListener("click", function(){ fermerMinuteur(false); });
+el("mnModes").addEventListener("click", function(ev){ var b = ev.target.closest("[data-mn]"); if(!b) return; remettreMinuteur(); mnt.mode = b.getAttribute("data-mn"); afficherMinuteur(); });
+el("mnPresets").addEventListener("click", function(ev){
+  var b = ev.target.closest("[data-min]"); if(!b) return;
+  var m = b.getAttribute("data-min");
+  if(m === "autre"){ var v = window.prompt("Durée en minutes :", "20"); m = Number(String(v || "").replace(",", ".")); if(!(m > 0 && m <= 300)) return; }
+  mnt.total = Math.round(Number(m) * 60); remettreMinuteur();
+});
+el("plusMinuteur").addEventListener("click", ouvrirMinuteur);
+
+/* ---------- raccourcis de l'accueil au choix ---------- */
+var ACTIONS = {
+  appel:["i-appel","Faire l'appel",function(){ allerRubrique("eleves", "appel"); }],
+  notes:["i-crayon","Saisir les notes",function(){ allerRubrique("notes", "notes"); }],
+  ajout:["i-ajout-eleve","Ajouter un élève",function(){ allerRubrique("eleves", "saisie"); apres(function(){ ouvrirFiche(null); }); }],
+  documents:["i-docs","Documents",function(){ allerRubrique("documents"); }],
+  bulletins:["i-notes","Bulletins",function(){ ouvrirDocument("cartes"); }],
+  recap:["i-docs","Tableau récapitulatif",function(){ ouvrirDocument("feuille"); }],
+  presence:["i-appel","Fiche de présence",function(){ ouvrirDocument("d:presence"); }],
+  liste:["i-eleves","Liste des élèves",function(){ allerRubrique("eleves", "saisie"); }],
+  calendrier:["i-calendrier","Calendrier",function(){ allerRubrique("organisation", "calendrier"); }],
+  agenda:["i-agenda","Agenda",function(){ allerRubrique("organisation", "agenda"); }],
+  minuteur:["i-horloge","Minuteur",function(){ ouvrirMinuteur(); }],
+  message:["i-envoyer","Message aux parents",function(){ messageParents(); }],
+  stats:["i-graphe","Statistiques",function(){ allerRubrique("notes", "stats"); }],
+  sauver:["i-sauver","Sauvegarder",function(){ faireSauvegarde(); }]
+};
+var ACTIONS_DEF = ["appel","notes","ajout","documents"];
+function actionsChoisies(){ var a = lirePrefs().raccourcis; a = Array.isArray(a) ? a.filter(function(k){ return ACTIONS[k]; }).slice(0, 4) : []; return a.length ? a : ACTIONS_DEF; }
+function renderActions(){
+  el("acActions").innerHTML = actionsChoisies().map(function(k, i){ var a = ACTIONS[k]; return '<button class="action" type="button" data-action="' + k + '" style="--i:' + i + '"><span class="rond"><svg class="ic"><use href="#' + a[0] + '"/></svg></span>' + a[1] + '</button>'; }).join("");
+}
+el("acActions").addEventListener("click", function(ev){ var b = ev.target.closest("[data-action]"); if(b) ACTIONS[b.getAttribute("data-action")][2](); });
+el("acActionsModif").addEventListener("click", function(){
+  var ch = actionsChoisies();
+  dialogue("Actions rapides", '<p style="margin:0 0 8px">Choisissez <b>4 actions</b> pour l\'accueil.</p><div class="choix-actions">' + Object.keys(ACTIONS).map(function(k){
+      return '<label class="case"><input type="checkbox" name="a_' + k + '"' + (ch.indexOf(k) >= 0 ? " checked" : "") + '> <svg class="ic"><use href="#' + ACTIONS[k][0] + '"/></svg> ' + ACTIONS[k][1] + '</label>';
+    }).join("") + '</div><p class="hint" id="caNb"></p>',
+    [{label:"Par défaut", valeur:"def", style:"btn-ghost"}, {label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Enregistrer", valeur:"ok", style:"btn-primary"}], {champs:true, feuille:true}).then(function(r){
+      if(!r || !r.valeur) return;
+      var sel = r.valeur === "def" ? ACTIONS_DEF : Object.keys(ACTIONS).filter(function(k){ return r.champs["a_" + k]; }).slice(0, 4);
+      if(!sel.length){ toast("Choisissez au moins une action."); return; }
+      changerPref("raccourcis", sel); renderActions(); toast("Actions rapides mises à jour.");
+    });
+  var maj = function(){ var n = el("modal").querySelectorAll(".choix-actions input:checked").length; el("caNb").textContent = n + " / 4 choisie(s)" + (n > 4 ? " — seules les 4 premières seront gardées" : ""); };
+  el("modal").querySelector(".choix-actions").addEventListener("change", maj); maj();
+});
+
+/* ---------- témoin « hors ligne » ---------- */
+function majEnLigne(annoncer){
+  var hors = navigator.onLine === false;
+  el("horsLigne").classList.toggle("is-hidden", !hors);
+  if(annoncer) toast(hors ? "Pas d'internet : tout continue de fonctionner, vos données restent sur le téléphone." : "Connexion internet retrouvée.");
+}
+window.addEventListener("offline", function(){ majEnLigne(true); });
+window.addEventListener("online", function(){ majEnLigne(true); });
+el("horsLigne").addEventListener("click", function(){ toast("Pas d'internet en ce moment. L'application fonctionne quand même : rien n'est perdu."); });
+
 /* ---------- couleur de l'application ---------- */
 el("rgCouleur").addEventListener("change", function(){ changerPref("couleur", this.value === "bleu" ? "bleu" : "registre"); });
 
@@ -7555,7 +7947,7 @@ function entreesRecherche(){
   });
   var vues = [["Liste des élèves","eleves","saisie"],["Cahier d'appel","eleves","appel"],["Groupes d'EPS et PNAPAS","eleves","groupes"],["Vie de classe, balayage, tirage au sort","eleves","vie"],["Tableaux de scolarité","eleves","scolarite"],
     ["Liste de classe","eleves","alpha"],["Synthèse, effectifs, âges","eleves","synthese"],["Saisir des notes, compositions","notes","notes"],["Fin d'année, moyennes annuelles","notes","annee"],["Statistiques et graphiques","notes","stats"],
-    ["Tableau récapitulatif","documents","feuille"],["Bulletins scolaires","documents","cartes"],["Calendrier de l'année, congés, vacances, trimestres","organisation","calendrier"],["Agenda","accueil","agenda"],["Emploi du temps","accueil","edt"],["Fournitures","accueil","fourn"],["Manuels et kits","accueil","manuels"],
+    ["Tableau récapitulatif","documents","feuille"],["Bulletins scolaires","documents","cartes"],["Calendrier de l'année, congés, vacances, trimestres","organisation","calendrier"],["CEPE, examen, candidats","notes","cepe"],["Agenda","accueil","agenda"],["Emploi du temps","accueil","edt"],["Fournitures","accueil","fourn"],["Manuels et kits","accueil","manuels"],
     ["Bloc-notes","accueil","blocnotes"],["Chants et récitations","accueil","textes"],["Registre des visites","accueil","visites"],["Inventaire","accueil","inventaire"],["Tâches de l'année","accueil","taches"]];
   vues.forEach(function(x){ r.push({t:x[1] === "documents" ? "Document" : "Écran", l:x[0], s:"", v:"n|" + x[1] + "|" + x[2]}); });
   Object.keys(DOCS).forEach(function(k){ r.push({t:"Document", l:DOCS[k], s:"", v:"d|" + k}); });
@@ -7605,7 +7997,7 @@ function tableauMatieresEleve(e){
 }
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "2.1.0";
+var APP_VERSION = "2.2.0";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
@@ -7691,7 +8083,7 @@ boot(local || cloneDemo());
 if(ancienFormat) persist();   /* migration silencieuse de l'ancien enregistrement */
 initHistorique();
 allerRubrique("accueil");
-renderProfils(); renderVerrouReglage();
+renderProfils(); renderVerrouReglage(); majEnLigne(false);
 ecranVerrou();
 (function(){
   var fait = null; try{ fait = localStorage.getItem(GUIDE); }catch(e){}
