@@ -34,6 +34,7 @@ Si le navigateur est réinitialisé ou le téléphone perdu, elles sont perdues 
 
 ## Historique
 
+- **1.8.0** — Lot 5B : onglet Statistiques dans Notes (évolution de la moyenne de la classe, des garçons et des filles ; répartition des résultats ; réussite par composition ; suivi par matière ; comparaison garçons/filles ; pyramide des âges), imprimable ; courbe d'évolution dans la fiche de chaque élève ; registre des visites ; inventaire de la classe ; tâches de rentrée et de fin d'année.
 - **1.7.0** — Lot 5A : 16 nouveaux documents à imprimer avec en-tête officiel — liste d'émargement, étiquettes de noms, relevé de notes vierge, feuille d'appel du mois, liste personnalisée, liste des redoublants, tableau d'honneur, satisfecits, liste des admis, récapitulatif annuel, bilan PNAPAS, fiche de renseignements, attestation de scolarité, fiche de transfert, convocation des parents, rapport mensuel du maître.
 - **1.6.2** — Mois de chaque composition trimestrielle (ex. « Composition du 1er trimestre (décembre) »), repris sur les bulletins et le tableau annuel. Enregistrement immédiat quand on quitte l'application.
 - **1.6.1** — Trois types de compositions : évaluations mensuelles (école, ne comptent pas), compositions trimestrielles (comptent) et composition de passage. Moyenne annuelle = (moyenne des trimestrielles + passage × 2) ÷ 3, poids du passage réglable. Barème /40 ajouté.

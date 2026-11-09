@@ -700,6 +700,42 @@ body.est-directeur .role-maitre{display:none !important}
 .recap tr.total-ecole td{font-weight:700; background:var(--surface-2)}
 .recap td.gauche{text-align:left}
 
+
+/* ================= Lot 5B : statistiques et outils ================= */
+.graphe{width:100%; overflow:hidden}
+.graphe svg{display:block; width:100%; height:auto; font-family:"Inter",sans-serif}
+.graphe .ax{stroke:var(--bord); stroke-width:1}
+.graphe .txt{fill:var(--texte-3); font-size:11px}
+.graphe .txt-f{fill:var(--texte); font-size:11px; font-weight:600}
+.graphe .l-c{stroke:var(--texte); fill:none; stroke-width:2.6}
+.graphe .l-g{stroke:var(--g); fill:none; stroke-width:2; stroke-dasharray:5 4}
+.graphe .l-f{stroke:var(--f); fill:none; stroke-width:2; stroke-dasharray:2 3}
+.graphe .p-c{fill:var(--texte)} .graphe .p-g{fill:var(--g)} .graphe .p-f{fill:var(--f)}
+.graphe .b-c{fill:var(--bleu)} .graphe .b-g{fill:var(--g)} .graphe .b-f{fill:var(--f)} .graphe .b-ok{fill:var(--ok)} .graphe .b-bad{fill:var(--bad)} .graphe .b-fond{fill:var(--surface-2)}
+.graphe .seuil{stroke:var(--or); stroke-width:1.5; stroke-dasharray:4 3}
+.graphe .vide{fill:var(--texte-3); font-size:13px}
+.legende{display:flex; gap:14px; flex-wrap:wrap; margin-top:8px; font-size:.78rem; color:var(--texte-2)}
+.legende span::before{content:""; display:inline-block; width:18px; height:3px; border-radius:2px; vertical-align:middle; margin-right:6px}
+.lg-c::before{background:var(--texte)} .lg-g::before{background:var(--g)} .lg-f::before{background:var(--f)}
+.mini-courbe{margin-top:4px; border-radius:12px; background:var(--surface-2); padding:8px}
+.visites{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px}
+.visites li{border:1px solid var(--bord); border-radius:12px; padding:12px 14px; cursor:pointer}
+.visites li b{display:block}
+.visites li small{color:var(--texte-3); font-size:.76rem}
+.visites li p{margin:6px 0 0; font-size:.88rem; white-space:pre-wrap}
+.inv{min-width:560px; border-collapse:collapse}
+.inv th, .inv td{border:1px solid var(--bord); padding:0}
+.inv thead th{padding:8px}
+.inv input, .inv select{border:0; border-radius:0; background:transparent; padding:9px 8px; font-size:.86rem}
+.inv td.qte input{text-align:center; width:70px}
+.inv td.act{width:40px; text-align:center}
+.taches{list-style:none; margin:0 0 10px; padding:0; display:flex; flex-direction:column; gap:6px}
+.taches li{display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:12px; border:1px solid var(--bord)}
+.taches li.fait span{text-decoration:line-through; color:var(--texte-3)}
+.taches input[type=checkbox]{width:22px; height:22px; accent-color:var(--ok); flex:none}
+.taches li span{flex:1}
+@media print{ .graphe svg{max-height:85mm} .graphe .txt{fill:#333} .inv input, .inv select{font-size:9pt !important} }
+
 /* ================= Animations ================= */
 @keyframes entre{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
 @keyframes glisse{from{opacity:0; transform:translateY(-8px)} to{opacity:1; transform:none}}
@@ -922,7 +958,8 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
   body.pr-synthese #vSynthese, body.pr-feuille #vFeuille, body.pr-notes #vNotes,
   body.pr-annee #vAnnee, body.pr-cartes #vCartes, body.pr-doc #vDoc, body.pr-appel #vAppel, body.pr-groupes #vGroupes,
   body.pr-vie #vVie, body.pr-agenda #vAgenda, body.pr-edt #vEdt, body.pr-fourn #vFourn, body.pr-manuels #vManuels,
-  body.pr-blocnotes #vBlocnotes, body.pr-textes #vTextes, body.pr-ecole #vEcole{display:block !important; animation:none !important}
+  body.pr-blocnotes #vBlocnotes, body.pr-textes #vTextes, body.pr-ecole #vEcole, body.pr-stats #vStats,
+  body.pr-visites #vVisites, body.pr-inventaire #vInventaire, body.pr-taches #vTaches{display:block !important; animation:none !important}
   .edt input{font-size:9pt !important; padding:4px !important}
   .page-titre p{color:#333 !important}
   body{background:#fff !important; color:#111 !important; margin:0; padding:0}
@@ -992,6 +1029,8 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
   <symbol id="i-musique" viewBox="0 0 24 24"><path d="M9 18V5l11-2v13"/><circle cx="6.5" cy="18" r="2.5"/><circle cx="17.5" cy="16" r="2.5"/></symbol>
   <symbol id="i-cadenas" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
   <symbol id="i-envoyer" viewBox="0 0 24 24"><path d="M21 3 10 14"/><path d="m21 3-7 18-4-7-7-4 18-7Z"/></symbol>
+  <symbol id="i-visite" viewBox="0 0 24 24"><circle cx="12" cy="7.5" r="3.5"/><path d="M5 21c.9-4.2 3.6-6.5 7-6.5s6.1 2.3 7 6.5"/><path d="M16.5 4.5l2-2"/></symbol>
+  <symbol id="i-boite" viewBox="0 0 24 24"><path d="M3.5 7.5 12 3l8.5 4.5v9L12 21l-8.5-4.5v-9Z"/><path d="M3.5 7.5 12 12l8.5-4.5M12 12v9"/></symbol>
   <symbol id="i-etoile" viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9L12 3Z"/></symbol>
 </svg>
 
@@ -1081,6 +1120,9 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
       <button class="raccourci" type="button" data-outil="manuels" style="--i:3"><span class="rond"><svg class="ic"><use href="#i-livre"/></svg></span><span>Manuels et kits<small>Remis, rendus</small></span></button>
       <button class="raccourci" type="button" data-outil="blocnotes" style="--i:4"><span class="rond"><svg class="ic"><use href="#i-crayon"/></svg></span><span>Bloc-notes<small>Idées, incidents</small></span></button>
       <button class="raccourci" type="button" data-outil="textes" style="--i:5"><span class="rond"><svg class="ic"><use href="#i-musique"/></svg></span><span>Chants et récitations<small>Afficher en grand</small></span></button>
+      <button class="raccourci" type="button" data-outil="visites" style="--i:6"><span class="rond"><svg class="ic"><use href="#i-visite"/></svg></span><span>Registre des visites<small>Inspecteur, conseiller…</small></span></button>
+      <button class="raccourci" type="button" data-outil="inventaire" style="--i:7"><span class="rond"><svg class="ic"><use href="#i-boite"/></svg></span><span>Inventaire<small>Matériel de la classe</small></span></button>
+      <button class="raccourci" type="button" data-outil="taches" style="--i:8"><span class="rond"><svg class="ic"><use href="#i-check"/></svg></span><span>Tâches de l'année<small>Rentrée et fin d'année</small></span></button>
       <button class="raccourci role-maitre" type="button" id="acEnvoyer" style="--i:6"><span class="rond"><svg class="ic"><use href="#i-envoyer"/></svg></span><span>Envoyer au directeur<small>Par WhatsApp</small></span></button>
       <button class="raccourci role-directeur" type="button" data-outil="ecole" style="--i:6"><span class="rond"><svg class="ic"><use href="#i-ecole"/></svg></span><span>Mon école<small>Classes de vos collègues</small></span></button>
     </div>
@@ -1141,6 +1183,29 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
      <div class="sheet no-print"><h2>Classes reçues <small>Chaque nouvel envoi d'un maître met sa classe à jour</small></h2>
        <ul class="suivi" id="ecRecues"></ul>
        <p class="hint">Demandez à chaque maître de toucher « Envoyer au directeur » sur son téléphone, puis importez ici le fichier reçu sur WhatsApp.</p></div>
+   </section>
+
+   <section class="view is-hidden" id="vVisites">
+     <div class="page-titre"><div><h1>Registre des visites</h1><p id="viSous">—</p></div>
+       <button class="btn btn-primary btn-sm no-print" type="button" id="viAjout"><svg class="ic"><use href="#i-plus"/></svg>Ajouter</button></div>
+     <div class="sheet"><ul class="visites" id="viListe"></ul></div>
+   </section>
+
+   <section class="view is-hidden" id="vInventaire">
+     <div class="page-titre"><div><h1>Inventaire de la classe</h1><p id="ivSous">—</p></div></div>
+     <div class="sheet"><div class="scroll"><table class="inv" id="ivTable"></table></div>
+       <div class="rowbtns no-print"><button class="btn btn-sm" type="button" id="ivAjout"><svg class="ic"><use href="#i-plus"/></svg>Ajouter une ligne</button>
+         <button class="btn btn-sm" type="button" id="ivType">Liste type</button></div></div>
+   </section>
+
+   <section class="view is-hidden" id="vTaches">
+     <div class="page-titre"><div><h1>Tâches de l'année</h1><p id="taSous">—</p></div></div>
+     <div class="seg seg-mini no-print" role="tablist" id="taOnglets">
+       <button role="tab" data-ta="rentree" aria-selected="true">Rentrée</button>
+       <button role="tab" data-ta="fin" aria-selected="false">Fin d'année</button>
+     </div>
+     <div class="sheet"><ul class="taches" id="taListe"></ul>
+       <div class="mat-ajout no-print"><input id="taNouveau" placeholder="Ajouter une tâche" maxlength="100"><button class="btn btn-sm btn-primary" type="button" id="taAjout">Ajouter</button></div></div>
    </section>
 
    <section class="view is-hidden" id="vTextes">
@@ -1348,6 +1413,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
     <div class="seg no-print" role="tablist" data-seg="notes">
       <button role="tab" data-v="notes" aria-selected="true">Compositions</button>
       <button role="tab" data-v="annee" aria-selected="false">Fin d'année</button>
+      <button role="tab" data-v="stats" aria-selected="false">Statistiques</button>
     </div>
 
     <section class="view" id="vNotes">
@@ -1395,6 +1461,22 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
         </div>
         <p class="hint">Moyenne = (total des points obtenus ÷ total des points possibles) × échelle de la classe. Deux élèves à égalité portent le même rang. Touche Entrée pour passer à l'élève suivant.</p>
       </div>
+    </section>
+
+    <section class="view is-hidden" id="vStats">
+      <div class="print-seul" id="stEntete"></div>
+      <div class="sheet no-print"><div class="nt-tools" style="margin:0"><div class="field"><label for="stCompo">Composition étudiée</label><select id="stCompo"></select></div><span class="status" id="stInfo"></span></div></div>
+      <div class="tuiles" id="stTuiles"></div>
+      <div class="sheet"><h2>Évolution de la moyenne <small>Classe, garçons et filles, composition par composition</small></h2><div class="graphe" id="stEvol"></div>
+        <div class="legende"><span class="lg-c">Classe</span><span class="lg-g">Garçons</span><span class="lg-f">Filles</span></div></div>
+      <div class="cols">
+        <div class="sheet"><h2>Répartition des résultats <small id="stRepSous"></small></h2><div class="graphe" id="stRep"></div></div>
+        <div class="sheet"><h2>Réussite <small>Élèves à la moyenne ou plus</small></h2><div class="graphe" id="stReus"></div></div>
+      </div>
+      <div class="sheet"><h2>Suivi par matière <small id="stMatSous"></small></h2><div class="graphe" id="stMat"></div></div>
+      <div class="sheet"><h2>Garçons et filles <small>Moyennes par composition</small></h2><div class="scroll"><table class="recap" id="stGF"></table></div></div>
+      <div class="sheet"><h2>Pyramide des âges</h2><div class="graphe" id="stAges"></div>
+        <div class="legende"><span class="lg-g">Garçons</span><span class="lg-f">Filles</span></div></div>
     </section>
 
     <section class="view is-hidden" id="vAnnee">
@@ -1868,6 +1950,20 @@ function normEleve(e){
     depart: (e.depart && typeof e.depart === "object" && dateJour(e.depart.date)) ? {date:dateJour(e.depart.date), motif:["Transfert","Abandon","Autre"].indexOf(e.depart.motif) >= 0 ? e.depart.motif : "", vers:txt(e.depart.vers, 80).trim()} : null
   };
 }
+var TYPES_VISITE_N = ["Inspecteur","Conseiller pédagogique","Directeur","Autre"];
+var TACHES_N = {
+  rentree:["Saisir la liste des élèves","Remplir l'en-tête du registre (école, classe, année)","Élire le chef de classe et le sous-chef","Former les équipes de balayage","Former les groupes d'EPS","Faire le test PNAPAS de début d'année et former les groupes","Établir l'emploi du temps","Vérifier les fournitures des élèves","Distribuer les manuels et les kits","Imprimer le tableau récapitulatif","Faire une sauvegarde du registre"],
+  fin:["Saisir la composition de passage","Vérifier les moyennes annuelles et les décisions","Imprimer les résultats de fin d'année et la liste des admis","Remettre les bulletins","Récupérer les manuels et les kits","Faire l'inventaire du matériel","Envoyer la classe au directeur","Préparer le passage à l'année suivante","Faire une sauvegarde du registre"]
+};
+function normTaches(t){
+  t = (t && typeof t === "object") ? t : {};
+  var r = {};
+  ["rentree","fin"].forEach(function(k){
+    var l = Array.isArray(t[k]) ? listeNorm(t[k], 40, function(x){ var tx = txt(x && x.texte, 100).trim(); return tx ? {id:idSur(x.id) || uid(), texte:tx, fait:!!x.fait} : null; }) : null;
+    r[k] = l || TACHES_N[k].map(function(tx){ return {id:uid(), texte:tx, fait:false}; });
+  });
+  return r;
+}
 function dateJour(v){ return /^\d{4}-\d{2}-\d{2}$/.test(v || "") ? v : ""; }
 function listeNorm(l, max, f){ return (Array.isArray(l) ? l : []).slice(0, max).map(f).filter(Boolean); }
 function normItems(l){ return listeNorm(l, 40, function(x){ var n = txt(x && x.nom, 60).trim(); return n ? {id:idSur(x.id) || uid(), nom:n} : null; }); }
@@ -2029,6 +2125,9 @@ function normalize(d){
     fourn: {items:normItems(d.fourn && d.fourn.items), manque:normSuivi(d.fourn && d.fourn.manque, vus, [])},
     manuels: {items:normItems(d.manuels && d.manuels.items), suivi:normSuivi(d.manuels && d.manuels.suivi, vus, ["remis","rendu"])},
     blocnotes: listeNorm(d.blocnotes, 300, function(n){ var t = txt(n && n.texte, 2000).trim(); return t ? {id:idSur(n.id) || uid(), date:dateSure(n.date) || new Date().toISOString(), texte:t} : null; }),
+    visites: listeNorm(d.visites, 100, function(v){ var dt = dateJour(v && v.date); if(!dt) return null; return {id:idSur(v.id) || uid(), date:dt, type:TYPES_VISITE_N.indexOf(v.type) >= 0 ? v.type : "Autre", nom:txt(v.nom, 80).trim(), objet:txt(v.objet, 120).trim(), reco:txt(v.reco, 2000).trim()}; }),
+    inventaire: listeNorm(d.inventaire, 80, function(x){ if(!x || typeof x !== "object") return null; return {id:idSur(x.id) || uid(), nom:txt(x.nom, 60), qte:String(x.qte == null ? "" : x.qte).replace(/\D/g, "").slice(0, 5), etat:["Bon","Moyen","Mauvais"].indexOf(x.etat) >= 0 ? x.etat : "Bon", obs:txt(x.obs, 80)}; }),
+    taches: normTaches(d.taches),
     textes: listeNorm(d.textes, 60, function(t){ var ti = txt(t && t.titre, 80).trim(); return ti ? {id:idSur(t.id) || uid(), type:t.type === "recitation" ? "recitation" : "chant", titre:ti, texte:txt(t.texte, 6000)} : null; })
   };
 }
@@ -2364,6 +2463,7 @@ function ouvrirFiche(id){
     + '<div class="field"><label for="fcMat">N° matricule</label><input id="fcMat" name="mat" value="' + esc(base.mat) + '" autocomplete="off"></div>'
     + '<div class="field plein"><span class="lbl">Scolarité dans la classe</span>' + radio("sc", base.sc, [[1,"1re fois"],[2,"Redoublant"],[3,"Triplant"]]) + '</div>'
     + '<div class="field plein"><label for="fcSt">Scolarité totale <small style="font-weight:400;color:var(--ink3)">(années d\'école depuis le CP1)</small></label><select id="fcSt" name="st">' + opts(SC_TOTALE, base.st) + '</select></div>'
+    + (e ? courbeEleve(e) : '')
     + '<div class="fiche-section">Naissance et famille</div>'
     + '<div class="field"><label for="fcNais">Date de naissance</label><input id="fcNais" name="naissance" type="date" value="' + esc(base.naissance || "") + '"></div>'
     + '<div class="field"><label for="fcLieu">Lieu de naissance</label><input id="fcLieu" name="lieu" value="' + esc(base.lieu || "") + '" autocomplete="off"></div>'
@@ -3148,6 +3248,7 @@ function render(){
     if(vueActive === "groupes"){ renderEPS(); renderPnapas(); }
     if(vueActive === "vie") renderVie();
     if(RUBRIQUE_DE[vueActive] === "accueil") renderOutil(vueActive);
+    if(vueActive === "stats") renderStats();
     if(vueActive === "doc" && !el("docOptions").contains(document.activeElement)){ renderDocOptions(); buildDoc(); fitDoc(); }
     renderMouvements();
     renderNotes();
@@ -3866,9 +3967,9 @@ el("btnViderMois").addEventListener("click", function(){
 el("f_cartesMode").addEventListener("change", function(){ majTitreCartes(); buildCartes(); fitCartes(); majFab(); });
 
 /* ---------- navigation : 5 rubriques, chacune avec ses vues ---------- */
-var VIEWS = {doc:"vDoc", ecole:"vEcole", agenda:"vAgenda", edt:"vEdt", fourn:"vFourn", manuels:"vManuels", blocnotes:"vBlocnotes", textes:"vTextes", saisie:"vSaisie", appel:"vAppel", groupes:"vGroupes", vie:"vVie", scolarite:"vScolarite", alpha:"vAlpha", synthese:"vSynthese", feuille:"vFeuille", notes:"vNotes", annee:"vAnnee", cartes:"vCartes"};
+var VIEWS = {stats:"vStats", visites:"vVisites", inventaire:"vInventaire", taches:"vTaches", doc:"vDoc", ecole:"vEcole", agenda:"vAgenda", edt:"vEdt", fourn:"vFourn", manuels:"vManuels", blocnotes:"vBlocnotes", textes:"vTextes", saisie:"vSaisie", appel:"vAppel", groupes:"vGroupes", vie:"vVie", scolarite:"vScolarite", alpha:"vAlpha", synthese:"vSynthese", feuille:"vFeuille", notes:"vNotes", annee:"vAnnee", cartes:"vCartes"};
 var RUBRIQUES = {accueil:"rAccueil", eleves:"rEleves", notes:"rNotes", documents:"rDocuments", reglages:"rReglages"};
-var RUBRIQUE_DE = {doc:"documents", ecole:"accueil", agenda:"accueil", edt:"accueil", fourn:"accueil", manuels:"accueil", blocnotes:"accueil", textes:"accueil", saisie:"eleves", appel:"eleves", groupes:"eleves", vie:"eleves", scolarite:"eleves", alpha:"eleves", synthese:"eleves", notes:"notes", annee:"notes", feuille:"documents", cartes:"documents"};
+var RUBRIQUE_DE = {stats:"notes", visites:"accueil", inventaire:"accueil", taches:"accueil", doc:"documents", ecole:"accueil", agenda:"accueil", edt:"accueil", fourn:"accueil", manuels:"accueil", blocnotes:"accueil", textes:"accueil", saisie:"eleves", appel:"eleves", groupes:"eleves", vie:"eleves", scolarite:"eleves", alpha:"eleves", synthese:"eleves", notes:"notes", annee:"notes", feuille:"documents", cartes:"documents"};
 var DERNIERE_VUE = {eleves:"saisie", notes:"notes"};
 var vueActive = null, rubriqueActive = "accueil";
 var TITRES_CARTES = {cartes:"Bulletins scolaires", tableau:"Tableau des notes", annee:"Résultats de fin d'année"};
@@ -3913,6 +4014,7 @@ function montrerVue(v, anim){
   if(v === "feuille") fitFeuille();
   if(v === "cartes"){ majTitreCartes(); buildCartes(); fitCartes(); }
   if(v === "doc"){ renderDocOptions(); buildDoc(); fitDoc(); }
+  if(v === "stats") renderStats();
   if(v === "appel") renderAppel();
   if(v === "groupes"){ renderEPS(); renderPnapas(); }
   if(v === "vie") renderVie();
@@ -3979,7 +4081,8 @@ function nomDocument(ext){
   }
   var NOMS = {saisie:"liste-des-eleves", appel:"cahier-d-appel", groupes:"groupes", vie:"vie-de-classe", scolarite:"tableaux-de-scolarite",
     alpha:"liste-de-classe", synthese:"synthese", agenda:"agenda", edt:"emploi-du-temps", fourn:"fournitures", manuels:"manuels-et-kits",
-    blocnotes:"bloc-notes", textes:"chants-et-recitations", ecole:"effectifs-et-resultats-de-l-ecole"};
+    blocnotes:"bloc-notes", textes:"chants-et-recitations", ecole:"effectifs-et-resultats-de-l-ecole", stats:"statistiques",
+    visites:"registre-des-visites", inventaire:"inventaire", taches:"taches-de-l-annee"};
   if(vueActive === "doc") return slug(DOCS[docType] || "document") + "-" + classe + "." + ext;
   if(NOMS[vueActive]) return NOMS[vueActive] + "-" + classe + "." + ext;
   return "tableau-recapitulatif-" + classe + "." + ext;
@@ -5034,7 +5137,7 @@ document.querySelectorAll("[data-outil]").forEach(function(b){ b.addEventListene
 el("acRetour").addEventListener("click", function(){ allerRubrique("accueil"); });
 function fermerOutil(){
   el("acHub").classList.remove("is-hidden"); el("acRetour").classList.add("is-hidden");
-  ["vEcole","vAgenda","vEdt","vFourn","vManuels","vBlocnotes","vTextes"].forEach(function(id){ el(id).classList.add("is-hidden"); });
+  ["vEcole","vAgenda","vEdt","vFourn","vManuels","vBlocnotes","vTextes","vVisites","vInventaire","vTaches"].forEach(function(id){ el(id).classList.add("is-hidden"); });
 }
 function renderOutil(v){
   if(v === "agenda") renderAgenda();
@@ -5044,6 +5147,9 @@ function renderOutil(v){
   if(v === "blocnotes") renderBlocnotes();
   if(v === "textes") renderTextes();
   if(v === "ecole") renderEcole();
+  if(v === "visites") renderVisites();
+  if(v === "inventaire") renderInventaire();
+  if(v === "taches") renderTaches();
 }
 
 /* agenda */
@@ -5909,8 +6015,214 @@ var DOC_BUILD = {
   }
 };
 
+/* =====================================================================
+   LOT 5B — statistiques, évolution de l'élève, visites, inventaire, tâches
+   ===================================================================== */
+var stCompo = null;
+function moyenneDe(t){ if(!t.length) return null; var s = 0; t.forEach(function(v){ s += v; }); return s / t.length; }
+function statsPeriode(m){
+  var c = classement(m), g = [], f = [], b = echelleMoyenne(), ok = 0;
+  c.liste.forEach(function(x){ (x.e.sexe === "G" ? g : f).push(x.b.moy); if(x.b.moy >= b / 2) ok++; });
+  return {m:m, sur:c.sur, moy:c.moyenneClasse, g:moyenneDe(g), f:moyenneDe(f), ng:g.length, nf:f.length, ok:ok, liste:c.liste};
+}
+/* largeur réelle du graphique : le texte garde une taille lisible sur téléphone */
+function largeurGraphe(){
+  var w = 0; ["stEvol","stMat","stRep"].forEach(function(id){ var n = el(id); if(n && n.clientWidth > w) w = n.clientWidth; });
+  return Math.round(Math.max(320, Math.min(720, w || 600)));
+}
+function svg(w, h, corps){ return '<svg viewBox="0 0 ' + w + ' ' + h + '" role="img" xmlns="http://www.w3.org/2000/svg">' + corps + '</svg>'; }
+function grapheVide(t){ return svg(600, 120, '<text class="vide" x="300" y="64" text-anchor="middle">' + esc(t) + '</text>'); }
+/* courbe : séries de valeurs (null = trou) sur des étiquettes */
+function courbes(etiq, series, max, hauteur){
+  var W = largeurGraphe(), H = hauteur || 240, g = 34, d = 14, h = 16, bas = 30, pw = W - g - d, ph = H - h - bas;
+  var x = function(i){ return g + (etiq.length < 2 ? pw / 2 : pw * i / (etiq.length - 1)); }, y = function(v){ return h + ph - (v / max) * ph; };
+  var c = "";
+  [0, .25, .5, .75, 1].forEach(function(k){ var v = max * k; c += '<line class="ax" x1="' + g + '" x2="' + (W - d) + '" y1="' + y(v) + '" y2="' + y(v) + '"/><text class="txt" x="' + (g - 6) + '" y="' + (y(v) + 4) + '" text-anchor="end">' + nombreFr(v, max % 4 ? 1 : 0) + '</text>'; });
+  c += '<line class="seuil" x1="' + g + '" x2="' + (W - d) + '" y1="' + y(max / 2) + '" y2="' + y(max / 2) + '"/>';
+  etiq.forEach(function(t, i){ c += '<text class="txt" x="' + x(i) + '" y="' + (H - 10) + '" text-anchor="middle">' + esc(t) + '</text>'; });
+  series.forEach(function(sr){
+    var pts = sr.v.map(function(v, i){ return v == null ? null : [x(i), y(v)]; }), seg = "", ouvert = false;
+    pts.forEach(function(p){ if(!p){ ouvert = false; return; } seg += (ouvert ? " L" : " M") + p[0].toFixed(1) + " " + p[1].toFixed(1); ouvert = true; });
+    if(seg) c += '<path class="l-' + sr.c + '" d="' + seg + '"/>';
+    pts.forEach(function(p, i){ if(p){ c += '<circle class="p-' + sr.c + '" cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="' + (sr.c === "c" ? 4 : 3) + '"/>'; if(sr.c === "c") c += '<text class="txt-f" x="' + p[0].toFixed(1) + '" y="' + (p[1] - 9).toFixed(1) + '" text-anchor="middle">' + nombreFr(sr.v[i], 2) + '</text>'; } });
+  });
+  return svg(W, H, c);
+}
+/* barres horizontales : [{l, v, max, cls, txt}] */
+function barresH(items, largeurLib){
+  var W = largeurGraphe(), lh = 30, g = Math.min(largeurLib || 150, Math.round(W * .34)), H = items.length * lh + 8, c = "";
+  items.forEach(function(it, i){
+    var yy = 4 + i * lh, w = Math.max(0, (W - g - 70) * (it.max ? it.v / it.max : 0));
+    var lib = it.l.length > Math.floor(g / 7) ? it.l.slice(0, Math.floor(g / 7) - 1) + "…" : it.l;
+    c += '<text class="txt-f" x="' + (g - 8) + '" y="' + (yy + 19) + '" text-anchor="end">' + esc(lib) + '<title>' + esc(it.l) + '</title></text>'
+       + '<rect class="b-fond" x="' + g + '" y="' + (yy + 5) + '" width="' + (W - g - 70) + '" height="20" rx="5"/>'
+       + '<rect class="' + (it.cls || "b-c") + '" x="' + g + '" y="' + (yy + 5) + '" width="' + w.toFixed(1) + '" height="20" rx="5"/>'
+       + '<text class="txt" x="' + (W - 64) + '" y="' + (yy + 19) + '">' + esc(it.txt) + '</text>';
+  });
+  return svg(W, H, c);
+}
+function renderStats(){
+  var per = periodesRenseignees(), b = echelleMoyenne();
+  if(!per.some(function(m){ return m === stCompo; })) stCompo = per.length ? per[per.length - 1] : null;
+  el("stCompo").innerHTML = per.length ? per.map(function(m){ return '<option value="' + m + '"' + (m === stCompo ? ' selected' : '') + '>' + esc(libellePeriode(m)) + '</option>'; }).join("") : '<option>Aucune composition notée</option>';
+  el("stCompo").disabled = !per.length;
+  var sts = per.map(statsPeriode), cur = stCompo ? statsPeriode(stCompo) : null;
+  el("stInfo").textContent = cur ? cur.sur + " élève(s) noté(s) · moyenne sur " + b : "";
+  el("stEntete").innerHTML = enteteOfficiel("eo-np") + '<p>Statistiques de la classe ' + esc(state.meta.classe || "") + (state.meta.ecole ? " — EPP " + esc(state.meta.ecole) : "") + ' — ' + esc(anneeTxt()) + (cur ? ' — ' + esc(libellePeriode(stCompo)) : '') + '</p>';
+  /* tuiles */
+  el("stTuiles").innerHTML = cur ? [
+      ["Moyenne de la classe", cur.moy == null ? "—" : nombreFr(cur.moy, 2), "sur " + b],
+      ["Réussite", cur.sur ? Math.round(cur.ok / cur.sur * 100) + " %" : "—", cur.ok + " / " + cur.sur + " à la moyenne"],
+      ["Garçons", cur.g == null ? "—" : nombreFr(cur.g, 2), cur.ng + " noté(s)"],
+      ["Filles", cur.f == null ? "—" : nombreFr(cur.f, 2), cur.nf + " notée(s)"]
+    ].map(function(t, i){ return '<div class="tuile" style="--i:' + i + '"><span class="lbl">' + t[0] + '</span><div class="val">' + t[1] + '</div><div class="sous">' + t[2] + '</div></div>'; }).join("") : "";
+  /* évolution */
+  el("stEvol").innerHTML = sts.length ? courbes(per.map(abbrMois), [{c:"c", v:sts.map(function(x){ return x.moy; })}, {c:"g", v:sts.map(function(x){ return x.g; })}, {c:"f", v:sts.map(function(x){ return x.f; })}], b)
+    : grapheVide("Les courbes apparaîtront après la première composition.");
+  if(!cur){ ["stRep","stReus","stMat","stAges"].forEach(function(id){ el(id).innerHTML = grapheVide("Aucune donnée"); }); el("stGF").innerHTML = ""; renderPyramide(); return; }
+  /* répartition */
+  var niveaux = ["Excellent","Très bien","Bien","Assez bien","Passable","Insuffisant"], cpt = {};
+  niveaux.forEach(function(n){ cpt[n] = 0; }); cur.liste.forEach(function(x){ cpt[appreciation(x.b.moy)]++; });
+  el("stRepSous").textContent = libellePeriode(stCompo);
+  el("stRep").innerHTML = barresH(niveaux.map(function(n, i){ return {l:n, v:cpt[n], max:cur.sur || 1, cls:i >= 5 ? "b-bad" : i >= 4 ? "b-c" : "b-ok", txt:cpt[n] + " (" + (cur.sur ? Math.round(cpt[n] / cur.sur * 100) : 0) + " %)"}; }), 110);
+  /* réussite par composition */
+  el("stReus").innerHTML = barresH(sts.map(function(x){ return {l:abbrMois(x.m), v:x.ok, max:x.sur || 1, cls:"b-ok", txt:(x.sur ? Math.round(x.ok / x.sur * 100) : 0) + " %"}; }), 80);
+  /* matières : moyenne de la classe ramenée sur 10 */
+  var mats = matieresActives().map(function(mt){
+    var t = []; cur.liste.forEach(function(x){ var v = noteDe(x.e, mt.code, stCompo); if(v != null) t.push(v); });
+    var m = moyenneDe(t), bar = baremeMat(mt.code);
+    return {l:mt.nom, v:m == null ? 0 : m / bar * 10, max:10, cls:m != null && m / bar < .5 ? "b-bad" : "b-c", txt:m == null ? "—" : nombreFr(m, 2) + " / " + bar};
+  });
+  el("stMatSous").textContent = "Moyenne de la classe dans chaque matière — " + libellePeriode(stCompo);
+  el("stMat").innerHTML = barresH(mats, 130);
+  /* garçons et filles */
+  el("stGF").innerHTML = '<thead><tr><th>Composition</th><th>Classe</th><th>Garçons</th><th>Filles</th><th>Écart</th></tr></thead><tbody>'
+    + sts.map(function(x){ var e = (x.g != null && x.f != null) ? x.f - x.g : null; return '<tr><td>' + esc(libellePeriode(x.m)) + '</td><td>' + (x.moy == null ? "—" : nombreFr(x.moy, 2)) + '</td><td>' + (x.g == null ? "—" : nombreFr(x.g, 2)) + '</td><td>' + (x.f == null ? "—" : nombreFr(x.f, 2)) + '</td><td>' + (e == null ? "—" : (e > 0 ? "filles +" : e < 0 ? "garçons +" : "") + nombreFr(Math.abs(e), 2)) + '</td></tr>'; }).join("") + '</tbody>';
+  renderPyramide();
+}
+function renderPyramide(){
+  var s = stats(), ages = AGES_SYNTH.filter(function(a){ return s.ages[a].T; });
+  if(!ages.length){ el("stAges").innerHTML = grapheVide("Renseignez l'âge des élèves pour voir la pyramide."); return; }
+  var max = 1; ages.forEach(function(a){ max = Math.max(max, s.ages[a].G, s.ages[a].F); });
+  var W = largeurGraphe(), lh = 28, cx = W / 2, H = ages.length * lh + 8, half = W / 2 - 60, c = "";
+  ages.slice().reverse().forEach(function(a, i){
+    var yy = 4 + i * lh, wg = half * s.ages[a].G / max, wf = half * s.ages[a].F / max;
+    c += '<rect class="b-g" x="' + (cx - 22 - wg).toFixed(1) + '" y="' + (yy + 4) + '" width="' + wg.toFixed(1) + '" height="20" rx="4"/>'
+       + '<rect class="b-f" x="' + (cx + 22) + '" y="' + (yy + 4) + '" width="' + wf.toFixed(1) + '" height="20" rx="4"/>'
+       + '<text class="txt-f" x="' + cx + '" y="' + (yy + 19) + '" text-anchor="middle">' + a + ' ans</text>'
+       + (s.ages[a].G ? '<text class="txt" x="' + (cx - 28 - wg).toFixed(1) + '" y="' + (yy + 19) + '" text-anchor="end">' + s.ages[a].G + '</text>' : '')
+       + (s.ages[a].F ? '<text class="txt" x="' + (cx + 28 + wf).toFixed(1) + '" y="' + (yy + 19) + '">' + s.ages[a].F + '</text>' : '');
+  });
+  el("stAges").innerHTML = svg(W, H, c);
+}
+el("stCompo").addEventListener("change", function(){ stCompo = this.value; renderStats(); });
+window.addEventListener("resize", function(){ if(vueActive === "stats") renderStats(); });
+window.addEventListener("beforeprint", function(){ if(vueActive === "stats") renderStats(); });
+
+/* évolution de l'élève (dans sa fiche) */
+function courbeEleve(e){
+  var per = periodesRenseignees(), v = per.map(function(m){ return moyennePeriode(e, m); });
+  if(!v.some(function(x){ return x != null; })) return "";
+  return '<div class="fiche-section">Évolution des moyennes</div><div class="plein graphe mini-courbe">' + courbes(per.map(abbrMois), [{c:"c", v:v}], echelleMoyenne(), 170) + '</div>';
+}
+
+/* ---------- registre des visites ---------- */
+var TYPES_VISITE = ["Inspecteur","Conseiller pédagogique","Directeur","Autre"];
+function renderVisites(){
+  var l = state.visites.slice().sort(function(a, b){ return b.date.localeCompare(a.date); });
+  el("viSous").textContent = l.length ? l.length + " visite(s) cette année" : "Inspections, visites de conseillers et du directeur";
+  el("viListe").innerHTML = l.map(function(v){
+    return '<li data-vi="' + v.id + '"><b>' + esc(v.type) + (v.nom ? " — " + esc(v.nom) : "") + '</b><small>' + esc(dateLongue(v.date)) + (v.objet ? " · " + esc(v.objet) : "") + '</small>' + (v.reco ? '<p>' + esc(v.reco) + '</p>' : '') + '</li>';
+  }).join("") || '<li class="vide-etat" style="border:0;cursor:default">Aucune visite enregistrée.</li>';
+}
+function editerVisite(id){
+  var v = id ? state.visites.filter(function(x){ return x.id === id; })[0] : null;
+  var corps = '<div class="fiche-grille"><div class="field"><label for="viDate">Date</label><input id="viDate" name="date" type="date" value="' + (v ? v.date : aujourdhuiISO()) + '"></div>'
+    + '<div class="field"><label for="viType">Visiteur</label><select id="viType" name="type">' + TYPES_VISITE.map(function(t){ return '<option' + ((v ? v.type : "Inspecteur") === t ? ' selected' : '') + '>' + t + '</option>'; }).join("") + '</select></div>'
+    + '<div class="field plein"><label for="viNom">Nom</label><input id="viNom" name="nom" maxlength="80" value="' + esc(v ? v.nom : "") + '"></div>'
+    + '<div class="field plein"><label for="viObjet">Objet de la visite</label><input id="viObjet" name="objet" maxlength="120" value="' + esc(v ? v.objet : "") + '" placeholder="Ex. Visite de classe, leçon de lecture"></div>'
+    + '<div class="field plein"><label for="viReco">Observations et recommandations</label><textarea id="viReco" name="reco" rows="5" maxlength="2000">' + esc(v ? v.reco : "") + '</textarea></div></div>';
+  var boutons = v ? [{label:"Supprimer", valeur:"suppr", style:"btn-danger"}, {label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Enregistrer", valeur:"ok", style:"btn-primary"}] : [{label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Ajouter", valeur:"ok", style:"btn-primary"}];
+  dialogue(v ? "Modifier la visite" : "Nouvelle visite", corps, boutons, {champs:true, feuille:true}).then(function(r){
+    if(!r || !r.valeur) return;
+    avantModif(false);
+    if(r.valeur === "suppr"){ state.visites = state.visites.filter(function(x){ return x !== v; }); touch(); renderVisites(); toast("Visite supprimée.", {label:"Annuler", fn:function(){ annuler(); renderVisites(); }}); return; }
+    var c = r.champs, d = dateJour(c.date) || aujourdhuiISO(), o = {date:d, type:TYPES_VISITE.indexOf(c.type) >= 0 ? c.type : "Autre", nom:txt(c.nom, 80).trim(), objet:txt(c.objet, 120).trim(), reco:txt(c.reco, 2000).trim()};
+    if(v) Object.keys(o).forEach(function(k){ v[k] = o[k]; }); else { o.id = uid(); state.visites.push(o); }
+    touch(); renderVisites();
+  });
+}
+el("viAjout").addEventListener("click", function(){ editerVisite(null); });
+el("viListe").addEventListener("click", function(ev){ var li = ev.target.closest("[data-vi]"); if(li) editerVisite(li.getAttribute("data-vi")); });
+
+/* ---------- inventaire ---------- */
+var ETATS = ["Bon","Moyen","Mauvais"];
+var INV_TYPE = ["Tables-bancs","Bureau du maître","Chaise","Tableau noir","Armoire","Craie (boîtes)","Règle du tableau","Équerre du tableau","Compas du tableau","Guide du maître","Manuels de lecture","Manuels de mathématiques","Cartes murales"];
+function renderInventaire(){
+  var l = state.inventaire, bad = l.filter(function(x){ return x.etat === "Mauvais"; }).length;
+  el("ivSous").textContent = l.length ? l.length + " article(s)" + (bad ? " · " + bad + " en mauvais état" : "") : "Matériel et mobilier de la classe";
+  if(el("ivTable").contains(document.activeElement)) return;
+  el("ivTable").innerHTML = '<thead><tr><th>Désignation</th><th>Quantité</th><th>État</th><th>Observation</th><th class="no-print"></th></tr></thead><tbody>'
+    + l.map(function(x){
+        return '<tr data-iv="' + x.id + '"><td><input data-k="nom" value="' + esc(x.nom) + '" maxlength="60"></td><td class="qte"><input data-k="qte" inputmode="numeric" value="' + esc(x.qte) + '" maxlength="5"></td>'
+          + '<td><select data-k="etat">' + ETATS.map(function(e){ return '<option' + (x.etat === e ? ' selected' : '') + '>' + e + '</option>'; }).join("") + '</select></td>'
+          + '<td><input data-k="obs" value="' + esc(x.obs) + '" maxlength="80"></td><td class="act no-print"><button type="button" class="btn btn-sm btn-ghost" data-iv-suppr aria-label="Retirer">✕</button></td></tr>';
+      }).join("") + (l.length ? '' : '<tr><td colspan="5" class="vide-etat">Ajoutez le matériel de la classe, ou touchez « Liste type ».</td></tr>') + '</tbody>';
+}
+el("ivTable").addEventListener("input", function(ev){
+  var tr = ev.target.closest("[data-iv]"), k = ev.target.getAttribute("data-k"); if(!tr || !k) return;
+  var x = state.inventaire.filter(function(i){ return i.id === tr.getAttribute("data-iv"); })[0]; if(!x) return;
+  avantModif(true);
+  x[k] = k === "qte" ? String(ev.target.value).replace(/\D/g, "").slice(0, 5) : k === "etat" ? (ETATS.indexOf(ev.target.value) >= 0 ? ev.target.value : "Bon") : txt(ev.target.value, k === "nom" ? 60 : 80);
+  touch(); el("ivSous").textContent = state.inventaire.length + " article(s)";
+});
+el("ivTable").addEventListener("change", function(ev){ if(ev.target.tagName === "SELECT") ev.target.dispatchEvent(new Event("input", {bubbles:true})); });
+el("ivTable").addEventListener("click", function(ev){
+  if(!ev.target.closest("[data-iv-suppr]")) return;
+  var tr = ev.target.closest("[data-iv]"); avantModif(false);
+  state.inventaire = state.inventaire.filter(function(i){ return i.id !== tr.getAttribute("data-iv"); }); touch(); renderInventaire();
+});
+el("ivAjout").addEventListener("click", function(){ if(state.inventaire.length >= 80) return; avantModif(false); state.inventaire.push({id:uid(), nom:"", qte:"1", etat:"Bon", obs:""}); touch(); renderInventaire(); var i = el("ivTable").querySelector("tbody tr:last-child input"); if(i) i.focus(); });
+el("ivType").addEventListener("click", function(){
+  avantModif(false);
+  INV_TYPE.forEach(function(n){ if(!state.inventaire.some(function(x){ return x.nom.toLowerCase() === n.toLowerCase(); }) && state.inventaire.length < 80) state.inventaire.push({id:uid(), nom:n, qte:"", etat:"Bon", obs:""}); });
+  touch(); renderInventaire(); toast("Liste type ajoutée : indiquez les quantités.");
+});
+
+/* ---------- tâches de rentrée et de fin d'année ---------- */
+var TACHES_DEF = {
+  rentree:["Saisir la liste des élèves","Remplir l'en-tête du registre (école, classe, année)","Élire le chef de classe et le sous-chef","Former les équipes de balayage","Former les groupes d'EPS","Faire le test PNAPAS de début d'année et former les groupes","Établir l'emploi du temps","Vérifier les fournitures des élèves","Distribuer les manuels et les kits","Imprimer le tableau récapitulatif","Faire une sauvegarde du registre"],
+  fin:["Saisir la composition de passage","Vérifier les moyennes annuelles et les décisions","Imprimer les résultats de fin d'année et la liste des admis","Remettre les bulletins","Récupérer les manuels et les kits","Faire l'inventaire du matériel","Envoyer la classe au directeur","Préparer le passage à l'année suivante","Faire une sauvegarde du registre"]
+};
+var taOnglet = "rentree";
+function renderTaches(){
+  var l = state.taches[taOnglet];
+  el("taOnglets").querySelectorAll("[data-ta]").forEach(function(b){ b.setAttribute("aria-selected", String(b.getAttribute("data-ta") === taOnglet)); });
+  var faits = l.filter(function(t){ return t.fait; }).length;
+  el("taSous").textContent = (taOnglet === "rentree" ? "Rentrée" : "Fin d'année") + " : " + faits + " / " + l.length + " fait(s)";
+  el("taListe").innerHTML = l.map(function(t){
+    return '<li class="' + (t.fait ? 'fait' : '') + '" data-ta-id="' + t.id + '"><input type="checkbox"' + (t.fait ? ' checked' : '') + ' aria-label="' + esc(t.texte) + '"><span>' + esc(t.texte) + '</span><button type="button" class="btn btn-sm btn-ghost no-print" data-ta-suppr aria-label="Retirer">✕</button></li>';
+  }).join("");
+}
+el("taOnglets").addEventListener("click", function(ev){ var b = ev.target.closest("[data-ta]"); if(b){ taOnglet = b.getAttribute("data-ta"); renderTaches(); } });
+el("taListe").addEventListener("change", function(ev){
+  var li = ev.target.closest("[data-ta-id]"); if(!li) return;
+  var t = state.taches[taOnglet].filter(function(x){ return x.id === li.getAttribute("data-ta-id"); })[0]; if(!t) return;
+  avantModif(false); t.fait = ev.target.checked; touch(); renderTaches();
+  if(t.fait && state.taches[taOnglet].every(function(x){ return x.fait; })) toast("Toutes les tâches sont faites. Bravo !");
+});
+el("taListe").addEventListener("click", function(ev){
+  if(!ev.target.closest("[data-ta-suppr]")) return;
+  var li = ev.target.closest("[data-ta-id]"); avantModif(false);
+  state.taches[taOnglet] = state.taches[taOnglet].filter(function(x){ return x.id !== li.getAttribute("data-ta-id"); }); touch(); renderTaches();
+  toast("Tâche retirée.", {label:"Annuler", fn:function(){ annuler(); renderTaches(); }});
+});
+function ajouterTache(){ var t = txt(el("taNouveau").value, 100).trim(); if(!t) return; avantModif(false); state.taches[taOnglet].push({id:uid(), texte:t, fait:false}); el("taNouveau").value = ""; touch(); renderTaches(); }
+el("taAjout").addEventListener("click", ajouterTache);
+el("taNouveau").addEventListener("keydown", function(ev){ if(ev.key === "Enter"){ ev.preventDefault(); ajouterTache(); } });
+
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "1.7.0";
+var APP_VERSION = "1.8.0";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
