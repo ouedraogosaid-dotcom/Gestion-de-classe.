@@ -906,27 +906,29 @@ h1,h2,h3,.titre{letter-spacing:-.015em}
 .jr-actions .btn small{font-weight:400; opacity:.75; margin-left:4px}
 .jr-apercu{padding:10px}
 .jr-page{min-width:860px; color:#111; background:#fff; padding:8px; border-radius:6px; font-family:"Inter",sans-serif}
-.jr-tete{display:flex; justify-content:space-between; gap:10px; font-size:11px; margin-bottom:6px}
+.jr-tete{display:flex; justify-content:space-between; gap:10px; font-size:12px; margin-bottom:6px}
 .jr-num{display:inline-block; border:1px solid #111; padding:0 6px; margin-right:8px}
-.jr-grille{width:100%; border-collapse:collapse; table-layout:fixed; font-size:9.5px; line-height:1.25}
-.jr-grille th, .jr-grille td{white-space:normal; overflow-wrap:anywhere; border:1px solid #555; padding:3px 4px; vertical-align:top; color:#111; background:#fff}
-.jr-grille thead th{white-space:normal; overflow-wrap:anywhere; hyphens:auto; font-size:8.5px; text-transform:uppercase; background:#f1efe9; text-align:center; vertical-align:middle}
+.jr-grille{width:100%; border-collapse:collapse; table-layout:fixed; font-size:12px; line-height:1.25}
+.jr-grille th, .jr-grille td{white-space:normal; overflow-wrap:break-word; hyphens:manual; border:1px solid #555; padding:3px 4px; vertical-align:top; color:#111; background:#fff}
+.jr-grille thead th{white-space:normal; overflow-wrap:break-word; hyphens:auto; font-size:9.5px; text-transform:uppercase; background:#f1efe9; text-align:center; vertical-align:middle}
 .jr-grille .jr-jour{text-align:center; vertical-align:middle; background:#f7f6f2}
-.jr-grille .jr-jour span{display:block; font-size:7.5px; letter-spacing:.02em; overflow-wrap:normal; word-break:keep-all}
-.jr-grille .jr-jour small{font-size:9px; color:#555}
+.jr-grille .jr-jour span{display:block; font-size:9px; letter-spacing:.02em; overflow-wrap:normal; word-break:keep-all}
+.jr-grille .jr-jour small{font-size:11px; color:#555}
 .jr-grille tbody tr{height:30mm}
-.jr-grille.serre{font-size:8.5px}
-.jr-grille.serre thead th{font-size:7.5px; padding:3px 2px}
+.jr-grille.serre{font-size:11px}
+.jr-grille.serre td{padding:3px 3px}
+.jr-grille.serre thead th{font-size:8.5px; padding:3px 2px}
 .jr-g-s{display:block; color:#B42318}
 .jr-g-t{display:block; color:#1D3A8A}
-.jr-g-p{display:block; font-size:8.5px; color:#333; margin-top:1px}
-.jr-g-r{display:block; font-size:8px; color:#9A5B00}
+.jr-g-s{font-weight:700}
+.jr-g-p{display:block; font-size:.92em; color:#333; margin-top:2px}
+.jr-g-r{display:block; font-size:.85em; color:#9A5B00}
 @media print{
   body.pr-journal, body.pr-journal main, body.pr-journal .rubrique, body.pr-journal .view{page:paysage}
   .jr-apercu{border:0 !important; box-shadow:none !important; padding:0 !important; margin:0 !important}
   .jr-apercu .scroll{overflow:visible !important}
   .jr-page{min-width:0; padding:0}
-  .jr-grille tbody tr{height:34mm}
+  .jr-grille tbody tr{height:var(--h, 34mm)}
   @page paysage{size:A4 landscape; margin:6mm}
 }
 /* champs de saisie bien visibles */
@@ -7412,6 +7414,7 @@ el("acInstallBtn").addEventListener("click", function(){
 
 /* ---------- « Quoi de neuf » après une mise à jour ---------- */
 var NOUVEAUTES = [
+  ["2.3.4", ["Cahier journal imprimé : écriture plus grande dans les cases, comme l'en-tête de la semaine"]],
   ["2.3.3", ["Notes : « Effacer la composition » est déplacé tout en bas, loin des autres boutons, et demande d'écrire EFFACER pour confirmer"]],
   ["2.3.2", ["Champs de saisie (notes, fiches, cahier journal) bien visibles, surtout en thème sombre"]],
   ["2.3.1", ["Cahier journal : chaque discipline a sa propre colonne (Histoire, Géographie, Poésie, Chant, Dessin, EPS séparés)"]],
@@ -8081,7 +8084,7 @@ function grilleJournal(lundi){
   var J = state.journal, m = state.meta, num = numeroSemaine(lundi), w = (87 / Math.max(1, J.cols.length)).toFixed(2) + "%";
   return '<div class="jr-page"><div class="jr-tete"><span>' + (num ? '<b class="jr-num">' + esc(num) + '</b>' : '') + '<b>SEMAINE ' + esc(libSemaine(lundi).toUpperCase()) + '</b></span>'
     + '<span>' + [m.ecole ? "EPP " + esc(m.ecole) : "", m.classe ? "Classe : " + esc(m.classe) : "", m.maitre ? "Maître : " + esc(m.maitre) : "", anneeTxt() ? esc(anneeTxt()) : ""].filter(Boolean).join(" · ") + '</span></div>'
-    + '<table class="jr-grille' + (J.cols.length > 9 ? ' serre' : '') + '"><colgroup><col style="width:6%">' + J.cols.map(function(){ return '<col style="width:' + w + '">'; }).join("") + '<col style="width:7%"></colgroup>'
+    + '<table class="jr-grille' + (J.cols.length > 9 ? ' serre' : '') + '" style="--h:' + Math.max(24, Math.floor(172 / Math.max(1, J.jours.length))) + 'mm"><colgroup><col style="width:6%">' + J.cols.map(function(){ return '<col style="width:' + w + '">'; }).join("") + '<col style="width:7%"></colgroup>'
     + '<thead><tr><th>Jours</th>' + J.cols.map(function(c){ return '<th>' + esc(c.nom) + '</th>'; }).join("") + '<th>Visa du directeur</th></tr></thead><tbody>'
     + J.jours.map(function(j){
         return '<tr><th class="jr-jour"><span>' + j.toUpperCase() + '</span><small>' + Number(dateDuJour(lundi, j).slice(8, 10)) + '</small></th>' + J.cols.map(function(c){
@@ -8218,7 +8221,7 @@ function tableauMatieresEleve(e){
 }
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "2.3.3";
+var APP_VERSION = "2.3.4";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }

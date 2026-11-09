@@ -43,6 +43,7 @@ Si le navigateur est réinitialisé ou le téléphone perdu, elles sont perdues 
 
 ## Historique
 
+- **2.3.4** — Cahier journal imprimé : écriture plus grande dans les cases (même taille que l'en-tête de la semaine), mots non coupés, lignes qui occupent toute la feuille.
 - **2.3.3** — Notes : « Effacer la composition » déplacé tout en bas de la page, séparé des autres boutons, avec confirmation en écrivant EFFACER (et bouton Annuler juste après).
 - **2.3.2** — Champs de saisie bien visibles (bordure, fond contrasté en thème sombre, indication « Note » dans la saisie des notes).
 - **2.3.1** — Cahier journal : chaque discipline a sa propre colonne (EDHC, expression orale, lecture, expression écrite, mathématiques, sciences et technologie, histoire, géographie, poésie, chant, dessin, EPS) ; les cahiers déjà commencés sont mis à jour sans perte.
