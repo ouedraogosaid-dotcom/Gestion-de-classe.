@@ -226,7 +226,7 @@ svg.ic{width:1.25em; height:1.25em; flex:none; stroke:currentColor; fill:none; s
 .field > label, .lbl{font-size:.78rem; font-weight:600; color:var(--texte-2)}
 input,select,textarea{
   font:inherit; font-size:.95rem; color:var(--texte); background:var(--surface-2);
-  border:1px solid transparent; border-radius:var(--rayon-s); padding:10px 12px; min-width:0; width:100%;
+  border:1px solid var(--bord-2); border-radius:var(--rayon-s); padding:10px 12px; min-width:0; width:100%;
   font-variant-numeric:tabular-nums; transition:border-color .2s ease, background .2s ease, box-shadow .2s ease;
 }
 input:focus,select:focus,textarea:focus{outline:none; border-color:var(--bleu); background:var(--surface); box-shadow:0 0 0 4px var(--bleu-doux)}
@@ -929,6 +929,12 @@ h1,h2,h3,.titre{letter-spacing:-.015em}
   .jr-grille tbody tr{height:34mm}
   @page paysage{size:A4 landscape; margin:6mm}
 }
+/* champs de saisie bien visibles */
+input::placeholder, textarea::placeholder{color:var(--texte-3); opacity:.75}
+.une-liste input.nt{border-width:1.5px}
+.une-liste input.nt::placeholder{font-weight:500; font-size:.82rem}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) input:not([type=checkbox]):not([type=radio]), :root:not([data-theme="light"]) select, :root:not([data-theme="light"]) textarea{background:var(--fond)} }
+:root[data-theme="dark"] input:not([type=checkbox]):not([type=radio]), :root[data-theme="dark"] select, :root[data-theme="dark"] textarea{background:var(--fond)}
 /* notifications */
 .notifs{list-style:none; margin:0; padding:0; display:flex; flex-direction:column}
 .notifs li{display:grid; grid-template-columns:auto 1fr auto; gap:10px; align-items:center; padding:10px 0; border-bottom:1px solid var(--bord)}
@@ -6217,7 +6223,7 @@ function renderUne(){
   el("ntUneListe").innerHTML = matUne ? l.map(function(e, i){
     var v = noteDe(e, matUne);
     return '<li class="sx-' + e.sexe + (v != null ? ' fait' : '') + '" data-nid="' + e.id + '"><span class="ce-n">' + (i + 1) + '</span><span class="ce-nom nom">' + esc(e.nom) + '</span>'
-      + '<input class="nt' + (noteHorsBareme(v, matUne) ? ' bad' : '') + '" inputmode="decimal" enterkeyhint="next" data-nt="' + matUne + '" aria-label="' + esc(nomMatiere(matUne) + " — " + e.nom) + '" value="' + (v == null ? "" : nombreFr(v)) + '"><span class="sur">/' + bar + '</span></li>';
+      + '<input class="nt' + (noteHorsBareme(v, matUne) ? ' bad' : '') + '" inputmode="decimal" enterkeyhint="next" data-nt="' + matUne + '" placeholder="Note" aria-label="' + esc(nomMatiere(matUne) + " — " + e.nom) + '" value="' + (v == null ? "" : nombreFr(v)) + '"><span class="sur">/' + bar + '</span></li>';
   }).join("") : "";
   if(!l.length) el("ntUneListe").innerHTML = '<li class="vide-etat" style="border:0">Aucun élève nommé : renseignez d\'abord la liste des élèves.</li>';
   majProgression();
@@ -7394,6 +7400,7 @@ el("acInstallBtn").addEventListener("click", function(){
 
 /* ---------- « Quoi de neuf » après une mise à jour ---------- */
 var NOUVEAUTES = [
+  ["2.3.2", ["Champs de saisie (notes, fiches, cahier journal) bien visibles, surtout en thème sombre"]],
   ["2.3.1", ["Cahier journal : chaque discipline a sa propre colonne (Histoire, Géographie, Poésie, Chant, Dessin, EPS séparés)"]],
   ["2.3.0", ["Cahier journal (Organisation) : une page par semaine, une colonne par discipline ; dans chaque case la séance (S1, S2…), le titre de la leçon et la page ; « Séance suivante » d'un geste ; impression comme le cahier"]],
   ["2.2.1", ["Chef de classe et équipes de balayage retirés ; l'onglet devient « Tirage au sort »"]],
@@ -8198,7 +8205,7 @@ function tableauMatieresEleve(e){
 }
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "2.3.1";
+var APP_VERSION = "2.3.2";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
