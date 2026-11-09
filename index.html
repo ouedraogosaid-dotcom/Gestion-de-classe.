@@ -1379,7 +1379,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
           <button class="btn btn-sm btn-ghost" type="button" id="apEffacer">Effacer cet appel</button>
           <button class="btn btn-sm" type="button" id="apFiche"><svg class="ic"><use href="#i-imprimer"/></svg>Fiche du mois à imprimer</button>
         </div>
-        <p class="hint">Deux appels par jour : le matin et le soir. Un élève absent toute la journée compte <b>2 absences</b> ; présent matin et soir, <b>2 présences</b>. Touchez « A » pour un absent, « R » pour un retard (compté présent).</p>
+        <p class="hint">Deux appels par jour : le matin et le soir. Un élève absent toute la journée compte <b>2 absences</b> ; présent matin et soir, <b>2 présences</b>. Touchez « A » pour un absent, « R » pour un retard. Les retards sont comptés à part : ils n'entrent pas dans les taux de présence et d'absence.</p>
       </div>
       <div class="sheet">
         <h2>Présence du mois <small id="apMoisLbl"></small></h2>
@@ -5044,14 +5044,17 @@ function ouvrirImport(texteInitial){
 /* ---------- cahier d'appel ---------- */
 var apDate = aujourdhuiISO(), apDemi = new Date().getHours() < 12 ? "m" : "s";
 var DEMI_NOM = {m:"matin", s:"soir"};
-/* bilan d'un élève sur une liste de jours : chaque jour compte 2 appels (matin et soir) */
+/* bilan d'un élève sur une liste de jours : chaque jour compte 2 appels (matin et soir).
+   Les retards sont comptés à part : ils n'entrent ni dans les présences ni dans les absences,
+   donc ni dans les taux (total = présences + absences réelles). */
 function bilanAppel(e, jours){
   var b = {pres:0, abs:0, ret:0, total:0};
   jours.forEach(function(d){ ["m","s"].forEach(function(k){
     var j = state.appel[d] && state.appel[d][k]; if(!j) return;
     if(e.arrivee && e.arrivee > d) return; if(e.depart && e.depart.date <= d) return;
-    b.total++; var v = j[e.id];
-    if(v === "A") b.abs++; else { b.pres++; if(v === "R") b.ret++; }
+    var v = j[e.id];
+    if(v === "R"){ b.ret++; return; }
+    b.total++; if(v === "A") b.abs++; else b.pres++;
   }); });
   return b;
 }
@@ -5072,7 +5075,7 @@ function renderAppel(){
   }).join("") || '<li class="vide-etat" style="border:0">Aucun élève dans la classe.</li>';
   var etat = function(k){ var x = jj[k]; if(!x) return "pas fait"; var a = Object.keys(x).filter(function(id){ return x[id] === "A"; }).length; return a ? a + " absent(s)" : "tous présents"; };
   el("apResume").innerHTML = '<span>' + esc(jourLong(apDate)) + ' — ' + DEMI_NOM[apDemi] + '</span>' + (fait
-    ? '<span class="ok">' + (l.length - nbA) + ' présent(s)</span><span class="ab">' + nbA + ' absent(s)</span>' + (nbR ? '<span class="re">' + nbR + ' retard(s)</span>' : '')
+    ? '<span class="ok">' + (l.length - nbA - nbR) + ' présent(s)</span><span class="ab">' + nbA + ' absent(s)</span>' + (nbR ? '<span class="re">' + nbR + ' retard(s)</span>' : '')
     : '<span class="pas">Appel du ' + DEMI_NOM[apDemi] + ' pas encore fait</span>')
     + '<span>Matin : ' + etat("m") + ' · Soir : ' + etat("s") + '</span>';
   el("apCopier").classList.toggle("is-hidden", !(apDemi === "s" && jj.m));
@@ -6347,7 +6350,7 @@ var DOC_BUILD = {
               + '<td class="v">' + (b.total ? b.pres : "") + '</td><td class="v">' + (b.total ? b.abs : "") + '</td><td class="v">' + (b.total ? Math.round(pct(b.pres, b.total)) + "%" : "") + '</td></tr>';
           }),
           ["3.5%","22%"].concat(jours.map(function(){ return lg; })).concat(["5%","5%","6.5%"]))
-        + '<p class="np-sous" style="text-align:left;margin-top:1.5mm">Case vide : présent · A : absent · R : en retard (compté présent) · – : pas d\'appel. Une journée compte 2 appels (matin et soir).</p>'
+        + '<p class="np-sous" style="text-align:left;margin-top:1.5mm">Case vide : présent · A : absent · R : en retard (compté à part, hors des taux) · – : pas d\'appel. Une journée compte 2 appels (matin et soir). Taux = présences ou absences ÷ (présences + absences).</p>'
         + (der ? resume : '') + pied(signatures()));
     });
   },
@@ -7061,6 +7064,7 @@ el("acInstallBtn").addEventListener("click", function(){
 
 /* ---------- « Quoi de neuf » après une mise à jour ---------- */
 var NOUVEAUTES = [
+  ["1.13.2", ["Appel : les retards sont comptés à part et n'entrent plus dans les taux de présence et d'absence"]],
   ["1.13.1", ["Fiche de présence du mois à imprimer : appels du matin et du soir de chaque jour, totaux et taux (garçons, filles, classe)"]],
   ["1.13.0", ["Cahier d'appel : un appel le matin et un le soir (une journée = 2 présences ou 2 absences)","Total des présences et des absences, taux de présence et taux d'absence du mois","Bouton « Mêmes absents que le matin » pour l'appel du soir"]],
   ["1.12.0", ["Nouveau menu ☰ en haut à droite : tous les écrans y sont rangés (la barre du bas est retirée)"]],
@@ -7143,7 +7147,7 @@ function tableauMatieresEleve(e){
 }
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "1.13.1";
+var APP_VERSION = "1.13.2";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
