@@ -30,8 +30,10 @@ Si le navigateur est réinitialisé ou le téléphone perdu, elles sont perdues 
 | `sw.js` | Fonctionnement hors ligne et annonce des mises à jour |
 | `manifest.webmanifest` | Nom, icônes et couleurs de l'application installée |
 | `icon-*.png` | Icônes |
+| `fonts/` | Polices Inter et Poppins (licence SIL OFL, voir `fonts/LICENCE-POLICES.txt`) |
 
 ## Historique
 
+- **1.2.0** — Lot 2 : nouvelle organisation en 5 rubriques (Accueil, Élèves, Notes, Documents, Réglages) avec barre de navigation en bas ; nouveau design bleu, clair et sombre, avec animations ; bouton Imprimer dans chaque document ; fiches élèves en cartes et recherche ; tableau de bord ; démarrage guidé ; aide intégrée ; taille du texte, mode léger et impression économique ; polices intégrées (fonctionne entièrement hors ligne).
 - **1.1.0** — Lot 1 : correction de la perte de données après « Vider et saisir ma classe » ; mises à jour qui arrivent sur les téléphones ; restauration qui demande avant de remplacer une classe ; corbeille (30 jours) ; bouton Annuler ; rappel de sauvegarde ; contrôle des fichiers importés.
 - **1.0.0** — Première version.

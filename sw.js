@@ -1,7 +1,7 @@
 /* Registre récapitulatif — cache hors ligne
    À CHAQUE PUBLICATION : augmenter le numéro de VERSION ci-dessous.
    C'est ce qui fait apparaître « Nouvelle version disponible » sur les téléphones. */
-var VERSION = "1.1.0";
+var VERSION = "1.2.0";
 var CACHE = "registre-" + VERSION;
 
 var FICHIERS = [
@@ -10,7 +10,13 @@ var FICHIERS = [
   "./manifest.webmanifest",
   "./icon-192.png",
   "./icon-512.png",
-  "./icon-512-maskable.png"
+  "./icon-512-maskable.png",
+  "./fonts/inter-regular.woff",
+  "./fonts/inter-medium.woff",
+  "./fonts/inter-semibold.woff",
+  "./fonts/inter-bold.woff",
+  "./fonts/poppins-medium.woff",
+  "./fonts/poppins-bold.woff"
 ];
 
 /* Au-delà de ce délai, on sert la copie hors ligne plutôt que d'attendre un réseau lent. */
