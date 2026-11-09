@@ -35,7 +35,7 @@ Si le navigateur est réinitialisé ou le téléphone perdu, elles sont perdues 
 
 ## Historique
 
-- **1.13.2** — Appel : les retards sont comptés à part ; taux de présence = présences ÷ (présences + absences), taux d'absence = absences ÷ (présences + absences).
+- **1.13.3** — Appel : bilan de fin de mois pour la classe (garçons, filles, total) — présences possibles (effectif × nombre d'appels), présences effectives, absences, taux de présence et taux d'absence ; plus de taux par élève ; un retard compte comme présent.
 - **1.13.1** — Fiche de présence du mois à imprimer (Documents, ou bouton dans le cahier d'appel) : pour chaque élève, l'appel du matin et du soir de chaque jour, présences, absences et taux ; bilan garçons, filles et classe (présences, absences, retards, taux de présence, taux d'absence).
 - **1.13.0** — Cahier d'appel en deux temps : appel du matin et appel du soir (une journée = 2 présences ou 2 absences). Bilan du mois : total des présences et des absences, retards, taux de présence et taux d'absence par élève et pour la classe ; bouton « Mêmes absents que le matin » ; feuille d'appel papier avec une case matin et une case soir par jour ; rapport mensuel mis à jour. Les appels déjà faits comptent pour le matin et le soir.
 - **1.12.0** — Menu ☰ en haut à droite : tous les écrans y sont rangés (Accueil, Élèves, Notes, Documents, Mon école pour le directeur, Réglages), l'écran ouvert est mis en évidence, le bouton Retour le ferme. La barre de navigation du bas est retirée.

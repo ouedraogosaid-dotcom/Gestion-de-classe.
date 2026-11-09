@@ -783,6 +783,11 @@ body.est-directeur .role-maitre{display:none !important}
 @media (max-width:420px){ .brand-txt{display:none} }
 @media (prefers-reduced-motion: reduce){ .tiroir-panneau, .tiroir-fond{transition:none} }
 .ap-demi{margin:-2px 0 12px}
+.bilan-mois{display:grid; grid-template-columns:repeat(auto-fill, minmax(140px, 1fr)); gap:8px; width:100%}
+.bilan-mois .bm{border:1px solid var(--bord); border-radius:14px; padding:10px 12px; background:var(--surface)}
+.bilan-mois .bm small{display:block; font-size:.74rem; color:var(--texte-3); font-weight:600}
+.bilan-mois .bm b{font:700 1.2rem/1.3 "Poppins",sans-serif}
+.bilan-mois .bm.ok b{color:var(--ok)} .bilan-mois .bm.ab b{color:var(--bad)}
 .ap-demi .puce{min-width:96px; justify-content:center}
 #apMois tr.total td{border-top:2px solid var(--bord-2)}
 .a4 td.ms{padding:0 !important}
@@ -1379,7 +1384,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
           <button class="btn btn-sm btn-ghost" type="button" id="apEffacer">Effacer cet appel</button>
           <button class="btn btn-sm" type="button" id="apFiche"><svg class="ic"><use href="#i-imprimer"/></svg>Fiche du mois à imprimer</button>
         </div>
-        <p class="hint">Deux appels par jour : le matin et le soir. Un élève absent toute la journée compte <b>2 absences</b> ; présent matin et soir, <b>2 présences</b>. Touchez « A » pour un absent, « R » pour un retard. Les retards sont comptés à part : ils n'entrent pas dans les taux de présence et d'absence.</p>
+        <p class="hint">Deux appels par jour : le matin et le soir. Un élève absent toute la journée compte <b>2 absences</b> ; présent matin et soir, <b>2 présences</b>. Touchez « A » pour un absent, « R » pour un retard (l'élève est compté présent). Les taux sont calculés pour toute la classe, en fin de mois.</p>
       </div>
       <div class="sheet">
         <h2>Présence du mois <small id="apMoisLbl"></small></h2>
@@ -5045,21 +5050,21 @@ function ouvrirImport(texteInitial){
 var apDate = aujourdhuiISO(), apDemi = new Date().getHours() < 12 ? "m" : "s";
 var DEMI_NOM = {m:"matin", s:"soir"};
 /* bilan d'un élève sur une liste de jours : chaque jour compte 2 appels (matin et soir).
-   Les retards sont comptés à part : ils n'entrent ni dans les présences ni dans les absences,
-   donc ni dans les taux (total = présences + absences réelles). */
+   total = présences possibles ; pres = présences effectives (un élève en retard est présent) ; abs = absences.
+   Calcul de fin de mois, pour la classe : taux de présence = présences effectives ÷ présences possibles,
+   taux d'absence = absences ÷ présences possibles. Les retards sont seulement signalés. */
 function bilanAppel(e, jours){
   var b = {pres:0, abs:0, ret:0, total:0};
   jours.forEach(function(d){ ["m","s"].forEach(function(k){
     var j = state.appel[d] && state.appel[d][k]; if(!j) return;
     if(e.arrivee && e.arrivee > d) return; if(e.depart && e.depart.date <= d) return;
     var v = j[e.id];
-    if(v === "R"){ b.ret++; return; }
-    b.total++; if(v === "A") b.abs++; else b.pres++;
+    b.total++; if(v === "A") b.abs++; else { b.pres++; if(v === "R") b.ret++; }
   }); });
   return b;
 }
 function appelsDuMois(iso){ var n = 0; Object.keys(state.appel).forEach(function(d){ if(d.slice(0, 7) === iso){ if(state.appel[d].m) n++; if(state.appel[d].s) n++; } }); return n; }
-function pct(a, b){ return b ? Math.round(a / b * 1000) / 10 : 0; }
+function pct(a, b){ return b ? Math.round(a / b * 10000) / 100 : 0; }
 function renderAppel(){
   if(el("apDate").value !== apDate) el("apDate").value = apDate;
   Array.prototype.forEach.call(el("apDemi").children, function(b){ b.setAttribute("aria-pressed", String(b.getAttribute("data-demi") === apDemi)); });
@@ -5084,16 +5089,18 @@ function renderAppel(){
   try{ el("apMoisLbl").textContent = new Date(apDate + "T12:00:00").toLocaleDateString("fr-FR", {month:"long", year:"numeric"}) + " · " + nApp + " appel(s) (matin et soir)"; }catch(e){}
   if(!nApp){ el("apMois").innerHTML = '<tbody><tr><td class="vide-etat" style="border:0">Aucun appel ce mois-ci.</td></tr></tbody>'; el("apMoisResume").innerHTML = ""; return; }
   var T = {pres:0, abs:0, ret:0, total:0};
-  var h = '<thead><tr><th>Élève</th><th>Présences</th><th>Absences</th><th>Retards</th><th>Taux de présence</th><th>Taux d\'absence</th></tr></thead><tbody>';
+  var h = '<thead><tr><th>Élève</th><th>Présences</th><th>Absences</th><th>Retards</th></tr></thead><tbody>';
   l.forEach(function(e){
     var b = bilanAppel(e, jours); ["pres","abs","ret","total"].forEach(function(k){ T[k] += b[k]; });
-    var tp = pct(b.pres, b.total);
-    h += '<tr class="sx-' + e.sexe + '"><td class="nom">' + esc(e.nom) + '</td><td>' + b.pres + '</td><td>' + (b.abs || "·") + '</td><td>' + (b.ret || "·") + '</td><td class="' + (b.total && tp < 80 ? "faible" : "") + '">' + (b.total ? nombreFr(tp, 1) + ' %' : "—") + '</td><td>' + (b.total ? nombreFr(pct(b.abs, b.total), 1) + ' %' : "—") + '</td></tr>';
+    h += '<tr class="sx-' + e.sexe + '"><td class="nom">' + esc(e.nom) + '</td><td>' + b.pres + '</td><td>' + (b.abs || "·") + '</td><td>' + (b.ret || "·") + '</td></tr>';
   });
-  h += '<tr class="total"><td class="nom"><b>Total de la classe</b></td><td><b>' + T.pres + '</b></td><td><b>' + T.abs + '</b></td><td><b>' + T.ret + '</b></td><td><b>' + nombreFr(pct(T.pres, T.total), 1) + ' %</b></td><td><b>' + nombreFr(pct(T.abs, T.total), 1) + ' %</b></td></tr>';
+  h += '<tr class="total"><td class="nom"><b>Total de la classe</b></td><td><b>' + T.pres + '</b></td><td><b>' + T.abs + '</b></td><td><b>' + T.ret + '</b></td></tr>';
   el("apMois").innerHTML = h + '</tbody>';
-  el("apMoisResume").innerHTML = '<span class="ok">' + T.pres + ' présence(s)</span><span class="ab">' + T.abs + ' absence(s)</span>'
-    + '<span>Taux de présence : ' + nombreFr(pct(T.pres, T.total), 1) + ' %</span><span>Taux d\'absence : ' + nombreFr(pct(T.abs, T.total), 1) + ' %</span>';
+  el("apMoisResume").innerHTML = '<div class="bilan-mois">'
+    + [["Présences possibles", T.total, ""], ["Présences effectives", T.pres, "ok"], ["Absences", T.abs, "ab"],
+       ["Taux de présence", nombreFr(pct(T.pres, T.total), 2) + " %", "ok"], ["Taux d'absence", nombreFr(pct(T.abs, T.total), 2) + " %", "ab"]]
+      .map(function(x){ return '<div class="bm ' + x[2] + '"><small>' + x[0] + '</small><b>' + x[1] + '</b></div>'; }).join("")
+    + '</div><p class="hint" style="margin:6px 0 0">Présences possibles = effectif × nombre d\'appels (' + nApp + ', matin et soir). Taux de présence = présences effectives ÷ présences possibles × 100 ; taux d\'absence = absences ÷ présences possibles × 100.' + (T.ret ? ' ' + T.ret + ' retard(s), comptés présents.' : '') + '</p>';
 }
 el("apFiche").addEventListener("click", function(){
   var no = Number(apDate.slice(5, 7)), i = [10,11,12,1,2,3,4,5,6].indexOf(no);
@@ -6333,24 +6340,25 @@ var DOC_BUILD = {
       var v = j[e.id]; return v === "A" ? '<b class="ab">A</b>' : v === "R" ? '<b>R</b>' : '<span></span>';
     };
     var g = l.filter(function(e){ return e.sexe === "G"; }), f = l.filter(function(e){ return e.sexe === "F"; });
-    var tx = function(a, b){ return b ? nombreFr(pct(a, b), 1) + " %" : "—"; };
-    var resume = '<table class="np pr-bilan" style="margin-top:3mm"><thead><tr><th></th><th>Présences</th><th>Absences</th><th>Retards</th><th>Taux de présence</th><th>Taux d\'absence</th></tr></thead><tbody>'
+    var tx = function(a, b){ return b ? nombreFr(pct(a, b), 2) + " %" : "—"; };
+    var resume = '<p class="np-sous" style="text-align:left;margin:3mm 0 0;font-weight:700">Bilan du mois</p><table class="np pr-bilan" style="margin-top:1mm"><thead><tr><th></th><th>Effectif</th><th>Présences possibles</th><th>Présences effectives</th><th>Absences</th><th>Taux de présence</th><th>Taux d\'absence</th></tr></thead><tbody>'
       + [["Garçons", g], ["Filles", f], ["Total", l]].map(function(x){
           var t = {pres:0, abs:0, ret:0, total:0}; x[1].forEach(function(e){ var b = bilanAppel(e, isos); ["pres","abs","ret","total"].forEach(function(k){ t[k] += b[k]; }); });
-          return '<tr' + (x[0] === "Total" ? ' class="tot"' : '') + '><td class="nm2">' + x[0] + ' (' + x[1].length + ')</td><td>' + t.pres + '</td><td>' + t.abs + '</td><td>' + t.ret + '</td><td>' + tx(t.pres, t.total) + '</td><td>' + tx(t.abs, t.total) + '</td></tr>';
-        }).join("") + '</tbody></table>';
+          return '<tr' + (x[0] === "Total" ? ' class="tot"' : '') + '><td class="nm2">' + x[0] + '</td><td>' + x[1].length + '</td><td>' + t.total + '</td><td>' + t.pres + '</td><td>' + t.abs + '</td><td>' + tx(t.pres, t.total) + '</td><td>' + tx(t.abs, t.total) + '</td></tr>';
+        }).join("") + '</tbody></table>'
+      + '<p class="np-sous" style="text-align:left;margin-top:1mm">Présences possibles = effectif × ' + nApp + ' appel(s). Taux de présence = présences effectives ÷ présences possibles × 100. Taux d\'absence = absences ÷ présences possibles × 100.</p>';
     var pages = paginer(l, 30);
     return pages.map(function(p, k){
       var der = k === pages.length - 1;
       return pageDoc(titreDoc("Fiche de présence", m + " " + iso.slice(0, 4) + " — " + nApp + " appel(s) : chaque jour, matin | soir")
-        + tableDoc(["N°","Nom et prénoms"].concat(jours.map(function(d){ return d.j + "<br>" + d.n + '<div class="ms-tete"><span>M</span><span>S</span></div>'; })).concat(["Prés.","Abs.","Taux"]),
+        + tableDoc(["N°","Nom et prénoms"].concat(jours.map(function(d){ return d.j + "<br>" + d.n + '<div class="ms-tete"><span>M</span><span>S</span></div>'; })).concat(["Prés.","Abs.","Ret."]),
           p.map(function(e, i){
             var b = bilanAppel(e, isos);
             return '<tr style="height:6.4mm">' + ligneNom(e, k * 30 + i) + jours.map(function(d){ return '<td class="ms rempli"><div>' + demi(d.iso, "m", e) + demi(d.iso, "s", e) + '</div></td>'; }).join("")
-              + '<td class="v">' + (b.total ? b.pres : "") + '</td><td class="v">' + (b.total ? b.abs : "") + '</td><td class="v">' + (b.total ? Math.round(pct(b.pres, b.total)) + "%" : "") + '</td></tr>';
+              + '<td class="v">' + (b.total ? b.pres : "") + '</td><td class="v">' + (b.total ? b.abs : "") + '</td><td class="v">' + (b.ret || "") + '</td></tr>';
           }),
-          ["3.5%","22%"].concat(jours.map(function(){ return lg; })).concat(["5%","5%","6.5%"]))
-        + '<p class="np-sous" style="text-align:left;margin-top:1.5mm">Case vide : présent · A : absent · R : en retard (compté à part, hors des taux) · – : pas d\'appel. Une journée compte 2 appels (matin et soir). Taux = présences ou absences ÷ (présences + absences).</p>'
+          ["3.5%","22%"].concat(jours.map(function(){ return lg; })).concat(["5.5%","5.5%","5.5%"]))
+        + '<p class="np-sous" style="text-align:left;margin-top:1.5mm">Case vide : présent · A : absent · R : en retard (compté présent) · – : pas d\'appel. Une journée compte 2 appels (matin et soir).</p>'
         + (der ? resume : '') + pied(signatures()));
     });
   },
@@ -6496,7 +6504,7 @@ var DOC_BUILD = {
     var arr = tous.filter(function(e){ return e.arrivee && e.arrivee.slice(0, 7) === iso; }), dep = tous.filter(function(e){ return e.depart && e.depart.date.slice(0, 7) === iso; });
     var jours = Object.keys(state.appel).filter(function(d){ return d.slice(0, 7) === iso; }), T = {pres:0, abs:0, total:0};
     tous.forEach(function(e){ var b = bilanAppel(e, jours); T.pres += b.pres; T.abs += b.abs; T.total += b.total; });
-    var abs = T.abs, nApp = appelsDuMois(iso), taux = T.total ? nombreFr(pct(T.pres, T.total), 1) : null;
+    var abs = T.abs, nApp = appelsDuMois(iso), taux = T.total ? nombreFr(pct(T.pres, T.total), 2) : null;
     var compos = [m].concat(TRIMESTRES.filter(function(t){ return moisDuTrimestre(t) === m; })).filter(function(p){ var b = state.notes.data[p]; return b && Object.keys(b).length; });
     var gf = function(x){ return '<td class="v">' + x.filter(function(e){ return e.sexe === "G"; }).length + '</td><td class="v">' + x.filter(function(e){ return e.sexe === "F"; }).length + '</td><td class="r">' + x.length + '</td>'; };
     var resultats = compos.map(function(p){
@@ -6509,7 +6517,7 @@ var DOC_BUILD = {
       + '<h3>1. Effectifs</h3>' + tableDoc(["","Garçons","Filles","Total"], ['<tr><td>Début du mois</td>' + gf(effD) + '</tr>', '<tr><td>Fin du mois</td>' + gf(effF) + '</tr>', '<tr><td>Redoublants</td>' + gf(effF.filter(estRedoublant)) + '</tr>'])
       + '<h3>2. Mouvements</h3>' + (arr.length || dep.length ? tableDoc(["Date","Élève","Mouvement","Précision"], arr.map(function(e){ return '<tr><td>' + esc(dateFr(e.arrivee)) + '</td><td>' + esc(e.nom) + '</td><td>Arrivée</td><td></td></tr>'; })
           .concat(dep.map(function(e){ return '<tr><td>' + esc(dateFr(e.depart.date)) + '</td><td>' + esc(e.nom) + '</td><td>Départ</td><td>' + esc([e.depart.motif, e.depart.vers].filter(Boolean).join(" — ")) + '</td></tr>'; }))) : '<p class="np-sous" style="text-align:left">Aucun mouvement ce mois-ci.</p>')
-      + '<h3>3. Présence</h3><p class="np-sous" style="text-align:left">' + (nApp ? nApp + " appel(s) (matin et soir) · " + T.pres + " présence(s) · " + abs + " absence(s) · taux de présence " + taux + " % · taux d'absence " + nombreFr(pct(abs, T.total), 1) + " %" : "Aucun appel enregistré ce mois-ci.") + '</p>'
+      + '<h3>3. Présence</h3><p class="np-sous" style="text-align:left">' + (nApp ? nApp + " appel(s) (matin et soir) · présences possibles " + T.total + " · présences effectives " + T.pres + " · absences " + abs + " · taux de présence " + taux + " % · taux d'absence " + nombreFr(pct(abs, T.total), 2) + " %" : "Aucun appel enregistré ce mois-ci.") + '</p>'
       + '<h3>4. Résultats</h3>' + (resultats.length ? tableDoc(["Composition","Notés","Moy. classe","Moy. garçons","Moy. filles","≥ moyenne"], resultats) : '<p class="np-sous" style="text-align:left">Aucune composition notée ce mois-ci.</p>')
       + '<h3>5. Observations</h3><div class="fiche-r"><div class="lignes">' + '<div></div>'.repeat(6) + '</div></div></div>'
       + pied(signatures()))];
@@ -7064,7 +7072,7 @@ el("acInstallBtn").addEventListener("click", function(){
 
 /* ---------- « Quoi de neuf » après une mise à jour ---------- */
 var NOUVEAUTES = [
-  ["1.13.2", ["Appel : les retards sont comptés à part et n'entrent plus dans les taux de présence et d'absence"]],
+  ["1.13.3", ["Appel : bilan de fin de mois pour toute la classe — présences possibles, présences effectives, absences, taux de présence et taux d'absence"]],
   ["1.13.1", ["Fiche de présence du mois à imprimer : appels du matin et du soir de chaque jour, totaux et taux (garçons, filles, classe)"]],
   ["1.13.0", ["Cahier d'appel : un appel le matin et un le soir (une journée = 2 présences ou 2 absences)","Total des présences et des absences, taux de présence et taux d'absence du mois","Bouton « Mêmes absents que le matin » pour l'appel du soir"]],
   ["1.12.0", ["Nouveau menu ☰ en haut à droite : tous les écrans y sont rangés (la barre du bas est retirée)"]],
@@ -7147,7 +7155,7 @@ function tableauMatieresEleve(e){
 }
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "1.13.2";
+var APP_VERSION = "1.13.3";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
