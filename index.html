@@ -921,6 +921,15 @@ h1,h2,h3,.titre{letter-spacing:-.015em}
 .jr-grille .jr-jour small{font-size:11px; color:#555}
 .jr-grille tbody tr{height:30mm}
 .jr-grille.serre{font-size:11px}
+.jr-grille.tres-serre{font-size:9.5px; line-height:1.2}
+.jr-grille.tres-serre td{padding:2px 2px; hyphens:auto; -webkit-hyphens:auto}
+.jr-grille.tres-serre thead th{font-size:7.5px; padding:2px 1px}
+.rep-apercu details{border:1px solid var(--bord); border-radius:12px; padding:8px 10px; margin-bottom:6px}
+.rep-apercu summary{cursor:pointer}
+.rep-apercu ul{margin:6px 0 0}
+.st-type td, .st-type th{text-align:center}
+.st-type td.nom{text-align:left}
+.st-type input{width:20px; height:20px; accent-color:var(--bleu)}
 .jr-grille.serre td{padding:3px 3px}
 .jr-grille.serre thead th{font-size:8.5px; padding:3px 2px}
 .jr-g-s{display:block; color:#B42318}
@@ -1489,6 +1498,8 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
          <span class="jr-titre"><small>Semaine n° <input id="jrNum" maxlength="6" inputmode="numeric" aria-label="Numéro de la semaine"></small><b id="jrSemaine">—</b></span>
          <button class="icon-btn" type="button" id="jrSuiv" aria-label="Semaine suivante"><svg class="ic"><use href="#i-chevron"/></svg></button></div>
        <div class="rowbtns"><button class="btn btn-sm" type="button" id="jrAuj">Cette semaine</button><button class="btn btn-sm" type="button" id="jrCopier">Recopier la semaine précédente</button></div>
+       <div class="rowbtns"><label class="btn btn-sm btn-primary" style="cursor:pointer"><svg class="ic"><use href="#i-import"/></svg>Charger la répartition mensuelle<input type="file" id="jrRepFichier" accept=".pdf,.docx,.xlsx,.doc,.xls,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/*" style="display:none"></label>
+         <button class="btn btn-sm" type="button" id="jrType">Semaine type</button></div>
        <div class="notice is-hidden" id="jrConge" style="margin:10px 0 0"></div>
      </div>
      <div class="puces jr-jours no-print" id="jrJours" role="group" aria-label="Jour"></div>
@@ -1941,6 +1952,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
         <button class="doc" type="button" data-doc="d:emargement" style="--i:7"><span class="feuille"></span><span><b>Liste d'émargement</b><small>Noms et colonne de signature, pour une réunion ou une remise</small></span></button>
         <button class="doc" type="button" data-doc="d:etiquettes" style="--i:8"><span class="feuille"></span><span><b>Étiquettes de noms</b><small>Pour les cahiers, 24 par feuille</small></span></button>
         <button class="doc" type="button" data-doc="d:releve" style="--i:9"><span class="feuille"></span><span><b>Relevé de notes vierge</b><small>Noms déjà inscrits, colonnes à remplir à la main</small></span></button>
+        <button class="doc" type="button" data-doc="d:repartition" style="--i:10"><span class="feuille"></span><span><b>Répartition mensuelle</b><small>La répartition chargée dans le cahier journal, à réimprimer</small></span></button>
         <button class="doc" type="button" data-doc="d:dossier" style="--i:10"><span class="feuille"></span><span><b>Dossier de l'élève</b><small>Informations, résultats de l'année, moyennes par matière, présence, observations</small></span></button>
         <button class="doc" type="button" data-doc="d:finannee" style="--i:10"><span class="feuille"></span><span><b>Rapport de fin d'année</b><small>Effectifs, mouvements, résultats (ou CEPE), assiduité — pour l'IEPP</small></span></button>
         <button class="doc" type="button" data-doc="d:presence" style="--i:10"><span class="feuille"></span><span><b>Fiche de présence du mois</b><small>Appels du matin et du soir, totaux et taux de présence</small></span></button>
@@ -2515,14 +2527,22 @@ function normJournal(j){
   j = (j && typeof j === "object") ? j : {};
   var JOURS_OK = ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
   var cols = Array.isArray(j.cols) ? j.cols.slice(0, 14).map(function(c){ var n = txt(c && c.nom, 50).trim(); return n ? {id:idSur(c.id) || uid(), nom:n} : null; }).filter(Boolean) : [];
-  var ANCIEN = ["EDHC","Français — Expression orale","Français — Lecture","Français — Expression écrite","Mathématiques","Sciences et technologie","Histoire / Géographie","AEC (poésie, chant, dessin) / EPS"];
-  var NOUVEAU = ["EDHC","Expression orale","Lecture","Expression écrite","Mathématiques","Sciences et technologie","Histoire","Géographie","Poésie","Chant","Dessin","EPS"];
-  /* v2.3.1 : chaque discipline dans sa propre colonne (les anciennes colonnes regroupées sont séparées, leurs séances restent dans la première) */
-  if(cols.length === ANCIEN.length && cols.every(function(c, i){ return c.nom === ANCIEN[i]; })){
-    var ids0 = cols.map(function(c){ return c.id; });
-    cols = NOUVEAU.map(function(n, i){ return {id: i < 7 ? ids0[i] : i === 8 ? ids0[7] : "c" + (i + 1) + "n", nom:n}; });
+  var V8 = ["EDHC","Français — Expression orale","Français — Lecture","Français — Expression écrite","Mathématiques","Sciences et technologie","Histoire / Géographie","AEC (poésie, chant, dessin) / EPS"];
+  var V12 = ["EDHC","Expression orale","Lecture","Expression écrite","Mathématiques","Sciences et technologie","Histoire","Géographie","Poésie","Chant","Dessin","EPS"];
+  var V15 = ["Lecture","Vocabulaire","Orthographe","Grammaire","Conjugaison","Expression écrite","Expression orale","Poésie","Écriture","Mathématiques","Sciences","Histoire-Géographie","EDHC","AEC","EPS"];
+  var CANON15 = ["lecture","vocabulaire","orthographe","grammaire","conjugaison","expression ecrite","expression orale","poesie","ecriture","mathematiques","sciences","histoire-geographie","edhc","aec","eps"];
+  var memes = function(l){ return cols.length === l.length && cols.every(function(c, i){ return c.nom === l[i]; }); };
+  var fusion = {};   /* ancien id → nouvel id, pour déplacer les séances déjà écrites */
+  /* v2.4 : les colonnes suivent les 15 matières de la répartition mensuelle */
+  if(memes(V8) || memes(V12)){
+    var anciens = cols, pris = {};
+    cols = V15.map(function(n, i){
+      var a = anciens.filter(function(c){ return !pris[c.id] && canonMatiere(c.nom) === CANON15[i]; })[0];
+      var id = a ? a.id : "m" + (i + 1); pris[id] = 1; return {id:id, nom:n};
+    });
+    anciens.forEach(function(c){ if(pris[c.id]) return; var cible = cols[CANON15.indexOf(canonMatiere(c.nom))]; if(cible) fusion[c.id] = cible.id; });
   }
-  if(!cols.length) cols = NOUVEAU.map(function(n, i){ return {id:"c" + (i + 1), nom:n}; });
+  if(!cols.length) cols = V15.map(function(n, i){ return {id:"m" + (i + 1), nom:n}; });
   var ids = {}; cols.forEach(function(c){ if(ids[c.id]) c.id = uid(); ids[c.id] = 1; });
   var jours = Array.isArray(j.jours) ? JOURS_OK.filter(function(x){ return j.jours.indexOf(x) >= 0; }) : [];
   if(!jours.length) jours = ["Lundi","Mardi","Jeudi","Vendredi"];
@@ -2533,11 +2553,22 @@ function normJournal(j){
     if(sm.cases && typeof sm.cases === "object") Object.keys(sm.cases).slice(0, 120).forEach(function(c){
       var p = c.split("|"), v = sm.cases[c]; if(p.length !== 2 || JOURS_OK.indexOf(p[0]) < 0 || !idSur(p[1]) || !v || typeof v !== "object") return;
       var o = {s:txt(v.s, 20).trim(), t:txt(v.t, 140).trim(), p:txt(v.p, 12).trim(), st:["fait","reporte"].indexOf(v.st) >= 0 ? v.st : ""};
-      if(o.s || o.t || o.p || o.st) cases[p[0] + "|" + idSur(p[1])] = o;
+      if(!(o.s || o.t || o.p || o.st)) return;
+      var cid = fusion[idSur(p[1])] || idSur(p[1]), cle = p[0] + "|" + cid, deja = cases[cle];
+      if(deja && fusion[idSur(p[1])]){ deja.t = [deja.t, o.t].filter(Boolean).join(" / "); deja.p = deja.p || o.p; deja.s = deja.s || o.s; }
+      else cases[cle] = o;
     });
     semaines[k] = {num:txt(sm.num, 6).trim(), cases:cases};
   });
-  return {cols:cols, jours:jours, semaines:semaines};
+  var type = {};
+  if(j.type && typeof j.type === "object") Object.keys(j.type).forEach(function(k){ var id = fusion[idSur(k)] || idSur(k); if(id && Array.isArray(j.type[k]) && cols.some(function(c){ return c.id === id; })) type[id] = JOURS_OK.filter(function(x){ return j.type[k].indexOf(x) >= 0; }); });
+  var repart = {};
+  if(j.rep && typeof j.rep === "object") Object.keys(j.rep).filter(function(k){ return /^\d{4}-\d{2}-\d{2}$/.test(k); }).sort().slice(-60).forEach(function(k){
+    var r = j.rep[k]; if(!r || typeof r !== "object") return; var cs = {};
+    if(r.cases && typeof r.cases === "object") Object.keys(r.cases).slice(0, 30).forEach(function(c){ var id = idSur(c); if(id && Array.isArray(r.cases[c])) cs[id] = r.cases[c].slice(0, 8).map(function(x){ return {t:txt(x && x.t, 160).trim(), p:txt(x && x.p, 12).trim()}; }).filter(function(x){ return x.t; }); });
+    repart[k] = {num:txt(r.num, 6).trim(), cases:cs};
+  });
+  return {cols:cols, jours:jours, semaines:semaines, type:type, rep:repart};
 }
 function normCepe(c, ids){
   c = (c && typeof c === "object") ? c : {};
@@ -5262,7 +5293,7 @@ function lireDocx(buf){
   return ouvrirZip(buf)("word/document.xml").then(function(x){
     if(!x) throw new Error("docx");
     var corps = balises(xmlDoc(x), "body")[0], lignes = [];
-    var texteDe = function(n){ var s = ""; balises(n, "*").forEach(function(e){ if(e.localName === "t") s += e.textContent; else if(e.localName === "tab") s += "\t"; }); return s; };
+    var texteDe = function(n){ var s = ""; balises(n, "*").forEach(function(e){ if(e.localName === "t") s += e.textContent; else if(e.localName === "tab") s += "\t"; else if(e.localName === "br" || e.localName === "cr") s += "\n"; }); return s; };
     Array.prototype.forEach.call(corps ? corps.children : [], function(n){
       if(n.localName === "p"){ var t = texteDe(n).trim(); if(t) lignes.push(t.split(/\t+/).map(function(c, i){ return {t:c.trim(), x0:i, x1:i + 1}; })); }
       else if(n.localName === "tbl"){
@@ -6531,7 +6562,7 @@ el("ecRecues").addEventListener("click", function(ev){
    LOT 5A — documents à imprimer (moteur générique)
    ===================================================================== */
 var DOCS = {
-  emargement:"Liste d'émargement", etiquettes:"Étiquettes de noms", releve:"Relevé de notes vierge", appelvierge:"Feuille d'appel du mois", presence:"Fiche de présence du mois", dossier:"Dossier de l'élève", finannee:"Rapport de fin d'année",
+  emargement:"Liste d'émargement", etiquettes:"Étiquettes de noms", releve:"Relevé de notes vierge", appelvierge:"Feuille d'appel du mois", presence:"Fiche de présence du mois", dossier:"Dossier de l'élève", repartition:"Répartition mensuelle", finannee:"Rapport de fin d'année",
   perso:"Liste personnalisée", redoublants:"Liste des redoublants", honneur:"Tableau d'honneur", satisfecit:"Satisfecits", admis:"Liste des admis",
   recap:"Récapitulatif annuel des moyennes", pnapas:"Bilan PNAPAS", renseignements:"Fiche de renseignements", attestation:"Attestation de scolarité",
   transfert:"Fiche de transfert", convocation:"Convocation des parents", rapport:"Rapport mensuel du maître"
@@ -6572,6 +6603,7 @@ function specsDoc(){
     case "emargement": return [{k:"titre", l:"Objet", t:"text", d:"Réunion des parents d'élèves"},{k:"date", l:"Date", t:"date", d:aujourdhuiISO()},{k:"col", l:"Colonne", t:"select", d:"parent", o:[["parent","Parent + signature"],["sig","Signature seule"]]}];
     case "etiquettes": return [{k:"n", l:"Par élève", t:"select", d:"1", o:[["1","1 étiquette"],["2","2 étiquettes"],["3","3 étiquettes"]]}];
     case "releve": return [{k:"titre", l:"Titre", t:"text", d:"Relevé de notes"},{k:"cols", l:"Colonnes", t:"select", d:"mat", o:[["mat","Matières de la classe"],["5","5 colonnes vides"],["8","8 colonnes vides"],["10","10 colonnes vides"]]}];
+    case "repartition": var mrep = moisRepartitions(); return [{k:"mois", l:"Mois", t:"select", d:mrep.length ? mrep[mrep.length - 1][0] : "", o:mrep.length ? mrep : [["","Aucune répartition chargée"]]}];
     case "dossier": return [{k:"eleve", l:"Élève", t:"select", d:"", o:choixEleves()}];
     case "finannee": return [];
     case "presence": return [{k:"mois", l:"Mois", t:"select", d:moisActuel(), o:MOIS.map(function(m){ return [m, m + " " + isoMois(m).slice(0, 4)]; })}];
@@ -6638,6 +6670,19 @@ function dateLongue(iso){ try{ return new Date((iso || aujourdhuiISO()) + "T12:0
 function naissanceTxt(e){ return e.naissance ? dateLongue(e.naissance) + (e.lieu ? " à " + e.lieu : "") : (e.lieu ? "à " + e.lieu : "…………………………"); }
 
 var DOC_BUILD = {
+  repartition: function(){
+    var mois = opt("mois", (moisRepartitions().slice(-1)[0] || [""])[0]), J = state.journal;
+    var lundis = Object.keys(J.rep).filter(function(k){ return decalerJour(k, 4).slice(0, 7) === mois; }).sort();
+    if(!lundis.length) return [pageDoc(titreDoc("Répartition mensuelle") + '<p style="text-align:center;margin-top:12mm">Aucune répartition chargée. Chargez-la depuis le cahier journal.</p>')];
+    var cols = J.cols.filter(function(c){ return lundis.some(function(l){ return J.rep[l].cases[c.id] && J.rep[l].cases[c.id].length; }); });
+    var nomMois = (function(){ try{ return new Date(mois + "-15T12:00:00").toLocaleDateString("fr-FR", {month:"long", year:"numeric"}); }catch(e){ return mois; } })();
+    var w = (78 / lundis.length).toFixed(2) + "%";
+    return [pageDoc(titreDoc("Répartition mensuelle", "Mois de " + esc(nomMois))
+      + tableDoc(["Matière"].concat(lundis.map(function(l){ var r = J.rep[l]; var jm = function(d){ return d.slice(8, 10) + "/" + d.slice(5, 7); }; return "Semaine " + esc(r.num || "") + "<br><small>du " + jm(l) + " au " + jm(decalerJour(l, 4)) + "</small>"; })),
+          cols.map(function(c){ return '<tr><td style="text-align:left;font-weight:700">' + esc(c.nom.toUpperCase()) + '</td>' + lundis.map(function(l){ var x = J.rep[l].cases[c.id] || []; return '<td style="text-align:left">' + x.map(function(y){ return esc(y.t) + (y.p ? " p." + esc(y.p) : ""); }).join("<br>") + '</td>'; }).join("") + '</tr>'; }),
+          ["22%"].concat(lundis.map(function(){ return w; })))
+      + pied('<span>Le maître : ' + esc(state.meta.maitre || "…………") + '</span><span style="margin-left:auto">Le directeur : ' + esc(state.meta.directeur || "…………") + '</span>'), "doc-moyen")];
+  },
   dossier: function(l){
     var id = opt("eleve", ""), liste = id ? l.filter(function(e){ return e.id === id; }) : l;
     var per = periodesRenseignees(), ca = classementAnnuel(), an = anneeDebut();
@@ -7423,6 +7468,7 @@ el("acInstallBtn").addEventListener("click", function(){
 
 /* ---------- « Quoi de neuf » après une mise à jour ---------- */
 var NOUVEAUTES = [
+  ["2.4.0", ["Cahier journal : chargez la répartition mensuelle (PDF, Word ou Excel) et les 4 semaines se remplissent toutes seules","Colonnes du cahier journal : les 15 matières de la répartition (lecture, vocabulaire, orthographe, grammaire, conjugaison…)","« Semaine type » : les jours de chaque discipline, à cocher une fois"]],
   ["2.3.5", ["Notes : « Matières à noter » s'affiche comme le choix du mois, en grand, avec le nombre de matières notées"]],
   ["2.3.4", ["Cahier journal imprimé : écriture plus grande dans les cases, comme l'en-tête de la semaine"]],
   ["2.3.3", ["Notes : « Effacer la composition » est déplacé tout en bas, loin des autres boutons, et demande d'écrire EFFACER pour confirmer"]],
@@ -7764,6 +7810,11 @@ el("calCorps").addEventListener("click", function(ev){
 });
 
 /* ---------- documents : les compositions saisies ---------- */
+function moisRepartitions(){
+  var vus = {}, l = [];
+  Object.keys(state.journal.rep).sort().forEach(function(k){ var m = decalerJour(k, 4).slice(0, 7); if(!vus[m]){ vus[m] = 1; var nom = m; try{ nom = new Date(m + "-15T12:00:00").toLocaleDateString("fr-FR", {month:"long", year:"numeric"}); }catch(e){} l.push([m, nom.charAt(0).toUpperCase() + nom.slice(1)]); } });
+  return l;
+}
 function renderDocsCompos(){
   var per = periodesRenseignees();
   el("docsCompos").innerHTML = per.length ? per.slice().reverse().map(function(p, i){
@@ -8003,7 +8054,7 @@ window.addEventListener("online", function(){ majEnLigne(true); });
 el("horsLigne").addEventListener("click", function(){ toast("Pas d'internet en ce moment. L'application fonctionne quand même : rien n'est perdu."); });
 
 /* ---------- cahier journal : une page par semaine, une classe à la fois ---------- */
-var JR_COLS_DEF = ["EDHC","Expression orale","Lecture","Expression écrite","Mathématiques","Sciences et technologie","Histoire","Géographie","Poésie","Chant","Dessin","EPS"];
+var JR_COLS_DEF = ["Lecture","Vocabulaire","Orthographe","Grammaire","Conjugaison","Expression écrite","Expression orale","Poésie","Écriture","Mathématiques","Sciences","Histoire-Géographie","EDHC","AEC","EPS"];
 var JR_JOURS = ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
 var jrLundi = null, jrJour = null;
 function lundiDe(iso){ var d = new Date(iso + "T12:00:00"), k = (d.getDay() + 6) % 7; return decalerJour(iso, -k); }
@@ -8094,7 +8145,7 @@ function grilleJournal(lundi){
   var J = state.journal, m = state.meta, num = numeroSemaine(lundi), w = (87 / Math.max(1, J.cols.length)).toFixed(2) + "%";
   return '<div class="jr-page"><div class="jr-tete"><span>' + (num ? '<b class="jr-num">' + esc(num) + '</b>' : '') + '<b>SEMAINE ' + esc(libSemaine(lundi).toUpperCase()) + '</b></span>'
     + '<span>' + [m.ecole ? "EPP " + esc(m.ecole) : "", m.classe ? "Classe : " + esc(m.classe) : "", m.maitre ? "Maître : " + esc(m.maitre) : "", anneeTxt() ? esc(anneeTxt()) : ""].filter(Boolean).join(" · ") + '</span></div>'
-    + '<table class="jr-grille' + (J.cols.length > 9 ? ' serre' : '') + '" style="--h:' + Math.max(24, Math.floor(172 / Math.max(1, J.jours.length))) + 'mm"><colgroup><col style="width:6%">' + J.cols.map(function(){ return '<col style="width:' + w + '">'; }).join("") + '<col style="width:7%"></colgroup>'
+    + '<table class="jr-grille' + (J.cols.length > 12 ? ' tres-serre' : J.cols.length > 9 ? ' serre' : '') + '" style="--h:' + Math.max(24, Math.floor(172 / Math.max(1, J.jours.length))) + 'mm"><colgroup><col style="width:6%">' + J.cols.map(function(){ return '<col style="width:' + w + '">'; }).join("") + '<col style="width:7%"></colgroup>'
     + '<thead><tr><th>Jours</th>' + J.cols.map(function(c){ return '<th>' + esc(c.nom) + '</th>'; }).join("") + '<th>Visa du directeur</th></tr></thead><tbody>'
     + J.jours.map(function(j){
         return '<tr><th class="jr-jour"><span>' + j.toUpperCase() + '</span><small>' + Number(dateDuJour(lundi, j).slice(8, 10)) + '</small></th>' + J.cols.map(function(c){
@@ -8169,6 +8220,249 @@ function etatJournalDuJour(){
   return {n:n, total:J.cols.length};
 }
 
+/* ---- partagé : lecture d'une répartition (grille matières × semaines) ---- */
+function sansAccentR(t){ return String(t || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); }
+var CANON_MAT = [
+  ["lecture", /lecture/], ["vocabulaire", /vocab/], ["orthographe", /ortho/], ["grammaire", /gram/], ["conjugaison", /conj/],
+  ["expression ecrite", /expression\s*ecrite|exp\.?\s*ecrite|production\s*ecrite|redaction/], ["expression orale", /expression\s*orale|exp\.?\s*orale|langage/],
+  ["poesie", /poesie|recitation/], ["ecriture", /^ecriture|graphisme/], ["mathematiques", /math|calcul/], ["sciences", /science/],
+  ["histoire-geographie", /histoire|geographie/], ["edhc", /edhc|citoyen/], ["aec", /^aec|expression et (de )?creation|dessin|chant|musique/], ["eps", /^eps|education physique/]
+];
+function canonMatiere(t){ t = sansAccentR(t).replace(/\s+/g, " ").trim(); for(var i = 0; i < CANON_MAT.length; i++) if(CANON_MAT[i][1].test(t)) return CANON_MAT[i][0]; return ""; }
+function dateFrVersIso(t){ var m = String(t).match(/(\d{1,2})\s*[\/.\-]\s*(\d{1,2})\s*[\/.\-]\s*(\d{2,4})/); if(!m) return ""; var an = m[3].length === 2 ? "20" + m[3] : m[3]; return an + "-" + ("0" + m[2]).slice(-2) + "-" + ("0" + m[1]).slice(-2); }
+/* découpe une case en leçons : « - » en début de ligne sépare plusieurs leçons ; « p.34 » donne la page */
+function lecons(texte){
+  var t = String(texte || "").replace(/\s+/g, " ").trim(); if(!t) return [];
+  var morceaux = t.split(/(?:^|\s)[-–•]\s+/).map(function(x){ return x.trim(); }).filter(Boolean);
+  return morceaux.map(function(m){
+    var p = "", re = /\(?\s*p(?:age|\.)?\s*\.?\s*(\d{1,3}(?:\s*[-àa]\s*\d{1,3})?)\s*\)?/gi, x, der = null;
+    while((x = re.exec(m))) der = x;
+    if(der){ p = der[1].replace(/\s+/g, ""); m = (m.slice(0, der.index) + m.slice(der.index + der[0].length)).trim(); }
+    return {t:m.replace(/\s+([,.])/g, "$1").replace(/[\s,;:]+$/, ""), p:p};
+  }).filter(function(l){ return l.t; });
+}
+/* PDF : items {t, x0, x1, y, h} (y croissant vers le haut, pages empilées) → grille */
+function grilleDepuisPdf(items){
+  var lignesDe = function(its){
+    var ls = [];
+    its.slice().sort(function(a, b){ return b.y - a.y || a.x0 - b.x0; }).forEach(function(it){
+      var l = ls.filter(function(l){ return Math.abs(l.y - it.y) <= Math.max(2, it.h * .4); })[0];
+      if(!l){ l = {y:it.y, items:[]}; ls.push(l); } l.items.push(it);
+    });
+    ls.forEach(function(l){ l.items.sort(function(a, b){ return a.x0 - b.x0; }); l.t = l.items.map(function(i){ return i.t; }).join(" ").replace(/\s+/g, " ").trim(); });
+    return ls.sort(function(a, b){ return b.y - a.y; });
+  };
+  var sem = [];
+  items.forEach(function(it){ var m = it.t.match(/semaine\s*(?:n[°o]\s*)?(\d{1,2})/i); if(m) sem.push({n:m[1], x:(it.x0 + it.x1) / 2, y:it.y, it:it}); });
+  if(sem.length < 1) return null;
+  var yTete = Math.max.apply(null, sem.map(function(s){ return s.y; }));
+  sem = sem.filter(function(s){ return Math.abs(s.y - yTete) < 6; }).sort(function(a, b){ return a.x - b.x; });
+  var pas = sem.length > 1 ? (sem[sem.length - 1].x - sem[0].x) / (sem.length - 1) : 120;
+  var gauche = sem[0].x - pas / 2;
+  var colDe = function(x){ var best = -1, d = Infinity; sem.forEach(function(s, i){ var e = Math.abs(s.x - x); if(e < d){ d = e; best = i; } }); return x < gauche ? -1 : best; };
+  /* dates sous chaque semaine (DU …) */
+  var yDates = yTete;
+  items.forEach(function(it){
+    if(it.y >= yTete || yTete - it.y > 60) return;
+    var c = colDe((it.x0 + it.x1) / 2); if(c < 0) return;
+    var d = dateFrVersIso(it.t);
+    if(d && /du|^\s*\d/i.test(it.t) && !/au/i.test(it.t.split(d.slice(8))[0] || "") && !sem[c].du){ sem[c].du = d; }
+    if(d) yDates = Math.min(yDates, it.y);
+  });
+  /* corps : sous les dates, au-dessus des signatures */
+  var basCorps = -Infinity;
+  items.forEach(function(it){ if(/ma[iî]tre|directeur|directrice/i.test(it.t) && it.y < yDates) basCorps = Math.max(basCorps, it.y); });
+  var corps = items.filter(function(it){ return it.y < yDates - 2 && it.y > basCorps + 2; });
+  /* étiquettes des matières (colonne de gauche) */
+  var lab = lignesDe(corps.filter(function(it){ return (it.x0 + it.x1) / 2 < gauche; })), rangs = [];
+  lab.forEach(function(l){
+    var der = rangs[rangs.length - 1];
+    if(der && /-$/.test(der.t) && der.y - l.y < l.items[0].h * 2.2){ der.t = der.t + l.t; der.ys.push(l.y); return; }
+    if(der && !canonMatiere(l.t) && canonMatiere(der.t + " " + l.t) && der.y - l.y < l.items[0].h * 2.2){ der.t += " " + l.t; der.ys.push(l.y); return; }
+    rangs.push({t:l.t, y:l.y, ys:[l.y]});
+  });
+  rangs.forEach(function(r){ r.c = r.ys.reduce(function(a, b){ return a + b; }, 0) / r.ys.length; r.mat = canonMatiere(r.t); });
+  var lignes = rangs.map(function(r){ return {label:r.t, mat:r.mat, cells:sem.map(function(){ return ""; })}; });
+  /* chaque colonne : on répartit ses lignes de texte entre les rangées (contenu centré dans la rangée) */
+  sem.forEach(function(s, k){
+    var brut = lignesDe(corps.filter(function(it){ return colDe((it.x0 + it.x1) / 2) === k; }));
+    /* lignes rapprochées = même case (paragraphe) ; un grand écart = case suivante */
+    var ls = [];
+    brut.forEach(function(l, i){
+      var h = l.items[0].h || 10, prec = ls[ls.length - 1];
+      var finLecon = prec && /p\.\s*\d+\s*$/i.test(prec.lignes[prec.lignes.length - 1].t) && /^[A-ZÉÈÀ«(]/.test(l.t);
+      if(prec && !finLecon && prec.yBas - l.y < h * 1.3){ prec.lignes.push(l); prec.yBas = l.y; }
+      else ls.push({lignes:[l], yBas:l.y});
+    });
+    var n = ls.length, m = rangs.length; if(!n || !m) return;
+    var INF = 1e15, dp = [], pr = [];
+    for(var j = 0; j <= m; j++){ dp.push([]); pr.push([]); for(var i = 0; i <= n; i++){ dp[j].push(INF); pr[j].push(-1); } }
+    dp[0][0] = 0;
+    for(j = 1; j <= m; j++) for(i = 0; i <= n; i++){
+      if(dp[j - 1][i] < dp[j][i]){ dp[j][i] = dp[j - 1][i]; pr[j][i] = i; }
+      for(var a = 1; a <= i; a++){
+        if(dp[j - 1][a - 1] >= INF) continue;
+        var cout = dp[j - 1][a - 1];
+        for(var q = a - 1; q < i; q++) ls[q].lignes.forEach(function(l){ cout += Math.abs(l.y - rangs[j - 1].c); });
+        if(cout < dp[j][i]){ dp[j][i] = cout; pr[j][i] = a - 1; }
+      }
+    }
+    var i2 = n;
+    for(j = m; j >= 1; j--){ var a2 = pr[j][i2]; if(a2 < i2){ var seg = [].concat.apply([], ls.slice(a2, i2).map(function(b){ return b.lignes; })); lignes[j - 1].cells[k] = seg.map(function(l){ return l.t; }).join(" ").trim(); } i2 = a2; }
+  });
+  return {semaines:sem.map(function(s){ return {num:s.n, du:s.du || ""}; }), lignes:lignes};
+}
+/* Word / Excel : lignes de cellules {t, x0 = n° de colonne} → grille */
+function grilleDepuisTableau(rows){
+  var iTete = -1, cols = [];
+  rows.forEach(function(r, i){ if(iTete >= 0) return; var c = r.filter(function(x){ return /semaine\s*(?:n[°o]\s*)?\d/i.test(x.t); }); if(c.length){ iTete = i; cols = c.map(function(x){ return {x:x.x0, num:(x.t.match(/semaine\s*(?:n[°o]\s*)?(\d{1,2})/i) || [])[1], du:dateFrVersIso(x.t)}; }); } });
+  if(iTete < 0) return null;
+  for(var i = iTete + 1; i < Math.min(rows.length, iTete + 3); i++) rows[i].forEach(function(x){ var c = cols.filter(function(k){ return k.x === x.x0; })[0]; var d = dateFrVersIso(x.t); if(c && d && !c.du) c.du = d; });
+  var premier = Math.min.apply(null, cols.map(function(c){ return c.x; })), lignes = [];
+  rows.slice(iTete + 1).forEach(function(r){
+    var lab = r.filter(function(x){ return x.x0 < premier; }).map(function(x){ return x.t; }).join(" ").trim(), mat = canonMatiere(lab);
+    if(!lab || !mat) return;
+    lignes.push({label:lab, mat:mat, cells:cols.map(function(c){ var x = r.filter(function(y){ return y.x0 === c.x; })[0]; return x ? x.t : ""; })});
+  });
+  return {semaines:cols.map(function(c){ return {num:c.num || "", du:c.du || ""}; }), lignes:lignes};
+}
+
+/* ---------- répartition mensuelle → cahier journal ---------- */
+var NOMS_CANON = {"lecture":"Lecture","vocabulaire":"Vocabulaire","orthographe":"Orthographe","grammaire":"Grammaire","conjugaison":"Conjugaison","expression ecrite":"Expression écrite","expression orale":"Expression orale","poesie":"Poésie","ecriture":"Écriture","mathematiques":"Mathématiques","sciences":"Sciences","histoire-geographie":"Histoire-Géographie","edhc":"EDHC","aec":"AEC","eps":"EPS"};
+var TYPE_DEF = {"lecture":["Lundi","Mardi","Jeudi"],"vocabulaire":["Lundi"],"orthographe":["Mardi"],"grammaire":["Jeudi"],"conjugaison":["Vendredi"],"expression ecrite":["Lundi","Mardi","Jeudi"],"expression orale":["Lundi","Mardi","Jeudi"],"poesie":["Mardi","Vendredi"],"ecriture":["Mardi","Vendredi"],"mathematiques":["Lundi","Mardi","Jeudi","Vendredi"],"sciences":["Lundi","Jeudi","Vendredi"],"histoire-geographie":["Lundi"],"edhc":["Jeudi"],"aec":["Vendredi"],"eps":["Vendredi"]};
+function colPourCanon(canon){ return state.journal.cols.filter(function(c){ return canonMatiere(c.nom) === canon; })[0] || null; }
+/* jours de chaque discipline : réglés par le maître, sinon repris de l'emploi du temps, sinon proposés */
+function joursType(col){
+  var J = state.journal, t = J.type[col.id];
+  if(t) return J.jours.filter(function(j){ return t.indexOf(j) >= 0; });
+  var canon = canonMatiere(col.nom), edt = state.edt, jours = [];
+  if(canon && edt && edt.jours) edt.jours.forEach(function(j, k){
+    var ok = edt.creneaux.some(function(_, r){ var v = edt.cases[r + "-" + k]; return v && canonMatiere(v) === canon; });
+    var nom = JR_JOURS.filter(function(x){ return sansAccent(x) === sansAccent(j); })[0];
+    if(ok && nom && J.jours.indexOf(nom) >= 0) jours.push(nom);
+  });
+  if(jours.length) return jours;
+  return J.jours.filter(function(j){ return (TYPE_DEF[canon] || []).indexOf(j) >= 0; });
+}
+function dialogueSemaineType(){
+  var J = state.journal;
+  return dialogue("Semaine type", '<p class="hint" style="margin:0 0 8px">Cochez les jours où chaque discipline est enseignée : une case cochée = une séance. Le remplissage automatique s\'en sert.</p>'
+    + '<div class="scroll"><table class="recap st-type"><thead><tr><th>Discipline</th>' + J.jours.map(function(j){ return '<th>' + j.slice(0, 3) + '</th>'; }).join("") + '</tr></thead><tbody>'
+    + J.cols.map(function(c){ var t = joursType(c); return '<tr><td class="nom">' + esc(c.nom) + '</td>' + J.jours.map(function(j){ return '<td><input type="checkbox" name="t_' + c.id + '_' + j + '"' + (t.indexOf(j) >= 0 ? " checked" : "") + ' aria-label="' + esc(c.nom + " " + j) + '"></td>'; }).join("") + '</tr>'; }).join("")
+    + '</tbody></table></div>', [{label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Enregistrer", valeur:"ok", style:"btn-primary"}], {champs:true, feuille:true}).then(function(r){
+      if(!r || r.valeur !== "ok") return false;
+      avantModif(false);
+      J.cols.forEach(function(c){ J.type[c.id] = J.jours.filter(function(j){ return r.champs["t_" + c.id + "_" + j]; }); });
+      touch(); toast("Semaine type enregistrée."); return true;
+    });
+}
+function itemsPdf(buf){
+  if(!pdfjsCharge) pdfjsCharge = import("./lib/pdf.min.mjs").then(function(m){ m.GlobalWorkerOptions.workerSrc = "./lib/pdf.worker.min.mjs"; return m; });
+  return pdfjsCharge.then(function(pdfjs){ return pdfjs.getDocument({data:new Uint8Array(buf), isEvalSupported:false, disableFontFace:true}).promise; }).then(function(doc){
+    var pages = []; for(var i = 1; i <= Math.min(doc.numPages, 6); i++) pages.push(i);
+    var items = [];
+    return pages.reduce(function(pr, num){ return pr.then(function(){ return doc.getPage(num).then(function(pg){ return pg.getTextContent(); }).then(function(tc){
+      tc.items.forEach(function(it){ if(!it.str || !it.str.trim()) return; var h = Math.abs(it.transform[3]) || Math.abs(it.height) || 10;
+        items.push({t:it.str, x0:it.transform[4], x1:it.transform[4] + (it.width || it.str.length * h * .5), y:it.transform[5] - (num - 1) * 2000, h:h}); });
+    }); }); }, Promise.resolve()).then(function(){ return items; });
+  });
+}
+function lireRepartition(f){
+  var nom = (f.name || "").toLowerCase(), type = f.type || "";
+  if(/\.(xls|doc)$/.test(nom)) return Promise.reject(new Error("ancien"));
+  if(/^image\//.test(type) || /\.(jpe?g|png|webp|heic)$/.test(nom)) return Promise.reject(new Error("photo"));
+  if(f.size > 15 * 1024 * 1024) return Promise.reject(new Error("taille"));
+  return f.arrayBuffer().then(function(buf){
+    var sig = String.fromCharCode.apply(null, new Uint8Array(buf, 0, 5));
+    if(sig.indexOf("%PDF") === 0) return itemsPdf(buf).then(function(items){ if(items.length < 5) throw new Error("scan"); return grilleDepuisPdf(items); });
+    if(sig.indexOf("PK") === 0) return (/\.docx$/.test(nom) ? lireDocx(buf) : lireXlsx(buf)).then(grilleDepuisTableau);
+    throw new Error("format");
+  }).then(function(g){ if(!g || !g.semaines.length || !g.lignes.length) throw new Error("structure"); return g; });
+}
+function mememLecon(a, b){ return sansAccent(a || "").replace(/\W+/g, "") === sansAccent(b || "").replace(/\W+/g, ""); }
+function jourEnConge(d){ return dossier.agenda.some(function(a){ return a.type === "conge" && a.date <= d && (a.fin || a.date) >= d; }); }
+/* remplit le cahier journal à partir de la grille ; renvoie le nombre de cases écrites */
+function remplirDepuisRepartition(g, lundis, remplacer){
+  var J = state.journal, n = 0;
+  g.semaines.forEach(function(w, k){
+    var lundi = lundis[k]; if(!lundi) return;
+    var sem = semaineJr(lundi, true);
+    if(w.num && !sem.num) sem.num = String(Number(w.num) || w.num);
+    var rep = J.rep[lundi] = {num:String(Number(w.num) || w.num || ""), cases:{}};
+    g.lignes.forEach(function(l){
+      var col = colPourCanon(l.mat); if(!col) return;
+      var lec = lecons(l.cells[k]); if(!lec.length) return;
+      rep.cases[col.id] = lec;
+      var jours = joursType(col).filter(function(j){ return !jourEnConge(dateDuJour(lundi, j)); });
+      if(!jours.length) return;
+      var parts = [];
+      if(lec.length === 1) parts = jours.map(function(j){ return {j:j, l:lec[0]}; });
+      else if(jours.length >= lec.length){
+        var base = Math.floor(jours.length / lec.length), reste = jours.length % lec.length, i = 0;
+        lec.forEach(function(L, q){ for(var c = 0; c < base + (q < reste ? 1 : 0); c++) parts.push({j:jours[i++], l:L}); });
+      } else jours.forEach(function(j, q){ var fin = q === jours.length - 1; var ls = fin ? lec.slice(q) : [lec[q]]; parts.push({j:j, l:{t:ls.map(function(x){ return x.t; }).join(" ; "), p:ls.map(function(x){ return x.p; }).filter(Boolean).join(", ")}}); });
+      var compte = {};
+      parts.forEach(function(pt){
+        var cle = pt.j + "|" + col.id, deja = sem.cases[cle];
+        if(caseRemplie(deja) && !remplacer){ return; }
+        var num;
+        if(compte[pt.l.t] != null) num = compte[pt.l.t] + 1;
+        else { var prec = seancePrecedente(lundi, pt.j, col.id), m = prec && mememLecon(prec.t, pt.l.t) && String(prec.s || "").match(/(\d+)(?!.*\d)/); num = m ? Number(m[1]) + 1 : 1; }
+        compte[pt.l.t] = num;
+        sem.cases[cle] = {s:"S" + num, t:txt(pt.l.t, 140), p:txt(pt.l.p, 12), st:""}; n++;
+      });
+    });
+  });
+  return n;
+}
+function lundisDeGrille(g, premierLundi){
+  var l = [], d = premierLundi;
+  g.semaines.forEach(function(w, k){
+    if(w.du) { l.push(lundiDe(w.du)); d = decalerJour(lundiDe(w.du), 7); return; }
+    while(d && congeDeSemaine(d)) d = decalerJour(d, 7);
+    l.push(d); d = d ? decalerJour(d, 7) : d;
+  });
+  return l;
+}
+el("jrRepFichier").addEventListener("change", function(){
+  var f = this.files && this.files[0], champ = this; if(!f) return;
+  toast("Lecture de la répartition…");
+  lireRepartition(f).then(function(g){
+    champ.value = "";
+    var manque = g.lignes.filter(function(l){ return !colPourCanon(l.mat); });
+    if(manque.length){ avantModif(false); manque.forEach(function(l){ state.journal.cols.push({id:uid(), nom:NOMS_CANON[l.mat] || l.label}); }); touch(); }
+    var sansDate = !g.semaines.every(function(w){ return w.du; });
+    var apercu = g.semaines.map(function(w, k){
+      return '<details' + (k ? '' : ' open') + '><summary><b>Semaine ' + esc(w.num || (k + 1)) + '</b>' + (w.du ? ' — du ' + esc(dateFr(lundiDe(w.du))) : '') + '</summary><ul class="imp">'
+        + g.lignes.map(function(l){ var lec = lecons(l.cells[k]); return lec.length ? '<li><b>' + esc(NOMS_CANON[l.mat] || l.label) + '</b> : ' + lec.map(function(x){ return esc(x.t) + (x.p ? ' (p. ' + esc(x.p) + ')' : ''); }).join(" · ") + '</li>' : ''; }).join("") + '</ul></details>';
+    }).join("");
+    dialogue("Répartition lue", '<p style="margin:0 0 8px"><b>' + g.semaines.length + ' semaine(s)</b> et <b>' + g.lignes.length + ' discipline(s)</b> trouvées. Vérifiez, puis remplissez le cahier journal.</p>'
+      + (sansDate ? '<div class="field" style="margin-bottom:8px"><label for="repLundi">Lundi de la première semaine</label><input type="date" id="repLundi" name="lundi" value="' + lundiDe(aujourdhuiISO()) + '"></div>' : '')
+      + '<div class="rep-apercu">' + apercu + '</div>'
+      + '<label class="case" style="margin-top:10px;display:flex;gap:8px;align-items:center"><input type="checkbox" name="remplacer"> Remplacer aussi les cases déjà remplies</label>'
+      + '<p class="hint" style="margin:6px 0 0">Les séances sont placées selon votre <b>semaine type</b> (jours de chaque discipline) ; les congés sont sautés.</p>',
+      [{label:"Semaine type", valeur:"type", style:"btn-ghost"}, {label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Remplir " + g.semaines.length + " semaine(s)", valeur:"ok", style:"btn-primary"}], {champs:true, feuille:true}).then(function(r){
+        if(!r || !r.valeur) return;
+        var faire = function(){
+          var lundis = lundisDeGrille(g, r.champs.lundi ? lundiDe(r.champs.lundi) : lundiDe(aujourdhuiISO()));
+          avantModif(false);
+          var nb = remplirDepuisRepartition(g, lundis, !!r.champs.remplacer);
+          touch(); jrLundi = lundis[0]; jrJour = null; renderJournal(true);
+          toast(nb + " séance(s) écrites dans " + g.semaines.length + " semaine(s). Vérifiez et ajustez si besoin.", {label:"Annuler", fn:annuler});
+        };
+        if(r.valeur === "type") dialogueSemaineType().then(function(ok){ if(ok) faire(); });
+        else faire();
+      });
+  }).catch(function(e){
+    champ.value = ""; var m = e && e.message;
+    if(m === "photo" || m === "scan") dialogue("Fichier scanné ou photo", AIDE_PHOTO.replace("« Liste des élèves »", "la répartition") + '<p class="hint">Le plus simple : demandez la répartition en PDF tapé, en Word ou en Excel.</p>', [{label:"Compris", valeur:null, style:"btn-primary"}], {feuille:true});
+    else if(m === "ancien") toast("Ancien format (.xls ou .doc) : enregistrez le fichier en .xlsx, .docx ou PDF.");
+    else if(m === "structure") dialogue("Répartition non reconnue", '<p style="margin:0">Je n\'ai pas trouvé le tableau attendu : les <b>semaines en colonnes</b> (« SEMAINE 05 », avec leurs dates) et les <b>matières en lignes</b> (Lecture, Vocabulaire, Mathématiques…).</p>', [{label:"Compris", valeur:null, style:"btn-primary"}]);
+    else toast("Ce fichier n'a pas pu être lu.");
+  });
+});
+el("jrType").addEventListener("click", function(){ dialogueSemaineType().then(function(ok){ if(ok) renderJournal(true); }); });
+
 /* ---------- couleur de l'application ---------- */
 el("rgCouleur").addEventListener("change", function(){ changerPref("couleur", this.value === "bleu" ? "bleu" : "registre"); });
 
@@ -8231,7 +8525,7 @@ function tableauMatieresEleve(e){
 }
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "2.3.5";
+var APP_VERSION = "2.4.0";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
