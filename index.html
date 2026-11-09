@@ -1352,6 +1352,13 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
 .jr-disc.suppr [data-act="retablir"]{display:inline-flex}
 .jr-disc-ajout{display:flex; gap:6px; margin-top:10px}
 .jr-disc-ajout input{flex:1; min-width:0; font-size:16px; padding:10px 12px; border:1.5px dashed var(--bord-2); border-radius:12px; background:transparent; color:inherit}
+.bandeau-dbl{display:flex; align-items:center; gap:10px; margin:0 0 12px; padding:12px 14px; border-radius:14px; background:var(--bad-bg); color:var(--bad); border:1.5px solid var(--bad)}
+.bandeau-dbl span{flex:1; color:var(--ink); font-size:14px; line-height:1.35}
+.bandeau-dbl .ic{flex:none; width:22px; height:22px}
+.dbl-liste{display:flex; flex-direction:column; gap:8px; max-height:50vh; overflow:auto}
+.dbl-g{display:flex; gap:10px; align-items:flex-start; padding:10px 12px; border:1.5px solid var(--bord-2); border-radius:12px}
+.dbl-g input{margin-top:3px; width:20px; height:20px; flex:none}
+.dbl-g small{color:var(--ink3)}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -1661,6 +1668,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
             <button type="button" data-mode="tableau" aria-pressed="false">Tableau</button>
           </span>
         </div>
+        <div class="bandeau-dbl is-hidden no-print" id="doublonsBloc" role="alert"></div>
         <ul class="liste-eleves" id="listeEleves"></ul>
         <details class="partis is-hidden no-print" id="partisBloc"><summary id="partisTitre">Élèves partis</summary><ul class="liste-eleves" id="partisListe"></ul></details>
         <div class="scroll" id="zoneTableau">
@@ -2893,7 +2901,7 @@ function controles(){
   var out = [], vus = {}, mats = {};
   nommes().forEach(function(e){
     var nom = e.nom.trim();
-    var k = nom.toLowerCase().replace(/\s+/g," ");
+    var k = cleNom(nom);
     if(vus[k]) out.push({bad:true, who:nom, msg:"figure deux fois dans la liste."}); else vus[k] = 1;
     if(e.mat.trim()){
       var m = e.mat.trim().toLowerCase();
@@ -2932,6 +2940,66 @@ function initiales(nom){
   var m = nom.trim().split(/\s+/).filter(Boolean);
   if(!m.length) return "?";
   return ((m[0][0] || "") + (m[1] ? m[1][0] : (m[0][1] || ""))).toUpperCase();
+}
+/* ---------- doublons d'élèves ---------- */
+/* même nom, sans tenir compte des accents, de la ponctuation ni de l'ordre nom/prénoms */
+function cleNom(n){ var m = sansAccent(n).replace(/[^a-z0-9]+/g, " ").trim().split(" ").filter(Boolean); m.sort(); return m.join(" "); }
+function memesMatricules(a, b){ a = String(a || "").trim().toLowerCase(); b = String(b || "").trim().toLowerCase(); return !a || !b || a === b; }
+function doublonDe(nom, mat, saufId){
+  var k = cleNom(nom); if(!k) return null;
+  return nommes().filter(function(e){ return e.id !== saufId && cleNom(e.nom) === k && memesMatricules(mat, e.mat); })[0] || null;
+}
+function groupesDoublons(){
+  var g = {}, ordre = [];
+  nommes().forEach(function(e){ var k = cleNom(e.nom); if(!k) return; if(!g[k]){ g[k] = []; ordre.push(k); } g[k].push(e); });
+  return ordre.map(function(k){ return g[k]; }).filter(function(l){
+    if(l.length < 2) return false;
+    /* deux homonymes aux matricules différents : deux élèves distincts */
+    return l.some(function(a, i){ return l.some(function(b, j){ return i !== j && memesMatricules(a.mat, b.mat); }); });
+  });
+}
+function marquesAppel(id){ var n = 0; Object.keys(state.appel || {}).forEach(function(d){ ["m","s"].forEach(function(t){ var x = state.appel[d][t]; if(x && x[id]) n++; }); }); return n; }
+function nbNotes(id){ return PERIODES.filter(function(m){ var b = state.notes.data[m]; return b && b[id]; }).length; }
+function poidsEleve(e){ return nbNotes(e.id) * 100 + marquesAppel(e.id) + ["mat","naissance","lieu","parent","tel","photo"].filter(function(f){ return e[f]; }).length; }
+function majDoublons(){
+  var b = el("doublonsBloc"); if(!b) return;
+  var g = groupesDoublons(), n = g.reduce(function(a, l){ return a + l.length - 1; }, 0);
+  b.classList.toggle("is-hidden", !n);
+  if(n) b.innerHTML = '<svg class="ic"><use href="#i-alerte"/></svg><span><b>' + n + ' élève' + (n > 1 ? 's' : '') + ' en double</b> — l\'effectif est faussé (' + nommes().length + ' au lieu de ' + (nommes().length - n) + ').</span><button type="button" class="btn btn-sm" id="btnDoublons">Corriger</button>';
+}
+document.addEventListener("click", function(ev){ if(ev.target.closest && ev.target.closest("#btnDoublons")) dialogueDoublons(); });
+function dialogueDoublons(){
+  var g = groupesDoublons(); if(!g.length){ toast("Aucun doublon."); return; }
+  var corps = '<p class="hint" style="margin:0 0 10px">Pour chaque nom coché, on garde une seule fiche (celle qui a le plus de notes et d\'appels) ; les notes, l\'appel et les informations de l\'autre y sont regroupés. L\'autre fiche va dans la corbeille.</p>'
+    + '<div class="dbl-liste">' + g.map(function(l, i){
+        var garde = l.slice().sort(function(a, b){ return poidsEleve(b) - poidsEleve(a); })[0];
+        return '<label class="dbl-g"><input type="checkbox" name="g_' + i + '" checked><span><b>' + esc(garde.nom.trim()) + '</b> — ' + l.length + ' fois<br><small>' + l.map(function(e){
+          var d = []; if(e.mat.trim()) d.push("mat. " + esc(e.mat.trim())); var nn = nbNotes(e.id); if(nn) d.push(nn + " compo. notée" + (nn > 1 ? "s" : "")); var na = marquesAppel(e.id); if(na) d.push(na + " absence" + (na > 1 ? "s/retards" : "/retard"));
+          return esc(e.nom.trim()) + (d.length ? " (" + d.join(", ") + ")" : " (vide)");
+        }).join(" · ") + '</small></span></label>';
+      }).join("") + '</div>'
+    + '<p class="hint" style="margin:10px 0 0">Deux élèves différents portant le même nom ? Décochez, puis ajoutez un 2<sup>e</sup> prénom ou leur matricule pour les distinguer.</p>';
+  dialogue("Élèves en double", corps, [{label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Regrouper", valeur:"ok", style:"btn-primary"}], {champs:true, feuille:true}).then(function(r){
+    if(!r || r.valeur !== "ok") return;
+    var choisis = g.filter(function(l, i){ return r.champs["g_" + i]; }); if(!choisis.length) return;
+    avantModif(false);
+    var retires = 0;
+    choisis.forEach(function(l){
+      var garde = l.slice().sort(function(a, b){ return poidsEleve(b) - poidsEleve(a); })[0];
+      l.forEach(function(e){
+        if(e === garde) return;
+        dossier.corbeille.unshift({type:"eleve", quand:new Date().toISOString(), classeId:state.id, classeNom:nomClasse(state), eleve:JSON.parse(JSON.stringify(e)), notes:notesDeLEleve(state, e.id)});
+        PERIODES.forEach(function(m){ var b = state.notes.data[m]; if(b && b[e.id]){ if(!b[garde.id]) b[garde.id] = b[e.id]; delete b[e.id]; } });
+        Object.keys(state.appel || {}).forEach(function(d){ ["m","s"].forEach(function(t){ var x = state.appel[d][t]; if(x && x[e.id]){ if(!x[garde.id]) x[garde.id] = x[e.id]; delete x[e.id]; } }); });
+        ["mat","naissance","lieu","parent","tel","obs","photo","arrivee"].forEach(function(f){ if(!garde[f] && e[f]) garde[f] = e[f]; });
+        if(garde.age == null && e.age != null) garde.age = e.age;
+        state.eleves = state.eleves.filter(function(x){ return x.id !== e.id; });
+        retires++;
+      });
+    });
+    touch(); renderAll(); majCorbeilleBouton();
+    toast(retires + " doublon" + (retires > 1 ? "s retirés" : " retiré") + " — effectif : " + nommes().length + ".", {label:"Annuler", fn:annuler});
+  });
 }
 function renderSaisie(){
   var mode = modeSaisie(), f = filtreRecherche();
@@ -3039,11 +3107,17 @@ function ouvrirFiche(id){
     el("fcAvatar").innerHTML = '<span class="avatar" style="background:var(--surface-3);color:var(--ink3)"><svg class="ic" style="width:30px;height:30px"><use href="#i-photo"/></svg></span>';
     this.classList.add("is-hidden");
   });
-  promesse.then(function(r){
+  promesse.then(function traiter(r){
     if(!r || !r.valeur) return;
     if(r.valeur === "suppr"){ supprimerEleve(e.id); return; }
     var c = r.champs;
     if(neuf && !c.nom.trim()){ toast("Indiquez au moins le nom de l'élève."); ouvrirFiche(null); return; }
+    var dbl = !r.force && c.nom.trim() && doublonDe(c.nom, c.mat, neuf ? null : e.id);
+    if(dbl){
+      dialogue("Déjà dans la liste ?", '<p style="margin:0 0 8px"><b>« ' + esc(dbl.nom.trim()) + ' »</b> est déjà inscrit' + (dbl.mat.trim() ? ' (matricule ' + esc(dbl.mat.trim()) + ')' : '') + ' dans cette classe.</p><p class="hint" style="margin:0">Si ce sont deux élèves différents portant le même nom, ajoutez un 2<sup>e</sup> prénom ou le matricule pour les distinguer.</p>',
+        [{label:"Ne pas enregistrer", valeur:null, style:"btn-ghost"}, {label:"Enregistrer quand même", valeur:"ok", style:"btn-primary"}], {feuille:true}).then(function(v){ if(v){ r.force = true; traiter(r); } });
+      return;
+    }
     avantModif(false);
     var cible = e;
     if(neuf){
@@ -3813,7 +3887,7 @@ function render(){
   else if(rubriqueActive === "plus") renderPlus();
   });
 }
-function renderAll(){ renderSaisie(); render(); }
+function renderAll(){ renderSaisie(); majDoublons(); render(); }
 function renderVue(v, depuisRender){
   switch(v){
     case "scolarite": renderGrille("gridG","G"); renderGrille("gridF","F"); break;
@@ -4141,6 +4215,7 @@ function onField(ev){
   else if(f === "sc" || f === "st") e[f] = Number(v);
   else e[f] = v;
   if(f === "sexe") tr.className = "sx-" + e.sexe;
+  if(ev.type === "change" && (f === "nom" || f === "mat")){ var dbl = doublonDe(e.nom, e.mat, e.id); if(dbl) toast("Attention : « " + dbl.nom.trim() + " » est déjà dans la liste."); majDoublons(); }
   touch(); render();
 }
 el("tbSaisie").addEventListener("click", function(ev){
@@ -5437,12 +5512,14 @@ function ouvrirImport(texteInitial){
     if(!r || r.valeur !== "ok") return;
     var liste = analyserListe(r.champs.texte, r.champs.sexe);
     if(!liste.length){ toast("Aucun nom reconnu dans la liste."); return; }
-    var deja = {}; state.eleves.forEach(function(e){ if(e.nom.trim()) deja[e.nom.trim().toLowerCase().replace(/\s+/g, " ")] = 1; });
-    var nouveaux = liste.filter(function(e){ return !deja[e.nom.toLowerCase()]; }), doublons = liste.length - nouveaux.length;
+    var deja = {}, ignores = [];
+    nommes().forEach(function(e){ deja[cleNom(e.nom)] = 1; });
+    var nouveaux = liste.filter(function(e){ var k = cleNom(e.nom); if(!k || deja[k]){ ignores.push(e.nom); return false; } deja[k] = 1; return true; }), doublons = ignores.length;
     var place = MAX_ELEVES - nommes().length;
     if(nouveaux.length > place) nouveaux = nouveaux.slice(0, Math.max(0, place));
     var apercu = '<p style="margin:0 0 8px"><b>' + nouveaux.length + '</b> élève(s) à ajouter'
-      + (doublons ? ', ' + doublons + ' déjà dans la classe (ignoré' + (doublons > 1 ? 's' : '') + ')' : '') + ' :</p>'
+      + (doublons ? ', <b>' + doublons + '</b> en double ignoré' + (doublons > 1 ? 's' : '') + ' (déjà dans la classe ou répété dans la liste)' : '') + ' :</p>'
+      + (doublons ? '<details class="hint" style="margin:0 0 8px"><summary>Voir les noms ignorés</summary>' + ignores.map(esc).join(", ") + '</details>' : '')
       + '<ul class="imp" style="max-height:46vh;overflow:auto">' + nouveaux.map(function(e){
           return '<li><b>' + esc(e.nom) + '</b><br><small>' + (e.sexe === "F" ? "Fille" : "Garçon") + (e.age ? " · " + e.age + " ans" : "") + (e.mat ? " · Mat. " + esc(e.mat) : "") + (e.naissance ? " · né(e) le " + dateFr(e.naissance) : "") + '</small></li>';
         }).join("") + '</ul>';
@@ -7482,6 +7559,7 @@ el("acInstallBtn").addEventListener("click", function(){
 
 /* ---------- « Quoi de neuf » après une mise à jour ---------- */
 var NOUVEAUTES = [
+  ["2.4.5", ["Élèves en double : ignorés à l'import (même avec accents ou nom/prénom inversés), signalés à la saisie, et bandeau « Corriger » pour regrouper ceux déjà présents"]],
   ["2.4.4", ["Cahier journal : ajoutez, renommez, déplacez ou supprimez vos disciplines (bouton « Disciplines et jours »), jusqu'à 30","Une discipline ajoutée est aussi reconnue à l'import de la répartition"]],
   ["2.4.3", ["Recherche des mises à jour plus fréquente, et bouton « Vérifier les mises à jour » dans Réglages"]],
   ["2.4.2", ["Cahier journal imprimé : les séances de chaque jour à la suite, sans colonnes vides (au choix : une colonne par discipline)","« Séance 1 », « Séance 2 »… écrits en entier"]],
@@ -8644,7 +8722,7 @@ function tableauMatieresEleve(e){
 }
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "2.4.4";
+var APP_VERSION = "2.4.5";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
