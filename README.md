@@ -35,6 +35,7 @@ Si le navigateur est réinitialisé ou le téléphone perdu, elles sont perdues 
 
 ## Historique
 
+- **1.13.0** — Cahier d'appel en deux temps : appel du matin et appel du soir (une journée = 2 présences ou 2 absences). Bilan du mois : total des présences et des absences, retards, taux de présence et taux d'absence par élève et pour la classe ; bouton « Mêmes absents que le matin » ; feuille d'appel papier avec une case matin et une case soir par jour ; rapport mensuel mis à jour. Les appels déjà faits comptent pour le matin et le soir.
 - **1.12.0** — Menu ☰ en haut à droite : tous les écrans y sont rangés (Accueil, Élèves, Notes, Documents, Mon école pour le directeur, Réglages), l'écran ouvert est mis en évidence, le bouton Retour le ferme. La barre de navigation du bas est retirée.
 - **1.11.1** — Notes : boutons « Type de composition » (Mensuelle, Trimestrielle, Passage), puis le mois ou le trimestre ; un message indique si la composition compte ou non dans la moyenne annuelle.
 - **1.11.0** — Importer une liste de classe depuis un fichier PDF (tapé à l'ordinateur), Excel (.xlsx) ou Word (.docx) : noms, sexe, matricule et date de naissance sont reconnus grâce à l'en-tête du tableau, puis vérifiés avant l'ajout. Aide pour une liste sur papier ou en photo (Google Lens). Le bouton « PDF » des documents devient « Envoyer ».
