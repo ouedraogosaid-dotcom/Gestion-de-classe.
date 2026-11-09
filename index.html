@@ -206,6 +206,8 @@ svg.ic{width:1.25em; height:1.25em; flex:none; stroke:currentColor; fill:none; s
   transition:transform .3s cubic-bezier(.3,1.4,.6,1), opacity .25s ease;
 }
 .fab:active{transform:scale(.95)}
+.fab-pdf{right:auto; left:16px; background:var(--surface); color:var(--bleu); border:1px solid var(--bord); box-shadow:var(--ombre-2)}
+.fab:disabled{opacity:.7}
 .fab.cache{transform:translateY(140%) scale(.9); opacity:0; pointer-events:none}
 
 /* ================= Champs ================= */
@@ -1564,6 +1566,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
         <div class="field mini" style="min-width:200px" id="cartesMoisWrap"><label for="f_mois2">Composition</label><select id="f_mois2"></select></div>
         <div class="field mini" style="min-width:190px" id="cartesModeleWrap"><label for="f_modele">Présentation</label><select id="f_modele"><option value="deux">2 bulletins par feuille</option><option value="un">1 bulletin par feuille (grand)</option></select></div>
         <button class="btn btn-sm" type="button" id="btnSelection">Élèves : tous</button>
+        <button class="btn btn-sm" type="button" id="btnWhatsApp"><svg class="ic"><use href="#i-envoyer"/></svg>Envoyer aux parents</button>
         <button class="btn btn-sm btn-primary is-hidden" id="btnPdf3" type="button">Enregistrer la feuille</button>
       </div>
       <div class="a4-stage" id="cartesStage"></div>
@@ -1636,8 +1639,10 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
       <div class="btns" style="margin-top:12px">
         <button class="btn btn-primary is-hidden" id="btnSauve" type="button"><svg class="ic"><use href="#i-sauver"/></svg>Sauvegarder (.json)</button>
         <button class="btn" id="btnRestaure" type="button"><svg class="ic"><use href="#i-restaurer"/></svg>Restaurer</button>
-        <input type="file" id="fRestaure" accept=".json,application/json" style="display:none">
+        <input type="file" id="fRestaure" accept=".json,.txt,application/json,text/plain" style="display:none">
         <button class="btn" id="btnCorbeille" type="button"><svg class="ic"><use href="#i-corbeille"/></svg><span id="corbTxt">Corbeille</span></button>
+        <button class="btn" id="btnPartagerSauve" type="button"><svg class="ic"><use href="#i-envoyer"/></svg>Envoyer vers Drive ou WhatsApp</button>
+        <button class="btn" id="btnExcel" type="button">Exporter en Excel</button>
         <button class="btn is-hidden" id="btnCsv" type="button">Exporter en CSV</button>
       </div>
       <p class="hint">Vos classes sont enregistrées dans ce téléphone. La sauvegarde crée un fichier à garder ailleurs (WhatsApp, Google Drive…) au cas où le téléphone serait perdu.</p>
@@ -1716,6 +1721,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
   </div>
 </nav>
 
+<button class="fab fab-pdf no-print cache" id="fabPdf" type="button" aria-label="Partager en PDF"><svg class="ic"><use href="#i-envoyer"/></svg><span id="fabPdfTxt">PDF</span></button>
 <button class="fab no-print cache" id="fabPrint" type="button"><svg class="ic"><use href="#i-imprimer"/></svg><span id="fabTxt">Imprimer</span></button>
 
 <div class="maj-banniere no-print" id="majBanniere" role="status" hidden>
@@ -3753,7 +3759,7 @@ el("fRestaure").addEventListener("change", function(){
   if(f.size > TAILLE_MAX_IMPORT){ dialogue("Fichier refusé", '<p style="margin:0">Ce fichier est trop gros pour être une sauvegarde du registre.</p>', [{label:"Fermer", valeur:null}]); return; }
   var lec = new FileReader();
   lec.onload = function(){
-    var r = lireSauvegarde(String(lec.result));
+    var r = lireSauvegarde(String(lec.result).replace(/^\uFEFF/, ""));
     if(r.erreur){ dialogue("Fichier refusé", '<p style="margin:0">' + esc(r.erreur) + '</p>', [{label:"Fermer", valeur:null}]); return; }
     var conflits = r.classes.filter(function(c){ return dossier.classes.some(function(x){ return x.id === c.id && !x.demo; }); });
     var nouvelles = r.classes.length - conflits.length;
@@ -3976,6 +3982,7 @@ var TITRES_CARTES = {cartes:"Bulletins scolaires", tableau:"Tableau des notes", 
 
 function animer(n){ if(!n) return; n.classList.remove("entre"); void n.offsetWidth; n.classList.add("entre"); }
 function majFab(){
+  if(typeof majFabPdf === "function") majFabPdf();
   var fab = el("fabPrint"), visible = !!vueActive;
   fab.classList.toggle("cache", !visible);
   if(visible){
@@ -4037,6 +4044,7 @@ function majTitreCartes(){
   el("cartesMoisWrap").classList.toggle("is-hidden", m === "annee");
   el("cartesModeleWrap").classList.toggle("is-hidden", m !== "cartes");
   el("btnSelection").classList.toggle("is-hidden", m !== "cartes");
+  el("btnWhatsApp").classList.toggle("is-hidden", m !== "cartes");
   el("f_modele").value = dossier.modeleBulletin;
   majSelectionTxt();
 }
@@ -6221,8 +6229,247 @@ function ajouterTache(){ var t = txt(el("taNouveau").value, 100).trim(); if(!t) 
 el("taAjout").addEventListener("click", ajouterTache);
 el("taNouveau").addEventListener("keydown", function(ev){ if(ev.key === "Enter"){ ev.preventDefault(); ajouterTache(); } });
 
+/* =====================================================================
+   LOT 6 — partage : PDF, WhatsApp, Excel, sauvegarde vers Drive
+   ===================================================================== */
+function partagerFichier(nom, blob, titre, texte){
+  var f = null; try{ f = new File([blob], nom, {type:blob.type}); }catch(e){}
+  if(f && navigator.canShare && navigator.canShare({files:[f]})){
+    return navigator.share({files:[f], title:titre || nom, text:texte || ""}).then(function(){ return "partage"; })
+      .catch(function(err){ if(err && err.name === "AbortError") return "annule"; return telechargerBlob(nom, blob); });
+  }
+  return telechargerBlob(nom, blob);
+}
+function telechargerBlob(nom, blob){
+  return new Promise(function(ok){
+    var url = URL.createObjectURL(blob), a = document.createElement("a");
+    a.href = url; a.download = nom; a.style.display = "none"; document.body.appendChild(a); a.click();
+    setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 3000);
+    ok("telecharge");
+  });
+}
+
+/* ---------- PDF fabriqué dans le téléphone, sans bibliothèque ---------- */
+var policesPdf = null;
+function policesEnLigne(){
+  if(policesPdf) return Promise.resolve(policesPdf);
+  var l = [["Inter",400,"inter-regular"],["Inter",600,"inter-semibold"],["Inter",700,"inter-bold"],["Poppins",700,"poppins-bold"]];
+  return Promise.all(l.map(function(p){
+    return fetch("fonts/" + p[2] + ".woff").then(function(r){ return r.ok ? r.arrayBuffer() : null; }).then(function(b){
+      if(!b) return "";
+      var o = "", u = new Uint8Array(b); for(var i = 0; i < u.length; i += 0x8000) o += String.fromCharCode.apply(null, u.subarray(i, i + 0x8000));
+      return '@font-face{font-family:"' + p[0] + '";font-weight:' + p[1] + ';src:url(data:font/woff;base64,' + btoa(o) + ') format("woff")}';
+    }).catch(function(){ return ""; });
+  })).then(function(t){ policesPdf = t.join("\n"); return policesPdf; });
+}
+function stylesPdf(polices){
+  var css = Array.prototype.map.call(document.querySelectorAll("style"), function(n){ return n.textContent; }).join("\n");
+  css = css.replace(/@font-face\s*{[^}]*}/g, "");
+  return polices + "\n" + css + "\n.a4{transform:none !important;box-shadow:none !important;border:0 !important;margin:0 !important;background:#fff !important}";
+}
+function pageEnImage(node, css, echelle){
+  return new Promise(function(ok, ko){
+    var w = node.offsetWidth, h = node.offsetHeight;
+    var clone = node.cloneNode(true);
+    clone.style.transform = "none"; clone.style.margin = "0";
+    var html = new XMLSerializer().serializeToString(clone);
+    var svgTxt = '<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '"><foreignObject x="0" y="0" width="' + w + '" height="' + h + '">'
+      + '<div xmlns="http://www.w3.org/1999/xhtml" style="width:' + w + 'px;height:' + h + 'px;background:#fff;overflow:hidden;font-family:Inter,Arial,sans-serif;color:#111;font-variant-numeric:tabular-nums;line-height:1.45"><style>' + css.replace(/<\/style/gi, "") + '</style>' + html + '</div></foreignObject></svg>';
+    var img = new Image();
+    img.onload = function(){
+      try{
+        var c = document.createElement("canvas"); c.width = Math.round(w * echelle); c.height = Math.round(h * echelle);
+        var x = c.getContext("2d"); x.fillStyle = "#fff"; x.fillRect(0, 0, c.width, c.height); x.drawImage(img, 0, 0, c.width, c.height);
+        c.toBlob(function(b){
+          if(!b) return ko(new Error("image"));
+          b.arrayBuffer().then(function(buf){ ok({data:new Uint8Array(buf), w:c.width, h:c.height}); });
+        }, "image/jpeg", 0.86);
+      }catch(e){ ko(e); }
+    };
+    img.onerror = function(){ ko(new Error("rendu")); };
+    img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svgTxt);
+  });
+}
+/* petit écrivain PDF : une image JPEG par page A4 */
+function pdfDepuisImages(pages){
+  var morceaux = [], pos = 0, offsets = [];
+  var enc = function(t){ var u = new Uint8Array(t.length); for(var i = 0; i < t.length; i++) u[i] = t.charCodeAt(i) & 255; return u; };
+  var pousser = function(u){ if(typeof u === "string") u = enc(u); morceaux.push(u); pos += u.length; };
+  var objet = function(n, corps){ offsets[n] = pos; pousser(n + " 0 obj\n"); corps(); pousser("\nendobj\n"); };
+  var W = 595.28, H = 841.89, marge = 11.34, n = pages.length;
+  pousser("%PDF-1.4\n%\xE2\xE3\xCF\xD3\n");
+  objet(1, function(){ pousser("<< /Type /Catalog /Pages 2 0 R >>"); });
+  var kids = []; for(var i = 0; i < n; i++) kids.push((3 + i * 3) + " 0 R");
+  objet(2, function(){ pousser("<< /Type /Pages /Count " + n + " /Kids [" + kids.join(" ") + "] >>"); });
+  pages.forEach(function(p, i){
+    var po = 3 + i * 3, co = po + 1, im = po + 2;
+    var k = Math.min((W - 2 * marge) / p.w, (H - 2 * marge) / p.h), dw = p.w * k, dh = p.h * k, dx = (W - dw) / 2, dy = H - marge - dh;
+    var flux = "q " + dw.toFixed(2) + " 0 0 " + dh.toFixed(2) + " " + dx.toFixed(2) + " " + dy.toFixed(2) + " cm /Im" + i + " Do Q";
+    objet(po, function(){ pousser("<< /Type /Page /Parent 2 0 R /MediaBox [0 0 " + W + " " + H + "] /Resources << /XObject << /Im" + i + " " + im + " 0 R >> >> /Contents " + co + " 0 R >>"); });
+    objet(co, function(){ pousser("<< /Length " + flux.length + " >>\nstream\n" + flux + "\nendstream"); });
+    objet(im, function(){ pousser("<< /Type /XObject /Subtype /Image /Width " + p.w + " /Height " + p.h + " /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length " + p.data.length + " >>\nstream\n"); pousser(p.data); pousser("\nendstream"); });
+  });
+  var total = 3 + n * 3, xref = pos, t = "xref\n0 " + total + "\n0000000000 65535 f \n";
+  for(var j = 1; j < total; j++) t += ("0000000000" + offsets[j]).slice(-10) + " 00000 n \n";
+  pousser(t + "trailer\n<< /Size " + total + " /Root 1 0 R >>\nstartxref\n" + xref + "\n%%EOF");
+  return new Blob(morceaux, {type:"application/pdf"});
+}
+function stageActif(){ return vueActive === "feuille" ? el("a4Stage") : vueActive === "cartes" ? el("cartesStage") : vueActive === "doc" ? el("docStage") : null; }
+function fabriquerPdf(){
+  var st = stageActif(); if(!st) return Promise.reject(new Error("vue"));
+  var feuilles = [].slice.call(st.querySelectorAll(".a4")); if(!feuilles.length) return Promise.reject(new Error("vide"));
+  return policesEnLigne().then(function(pol){
+    var css = stylesPdf(pol), images = [], i = 0;
+    var suivante = function(){
+      if(i >= feuilles.length) return Promise.resolve(images);
+      el("fabPdfTxt").textContent = "Page " + (i + 1) + " / " + feuilles.length + "…";
+      return pageEnImage(feuilles[i], css, feuilles.length > 12 ? 1.6 : 2).then(function(im){ images.push(im); i++; return suivante(); });
+    };
+    return suivante();
+  }).then(pdfDepuisImages);
+}
+el("fabPdf").addEventListener("click", function(){
+  var b = this; if(b.disabled) return;
+  b.disabled = true; el("fabPdfTxt").textContent = "Préparation…";
+  verifierAvantImpression().then(function(ok){
+    if(!ok){ b.disabled = false; el("fabPdfTxt").textContent = "PDF"; return; }
+    return fabriquerPdf().then(function(blob){
+      var nom = nomDocument("pdf");
+      return partagerFichier(nom, blob, nom.replace(/\.pdf$/, ""), "Document du registre — " + (state.meta.classe || "")).then(function(r){
+        if(r === "telecharge") toast("PDF enregistré dans vos téléchargements : vous pouvez l'envoyer par WhatsApp.");
+      });
+    }).catch(function(){ toast("Le PDF n'a pas pu être fabriqué sur ce téléphone : utilisez « Imprimer », puis « Enregistrer au format PDF »."); });
+  }).then(function(){ b.disabled = false; el("fabPdfTxt").textContent = "PDF"; });
+});
+function majFabPdf(){ el("fabPdf").classList.toggle("cache", !stageActif()); }
+
+/* ---------- résumé du bulletin par WhatsApp ---------- */
+function numeroWhatsApp(tel){
+  var t = String(tel || "").trim(); if(!t) return "";
+  var plus = /^(\+|00)/.test(t), d = t.replace(/\D/g, "");
+  if(plus) return d.replace(/^00/, "");
+  if(d.length === 10 && d.charAt(0) === "0") return "225" + d;
+  if(d.length === 8) return "225" + d;
+  return d.length >= 11 ? d : "";
+}
+function resumeBulletin(e){
+  var m = state.notes.mois, bi = bilan(e), cl = classement(), b = echelleMoyenne(), r = cl.rangs[e.id];
+  var cond = libConduite((state.notes.conduite[m] || {})[e.id]), mot = (state.notes.appr[m] || {})[e.id];
+  var l = [];
+  l.push("*Bulletin — " + libellePeriode(m) + "*");
+  l.push((state.meta.ecole ? "EPP " + state.meta.ecole + " — " : "") + "Classe : " + (state.meta.classe || ""));
+  l.push("Élève : *" + e.nom + "*");
+  if(bi.nb){
+    l.push("Moyenne : *" + nombreFr(bi.moy, 2) + " / " + b + "*" + (r ? " — Rang : " + rangTxt(r) + " sur " + cl.sur : ""));
+    l.push("Appréciation : " + appreciation(bi.moy) + (cond ? " — Conduite : " + cond : ""));
+    l.push("");
+    matieresActives().forEach(function(mt){ var v = noteDe(e, mt.code); if(v != null) l.push("• " + mt.nom + " : " + nombreFr(v) + "/" + baremeMat(mt.code)); });
+  } else l.push("Pas encore de notes pour cette composition.");
+  if(mot){ l.push(""); l.push("Mot du maître : " + mot); }
+  l.push(""); l.push((state.meta.maitre ? state.meta.maitre + ", " : "") + "maître de la classe");
+  return l.join("\n");
+}
+el("btnWhatsApp").addEventListener("click", function(){
+  var l = alpha(), avec = l.filter(function(e){ return numeroWhatsApp(e.tel); }).length;
+  var corps = '<p style="margin:0 0 10px">Résumé de la <b>' + esc(libellePeriode(state.notes.mois, false)) + '</b> pour chaque parent. Touchez « Envoyer » : WhatsApp s\'ouvre avec le message prêt.</p>'
+    + (avec < l.length ? '<p class="hint" style="margin:0 0 10px">' + (l.length - avec) + ' élève(s) sans téléphone du parent : ajoutez-le dans sa fiche, ou choisissez le contact dans WhatsApp.</p>' : '')
+    + '<ul class="suivi" style="max-height:52vh;overflow:auto">' + l.map(function(e){
+        var n = numeroWhatsApp(e.tel);
+        return '<li style="cursor:default"><span class="ce-nom"><b>' + esc(e.nom) + '</b><br><small>' + esc(e.parent || "Parent") + (n ? " · " + esc(e.tel) : " · pas de numéro") + '</small></span>'
+          + '<button type="button" class="btn btn-sm btn-primary" data-wa="' + e.id + '">Envoyer</button></li>';
+      }).join("") + '</ul>';
+  dialogue("Envoyer aux parents", corps, [{label:"Fermer", valeur:null, style:"btn-ghost"}], {feuille:true});
+  el("modal").querySelectorAll("[data-wa]").forEach(function(btn){
+    btn.addEventListener("click", function(ev){
+      ev.stopPropagation();
+      var e = eleveParId(btn.getAttribute("data-wa")), n = numeroWhatsApp(e.tel), txtMsg = resumeBulletin(e);
+      window.open("https://wa.me/" + n + "?text=" + encodeURIComponent(txtMsg), "_blank");
+      btn.textContent = "Envoyé ✓"; btn.classList.remove("btn-primary");
+    });
+  });
+});
+
+/* ---------- export Excel (.xlsx fabriqué dans le téléphone) ---------- */
+var CRC_T = (function(){ var t = [], c; for(var n = 0; n < 256; n++){ c = n; for(var k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+function crc32(u){ var c = 0xFFFFFFFF; for(var i = 0; i < u.length; i++) c = CRC_T[(c ^ u[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+function zipStocke(fichiers){
+  var enc = new TextEncoder(), parts = [], central = [], pos = 0;
+  var u16 = function(v){ return [v & 255, (v >>> 8) & 255]; }, u32 = function(v){ return [v & 255, (v >>> 8) & 255, (v >>> 16) & 255, (v >>> 24) & 255]; };
+  fichiers.forEach(function(f){
+    var nom = enc.encode(f.nom), data = typeof f.data === "string" ? enc.encode(f.data) : f.data, crc = crc32(data);
+    var tete = [].concat([0x50,0x4b,0x03,0x04], u16(20), u16(0x0800), u16(0), u16(0), u16(0x21), u32(crc), u32(data.length), u32(data.length), u16(nom.length), u16(0));
+    parts.push(new Uint8Array(tete), nom, data);
+    central.push(new Uint8Array([].concat([0x50,0x4b,0x01,0x02], u16(20), u16(20), u16(0x0800), u16(0), u16(0), u16(0x21), u32(crc), u32(data.length), u32(data.length), u16(nom.length), u16(0), u16(0), u16(0), u16(0), u32(0), u32(pos))), nom);
+    pos += tete.length + nom.length + data.length;
+  });
+  var tailleCentrale = 0; central.forEach(function(c){ tailleCentrale += c.length; });
+  var fin = new Uint8Array([].concat([0x50,0x4b,0x05,0x06], u16(0), u16(0), u16(fichiers.length), u16(fichiers.length), u32(tailleCentrale), u32(pos), u16(0)));
+  return new Blob(parts.concat(central).concat([fin]), {type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+}
+function xmlEsc(v){ return String(v).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]; }).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, ""); }
+function colLettre(i){ var s = ""; i++; while(i > 0){ var m = (i - 1) % 26; s = String.fromCharCode(65 + m) + s; i = Math.floor((i - 1) / 26); } return s; }
+function feuilleXml(lignes, largeurs){
+  var rows = lignes.map(function(l, r){
+    return '<row r="' + (r + 1) + '">' + l.map(function(v, c){
+      var ref = colLettre(c) + (r + 1), st = r === 0 ? ' s="1"' : '';
+      if(v == null || v === "") return '';
+      if(typeof v === "number" && isFinite(v)) return '<c r="' + ref + '"' + st + '><v>' + (Math.round(v * 100) / 100) + '</v></c>';
+      return '<c r="' + ref + '" t="inlineStr"' + st + '><is><t xml:space="preserve">' + xmlEsc(v) + '</t></is></c>';
+    }).join("") + '</row>';
+  }).join("");
+  var cols = largeurs ? '<cols>' + largeurs.map(function(w, i){ return '<col min="' + (i + 1) + '" max="' + (i + 1) + '" width="' + w + '" customWidth="1"/>'; }).join("") + '</cols>' : '';
+  return '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>' + cols + '<sheetData>' + rows + '</sheetData></worksheet>';
+}
+function classeurXlsx(feuilles){
+  var noms = feuilles.map(function(f, i){ return (f.nom.replace(/[\[\]:*?\/\\]/g, " ").slice(0, 31).trim() || "Feuille " + (i + 1)); });
+  var f = [
+    {nom:"[Content_Types].xml", data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>'
+      + feuilles.map(function(_, i){ return '<Override PartName="/xl/worksheets/sheet' + (i + 1) + '.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>'; }).join("") + '</Types>'},
+    {nom:"_rels/.rels", data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>'},
+    {nom:"xl/workbook.xml", data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>'
+      + noms.map(function(n, i){ return '<sheet name="' + xmlEsc(n) + '" sheetId="' + (i + 1) + '" r:id="rId' + (i + 1) + '"/>'; }).join("") + '</sheets></workbook>'},
+    {nom:"xl/_rels/workbook.xml.rels", data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+      + feuilles.map(function(_, i){ return '<Relationship Id="rId' + (i + 1) + '" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet' + (i + 1) + '.xml"/>'; }).join("")
+      + '<Relationship Id="rId' + (feuilles.length + 1) + '" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>'},
+    {nom:"xl/styles.xml", data:'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><name val="Calibri"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FFDCE6F5"/></patternFill></fill></fills><borders count="1"><border/></borders><cellStyleXfs count="1"><xf/></cellStyleXfs><cellXfs count="2"><xf/><xf fontId="1" fillId="2" applyFont="1" applyFill="1"/></cellXfs></styleSheet>'}
+  ];
+  feuilles.forEach(function(fe, i){ f.push({nom:"xl/worksheets/sheet" + (i + 1) + ".xml", data:feuilleXml(fe.lignes, fe.largeurs)}); });
+  return zipStocke(f);
+}
+function exporterExcel(){
+  var l = alpha(), feuilles = [];
+  feuilles.push({nom:"Élèves", largeurs:[5,14,32,7,6,13,24,16,14], lignes:[["N°","Matricule","Nom et prénoms","Sexe","Âge","Naissance","Parent","Téléphone","Situation"]].concat(l.map(function(e, i){
+    return [i + 1, e.mat, e.nom, e.sexe === "F" ? "F" : "G", e.age, e.naissance ? dateFr(e.naissance) : "", e.parent, e.tel, Number(e.sc) === 3 ? "Triplant" : Number(e.sc) === 2 ? "Redoublant" : ""];
+  }))});
+  periodesRenseignees().forEach(function(m){
+    var cl = classement(m), act = matieresActives();
+    feuilles.push({nom:abbrMois(m).replace(/\./g, "") + " " + (estTrimestre(m) ? "trimestre" : m === PASSAGE ? "" : "éval."), largeurs:[5,32].concat(act.map(function(){ return 9; })).concat([9,9,7]),
+      lignes:[["N°","Nom et prénoms"].concat(act.map(function(x){ return x.nom + " /" + baremeMat(x.code); })).concat(["Total","Moyenne /" + echelleMoyenne(),"Rang"])].concat(l.map(function(e, i){
+        var b = bilan(e, m); return [i + 1, e.nom].concat(act.map(function(x){ return noteDe(e, x.code, m); })).concat([b.nb ? b.tot : null, b.nb ? b.moy : null, cl.rangs[e.id] || null]);
+      }))});
+  });
+  var ca = classementAnnuel(), tri = moisRenseignes();
+  if(ca.sur) feuilles.push({nom:"Fin d'année", largeurs:[5,32].concat(tri.map(function(){ return 9; })).concat([11,9,11,7,12]),
+    lignes:[["N°","Nom et prénoms"].concat(tri.map(abbrMois)).concat(["Moy. trimestres","Passage","Moy. annuelle","Rang","Décision"])].concat(l.map(function(e, i){
+      var a = bilanAnnuel(e); return [i + 1, e.nom].concat(tri.map(function(m){ return moyennePeriode(e, m); })).concat([a.moyComp, a.passage, a.annuelle, ca.rangs[e.id] || null, decision(a)]);
+    }))});
+  var nom = "registre-" + slug(state.meta.classe || nomClasse(state)) + "-" + aujourdhuiISO() + ".xlsx";
+  return partagerFichier(nom, classeurXlsx(feuilles), "Registre " + (state.meta.classe || ""), "").then(function(r){ if(r === "telecharge") toast("Fichier Excel enregistré : " + nom); });
+}
+el("btnExcel").addEventListener("click", function(){ exporterExcel().catch(function(){ toast("L'export Excel a échoué."); }); });
+
+/* ---------- sauvegarde vers Google Drive, WhatsApp… (partage) ---------- */
+el("btnPartagerSauve").addEventListener("click", function(){
+  var nom = "registre-sauvegarde-" + aujourdhuiISO() + ".txt";
+  partagerFichier(nom, new Blob([JSON.stringify(dossier)], {type:"text/plain"}), "Sauvegarde du registre", "Sauvegarde du registre de classe (à restaurer dans l'application).").then(function(r){
+    if(r === "annule") return;
+    dossier.derniereSauvegarde = new Date().toISOString(); dossier.rappelReporte = null; persist(); majSauvegardeInfo();
+    toast(r === "partage" ? "Sauvegarde partagée. Choisissez Google Drive pour la garder en lieu sûr." : "Sauvegarde enregistrée : " + nom);
+  });
+});
+
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "1.8.0";
+var APP_VERSION = "1.9.0";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
