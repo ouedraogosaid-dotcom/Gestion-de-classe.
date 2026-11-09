@@ -504,6 +504,105 @@ tbody tr:hover{background:color-mix(in srgb, var(--surface-2) 60%, transparent)}
 }
 .a4-stage > .a4{flex:none}   /* sinon la feuille est écrasée par la hauteur de l'aperçu */
 
+
+/* ================= Lot 3 : matières, appel, groupes, vie de classe ================= */
+.mat-ligne{display:grid; grid-template-columns:auto minmax(0,1fr) 72px auto; gap:8px; align-items:center; padding:6px 0; border-bottom:1px solid var(--bord)}
+.mat-ligne input[type=checkbox]{width:20px; height:20px; accent-color:var(--bleu)}
+.mat-ligne .mat-nom{padding:8px 10px; background:var(--surface)}
+.mat-ligne select{padding:8px; background:var(--surface)}
+.mat-ordre{display:flex; gap:2px}
+.mat-ordre .btn{min-height:32px; padding:4px 7px}
+.mat-ligne .mat-nom{min-width:0}
+.mat-ajout{display:flex; gap:8px; margin-top:10px}
+.mat-ajout input{background:var(--surface)}
+.puces{display:flex; gap:8px; flex-wrap:wrap}
+.puce{
+  appearance:none; cursor:pointer; border:1px solid var(--bord); background:var(--surface); color:var(--texte-2);
+  font:600 .84rem/1 "Inter",sans-serif; padding:9px 14px; border-radius:999px; transition:all .2s ease;
+}
+.puce[aria-pressed="true"]{background:var(--bleu); border-color:var(--bleu); color:var(--bleu-texte); box-shadow:0 6px 14px -8px var(--bleu)}
+.sous-titre{font:600 .9rem/1.2 "Poppins",sans-serif; margin:18px 0 10px; color:var(--texte-2)}
+.seg-mini{position:static; margin:6px 0 12px}
+
+/* fiche élève : photo */
+.fiche-photo{display:flex; align-items:center; gap:14px}
+.fiche-photo .avatar, .fiche-photo img{width:72px; height:72px; border-radius:50%; object-fit:cover; flex:none; font-size:1.3rem}
+.avatar img{width:100%; height:100%; border-radius:50%; object-fit:cover; display:block}
+.fiche-section{grid-column:1 / -1; font:600 .8rem/1 "Inter",sans-serif; color:var(--bleu); text-transform:uppercase; letter-spacing:.06em; margin-top:6px; padding-top:10px; border-top:1px solid var(--bord)}
+
+/* appel */
+.appel-tete{display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:12px}
+.appel-date input{width:auto; font-weight:600}
+.appel-resume{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px}
+.appel-resume span{border-radius:999px; padding:7px 12px; font-size:.8rem; font-weight:600; background:var(--surface-2); color:var(--texte-2)}
+.appel-resume .ok{background:var(--ok-bg); color:var(--ok)} .appel-resume .ab{background:var(--bad-bg); color:var(--bad)} .appel-resume .re{background:var(--warn-bg); color:var(--warn)}
+.appel-resume .pas{background:var(--or-doux); color:var(--warn)}
+.appel-liste{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px}
+.appel-liste li{display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:12px; border:1px solid var(--bord); background:var(--surface); transition:background .2s ease, border-color .2s ease}
+.appel-liste li.A{background:var(--bad-bg); border-color:color-mix(in srgb, var(--bad) 35%, var(--bord))}
+.appel-liste li.R{background:var(--warn-bg); border-color:color-mix(in srgb, var(--or) 45%, var(--bord))}
+.appel-liste .avatar{width:34px; height:34px; font-size:.75rem}
+.appel-liste .ce-nom{flex:1; min-width:0; white-space:normal; line-height:1.25}
+.pa{display:flex; gap:4px}
+.pa button{appearance:none; width:40px; height:36px; border-radius:10px; border:1px solid var(--bord); background:var(--surface); color:var(--texte-2); font:700 .85rem/1 "Inter",sans-serif; cursor:pointer; transition:all .15s ease}
+.pa button:active{transform:scale(.92)}
+.pa button[aria-pressed="true"][data-s="P"]{background:var(--ok); border-color:var(--ok); color:#fff}
+.pa button[aria-pressed="true"][data-s="A"]{background:var(--bad); border-color:var(--bad); color:#fff}
+.pa button[aria-pressed="true"][data-s="R"]{background:var(--or); border-color:var(--or); color:#1b1300}
+td.faible{color:var(--bad); font-weight:700}
+
+/* groupes d'EPS */
+.eps-grille{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px}
+.eps-groupe{border-radius:14px; border:1px solid var(--bord); overflow:hidden; background:var(--surface)}
+.eps-tete{appearance:none; width:100%; border:0; cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:8px; padding:11px 14px; color:#fff; font:700 .95rem/1.1 "Poppins",sans-serif; text-align:left}
+.eps-tete small{font:600 .75rem/1 "Inter",sans-serif; opacity:.9}
+.eps-corps{display:flex; flex-wrap:wrap; gap:6px; padding:12px; min-height:52px}
+.eps-libres{margin-top:14px; padding:12px; border-radius:14px; border:1px dashed var(--bord-2)}
+.eps-libres > b{display:block; font-size:.82rem; color:var(--texte-2); margin-bottom:8px}
+.puce-el{appearance:none; cursor:pointer; border:1px solid var(--bord); background:var(--surface-2); color:var(--texte); font:500 .8rem/1.1 "Inter",sans-serif; padding:7px 10px; border-radius:999px; transition:transform .12s ease, border-color .2s ease}
+.puce-el:active{transform:scale(.95)}
+.puce-el.sx-G{border-left:3px solid var(--g)} .puce-el.sx-F{border-left:3px solid var(--f)}
+.puce-el.today{background:var(--bleu-doux); border-color:var(--bleu)}
+.choix-groupes{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+.choix-groupes button{appearance:none; cursor:pointer; border:0; border-radius:12px; padding:14px 10px; color:#fff; font:700 .92rem/1.1 "Inter",sans-serif; box-shadow:var(--ombre-1)}
+.choix-groupes button.neutre{background:var(--surface-2); color:var(--texte); border:1px solid var(--bord)}
+.couleurs{display:flex; gap:8px; flex-wrap:wrap}
+.couleurs label{position:relative; cursor:pointer}
+.couleurs input{position:absolute; opacity:0; inset:0; margin:0}
+.couleurs span{display:block; width:36px; height:36px; border-radius:50%; border:3px solid transparent; box-shadow:0 0 0 1px var(--bord)}
+.couleurs input:checked + span{border-color:var(--surface); box-shadow:0 0 0 2.5px var(--bleu)}
+
+/* PNAPAS */
+.pn-groupes{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px}
+.pn-groupe{border-radius:14px; border:1px solid var(--bord); background:var(--surface-2); padding:12px}
+.pn-groupe h4{margin:0 0 4px; font:700 .95rem/1.2 "Poppins",sans-serif}
+.pn-groupe .niv{font-size:.75rem; color:var(--texte-3); margin-bottom:8px}
+.pn-groupe ol{margin:0; padding-left:20px; font-size:.84rem; columns:2; column-gap:18px}
+.pn-groupe ol li{break-inside:avoid; padding:1px 0}
+.pn-liste{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px}
+.pn-liste li{display:flex; align-items:center; gap:10px; padding:6px 10px; border-radius:12px; border:1px solid var(--bord)}
+.pn-liste .ce-nom{flex:1; min-width:0}
+.pn-liste select{width:auto; min-width:150px; padding:8px 10px}
+.evol{font-size:.75rem; font-weight:700; min-width:22px; text-align:center}
+.evol.monte{color:var(--ok)} .evol.baisse{color:var(--bad)}
+
+/* vie de classe */
+.equipes{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px}
+.equipe{border-radius:14px; border:1px solid var(--bord); padding:12px; background:var(--surface)}
+.equipe.jour-j{border-color:var(--bleu); box-shadow:0 0 0 3px var(--bleu-doux)}
+.equipe h4{margin:0 0 8px; display:flex; justify-content:space-between; align-items:baseline; font:700 .95rem/1.2 "Poppins",sans-serif}
+.equipe h4 small{font:600 .72rem/1 "Inter",sans-serif; color:var(--texte-3)}
+.equipe .puces-el{display:flex; flex-wrap:wrap; gap:6px}
+.tirage{text-align:center; padding:6px 0}
+.tirage-nom{font:700 1.5rem/1.3 "Poppins",sans-serif; min-height:2.6em; display:grid; place-items:center; padding:10px; border-radius:16px; background:var(--surface-2); margin-bottom:14px; transition:transform .2s ease}
+.tirage-nom.final{background:linear-gradient(120deg, var(--bleu-doux), var(--or-doux)); animation:pop .45s cubic-bezier(.3,1.6,.6,1)}
+.tirage-groupes{display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr)); gap:10px; margin-top:12px; text-align:left}
+.tirage-groupes div{border-radius:12px; background:var(--surface-2); padding:10px 12px; font-size:.84rem}
+.tirage-groupes b{display:block; margin-bottom:4px; color:var(--bleu)}
+@keyframes pop{0%{transform:scale(.9)} 100%{transform:scale(1)}}
+.auj{display:flex; flex-direction:column; gap:4px}
+.auj .puces-el{display:flex; flex-wrap:wrap; gap:6px; margin-top:6px}
+
 /* ================= Animations ================= */
 @keyframes entre{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
 @keyframes glisse{from{opacity:0; transform:translateY(-8px)} to{opacity:1; transform:none}}
@@ -652,7 +751,8 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
   .view{display:none !important}
   body.pr-saisie #vSaisie, body.pr-scolarite #vScolarite, body.pr-alpha #vAlpha,
   body.pr-synthese #vSynthese, body.pr-feuille #vFeuille, body.pr-notes #vNotes,
-  body.pr-annee #vAnnee, body.pr-cartes #vCartes{display:block !important; animation:none !important}
+  body.pr-annee #vAnnee, body.pr-cartes #vCartes, body.pr-appel #vAppel, body.pr-groupes #vGroupes,
+  body.pr-vie #vVie{display:block !important; animation:none !important}
   body{background:#fff !important; color:#111 !important; margin:0; padding:0}
   .wrap{max-width:none; padding:0 !important; margin:0}
   .sheet{box-shadow:none !important; border:0 !important; border-radius:0 !important; padding:0 !important; margin:0 0 6mm !important; background:#fff !important}
@@ -660,6 +760,9 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
   thead th{position:static !important; background:#eee !important; color:#111 !important}
   th,td{color:#111 !important; border-color:#999 !important}
   #listeEleves{display:none !important}
+  .eps-tete{color:#111 !important; background:#fff !important; border-bottom:3px solid currentColor}
+  .equipe, .eps-groupe, .pn-groupe{break-inside:avoid; border:1px solid #999 !important; background:#fff !important}
+  .puce-el{background:#fff !important; border:1px solid #999 !important}
   #zoneTableau{display:block !important}
   input,select{background:transparent !important; border:0 !important; box-shadow:none !important; color:#111 !important; appearance:none; -webkit-appearance:none}
   .scroll{overflow:visible !important}
@@ -705,6 +808,12 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
   <symbol id="i-alerte" viewBox="0 0 24 24"><path d="M12 3 2 20h20L12 3Z"/><path d="M12 10v4.5M12 17.5v.1"/></symbol>
   <symbol id="i-ecole" viewBox="0 0 24 24"><path d="m2 9 10-5 10 5-10 5L2 9Z"/><path d="M6 11v5c3 2.5 9 2.5 12 0v-5"/></symbol>
   <symbol id="i-crayon" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4Z"/><path d="m13.5 6.5 4 4"/></symbol>
+  <symbol id="i-appel" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="17" rx="2.5"/><path d="M8 2.5v3M16 2.5v3M4 9.5h16"/><path d="m9 15 2 2 4-4"/></symbol>
+  <symbol id="i-balai" viewBox="0 0 24 24"><path d="M14 3 9.5 11"/><path d="M6 12h8l2 9H4l2-9Z"/><path d="M8 16v5M12 16v5"/></symbol>
+  <symbol id="i-de" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3.5"/><circle cx="9" cy="9" r="1.2" fill="currentColor"/><circle cx="15" cy="15" r="1.2" fill="currentColor"/><circle cx="15" cy="9" r="1.2" fill="currentColor"/><circle cx="9" cy="15" r="1.2" fill="currentColor"/></symbol>
+  <symbol id="i-photo" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+  <symbol id="i-import" viewBox="0 0 24 24"><path d="M12 3v11"/><path d="m7.5 9.5 4.5 4.5 4.5-4.5"/><path d="M4 16v3.5h16V16"/></symbol>
+  <symbol id="i-etoile" viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9L12 3Z"/></symbol>
 </svg>
 
 <header class="appbar no-print">
@@ -756,6 +865,17 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
       <button class="raccourci" type="button" data-aller="cartes" style="--i:3"><span class="rond"><svg class="ic"><use href="#i-notes"/></svg></span><span>Bulletins scolaires<small>2 par feuille</small></span></button>
     </div>
 
+    <h2 class="section-titre">Aujourd'hui</h2>
+    <div class="sheet auj">
+      <b id="acAujEquipe">—</b>
+      <div class="puces-el" id="acAujNoms"></div>
+      <span class="status" id="acAujResp"></span>
+      <div class="carte-info" style="margin-top:8px"><span class="status" id="acAujAppel">—</span>
+        <span class="btns"><button class="btn btn-sm" type="button" data-aller="appel"><svg class="ic"><use href="#i-appel"/></svg>Faire l'appel</button>
+        <button class="btn btn-sm" type="button" data-aller="vie"><svg class="ic"><use href="#i-balai"/></svg>Équipes</button></span></div>
+    </div>
+    <span id="acAuj"></span>
+
     <h2 class="section-titre">Situation de la classe</h2>
     <div class="sheet carte-info">
       <span class="ci-txt"><b id="acCompo">Aucune composition saisie</b><span id="acCompoSous">Les résultats apparaîtront ici.</span></span>
@@ -776,6 +896,9 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
     <div class="page-titre no-print"><div><h1>Élèves</h1><p id="elSous">—</p></div></div>
     <div class="seg no-print" role="tablist" data-seg="eleves">
       <button role="tab" data-v="saisie" aria-selected="true">Liste</button>
+      <button role="tab" data-v="appel" aria-selected="false">Appel</button>
+      <button role="tab" data-v="groupes" aria-selected="false">Groupes</button>
+      <button role="tab" data-v="vie" aria-selected="false">Vie de classe</button>
       <button role="tab" data-v="scolarite" aria-selected="false">Scolarité</button>
       <button role="tab" data-v="alpha" aria-selected="false">Liste de classe</button>
       <button role="tab" data-v="synthese" aria-selected="false">Synthèse</button>
@@ -805,8 +928,94 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
           <button class="btn btn-primary" id="btnAdd" type="button"><svg class="ic"><use href="#i-plus"/></svg>Ajouter un élève</button>
           <button class="btn btn-sm" id="btnAdd10" type="button">+ 10 lignes</button>
           <button class="btn btn-sm" id="btnTrier" type="button"><svg class="ic"><use href="#i-tri"/></svg>Classer A → Z</button>
+          <button class="btn btn-sm" id="btnImporter" type="button"><svg class="ic"><use href="#i-import"/></svg>Importer une liste</button>
         </div>
         <p class="hint">Scolarité en classe : 1 = première fois, 2 = redoublant, 3 = triplant. Scolarité totale = nombre d'années d'école depuis le CP1.</p>
+      </div>
+    </section>
+
+    <section class="view is-hidden" id="vAppel">
+      <div class="sheet">
+        <h2>Cahier d'appel <small>Pour votre suivi personnel : n'apparaît sur aucun bulletin.</small></h2>
+        <div class="appel-tete no-print">
+          <button class="icon-btn" type="button" id="apPrec" aria-label="Jour précédent"><svg class="ic"><use href="#i-retour"/></svg></button>
+          <label class="appel-date"><span class="sr">Date</span><input type="date" id="apDate"></label>
+          <button class="icon-btn" type="button" id="apSuiv" aria-label="Jour suivant"><svg class="ic"><use href="#i-chevron"/></svg></button>
+          <button class="btn btn-sm" type="button" id="apAujourdhui">Aujourd'hui</button>
+        </div>
+        <div class="appel-resume" id="apResume"></div>
+        <ul class="appel-liste" id="apListe"></ul>
+        <div class="rowbtns no-print">
+          <button class="btn btn-primary" type="button" id="apTous"><svg class="ic"><use href="#i-check"/></svg>Tout le monde est présent</button>
+          <button class="btn btn-sm btn-ghost" type="button" id="apEffacer">Effacer l'appel du jour</button>
+        </div>
+        <p class="hint">Touchez « A » pour un absent, « R » pour un retard. Les autres sont comptés présents.</p>
+      </div>
+      <div class="sheet">
+        <h2>Présence du mois <small id="apMoisLbl"></small></h2>
+        <div class="scroll"><table class="recap" id="apMois"></table></div>
+      </div>
+    </section>
+
+    <section class="view is-hidden" id="vGroupes">
+      <div class="sheet">
+        <h2>Groupes d'EPS <small>Formés par le maître en début d'année</small></h2>
+        <div class="eps-grille" id="epsGrille"></div>
+        <div class="eps-libres" id="epsLibres"></div>
+        <div class="rowbtns no-print"><button class="btn btn-sm" type="button" id="epsAjout"><svg class="ic"><use href="#i-plus"/></svg>Ajouter un groupe</button></div>
+        <p class="hint no-print">Touchez un élève pour le placer dans un groupe. Touchez le nom d'un groupe pour le renommer, changer sa couleur ou le supprimer.</p>
+      </div>
+      <div class="sheet" id="pnSheet">
+        <h2>Groupes de niveau PNAPAS <small id="pnSous"></small></h2>
+        <div id="pnHors" class="notice is-hidden" style="margin-top:0"></div>
+        <div id="pnZone">
+          <div class="nt-tools no-print">
+            <div class="field"><label for="pnTest">Évaluation</label><select id="pnTest"></select></div>
+            <button class="btn btn-sm" type="button" id="pnNouveau"><svg class="ic"><use href="#i-plus"/></svg>Nouvelle évaluation</button>
+            <div class="field mini"><label for="pnMode">Type de classe</label><select id="pnMode"><option value="heterogene">Hétérogène (2 groupes)</option><option value="homogene">Homogène (1 groupe par niveau)</option></select></div>
+          </div>
+          <div class="seg seg-mini no-print" role="tablist" id="pnDisc">
+            <button role="tab" data-d="fr" aria-selected="true">Français</button>
+            <button role="tab" data-d="ma" aria-selected="false">Mathématiques</button>
+          </div>
+          <div class="pn-groupes" id="pnGroupes"></div>
+          <h3 class="sous-titre no-print">Niveau de chaque élève</h3>
+          <ul class="pn-liste no-print" id="pnListe"></ul>
+          <h3 class="sous-titre">Bilan par niveau</h3>
+          <div class="scroll"><table class="recap" id="pnBilan"></table></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="view is-hidden" id="vVie">
+      <div class="sheet">
+        <h2>Responsables de la classe <small>Élus en début d'année, pour toute l'année</small></h2>
+        <div class="entete">
+          <div class="field"><label for="vieChef">Chef de classe</label><select id="vieChef"></select></div>
+          <div class="field"><label for="vieSous">Sous-chef</label><select id="vieSous"></select></div>
+        </div>
+      </div>
+      <div class="sheet">
+        <h2><span id="vieServiceTitre">Balayage et nettoyage</span> <small>Une équipe différente chaque jour</small></h2>
+        <div class="nt-tools no-print">
+          <div class="field"><label for="vieService">Nom du service</label><input id="vieService" maxlength="50"></div>
+          <div class="field mini"><label for="vieJours">Jours de classe</label><select id="vieJours"><option value="5">Lundi → Vendredi</option><option value="6">Lundi → Samedi</option><option value="4">Lundi, mardi, jeudi, vendredi</option></select></div>
+          <button class="btn btn-sm btn-primary" type="button" id="vieFormer">Former les équipes</button>
+        </div>
+        <div class="equipes" id="vieEquipes"></div>
+        <p class="hint no-print">Les équipes mélangent garçons et filles à parts égales. Un élève ajouté en cours d'année rejoint l'équipe la moins chargée. Touchez un nom pour le changer de jour.</p>
+      </div>
+      <div class="sheet no-print">
+        <h2>Tirage au sort</h2>
+        <div class="tirage">
+          <div class="tirage-nom" id="tirNom" aria-live="polite">Qui sera interrogé ?</div>
+          <div class="btns" style="justify-content:center">
+            <button class="btn btn-primary" type="button" id="tirUn"><svg class="ic"><use href="#i-de"/></svg>Tirer un élève</button>
+            <button class="btn btn-sm" type="button" id="tirGroupes">Former des groupes de travail</button>
+          </div>
+          <p class="hint centre" id="tirInfo">Chaque élève n'est tiré qu'une fois, jusqu'à ce que tout le monde soit passé.</p>
+          <div class="tirage-groupes" id="tirResultat"></div>
+        </div>
       </div>
     </section>
 
@@ -982,7 +1191,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
     </section>
 
     <section class="sheet">
-      <h2>En-tête du registre <small>Repris sur tous les documents</small></h2>
+      <h2>En-tête du registre <small>Repris sur tous les documents. L'école, la DRENA, l'IEPP et le directeur sont retenus pour vos prochaines classes.</small></h2>
       <div class="entete">
         <div class="field"><label for="f_drena">DRENA</label><input id="f_drena" data-m="drena" autocomplete="off" placeholder="Ex. Bouna"></div>
         <div class="field"><label for="f_insp">I.E.P.P.</label><input id="f_insp" data-m="inspection" autocomplete="off" placeholder="Inspection"></div>
@@ -995,6 +1204,8 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
         </div>
         <div class="field"><label for="f_echelle">Échelle des moyennes</label><select id="f_echelle"><option value="10">Moyenne sur 10</option><option value="20">Moyenne sur 20</option></select></div>
         <div class="field"><label for="f_dir">Le Directeur de l'école</label><input id="f_dir" data-m="directeur" autocomplete="off"></div>
+        <div class="field" style="grid-column:1 / -1"><span class="lbl">Niveau(x) de la classe <small style="font-weight:400;color:var(--ink3)">— plusieurs pour une classe multigrade</small></span>
+          <div class="puces" id="rgNiveaux"></div></div>
         <div class="field"><label for="f_mai">Le Maître chargé du cours</label><input id="f_mai" data-m="maitre" autocomplete="off"></div>
       </div>
     </section>
@@ -1093,7 +1304,7 @@ var SC_TOTALE = [1,2,3,4,5,6,7,8,9];       // scolarité totale
 /* ---------- état ---------- */
 var uid = function(){ return Math.random().toString(36).slice(2,10); };
 
-function eleveVide(sexe){ return {id:uid(), mat:"", nom:"", sexe:sexe||"G", age:null, sc:1, st:1}; }
+function eleveVide(sexe){ return {id:uid(), mat:"", nom:"", sexe:sexe||"G", age:null, sc:1, st:1, naissance:"", lieu:"", parent:"", tel:"", obs:"", photo:""}; }
 
 /* les matieres du carnet mensuel, dans l'ordre exact des deux colonnes */
 var MATIERES = [
@@ -1182,8 +1393,20 @@ function normDossier(d){
     classes: cls,
     corbeille: corbeille,
     derniereSauvegarde: dateSure(d.derniereSauvegarde),
+    ecole: normEcole(d.ecole, cls),
     rappelReporte: dateSure(d.rappelReporte)
   };
+}
+/* profil de l'école : saisi une fois, repris pour chaque nouvelle classe */
+var CHAMPS_ECOLE = ["drena","inspection","ecole","directeur"];
+function normEcole(e, cls){
+  e = (e && typeof e === "object") ? e : {};
+  var r = {};
+  CHAMPS_ECOLE.forEach(function(k){
+    r[k] = txt(e[k]).trim();
+    if(!r[k] && cls) cls.forEach(function(c){ if(!r[k] && !c.demo && c.meta[k]) r[k] = c.meta[k]; });
+  });
+  return r;
 }
 function normCorbeille(x){
   if(!x || typeof x !== "object") return null;
@@ -1196,7 +1419,7 @@ function normCorbeille(x){
       PERIODES.forEach(function(m){
         var l = x.notes[m]; if(!l || typeof l !== "object") return;
         var o = {}, plein = false;
-        CODES.forEach(function(c){ var v = Number(l[c]); if(l[c] !== "" && l[c] != null && !isNaN(v)){ o[c] = v; plein = true; } });
+        Object.keys(l).forEach(function(c){ var v = Number(l[c]); if(RE_CODE.test(c) && l[c] !== "" && l[c] != null && !isNaN(v)){ o[c] = v; plein = true; } });
         if(plein) notes[m] = o;
       });
     }
@@ -1204,8 +1427,10 @@ function normCorbeille(x){
   }
   return null;
 }
+var RE_PHOTO = /^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+\/=]+$/;
 function normEleve(e){
   if(!e || typeof e !== "object") return null;
+  var photo = typeof e.photo === "string" && e.photo.length < 90000 && RE_PHOTO.test(e.photo) ? e.photo : "";
   return {
     id: idSur(e.id) || uid(),
     mat: txt(e.mat, 40),
@@ -1213,8 +1438,93 @@ function normEleve(e){
     sexe: e.sexe === "F" ? "F" : "G",
     age: borne(e.age, 1, 30, null),
     sc: borne(e.sc, 1, 3, 1),
-    st: borne(e.st, 1, 9, 1)
+    st: borne(e.st, 1, 9, 1),
+    naissance: /^\d{4}-\d{2}-\d{2}$/.test(e.naissance || "") ? e.naissance : "",
+    lieu: txt(e.lieu, 60),
+    parent: txt(e.parent, 80),
+    tel: txt(e.tel, 30).replace(/[^0-9+ ().-]/g, ""),
+    obs: txt(e.obs, 600),
+    photo: photo
   };
+}
+
+/* ---------- niveaux, matières, groupes, vie de classe, appel ---------- */
+var NIVEAUX = ["CP1","CP2","CE1","CE2","CM1","CM2"];
+var NIVEAUX_PNAPAS = ["CE1","CE2","CM1","CM2"];
+var RE_CODE = /^[a-z][a-z0-9_]{0,15}$/;
+var MAX_MATIERES = 16;
+function normMatieres(l){
+  var out = [], vus = {};
+  (Array.isArray(l) ? l : []).slice(0, MAX_MATIERES).forEach(function(m){
+    if(!m || typeof m !== "object") return;
+    var code = String(m.code || "").toLowerCase();
+    if(!RE_CODE.test(code) || vus[code]) return;
+    var nom = txt(m.nom, 40).trim(); if(!nom) return;
+    vus[code] = 1;
+    out.push({code:code, nom:nom, ab:txt(m.ab, 8).trim() || abreger(nom)});
+  });
+  if(!out.length) out = MATIERES.map(function(m){ return {code:m.code, nom:MAT_NOM[m.code], ab:m.ab}; });
+  return out;
+}
+function abreger(nom){
+  var mots = nom.replace(/[^A-Za-zÀ-ÿ0-9 .]/g, "").split(/[\s.]+/).filter(Boolean);
+  if(mots.length > 1) return (mots[0].slice(0, 3) + "." + mots[1].slice(0, 2)).slice(0, 7);
+  return nom.slice(0, 5);
+}
+var COULEURS_EPS = [["Bleu","#2563EB"],["Rouge","#DC2626"],["Jaune","#EAB308"],["Vert","#16A34A"],["Orange","#EA580C"],["Violet","#7C3AED"],["Blanc","#94A3B8"],["Noir","#1F2937"]];
+function normEPS(e, ids){
+  e = (e && typeof e === "object") ? e : {};
+  var groupes = (Array.isArray(e.groupes) ? e.groupes : null);
+  if(!groupes) groupes = COULEURS_EPS.slice(0, 3).map(function(c){ return {nom:c[0], couleur:c[1], membres:[]}; });
+  var pris = {};
+  return {groupes: groupes.slice(0, 8).map(function(g){
+    g = g || {};
+    var coul = /^#[0-9A-Fa-f]{6}$/.test(g.couleur || "") ? g.couleur : "#64748B";
+    var m = (Array.isArray(g.membres) ? g.membres : []).map(idSur).filter(function(x){ if(!x || pris[x] || (ids && !ids[x])) return false; pris[x] = 1; return true; });
+    return {id:idSur(g.id) || uid(), nom:txt(g.nom, 30).trim() || "Groupe", couleur:coul, membres:m};
+  })};
+}
+var NIV_FR = [["debutant","Débutant"],["lettre","Lettre"],["mot","Mot"],["paragraphe","Paragraphe"],["histoire","Histoire"],["comprehension","Compréhension"]];
+var NIV_MA = [["debutant","Débutant"],["1chiffre","1 chiffre"],["2chiffres","2 chiffres"],["soustraction","Soustraction"],["division","Division"]];
+var GROUPE2_FR = ["paragraphe","histoire","comprehension"], GROUPE2_MA = ["soustraction","division"];
+function normPnapas(x, ids){
+  x = (x && typeof x === "object") ? x : {};
+  var okFr = NIV_FR.map(function(n){ return n[0]; }), okMa = NIV_MA.map(function(n){ return n[0]; });
+  var filtre = function(o, ok){
+    var r = {}; if(!o || typeof o !== "object") return r;
+    Object.keys(o).slice(0, MAX_ELEVES).forEach(function(k){ var id = idSur(k); if(id && (!ids || ids[id]) && ok.indexOf(o[k]) >= 0) r[id] = o[k]; });
+    return r;
+  };
+  var tests = (Array.isArray(x.tests) ? x.tests : []).slice(-12).map(function(t){
+    t = t || {};
+    return {id:idSur(t.id) || uid(), libelle:txt(t.libelle, 40).trim() || "Test", date:/^\d{4}-\d{2}-\d{2}$/.test(t.date || "") ? t.date : "",
+            fr:filtre(t.fr, okFr), ma:filtre(t.ma, okMa)};
+  });
+  return {mode: x.mode === "homogene" ? "homogene" : "heterogene", tests:tests, actif: idSur(x.actif)};
+}
+var JOURS_DEF = ["Lundi","Mardi","Mercredi","Jeudi","Vendredi"];
+function normVie(v, ids){
+  v = (v && typeof v === "object") ? v : {};
+  var jours = (Array.isArray(v.jours) ? v.jours : JOURS_DEF).slice(0, 7).map(function(j){ return txt(j, 15).trim(); }).filter(Boolean);
+  if(!jours.length) jours = JOURS_DEF.slice();
+  var equipes = {};
+  if(v.equipes && typeof v.equipes === "object") Object.keys(v.equipes).slice(0, MAX_ELEVES).forEach(function(k){
+    var id = idSur(k), n = Math.round(Number(v.equipes[k]));
+    if(id && (!ids || ids[id]) && n >= 0 && n < jours.length) equipes[id] = n;
+  });
+  var un = function(x){ x = idSur(x); return x && (!ids || ids[x]) ? x : ""; };
+  return {chef:un(v.chef), sousChef:un(v.sousChef), service:txt(v.service, 50).trim() || "Balayage et nettoyage", jours:jours, equipes:equipes};
+}
+function normAppel(a, ids){
+  var r = {};
+  if(!a || typeof a !== "object") return r;
+  Object.keys(a).filter(function(d){ return /^\d{4}-\d{2}-\d{2}$/.test(d); }).sort().slice(-400).forEach(function(d){
+    var j = a[d], o = {};
+    if(!j || typeof j !== "object") return;
+    Object.keys(j).forEach(function(k){ var id = idSur(k); if(id && (!ids || ids[id]) && (j[k] === "A" || j[k] === "R")) o[id] = j[k]; });
+    r[d] = o;
+  });
+  return r;
 }
 function classeActive(){
   var c = dossier.classes.filter(function(x){ return x.id === dossier.active; })[0];
@@ -1244,6 +1554,9 @@ function normalize(d){
   var vus = {};
   var eleves = (Array.isArray(d.eleves) ? d.eleves : []).slice(0, MAX_ELEVES).map(normEleve).filter(Boolean);
   eleves.forEach(function(e){ if(vus[e.id]) e.id = uid(); vus[e.id] = 1; });
+  var matieres = normMatieres(d.matieres);
+  var niveaux = (Array.isArray(d.niveaux) ? d.niveaux : []).filter(function(n){ return NIVEAUX.indexOf(n) >= 0; });
+  if(!niveaux.length){ var devine = String(meta.classe || "").toUpperCase().match(/C[PEM]\s*[12]/g); if(devine) niveaux = devine.map(function(x){ return x.replace(/\s/g, ""); }).filter(function(n, i, t){ return NIVEAUX.indexOf(n) >= 0 && t.indexOf(n) === i; }); }
   return {
     id: idSur(d.id) || uid(),
     nom: txt(d.nom),
@@ -1253,12 +1566,19 @@ function normalize(d){
     chants: txt(d.chants, MAX_LIBRE),
     recitations: txt(d.recitations, MAX_LIBRE),
     eleves: eleves,
-    notes: normNotes(d.notes)
+    niveaux: niveaux,
+    matieres: matieres,
+    notes: normNotes(d.notes, matieres.map(function(m){ return m.code; })),
+    eps: normEPS(d.eps, vus),
+    pnapas: normPnapas(d.pnapas, vus),
+    vie: normVie(d.vie, vus),
+    appel: normAppel(d.appel, vus)
   };
 }
 
-function normNotes(n){
-  n = n || {};
+function normNotes(n, codesClasse){
+  n = (n && typeof n === "object") ? n : {};
+  var CODES = codesClasse || MATIERES.map(function(m){ return m.code; });
   var ancienBareme = Number(n.bareme) === 20 ? 20 : 10;
   var echelle = Number(n.echelle) === 20 ? 20 : ancienBareme;
   echelle = echelle === 20 ? 20 : 10;
@@ -1315,8 +1635,9 @@ function blocMois(m){
   return state.notes.data[m];
 }
 function matieresActives(){
-  return MATIERES.filter(function(m){ return state.notes.actives.indexOf(m.code) >= 0; });
+  return state.matieres.filter(function(m){ return state.notes.actives.indexOf(m.code) >= 0; });
 }
+function nomMatiere(code){ var m = state.matieres.filter(function(x){ return x.code === code; })[0]; return m ? m.nom : code; }
 function estActive(code){ return state.notes.actives.indexOf(code) >= 0; }
 function noteDe(e, code, m){
   var l = blocMois(m)[e.id];
@@ -1474,7 +1795,7 @@ function modeSaisie(){
 function filtreRecherche(){ return (el("fRecherche").value || "").trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""); }
 function correspond(e, f){
   if(!f) return true;
-  return (e.nom + " " + e.mat).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").indexOf(f) >= 0;
+  return (e.nom + " " + e.mat + " " + (e.parent || "")).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").indexOf(f) >= 0;
 }
 function initiales(nom){
   var m = nom.trim().split(/\s+/).filter(Boolean);
@@ -1496,7 +1817,7 @@ function renderSaisie(){
       var nomVide = !e.nom.trim();
       if(nomVide && !e.mat.trim()) return;   /* les lignes vides ne servent qu'en mode tableau */
       h += '<li class="carte-eleve sx-' + e.sexe + '" data-fiche="' + e.id + '" style="--i:' + (vus++) + '" tabindex="0" role="button" aria-label="Fiche de ' + esc(e.nom || "l'élève " + (idx + 1)) + '">'
-        + '<span class="avatar" aria-hidden="true">' + esc(nomVide ? String(idx + 1) : initiales(e.nom)) + '</span>'
+        + avatarHtml(e, idx + 1)
         + '<span class="ce-txt"><span class="ce-nom' + (nomVide ? ' vide' : '') + '">' + esc(nomVide ? "Élève sans nom — toucher pour remplir" : e.nom) + '</span>'
         + '<span class="ce-info"><span class="pill pill-' + e.sexe + '">' + (e.sexe === "G" ? "Garçon" : "Fille") + '</span>'
         + '<span class="pill">' + (e.age == null ? "Âge ?" : e.age + " ans") + '</span>'
@@ -1530,22 +1851,46 @@ function renderSaisie(){
 /* ---------- fiche élève (plein écran sur téléphone) ---------- */
 function ouvrirFiche(id){
   var e = id ? eleveParId(id) : null, neuf = !e;
-  var base = e || {nom:"", mat:"", sexe:"G", age:null, sc:1, st:1};
+  var base = e || {nom:"", mat:"", sexe:"G", age:null, sc:1, st:1, naissance:"", lieu:"", parent:"", tel:"", obs:"", photo:""};
   var opts = function(list, v, vide){ return (vide ? '<option value="">—</option>' : '') + list.map(function(n){ return '<option value="' + n + '"' + (Number(v) === n ? " selected" : "") + '>' + n + '</option>'; }).join(""); };
   var radio = function(nom, v, list){ return '<div class="choix">' + list.map(function(o){
       return '<label><input type="radio" name="' + nom + '" value="' + o[0] + '"' + (String(v) === String(o[0]) ? " checked" : "") + '><span>' + o[1] + '</span></label>'; }).join("") + '</div>'; };
   var corps = '<div class="fiche-grille">'
+    + '<div class="field plein fiche-photo"><span id="fcAvatar">' + (base.photo ? '<img src="' + base.photo + '" alt="Photo">' : '<span class="avatar sx-' + base.sexe + '" style="background:var(--surface-3);color:var(--ink3)"><svg class="ic" style="width:30px;height:30px"><use href="#i-photo"/></svg></span>') + '</span>'
+    +   '<span class="btns"><label class="btn btn-sm" style="cursor:pointer"><svg class="ic"><use href="#i-photo"/></svg>' + (base.photo ? "Changer la photo" : "Ajouter une photo") + '<input type="file" id="fcPhotoFichier" accept="image/*" style="display:none"></label>'
+    +   '<button type="button" class="btn btn-sm btn-ghost' + (base.photo ? '' : ' is-hidden') + '" id="fcPhotoSuppr">Retirer</button></span>'
+    +   '<input type="hidden" name="photo" id="fcPhoto" value="' + esc(base.photo || "") + '"></div>'
     + '<div class="field plein"><label for="fcNom">Nom et prénoms</label><input id="fcNom" name="nom" value="' + esc(base.nom) + '" placeholder="NOM Prénoms" autocomplete="off" autocapitalize="characters"></div>'
     + '<div class="field plein"><span class="lbl">Sexe</span>' + radio("sexe", base.sexe, [["G","Garçon"],["F","Fille"]]) + '</div>'
     + '<div class="field"><label for="fcAge">Âge</label><select id="fcAge" name="age">' + opts(AGES, base.age, true) + '</select></div>'
     + '<div class="field"><label for="fcMat">N° matricule</label><input id="fcMat" name="mat" value="' + esc(base.mat) + '" autocomplete="off"></div>'
     + '<div class="field plein"><span class="lbl">Scolarité dans la classe</span>' + radio("sc", base.sc, [[1,"1re fois"],[2,"Redoublant"],[3,"Triplant"]]) + '</div>'
     + '<div class="field plein"><label for="fcSt">Scolarité totale <small style="font-weight:400;color:var(--ink3)">(années d\'école depuis le CP1)</small></label><select id="fcSt" name="st">' + opts(SC_TOTALE, base.st) + '</select></div>'
+    + '<div class="fiche-section">Naissance et famille</div>'
+    + '<div class="field"><label for="fcNais">Date de naissance</label><input id="fcNais" name="naissance" type="date" value="' + esc(base.naissance || "") + '"></div>'
+    + '<div class="field"><label for="fcLieu">Lieu de naissance</label><input id="fcLieu" name="lieu" value="' + esc(base.lieu || "") + '" autocomplete="off"></div>'
+    + '<div class="field"><label for="fcParent">Parent ou tuteur</label><input id="fcParent" name="parent" value="' + esc(base.parent || "") + '" autocomplete="off"></div>'
+    + '<div class="field"><label for="fcTel">Téléphone</label><input id="fcTel" name="tel" type="tel" inputmode="tel" value="' + esc(base.tel || "") + '" autocomplete="off"></div>'
+    + '<div class="field plein"><label for="fcObs">Observations</label><textarea id="fcObs" name="obs" rows="3" placeholder="Santé, comportement, situation familiale…" style="min-height:76px">' + esc(base.obs || "") + '</textarea></div>'
     + '</div>';
   var boutons = neuf
     ? [{label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Enregistrer et ajouter", valeur:"encore"}, {label:"Enregistrer", valeur:"ok", style:"btn-primary"}]
     : [{label:"Supprimer", valeur:"suppr", style:"btn-danger"}, {label:"Fermer", valeur:null, style:"btn-ghost"}, {label:"Enregistrer", valeur:"ok", style:"btn-primary"}];
-  dialogue(neuf ? "Nouvel élève" : "Fiche de l'élève", corps, boutons, {champs:true, feuille:true, focus:neuf ? "fcNom" : null}).then(function(r){
+  var promesse = dialogue(neuf ? "Nouvel élève" : "Fiche de l'élève", corps, boutons, {champs:true, feuille:true, focus:neuf ? "fcNom" : null});
+  el("fcPhotoFichier").addEventListener("change", function(){
+    var f = this.files && this.files[0]; if(!f) return;
+    reduirePhoto(f).then(function(data){
+      el("fcPhoto").value = data;
+      el("fcAvatar").innerHTML = '<img src="' + data + '" alt="Photo">';
+      el("fcPhotoSuppr").classList.remove("is-hidden");
+    }).catch(function(){ toast("Cette image n'a pas pu être lue."); });
+  });
+  el("fcPhotoSuppr").addEventListener("click", function(){
+    el("fcPhoto").value = "";
+    el("fcAvatar").innerHTML = '<span class="avatar" style="background:var(--surface-3);color:var(--ink3)"><svg class="ic" style="width:30px;height:30px"><use href="#i-photo"/></svg></span>';
+    this.classList.add("is-hidden");
+  });
+  promesse.then(function(r){
     if(!r || !r.valeur) return;
     if(r.valeur === "suppr"){ supprimerEleve(e.id); return; }
     var c = r.champs;
@@ -1560,6 +1905,8 @@ function ouvrirFiche(id){
     cible.nom = txt(c.nom.trim(), 90); cible.mat = txt(c.mat.trim(), 40);
     cible.sexe = c.sexe === "F" ? "F" : "G";
     cible.age = borne(c.age, 1, 30, null); cible.sc = borne(c.sc, 1, 3, 1); cible.st = borne(c.st, 1, 9, 1);
+    var autres = normEleve({id:cible.id, nom:"x", naissance:c.naissance, lieu:c.lieu, parent:c.parent, tel:c.tel, obs:c.obs, photo:c.photo});
+    cible.naissance = autres.naissance; cible.lieu = autres.lieu.trim(); cible.parent = autres.parent.trim(); cible.tel = autres.tel.trim(); cible.obs = autres.obs.trim(); cible.photo = autres.photo;
     touch(); renderAll();
     toast(neuf ? "« " + cible.nom + " » ajouté(e) à la classe." : "Fiche enregistrée.");
     if(r.valeur === "encore") setTimeout(function(){ ouvrirFiche(null); }, 120);
@@ -1975,14 +2322,11 @@ function renderNotes(){
   el("ntTitre").innerHTML = esc(libellePeriode(state.notes.mois)) + ' <small id="ntStatus"></small>';
   if(el("f_echelle_notes")) el("f_echelle_notes").value = String(echelleMoyenne());
 
-  el("matList").innerHTML = MATIERES.map(function(m){
-    return '<div class="mat-choice"><label><input type="checkbox" data-mat="'+m.code+'"'+(estActive(m.code)?' checked':'')+'> '+esc(MAT_NOM[m.code])+'</label>'
-      + '<select data-bareme-mat="'+m.code+'" aria-label="Barème '+esc(MAT_NOM[m.code])+'"><option value="10"'+(baremeMat(m.code)===10?' selected':'')+'>/10</option><option value="20"'+(baremeMat(m.code)===20?' selected':'')+'>/20</option><option value="50"'+(baremeMat(m.code)===50?' selected':'')+'>/50</option></select></div>';
-  }).join("");
+  if(!el("matPanel").classList.contains("is-hidden") && !el("matList").contains(document.activeElement)) renderMatieres();
 
   var act = matieresActives(), b = echelleMoyenne();
   el("ntHead").innerHTML = '<th class="num">N°</th><th>Nom et prénoms</th>'
-    + act.map(function(m){ return '<th class="mt" title="'+esc(MAT_NOM[m.code])+'">'+esc(m.ab)+' /'+baremeMat(m.code)+'</th>'; }).join("")
+    + act.map(function(m){ return '<th class="mt" title="'+esc(m.nom)+'">'+esc(m.ab)+' /'+baremeMat(m.code)+'</th>'; }).join("")
     + '<th>Total</th><th>Moy. /'+b+'</th><th>Rang</th>';
 
   var cl = classement(), liste = alpha(), html = "";
@@ -1994,7 +2338,7 @@ function renderNotes(){
       + act.map(function(m){
           var v = noteDe(e, m.code);
           return '<td class="nt-c"><input class="nt'+(noteHorsBareme(v,m.code)?' bad':'')+'" inputmode="decimal" '
-            + 'data-nt="'+m.code+'" aria-label="'+esc(MAT_NOM[m.code]+" — "+e.nom)+'" value="'+(v==null?"":nombreFr(v))+'"></td>';
+            + 'data-nt="'+m.code+'" aria-label="'+esc(m.nom+" — "+e.nom)+'" value="'+(v==null?"":nombreFr(v))+'"></td>';
         }).join("")
       + '<td class="res'+(bi.nb?"":" vide")+'">'+(bi.nb ? nombreFr(bi.tot)+"/"+bi.possible : "—")+'</td>'
       + '<td class="res'+(bi.nb?"":" vide")+'">'+(bi.nb ? nombreFr(bi.moy,2) : "—")+'</td>'
@@ -2015,17 +2359,21 @@ function renderNotes(){
 /* ---------- notes : carte de l'eleve, au format du carnet ---------- */
 function carteHtml(e, rang, sur){
   var act = state.notes.actives, b = echelleMoyenne(), bi = bilan(e);
-  var g = MATIERES.filter(function(m){ return m.col === 0; });
-  var d = MATIERES.filter(function(m){ return m.col === 1; });
+  var moitie = Math.ceil(state.matieres.length / 2);
+  var g = state.matieres.slice(0, moitie), d = state.matieres.slice(moitie);
+  if(g.length === d.length) g = g.concat([null]);   /* garde une case pour le TOTAL */
   var lignes = "";
   for(var i = 0; i < g.length; i++){
     var mg = g[i], md = d[i];
-    var vg = noteDe(e, mg.code), offg = act.indexOf(mg.code) < 0;
-    lignes += '<tr><td'+(offg?' class="off"':'')+'>'+esc(MAT_NOM[mg.code])+' <small>/'+baremeMat(mg.code)+'</small></td>'
-           +  '<td class="nv'+(offg?' off':'')+'">'+(offg ? "—" : (vg==null?"":nombreFr(vg)+"/"+baremeMat(mg.code)))+'</td>';
+    if(!mg){ lignes += '<tr><td></td><td class="nv"></td>'; }
+    else {
+      var vg = noteDe(e, mg.code), offg = act.indexOf(mg.code) < 0;
+      lignes += '<tr><td'+(offg?' class="off"':'')+'>'+esc(mg.nom)+' <small>/'+baremeMat(mg.code)+'</small></td>'
+             +  '<td class="nv'+(offg?' off':'')+'">'+(offg ? "—" : (vg==null?"":nombreFr(vg)+"/"+baremeMat(mg.code)))+'</td>';
+    }
     if(md){
       var vd = noteDe(e, md.code), offd = act.indexOf(md.code) < 0;
-      lignes += '<td'+(offd?' class="off"':'')+'>'+esc(MAT_NOM[md.code])+' <small>/'+baremeMat(md.code)+'</small></td>'
+      lignes += '<td'+(offd?' class="off"':'')+'>'+esc(md.nom)+' <small>/'+baremeMat(md.code)+'</small></td>'
              +  '<td class="nv'+(offd?' off':'')+'">'+(offd ? "—" : (vd==null?"":nombreFr(vd)+"/"+baremeMat(md.code)))+'</td>';
     } else {
       lignes += '<td class="tt">TOTAL</td><td class="nv">'+(bi.nb ? nombreFr(bi.tot)+"/"+bi.possible : "")+'</td>';
@@ -2168,7 +2516,7 @@ function pageTableauHtml(liste, cl, depart, total, pages){
     +   '<span style="margin-left:auto"><i>Page</i> '+(pages>1?(Math.floor(depart/LIGNES_PAR_PAGE)+1)+" / "+pages:"1 / 1")+'</span></div>'
     + '<table class="np">'+cols+head+corps+'</table>'
     + '<div class="np-meta" style="border-top:1px solid #8a8272 !important;margin-top:2mm">'
-    +   act.map(function(m){ return '<span><i>'+esc(m.ab)+'</i> '+esc(MAT_NOM[m.code])+'</span>'; }).join("")
+    +   act.map(function(m){ return '<span><i>'+esc(m.ab)+'</i> '+esc(m.nom)+'</span>'; }).join("")
     + '</div>'
     + '<div class="np-meta" style="border-top:0 !important"><span>Effectif noté : '+cl.sur+'</span>'
     +   '<span>Moyenne de la classe : '+(cl.moyenneClasse==null?"—":nombreFr(cl.moyenneClasse,2)+" / "+b)+'</span>'
@@ -2248,6 +2596,10 @@ function render(){
     renderSynthese();
     renderClasses();
     renderAccueil(false);
+    renderNiveaux();
+    if(vueActive === "appel") renderAppel();
+    if(vueActive === "groupes"){ renderEPS(); renderPnapas(); }
+    if(vueActive === "vie") renderVie();
     renderNotes();
     renderAnnee();
     buildFeuille();
@@ -2555,7 +2907,12 @@ el("btnVider").addEventListener("click", function(){
   toast("Classe d'exemple vidée : saisissez vos élèves.", {label:"Annuler", fn:annuler});
 });
 document.querySelectorAll("[data-m]").forEach(function(inp){
-  inp.addEventListener("input", function(){ avantModif(true); state.meta[inp.getAttribute("data-m")] = txt(inp.value); touch(); render(); });
+  inp.addEventListener("input", function(){
+    var k = inp.getAttribute("data-m");
+    avantModif(true); state.meta[k] = txt(inp.value);
+    if(CHAMPS_ECOLE.indexOf(k) >= 0 && !state.demo) dossier.ecole[k] = state.meta[k].trim();   /* profil de l'école */
+    touch(); render();
+  });
 });
 el("f_chants").addEventListener("input", function(){ avantModif(true); state.chants = txt(this.value, MAX_LIBRE); touch(); render(); });
 el("f_recits").addEventListener("input", function(){ avantModif(true); state.recitations = txt(this.value, MAX_LIBRE); touch(); render(); });
@@ -2614,15 +2971,18 @@ function renderAccueil(anime){
       : "Moyenne de la classe : " + nombreFr(cl.moyenneClasse, 2) + " / " + echelleMoyenne() + " · " + cl.sur + " élève(s) noté(s)";
   } else { el("acCompo").textContent = "Aucune composition saisie"; el("acCompoSous").textContent = "Les résultats apparaîtront ici."; }
   var c = controles(), graves = c.filter(function(x){ return x.bad; }).length;
+  renderAujourdhui();
   el("acControles").textContent = c.length ? c.length + " point(s) à vérifier" : "Registre cohérent";
   el("acControlesSous").textContent = c.length ? (graves ? graves + " erreur(s) et " + (c.length - graves) + " remarque(s)" : "Des remarques sur les âges ou les scolarités") : "Effectifs, âges et scolarités sont cohérents.";
   majSauvegardeInfo();
 }
 
 function classeVierge(modele){
-  var c = normalize({meta:{drena:(modele?modele.meta.drena:""), an1:(modele?modele.meta.an1:""), an2:(modele?modele.meta.an2:""),
-                           inspection:(modele?modele.meta.inspection:""), ecole:(modele?modele.meta.ecole:"")}});
-  for(var k = 0; k < 5; k++) c.eleves.push(eleveVide());
+  var ec = dossier.ecole || {};
+  var c = normalize({meta:{drena:ec.drena || (modele ? modele.meta.drena : ""), inspection:ec.inspection || (modele ? modele.meta.inspection : ""),
+                           ecole:ec.ecole || (modele ? modele.meta.ecole : ""), directeur:ec.directeur || (modele ? modele.meta.directeur : ""),
+                           an1:(modele ? modele.meta.an1 : ""), an2:(modele ? modele.meta.an2 : "")}});
+  if(modeSaisie() === "tableau") for(var k = 0; k < 5; k++) c.eleves.push(eleveVide());
   return c;
 }
 el("f_classeSel").addEventListener("change", function(){ ouvrirClasse(this.value); });
@@ -2831,25 +3191,97 @@ function changerEchelle(v){
 }
 el("f_echelle").addEventListener("change", function(){ changerEchelle(this.value); });
 el("f_echelle_notes").addEventListener("change", function(){ changerEchelle(this.value); });
+/* ---------- matières de la classe : cocher, renommer, barème, ajouter, retirer ---------- */
+function renderMatieres(){
+  el("matList").innerHTML = state.matieres.map(function(m, i){
+    var b = baremeMat(m.code);
+    return '<div class="mat-ligne" data-code="' + m.code + '">'
+      + '<input type="checkbox" data-mat="' + m.code + '"' + (estActive(m.code) ? ' checked' : '') + ' aria-label="Noter ' + esc(m.nom) + '">'
+      + '<input class="mat-nom" data-nom-mat="' + m.code + '" value="' + esc(m.nom) + '" aria-label="Nom de la matière" maxlength="40">'
+      + '<select data-bareme-mat="' + m.code + '" aria-label="Barème ' + esc(m.nom) + '">'
+      +   [10,20,50].map(function(v){ return '<option value="' + v + '"' + (b === v ? ' selected' : '') + '>/' + v + '</option>'; }).join("")
+      + '</select>'
+      + '<span class="mat-ordre"><button type="button" class="btn btn-sm btn-ghost" data-monter="' + i + '" aria-label="Monter"' + (i ? '' : ' disabled') + '>↑</button>'
+      + '<button type="button" class="btn btn-sm btn-ghost" data-retirer="' + m.code + '" aria-label="Retirer ' + esc(m.nom) + '">✕</button></span>'
+      + '</div>';
+  }).join("")
+  + '<div class="mat-ajout"><input id="matNouvelle" placeholder="Nouvelle matière (ex. Anglais)" maxlength="40">'
+  + '<button type="button" class="btn btn-sm btn-primary" id="matAjouter"' + (state.matieres.length >= MAX_MATIERES ? ' disabled' : '') + '>Ajouter</button></div>';
+}
+function apresMatieres(){ touch(); renderNotes(); buildCartes(); fitCartes(); }
 el("btnMatieres").addEventListener("click", function(){
-  el("matPanel").classList.toggle("is-hidden");
+  var p = el("matPanel"); p.classList.toggle("is-hidden");
+  if(!p.classList.contains("is-hidden")) renderMatieres();
 });
 el("matList").addEventListener("change", function(ev){
   var bm = ev.target.closest("[data-bareme-mat]");
-  if(bm || ev.target.closest("[data-mat]")) avantModif(false);
   if(bm){
+    avantModif(false);
     state.notes.baremes[bm.getAttribute("data-bareme-mat")] = Number(bm.value) === 50 ? 50 : (Number(bm.value) === 20 ? 20 : 10);
-    touch(); renderNotes(); buildCartes(); fitCartes(); return;
+    apresMatieres(); return;
+  }
+  var nm = ev.target.closest("[data-nom-mat]");
+  if(nm){
+    var mt = state.matieres.filter(function(x){ return x.code === nm.getAttribute("data-nom-mat"); })[0];
+    var v = txt(nm.value, 40).trim();
+    if(mt && v && v !== mt.nom){ avantModif(false); mt.nom = v; mt.ab = abreger(v); apresMatieres(); }
+    else nm.value = mt ? mt.nom : nm.value;
+    return;
   }
   var c = ev.target.closest("[data-mat]"); if(!c) return;
+  avantModif(false);
   var code = c.getAttribute("data-mat");
   var i = state.notes.actives.indexOf(code);
   if(c.checked && i < 0) state.notes.actives.push(code);
   if(!c.checked && i >= 0) state.notes.actives.splice(i,1);
   if(!state.notes.actives.length){ state.notes.actives.push(code); c.checked = true; }
-  state.notes.actives = CODES.filter(function(x){ return state.notes.actives.indexOf(x) >= 0; });
-  touch(); renderNotes(); buildCartes(); fitCartes();
+  var ordre = state.matieres.map(function(m){ return m.code; });
+  state.notes.actives = ordre.filter(function(x){ return state.notes.actives.indexOf(x) >= 0; });
+  apresMatieres();
 });
+el("matList").addEventListener("click", function(ev){
+  var up = ev.target.closest("[data-monter]");
+  if(up){
+    var i = Number(up.getAttribute("data-monter")); if(i < 1) return;
+    avantModif(false);
+    var t = state.matieres[i]; state.matieres[i] = state.matieres[i-1]; state.matieres[i-1] = t;
+    apresMatieres(); renderMatieres(); return;
+  }
+  var rt = ev.target.closest("[data-retirer]");
+  if(rt){
+    var code = rt.getAttribute("data-retirer");
+    if(state.matieres.length <= 1){ toast("Il faut garder au moins une matière."); return; }
+    var aDesNotes = PERIODES.some(function(m){ var b = state.notes.data[m]; return b && Object.keys(b).some(function(id){ return b[id][code] != null; }); });
+    var faire = function(){
+      avantModif(false);
+      state.matieres = state.matieres.filter(function(m){ return m.code !== code; });
+      state.notes.actives = state.notes.actives.filter(function(c){ return c !== code; });
+      if(!state.notes.actives.length) state.notes.actives = [state.matieres[0].code];
+      apresMatieres(); renderMatieres();
+      toast("Matière retirée.", {label:"Annuler", fn:function(){ annuler(); renderMatieres(); }});
+    };
+    if(!aDesNotes){ faire(); return; }
+    dialogue("Retirer « " + nomMatiere(code) + " » ?", '<p style="margin:0">Des notes ont déjà été saisies dans cette matière. Elles ne compteront plus dans les moyennes. Pour la garder sans la noter ce mois-ci, décochez-la plutôt.</p>',
+      [{label:"Garder", valeur:false}, {label:"Retirer", valeur:true, style:"btn-danger"}]).then(function(oui){ if(oui) faire(); });
+    return;
+  }
+  if(ev.target.closest("#matAjouter")) ajouterMatiere();
+});
+el("matList").addEventListener("keydown", function(ev){
+  if(ev.key === "Enter" && ev.target.id === "matNouvelle"){ ev.preventDefault(); ajouterMatiere(); }
+  if(ev.key === "Enter" && ev.target.hasAttribute("data-nom-mat")){ ev.preventDefault(); ev.target.blur(); }
+});
+function ajouterMatiere(){
+  var nom = txt(el("matNouvelle").value, 40).trim(); if(!nom){ el("matNouvelle").focus(); return; }
+  if(state.matieres.length >= MAX_MATIERES){ toast("Maximum " + MAX_MATIERES + " matières."); return; }
+  avantModif(false);
+  var code = "m" + uid().toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 7);
+  state.matieres.push({code:code, nom:nom, ab:abreger(nom)});
+  state.notes.actives.push(code);
+  if(!state.notes.baremes[code]) state.notes.baremes[code] = echelleMoyenne();
+  apresMatieres(); renderMatieres();
+  setTimeout(function(){ if(el("matNouvelle")) el("matNouvelle").focus(); }, 30);
+}
 el("btnViderMois").addEventListener("click", function(){
   var periode = libellePeriode(state.notes.mois, false);
   dialogue("Effacer cette composition ?", '<p style="margin:0">Toutes les notes de la ' + esc(periode) + ' seront effacées. Le bouton « Annuler » permettra de revenir en arrière tout de suite après.</p>',
@@ -2864,9 +3296,9 @@ el("btnViderMois").addEventListener("click", function(){
 el("f_cartesMode").addEventListener("change", function(){ majTitreCartes(); buildCartes(); fitCartes(); majFab(); });
 
 /* ---------- navigation : 5 rubriques, chacune avec ses vues ---------- */
-var VIEWS = {saisie:"vSaisie", scolarite:"vScolarite", alpha:"vAlpha", synthese:"vSynthese", feuille:"vFeuille", notes:"vNotes", annee:"vAnnee", cartes:"vCartes"};
+var VIEWS = {saisie:"vSaisie", appel:"vAppel", groupes:"vGroupes", vie:"vVie", scolarite:"vScolarite", alpha:"vAlpha", synthese:"vSynthese", feuille:"vFeuille", notes:"vNotes", annee:"vAnnee", cartes:"vCartes"};
 var RUBRIQUES = {accueil:"rAccueil", eleves:"rEleves", notes:"rNotes", documents:"rDocuments", reglages:"rReglages"};
-var RUBRIQUE_DE = {saisie:"eleves", scolarite:"eleves", alpha:"eleves", synthese:"eleves", notes:"notes", annee:"notes", feuille:"documents", cartes:"documents"};
+var RUBRIQUE_DE = {saisie:"eleves", appel:"eleves", groupes:"eleves", vie:"eleves", scolarite:"eleves", alpha:"eleves", synthese:"eleves", notes:"notes", annee:"notes", feuille:"documents", cartes:"documents"};
 var DERNIERE_VUE = {eleves:"saisie", notes:"notes"};
 var vueActive = null, rubriqueActive = "accueil";
 var TITRES_CARTES = {cartes:"Bulletins scolaires", tableau:"Tableau des notes", annee:"Résultats de fin d'année"};
@@ -2908,6 +3340,9 @@ function montrerVue(v, anim){
   if(anim) animer(el(VIEWS[v]));
   if(v === "feuille") fitFeuille();
   if(v === "cartes"){ majTitreCartes(); buildCartes(); fitCartes(); }
+  if(v === "appel") renderAppel();
+  if(v === "groupes"){ renderEPS(); renderPnapas(); }
+  if(v === "vie") renderVie();
   majFab();
 }
 function fermerDocument(){
@@ -2978,7 +3413,7 @@ function imprimer(){
   else if(requestedView === "annee") printMode = "annee";
   else if(requestedView === "cartes") printMode = oldMode || "cartes";
 
-  ["saisie","scolarite","alpha","synthese","feuille","notes","annee","cartes"].forEach(function(k){
+  ["saisie","appel","groupes","vie","scolarite","alpha","synthese","feuille","notes","annee","cartes"].forEach(function(k){
     document.body.classList.remove("pr-"+k);
   });
 
@@ -3011,7 +3446,7 @@ function imprimer(){
   window.__restorePrintState = function(){
     document.title = oldTitle;
     if(oldMode != null) el("f_cartesMode").value = oldMode;
-    ["saisie","scolarite","alpha","synthese","feuille","notes","annee","cartes"].forEach(function(k){
+    ["saisie","appel","groupes","vie","scolarite","alpha","synthese","feuille","notes","annee","cartes"].forEach(function(k){
       document.body.classList.remove("pr-"+k);
     });
     if(printMode){ buildCartes(); fitCartes(); }
@@ -3169,7 +3604,7 @@ function enregistrerCartes(auto, btn){
 
 window.addEventListener("resize", function(){ fitFeuille(); fitCartes(); });
 window.addEventListener("beforeprint", function(){ fitFeuille(); fitCartes(); });
-window.addEventListener("afterprint", function(){ if(window.__restorePrintState) window.__restorePrintState(); else ["saisie","scolarite","alpha","synthese","feuille","notes","annee","cartes"].forEach(function(k){ document.body.classList.remove("pr-"+k); }); });
+window.addEventListener("afterprint", function(){ if(window.__restorePrintState) window.__restorePrintState(); else ["saisie","appel","groupes","vie","scolarite","alpha","synthese","feuille","notes","annee","cartes"].forEach(function(k){ document.body.classList.remove("pr-"+k); }); });
 if(document.fonts && document.fonts.ready) document.fonts.ready.then(fitFeuille);
 
 /* ---------- CSV ---------- */
@@ -3200,7 +3635,7 @@ function csv(){
   var cl = classement(), act = matieresActives();
   L.push("");
   L.push(["Notes du mois de", state.notes.mois, "Echelle moyenne", "sur " + echelleMoyenne()].map(q).join(";"));
-  L.push(["N","Nom et prenoms"].concat(act.map(function(m){ return MAT_NOM[m.code]; }))
+  L.push(["N","Nom et prenoms"].concat(act.map(function(m){ return m.nom; }))
         .concat(["Total","Moyenne","Rang","Sur"]).map(q).join(";"));
   alpha().forEach(function(e, i){
     var bi = bilan(e);
@@ -3279,8 +3714,439 @@ setTimeout(function(){
     }
   }
 }, 2500);
+/* =====================================================================
+   LOT 3A — élèves et classe
+   ===================================================================== */
+function eleveExiste(id){ return state.eleves.some(function(e){ return e.id === id && e.nom.trim(); }); }
+function avatarHtml(e, n){
+  if(e.photo) return '<span class="avatar" aria-hidden="true"><img src="' + e.photo + '" alt=""></span>';
+  return '<span class="avatar" aria-hidden="true">' + esc(e.nom.trim() ? initiales(e.nom) : String(n || "?")) + '</span>';
+}
+function puceEleve(e, attr){
+  return '<button type="button" class="puce-el sx-' + e.sexe + '" ' + (attr || "") + '>' + esc(e.nom) + '</button>';
+}
+function melanger(t){ t = t.slice(); for(var i = t.length - 1; i > 0; i--){ var j = Math.floor(Math.random() * (i + 1)), x = t[i]; t[i] = t[j]; t[j] = x; } return t; }
+function aujourdhuiISO(){ var d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); }
+function decalerJour(iso, n){ var d = new Date(iso + "T12:00:00"); d.setDate(d.getDate() + n); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); }
+function jourLong(iso){ try{ return new Date(iso + "T12:00:00").toLocaleDateString("fr-FR", {weekday:"long", day:"numeric", month:"long"}); }catch(e){ return iso; } }
+
+/* ---------- niveaux de la classe (Réglages) ---------- */
+function renderNiveaux(){
+  el("rgNiveaux").innerHTML = NIVEAUX.map(function(n){
+    return '<button type="button" class="puce" data-niv="' + n + '" aria-pressed="' + (state.niveaux.indexOf(n) >= 0) + '">' + n + '</button>';
+  }).join("");
+}
+el("rgNiveaux").addEventListener("click", function(ev){
+  var b = ev.target.closest("[data-niv]"); if(!b) return;
+  avantModif(false);
+  var n = b.getAttribute("data-niv"), i = state.niveaux.indexOf(n);
+  if(i >= 0) state.niveaux.splice(i, 1); else state.niveaux.push(n);
+  state.niveaux = NIVEAUX.filter(function(x){ return state.niveaux.indexOf(x) >= 0; });
+  touch(); render();
+});
+function classePnapas(){
+  if(!state.niveaux.length) return null;   /* inconnu */
+  return state.niveaux.some(function(n){ return NIVEAUX_PNAPAS.indexOf(n) >= 0; });
+}
+
+/* ---------- photo : réduite à 160 px pour rester légère ---------- */
+function reduirePhoto(fichier){
+  return new Promise(function(ok, ko){
+    if(!fichier || !/^image\//.test(fichier.type)) return ko(new Error("type"));
+    if(fichier.size > 15 * 1024 * 1024) return ko(new Error("taille"));
+    var url = URL.createObjectURL(fichier), img = new Image();
+    img.onload = function(){
+      var t = 160, c = document.createElement("canvas"); c.width = t; c.height = t;
+      var cote = Math.min(img.width, img.height), sx = (img.width - cote) / 2, sy = (img.height - cote) / 2;
+      c.getContext("2d").drawImage(img, sx, sy, cote, cote, 0, 0, t, t);
+      URL.revokeObjectURL(url);
+      ok(c.toDataURL("image/jpeg", 0.72));
+    };
+    img.onerror = function(){ URL.revokeObjectURL(url); ko(new Error("lecture")); };
+    img.src = url;
+  });
+}
+
+/* ---------- import rapide d'une liste (coller, dicter, fichier CSV) ---------- */
+var RE_SEXE_F = /^(f|fille|féminin|feminin|fém|fem)$/i, RE_SEXE_G = /^(g|m|garçon|garcon|masculin|masc)$/i;
+function analyserListe(texte, sexeDefaut){
+  var lignes = String(texte || "").split(/\r?\n/).map(function(l){ return l.trim(); }).filter(Boolean);
+  var res = [];
+  lignes.slice(0, MAX_ELEVES).forEach(function(l){
+    var bas = l.toLowerCase();
+    if(/(^|[^a-zà-ÿ])noms?([^a-zà-ÿ]|$)/.test(bas) && /(sexe|pr[ée]nom|n°|[âa]ge|matricule)/.test(bas)) return;   /* ligne d'en-tête */
+    l = l.replace(/^\d{1,3}\s*[-.):]\s*/, "");                          /* numéro devant */
+    var parts = l.split(/\t|;|,/).map(function(x){ return x.trim(); }).filter(Boolean);
+    if(parts.length === 1){
+      /* « KONÉ Awa F 9 » : sexe et âge éventuels en fin de ligne */
+      var m = parts[0].match(/^(.*?)(?:\s+(F|G|M|fille|garçon|garcon))?(?:\s+(\d{1,2})\s*(?:ans)?)?$/i);
+      parts = [m[1]]; if(m[2]) parts.push(m[2]); if(m[3]) parts.push(m[3]);
+    }
+    var e = {nom:"", sexe:sexeDefaut || "G", age:null, mat:""}, noms = [];
+    parts.forEach(function(p){
+      if(RE_SEXE_F.test(p)) e.sexe = "F";
+      else if(RE_SEXE_G.test(p)) e.sexe = "G";
+      else if(/^\d{1,2}(\s*ans)?$/i.test(p) && Number(p.replace(/\D/g, "")) >= 3 && Number(p.replace(/\D/g, "")) <= 20) e.age = Number(p.replace(/\D/g, ""));
+      else if(/\d/.test(p) && /^[A-Za-z0-9\/-]{4,}$/.test(p)) e.mat = p;
+      else noms.push(p);
+    });
+    e.nom = txt(noms.join(" ").replace(/\s+/g, " ").trim(), 90);
+    if(e.nom) res.push(e);
+  });
+  return res;
+}
+el("btnImporter").addEventListener("click", function(){ ouvrirImport(""); });
+function ouvrirImport(texteInitial){
+  var corps = '<p style="margin:0 0 10px">Collez votre liste ou dictez-la avec le micro du clavier : <b>un élève par ligne</b>. Vous pouvez ajouter le sexe (F ou G) et l\'âge après le nom.</p>'
+    + '<div class="field"><label for="impTexte">Liste des élèves</label><textarea id="impTexte" name="texte" rows="8" placeholder="KOUAMÉ Ama F 8&#10;YAO Koffi G 9&#10;TRAORÉ Salimata">' + esc(texteInitial) + '</textarea></div>'
+    + '<div class="field" style="margin-top:12px"><span class="lbl">Sexe si non précisé</span><div class="choix">'
+    + '<label><input type="radio" name="sexe" value="G" checked><span>Garçon</span></label><label><input type="radio" name="sexe" value="F"><span>Fille</span></label></div></div>'
+    + '<div class="btns" style="margin-top:12px"><label class="btn btn-sm" style="cursor:pointer"><svg class="ic"><use href="#i-import"/></svg>Choisir un fichier (.csv, .txt)<input type="file" id="impFichier" accept=".csv,.txt,text/plain,text/csv" style="display:none"></label></div>'
+    + '<p class="hint" id="impApercu">Depuis Excel : sélectionnez les cellules, copiez, puis collez ici.</p>';
+  dialogue("Importer une liste", corps, [{label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Vérifier", valeur:"ok", style:"btn-primary"}], {champs:true, feuille:true, focus:"impTexte"}).then(function(r){
+    if(!r || r.valeur !== "ok") return;
+    var liste = analyserListe(r.champs.texte, r.champs.sexe);
+    if(!liste.length){ toast("Aucun nom reconnu dans la liste."); return; }
+    var deja = {}; state.eleves.forEach(function(e){ if(e.nom.trim()) deja[e.nom.trim().toLowerCase().replace(/\s+/g, " ")] = 1; });
+    var nouveaux = liste.filter(function(e){ return !deja[e.nom.toLowerCase()]; }), doublons = liste.length - nouveaux.length;
+    var place = MAX_ELEVES - nommes().length;
+    if(nouveaux.length > place) nouveaux = nouveaux.slice(0, Math.max(0, place));
+    var apercu = '<p style="margin:0 0 8px"><b>' + nouveaux.length + '</b> élève(s) à ajouter'
+      + (doublons ? ', ' + doublons + ' déjà dans la classe (ignoré' + (doublons > 1 ? 's' : '') + ')' : '') + ' :</p>'
+      + '<ul class="imp" style="max-height:46vh;overflow:auto">' + nouveaux.map(function(e){
+          return '<li><b>' + esc(e.nom) + '</b><br><small>' + (e.sexe === "F" ? "Fille" : "Garçon") + (e.age ? " · " + e.age + " ans" : "") + (e.mat ? " · Mat. " + esc(e.mat) : "") + '</small></li>';
+        }).join("") + '</ul>';
+    dialogue("Vérifier avant d'ajouter", apercu,
+      [{label:"Corriger", valeur:"corriger", style:"btn-ghost"}, {label:"Ajouter " + nouveaux.length + " élève(s)", valeur:"ok", style:"btn-primary"}], {feuille:true}
+    ).then(function(v){
+      if(v === "corriger"){ ouvrirImport(r.champs.texte); return; }
+      if(v !== "ok" || !nouveaux.length) return;
+      avantModif(false);
+      nouveaux.forEach(function(n){
+        var cible = state.eleves.filter(function(x){ return !x.nom.trim() && !x.mat.trim(); })[0];
+        if(!cible){ cible = eleveVide(); state.eleves.push(cible); }
+        cible.nom = n.nom; cible.sexe = n.sexe; cible.age = n.age; cible.mat = n.mat;
+      });
+      touch(); renderAll();
+      toast(nouveaux.length + " élève(s) ajouté(s).", {label:"Annuler", fn:annuler});
+    });
+  });
+  el("impFichier").addEventListener("change", function(){
+    var f = this.files && this.files[0]; if(!f) return;
+    if(f.size > 1024 * 1024){ toast("Fichier trop gros."); return; }
+    var lec = new FileReader();
+    lec.onload = function(){ el("impTexte").value = String(lec.result).replace(/^﻿/, ""); el("impApercu").textContent = "Fichier chargé : vérifiez la liste puis touchez « Vérifier »."; };
+    lec.readAsText(f);
+  });
+}
+
+/* ---------- cahier d'appel ---------- */
+var apDate = aujourdhuiISO();
+function renderAppel(){
+  if(el("apDate").value !== apDate) el("apDate").value = apDate;
+  var jour = state.appel[apDate], fait = !!jour, l = alpha();
+  var nbA = 0, nbR = 0;
+  el("apListe").innerHTML = l.map(function(e, i){
+    var st = fait && jour[e.id] ? jour[e.id] : "P";
+    if(st === "A") nbA++; if(st === "R") nbR++;
+    return '<li class="sx-' + e.sexe + (fait && st !== "P" ? " " + st : "") + '" data-ap="' + e.id + '">' + avatarHtml(e, i + 1)
+      + '<span class="ce-nom">' + esc(e.nom) + '</span><span class="pa" role="group" aria-label="Présence de ' + esc(e.nom) + '">'
+      + ['P','A','R'].map(function(k){ return '<button type="button" data-s="' + k + '" aria-pressed="' + (fait && st === k) + '" aria-label="' + {P:"Présent",A:"Absent",R:"En retard"}[k] + '">' + k + '</button>'; }).join("")
+      + '</span></li>';
+  }).join("") || '<li class="vide-etat" style="border:0">Aucun élève dans la classe.</li>';
+  el("apResume").innerHTML = '<span>' + esc(jourLong(apDate)) + '</span>' + (fait
+    ? '<span class="ok">' + (l.length - nbA) + ' présent(s)</span><span class="ab">' + nbA + ' absent(s)</span>' + (nbR ? '<span class="re">' + nbR + ' retard(s)</span>' : '')
+    : '<span class="pas">Appel pas encore fait</span>');
+  /* bilan du mois */
+  var mois = apDate.slice(0, 7), jours = Object.keys(state.appel).filter(function(d){ return d.slice(0, 7) === mois; });
+  try{ el("apMoisLbl").textContent = new Date(apDate + "T12:00:00").toLocaleDateString("fr-FR", {month:"long", year:"numeric"}) + " · " + jours.length + " jour(s) d'appel"; }catch(e){}
+  if(!jours.length){ el("apMois").innerHTML = '<tbody><tr><td class="vide-etat" style="border:0">Aucun appel ce mois-ci.</td></tr></tbody>'; return; }
+  var h = '<thead><tr><th>Élève</th><th>Absences</th><th>Retards</th><th>Présence</th></tr></thead><tbody>';
+  l.forEach(function(e){
+    var a = 0, r = 0;
+    jours.forEach(function(d){ var v = state.appel[d][e.id]; if(v === "A") a++; if(v === "R") r++; });
+    var taux = Math.round((jours.length - a) / jours.length * 100);
+    h += '<tr class="sx-' + e.sexe + '"><td class="nom">' + esc(e.nom) + '</td><td>' + (a || "·") + '</td><td>' + (r || "·") + '</td><td class="' + (taux < 80 ? "faible" : "") + '">' + taux + ' %</td></tr>';
+  });
+  el("apMois").innerHTML = h + '</tbody>';
+}
+el("apListe").addEventListener("click", function(ev){
+  var b = ev.target.closest("[data-s]"), li = ev.target.closest("[data-ap]"); if(!b || !li) return;
+  avantModif(false);
+  var id = li.getAttribute("data-ap"), s = b.getAttribute("data-s");
+  if(!state.appel[apDate]) state.appel[apDate] = {};
+  if(s === "P") delete state.appel[apDate][id]; else state.appel[apDate][id] = s;
+  touch(); renderAppel(); renderAccueil(false);
+});
+el("apTous").addEventListener("click", function(){ avantModif(false); state.appel[apDate] = {}; touch(); renderAppel(); renderAccueil(false); toast("Appel enregistré : tout le monde est présent."); });
+el("apEffacer").addEventListener("click", function(){ if(!state.appel[apDate]) return; avantModif(false); delete state.appel[apDate]; touch(); renderAppel(); toast("Appel du jour effacé.", {label:"Annuler", fn:annuler}); });
+el("apDate").addEventListener("change", function(){ if(/^\d{4}-\d{2}-\d{2}$/.test(this.value)){ apDate = this.value; renderAppel(); } });
+el("apPrec").addEventListener("click", function(){ apDate = decalerJour(apDate, -1); renderAppel(); });
+el("apSuiv").addEventListener("click", function(){ apDate = decalerJour(apDate, 1); renderAppel(); });
+el("apAujourdhui").addEventListener("click", function(){ apDate = aujourdhuiISO(); renderAppel(); });
+
+/* ---------- groupes d'EPS ---------- */
+function renderEPS(){
+  var place = {};
+  var gs = state.eps.groupes;
+  el("epsGrille").innerHTML = gs.map(function(g, i){
+    var membres = g.membres.map(eleveParId).filter(function(e){ return e && e.nom.trim() && !place[e.id] && (place[e.id] = 1); });
+    membres.sort(function(a, b){ return COL.compare(a.nom, b.nom); });
+    return '<div class="eps-groupe"><button type="button" class="eps-tete" data-gr="' + i + '" style="background:' + g.couleur + (g.couleur === "#EAB308" || g.couleur === "#94A3B8" ? ';color:#1b1b1b' : '') + '">'
+      + '<span>' + esc(g.nom) + '</span><small>' + membres.length + ' élève(s) · G ' + membres.filter(function(e){ return e.sexe === "G"; }).length + ' / F ' + membres.filter(function(e){ return e.sexe === "F"; }).length + '</small></button>'
+      + '<div class="eps-corps">' + (membres.map(function(e){ return puceEleve(e, 'data-eps="' + e.id + '"'); }).join("") || '<span class="hint" style="margin:0">Aucun élève</span>') + '</div></div>';
+  }).join("");
+  var libres = alpha().filter(function(e){ return !place[e.id]; });
+  el("epsLibres").innerHTML = libres.length
+    ? '<b>À placer (' + libres.length + ')</b><div class="puces-el" style="display:flex;flex-wrap:wrap;gap:6px">' + libres.map(function(e){ return puceEleve(e, 'data-eps="' + e.id + '"'); }).join("") + '</div>'
+    : '<b style="color:var(--ok);margin:0">✓ Tous les élèves sont placés.</b>';
+  el("epsAjout").disabled = gs.length >= 8;
+}
+function groupeEPSDe(id){ var r = -1; state.eps.groupes.forEach(function(g, i){ if(g.membres.indexOf(id) >= 0 && r < 0) r = i; }); return r; }
+function choisirGroupeEPS(id){
+  var e = eleveParId(id); if(!e) return;
+  var actuel = groupeEPSDe(id);
+  var corps = '<div class="choix-groupes">' + state.eps.groupes.map(function(g, i){
+      return '<button type="button" data-v="' + i + '" style="background:' + g.couleur + (g.couleur === "#EAB308" || g.couleur === "#94A3B8" ? ';color:#1b1b1b' : '') + '">' + esc(g.nom) + (i === actuel ? ' ✓' : '') + '</button>';
+    }).join("") + (actuel >= 0 ? '<button type="button" class="neutre" data-v="-1">Retirer du groupe</button>' : '') + '</div>';
+  dialogue(e.nom, corps, [{label:"Fermer", valeur:null, style:"btn-ghost"}], {feuille:true}).then(function(v){
+    if(v == null || v === "") return;
+    var n = Number(v); if(n === actuel) return;
+    avantModif(false);
+    state.eps.groupes.forEach(function(g){ g.membres = g.membres.filter(function(x){ return x !== id; }); });
+    if(n >= 0 && state.eps.groupes[n]) state.eps.groupes[n].membres.push(id);
+    touch(); renderEPS();
+  });
+}
+function editerGroupeEPS(i){
+  var g = i == null ? null : state.eps.groupes[i];
+  var libre = COULEURS_EPS.filter(function(c){ return !state.eps.groupes.some(function(x){ return x.couleur === c[1]; }); })[0] || COULEURS_EPS[0];
+  var coul = g ? g.couleur : libre[1];
+  var corps = '<div class="field"><label for="gpNom">Nom du groupe</label><input id="gpNom" name="nom" maxlength="30" value="' + esc(g ? g.nom : libre[0]) + '"></div>'
+    + '<div class="field" style="margin-top:12px"><span class="lbl">Couleur</span><div class="couleurs">' + COULEURS_EPS.map(function(c){
+        return '<label title="' + c[0] + '"><input type="radio" name="couleur" value="' + c[1] + '"' + (c[1] === coul ? ' checked' : '') + ' aria-label="' + c[0] + '"><span style="background:' + c[1] + '"></span></label>';
+      }).join("") + '</div></div>';
+  var boutons = g ? [{label:"Supprimer", valeur:"suppr", style:"btn-danger"}, {label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Enregistrer", valeur:"ok", style:"btn-primary"}]
+                  : [{label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Créer le groupe", valeur:"ok", style:"btn-primary"}];
+  dialogue(g ? "Modifier le groupe" : "Nouveau groupe", corps, boutons, {champs:true, feuille:true}).then(function(r){
+    if(!r || !r.valeur) return;
+    avantModif(false);
+    if(r.valeur === "suppr"){ state.eps.groupes.splice(i, 1); touch(); renderEPS(); toast("Groupe supprimé : ses élèves sont à replacer.", {label:"Annuler", fn:annuler}); return; }
+    var nom = txt(r.champs.nom, 30).trim() || "Groupe", c = /^#[0-9A-Fa-f]{6}$/.test(r.champs.couleur || "") ? r.champs.couleur : "#64748B";
+    if(g){ g.nom = nom; g.couleur = c; } else state.eps.groupes.push({id:uid(), nom:nom, couleur:c, membres:[]});
+    touch(); renderEPS();
+  });
+}
+el("epsGrille").addEventListener("click", function(ev){
+  var p = ev.target.closest("[data-eps]"); if(p){ choisirGroupeEPS(p.getAttribute("data-eps")); return; }
+  var t = ev.target.closest("[data-gr]"); if(t) editerGroupeEPS(Number(t.getAttribute("data-gr")));
+});
+el("epsLibres").addEventListener("click", function(ev){ var p = ev.target.closest("[data-eps]"); if(p) choisirGroupeEPS(p.getAttribute("data-eps")); });
+el("epsAjout").addEventListener("click", function(){ editerGroupeEPS(null); });
+
+/* ---------- groupes de niveau PNAPAS ---------- */
+var pnDisc = "fr";
+function testActif(){
+  var t = state.pnapas.tests;
+  return t.filter(function(x){ return x.id === state.pnapas.actif; })[0] || t[t.length - 1] || null;
+}
+function niveauxDisc(d){ return d === "fr" ? NIV_FR : NIV_MA; }
+function libNiv(d, k){ var n = niveauxDisc(d).filter(function(x){ return x[0] === k; })[0]; return n ? n[1] : "—"; }
+function groupesPnapas(t, d){
+  var niv = niveauxDisc(d), l = alpha(), res = [];
+  var dans = function(liste){ return l.filter(function(e){ return liste.indexOf(t[d][e.id]) >= 0; }); };
+  if(state.pnapas.mode === "homogene"){
+    niv.forEach(function(n){ var m = dans([n[0]]); if(m.length) res.push({nom:n[1], niveaux:n[1], membres:m}); });
+  } else {
+    var g2 = d === "fr" ? GROUPE2_FR : GROUPE2_MA;
+    var g1 = niv.map(function(n){ return n[0]; }).filter(function(k){ return g2.indexOf(k) < 0; });
+    res.push({nom:"Groupe 1", niveaux:g1.map(function(k){ return libNiv(d, k); }).join(" / "), membres:dans(g1)});
+    res.push({nom:"Groupe 2", niveaux:g2.map(function(k){ return libNiv(d, k); }).join(" / "), membres:dans(g2)});
+  }
+  var sans = l.filter(function(e){ return !t[d][e.id]; });
+  if(sans.length) res.push({nom:"Non évalués", niveaux:"Niveau pas encore saisi", membres:sans, sans:true});
+  return res;
+}
+function renderPnapas(){
+  var ok = classePnapas();
+  el("pnHors").classList.toggle("is-hidden", ok !== false && ok !== null);
+  el("pnZone").classList.toggle("is-hidden", ok === false);
+  if(ok === false){ el("pnHors").innerHTML = '<span>Les groupes de niveau PNAPAS concernent les classes du <b>CE1 au CM2</b>. Cette classe est notée ' + esc(state.niveaux.join(", ")) + ' dans Réglages.</span>'; el("pnSous").textContent = ""; return; }
+  if(ok === null) el("pnHors").innerHTML = '<span>Indiquez le niveau de la classe dans <b>Réglages</b> : la partie PNAPAS ne s\'affiche que du CE1 au CM2.</span><button class="btn btn-sm" type="button" data-aller-reglages>Réglages</button>';
+  var tests = state.pnapas.tests, t = testActif();
+  el("pnMode").value = state.pnapas.mode;
+  el("pnDisc").querySelectorAll("[data-d]").forEach(function(b){ b.setAttribute("aria-selected", String(b.getAttribute("data-d") === pnDisc)); });
+  el("pnTest").innerHTML = tests.length ? tests.map(function(x){ return '<option value="' + x.id + '"' + (t && x.id === t.id ? ' selected' : '') + '>' + esc(x.libelle) + (x.date ? " — " + esc(dateFr(x.date)) : "") + '</option>'; }).join("") : '<option value="">Aucune évaluation</option>';
+  el("pnTest").disabled = !tests.length;
+  el("pnSous").textContent = t ? (pnDisc === "fr" ? "Français" : "Mathématiques") + " · " + t.libelle : "";
+  if(!t){
+    el("pnGroupes").innerHTML = '<div class="notice" style="margin:0;grid-column:1/-1"><span style="flex:1 1 200px">Aucune évaluation saisie. Créez la première (par exemple le test de début d\'année) pour former les groupes.</span><button class="btn btn-sm btn-primary" type="button" data-pn-nouveau>Nouvelle évaluation</button></div>';
+    el("pnListe").innerHTML = ""; el("pnBilan").innerHTML = ""; return;
+  }
+  var gs = groupesPnapas(t, pnDisc);
+  el("pnGroupes").innerHTML = gs.map(function(g){
+    return '<div class="pn-groupe"' + (g.sans ? ' style="background:var(--warn-bg)"' : '') + '><h4>' + esc(g.nom) + ' · ' + g.membres.length + '</h4><div class="niv">' + esc(g.niveaux) + '</div>'
+      + (g.membres.length ? '<ol>' + g.membres.map(function(e){ return '<li>' + esc(e.nom) + (state.pnapas.mode === "heterogene" && !g.sans ? ' <small style="color:var(--ink3)">(' + esc(libNiv(pnDisc, t[pnDisc][e.id])) + ')</small>' : '') + '</li>'; }).join("") + '</ol>' : '<span class="hint">Aucun élève</span>') + '</div>';
+  }).join("");
+  var idx = tests.indexOf(t), prec = idx > 0 ? tests[idx - 1] : null, ordre = niveauxDisc(pnDisc).map(function(n){ return n[0]; });
+  el("pnListe").innerHTML = alpha().map(function(e){
+    var v = t[pnDisc][e.id] || "", ev = "";
+    if(prec && v && prec[pnDisc][e.id]){ var dlt = ordre.indexOf(v) - ordre.indexOf(prec[pnDisc][e.id]); if(dlt > 0) ev = '<span class="evol monte" title="Progrès">▲</span>'; else if(dlt < 0) ev = '<span class="evol baisse" title="Recul">▼</span>'; else ev = '<span class="evol">=</span>'; }
+    return '<li class="sx-' + e.sexe + '"><span class="ce-nom nom">' + esc(e.nom) + '</span>' + ev + '<select data-pn="' + e.id + '" aria-label="Niveau de ' + esc(e.nom) + '"><option value="">— Non évalué</option>'
+      + niveauxDisc(pnDisc).map(function(n){ return '<option value="' + n[0] + '"' + (v === n[0] ? ' selected' : '') + '>' + n[1] + '</option>'; }).join("") + '</select></li>';
+  }).join("") || '<li class="vide-etat" style="border:0">Aucun élève.</li>';
+  var h = '<thead><tr><th>Niveau</th>' + tests.map(function(x){ return '<th>' + esc(x.libelle) + '</th>'; }).join("") + '</tr></thead><tbody>';
+  niveauxDisc(pnDisc).forEach(function(n){
+    h += '<tr><td>' + n[1] + '</td>' + tests.map(function(x){ var c = 0; Object.keys(x[pnDisc]).forEach(function(id){ if(eleveExiste(id) && x[pnDisc][id] === n[0]) c++; }); return '<td' + (x === t ? ' class="tot"' : '') + '>' + (c || "·") + '</td>'; }).join("") + '</tr>';
+  });
+  el("pnBilan").innerHTML = h + '<tr class="tot"><td>Élèves évalués</td>' + tests.map(function(x){ return '<td>' + Object.keys(x[pnDisc]).filter(eleveExiste).length + '</td>'; }).join("") + '</tr></tbody>';
+}
+function nouvelleEvaluation(){
+  var n = state.pnapas.tests.length;
+  var libs = ["Évaluation de début d'année", "Évaluation de mi-parcours", "Évaluation de fin d'année"];
+  var corps = '<div class="field"><label for="pnLib">Nom de l\'évaluation</label><input id="pnLib" name="libelle" maxlength="40" value="' + esc(libs[n] || "Évaluation n° " + (n + 1)) + '"></div>'
+    + '<div class="field" style="margin-top:12px"><label for="pnDt">Date</label><input id="pnDt" name="date" type="date" value="' + aujourdhuiISO() + '"></div>'
+    + (n ? '<p class="hint">Les niveaux de l\'évaluation précédente sont repris : il suffit de changer ceux des élèves qui ont progressé.</p>' : '');
+  dialogue("Nouvelle évaluation", corps, [{label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Créer", valeur:"ok", style:"btn-primary"}], {champs:true, feuille:true, focus:"pnLib"}).then(function(r){
+    if(!r || r.valeur !== "ok") return;
+    avantModif(false);
+    var prec = state.pnapas.tests[n - 1];
+    var t = {id:uid(), libelle:txt(r.champs.libelle, 40).trim() || "Évaluation", date:/^\d{4}-\d{2}-\d{2}$/.test(r.champs.date) ? r.champs.date : "",
+             fr:prec ? JSON.parse(JSON.stringify(prec.fr)) : {}, ma:prec ? JSON.parse(JSON.stringify(prec.ma)) : {}};
+    state.pnapas.tests.push(t); state.pnapas.actif = t.id;
+    if(state.pnapas.tests.length > 12) state.pnapas.tests.shift();
+    touch(); renderPnapas();
+  });
+}
+el("pnNouveau").addEventListener("click", nouvelleEvaluation);
+el("pnGroupes").addEventListener("click", function(ev){ if(ev.target.closest("[data-pn-nouveau]")) nouvelleEvaluation(); });
+el("pnHors").addEventListener("click", function(ev){ if(ev.target.closest("[data-aller-reglages]")) allerRubrique("reglages"); });
+el("pnTest").addEventListener("change", function(){ state.pnapas.actif = this.value; touch(); renderPnapas(); });
+el("pnMode").addEventListener("change", function(){ avantModif(false); state.pnapas.mode = this.value === "homogene" ? "homogene" : "heterogene"; touch(); renderPnapas(); });
+el("pnDisc").addEventListener("click", function(ev){ var b = ev.target.closest("[data-d]"); if(!b) return; pnDisc = b.getAttribute("data-d"); renderPnapas(); });
+el("pnListe").addEventListener("change", function(ev){
+  var s = ev.target.closest("[data-pn]"), t = testActif(); if(!s || !t) return;
+  avantModif(false);
+  var id = s.getAttribute("data-pn");
+  if(s.value) t[pnDisc][id] = s.value; else delete t[pnDisc][id];
+  touch(); renderPnapas();
+});
+
+/* ---------- vie de classe : responsables, équipes de service ---------- */
+var JOURS_SEMAINE = ["Dimanche","Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
+var JEUX_JOURS = {"5":["Lundi","Mardi","Mercredi","Jeudi","Vendredi"], "6":["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"], "4":["Lundi","Mardi","Jeudi","Vendredi"]};
+function equipesFormees(){ return Object.keys(state.vie.equipes).some(eleveExiste); }
+function placerNouveaux(){
+  if(!equipesFormees()) return false;
+  var v = state.vie, n = v.jours.length, change = false;
+  alpha().forEach(function(e){
+    if(v.equipes[e.id] != null && v.equipes[e.id] < n) return;
+    var charges = v.jours.map(function(_, i){
+      var m = alpha().filter(function(x){ return v.equipes[x.id] === i; });
+      return {i:i, total:m.length, meme:m.filter(function(x){ return x.sexe === e.sexe; }).length};
+    });
+    charges.sort(function(a, b){ return a.total - b.total || a.meme - b.meme || a.i - b.i; });
+    v.equipes[e.id] = charges[0].i; change = true;
+  });
+  return change;
+}
+function formerEquipes(){
+  var v = state.vie, n = v.jours.length, eq = {}, k = 0;
+  melanger(parSexe("G")).concat(melanger(parSexe("F"))).forEach(function(e){ eq[e.id] = k % n; k++; });
+  v.equipes = eq;
+}
+function indexJourJ(){ return state.vie.jours.indexOf(JOURS_SEMAINE[new Date().getDay()]); }
+function renderVie(){
+  var v = state.vie, l = alpha();
+  var opts = function(sel, autre){ return '<option value="">— Choisir —</option>' + l.map(function(e){ return '<option value="' + e.id + '"' + (sel === e.id ? ' selected' : '') + (autre === e.id ? ' disabled' : '') + '>' + esc(e.nom) + '</option>'; }).join(""); };
+  el("vieChef").innerHTML = opts(v.chef, v.sousChef);
+  el("vieSous").innerHTML = opts(v.sousChef, v.chef);
+  if(document.activeElement !== el("vieService")) el("vieService").value = v.service;
+  el("vieServiceTitre").textContent = v.service;
+  var cle = Object.keys(JEUX_JOURS).filter(function(c){ return JEUX_JOURS[c].join() === v.jours.join(); })[0];
+  el("vieJours").value = cle || "5";
+  if(placerNouveaux()){ touch(); }
+  var formees = equipesFormees(), jj = indexJourJ();
+  el("vieFormer").textContent = formees ? "Reformer les équipes" : "Former les équipes";
+  if(!formees){ el("vieEquipes").innerHTML = '<div class="notice" style="margin:0;grid-column:1/-1">Les équipes ne sont pas encore formées. Touchez « Former les équipes » : la répartition est faite au hasard, garçons et filles à parts égales.</div>'; return; }
+  el("vieEquipes").innerHTML = v.jours.map(function(j, i){
+    var m = l.filter(function(e){ return v.equipes[e.id] === i; });
+    return '<div class="equipe' + (i === jj ? ' jour-j' : '') + '"><h4>' + esc(j) + (i === jj ? ' · aujourd\'hui' : '') + '<small>' + m.length + ' élève(s)</small></h4><div class="puces-el">'
+      + (m.map(function(e){ return puceEleve(e, 'data-eq="' + e.id + '"'); }).join("") || '<span class="hint">Personne</span>') + '</div></div>';
+  }).join("");
+}
+el("vieChef").addEventListener("change", function(){ avantModif(false); state.vie.chef = idSur(this.value); touch(); renderVie(); });
+el("vieSous").addEventListener("change", function(){ avantModif(false); state.vie.sousChef = idSur(this.value); touch(); renderVie(); });
+el("vieService").addEventListener("input", function(){ avantModif(true); state.vie.service = txt(this.value, 50).trim() || "Balayage et nettoyage"; el("vieServiceTitre").textContent = state.vie.service; touch(); });
+el("vieJours").addEventListener("change", function(){
+  avantModif(false);
+  state.vie.jours = (JEUX_JOURS[this.value] || JEUX_JOURS["5"]).slice();
+  if(equipesFormees()) formerEquipes();
+  touch(); renderVie(); renderAccueil(false);
+});
+el("vieFormer").addEventListener("click", function(){
+  var faire = function(){ avantModif(false); formerEquipes(); touch(); renderVie(); renderAccueil(false); toast("Équipes formées.", {label:"Annuler", fn:annuler}); };
+  if(!equipesFormees()){ faire(); return; }
+  dialogue("Reformer les équipes ?", '<p style="margin:0">Les équipes actuelles seront remplacées par une nouvelle répartition au hasard.</p>',
+    [{label:"Garder", valeur:false}, {label:"Reformer", valeur:true, style:"btn-primary"}]).then(function(oui){ if(oui) faire(); });
+});
+el("vieEquipes").addEventListener("click", function(ev){
+  var p = ev.target.closest("[data-eq]"); if(!p) return;
+  var id = p.getAttribute("data-eq"), e = eleveParId(id), v = state.vie;
+  dialogue(e.nom, '<p class="hint" style="margin:0 0 10px">Choisissez son jour de ' + esc(v.service.toLowerCase()) + ' :</p><div class="choix-groupes">'
+    + v.jours.map(function(j, i){ return '<button type="button" class="neutre" data-v="' + i + '">' + esc(j) + (v.equipes[id] === i ? ' ✓' : '') + '</button>'; }).join("") + '</div>',
+    [{label:"Fermer", valeur:null, style:"btn-ghost"}], {feuille:true}).then(function(r){
+      if(r == null || r === "") return;
+      avantModif(false); v.equipes[id] = Number(r); touch(); renderVie(); renderAccueil(false);
+    });
+});
+
+/* ---------- tirage au sort ---------- */
+var dejaTires = [];
+el("tirUn").addEventListener("click", function(){
+  var l = alpha(); if(!l.length){ toast("Aucun élève dans la classe."); return; }
+  var restants = l.filter(function(e){ return dejaTires.indexOf(e.id) < 0; });
+  if(!restants.length){ dejaTires = []; restants = l; toast("Tout le monde est passé : on recommence."); }
+  var choisi = restants[Math.floor(Math.random() * restants.length)], zone = el("tirNom"), btn = this;
+  dejaTires.push(choisi.id);
+  zone.classList.remove("final"); btn.disabled = true;
+  var tours = document.body.classList.contains("leger") ? 0 : 14, k = 0;
+  (function tour(){
+    if(k < tours){ zone.textContent = l[Math.floor(Math.random() * l.length)].nom; k++; setTimeout(tour, 40 + k * 9); return; }
+    zone.textContent = choisi.nom; void zone.offsetWidth; zone.classList.add("final"); btn.disabled = false;
+    el("tirInfo").textContent = (l.length - dejaTires.length) + " élève(s) pas encore tiré(s).";
+  })();
+});
+el("tirGroupes").addEventListener("click", function(){
+  var l = alpha(); if(l.length < 2){ toast("Il faut au moins deux élèves."); return; }
+  dialogue("Groupes de travail", '<div class="field"><label for="tgN">Nombre de groupes</label><select id="tgN" name="n">'
+    + [2,3,4,5,6,7,8].filter(function(n){ return n <= l.length; }).map(function(n){ return '<option value="' + n + '"' + (n === 4 ? ' selected' : '') + '>' + n + ' groupes (≈ ' + Math.ceil(l.length / n) + ' élèves)</option>'; }).join("") + '</select></div>',
+    [{label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Former", valeur:"ok", style:"btn-primary"}], {champs:true}).then(function(r){
+      if(!r || r.valeur !== "ok") return;
+      var n = Math.max(2, Number(r.champs.n) || 4), g = []; for(var i = 0; i < n; i++) g.push([]);
+      var k = 0; melanger(parSexe("G")).concat(melanger(parSexe("F"))).forEach(function(e){ g[k % n].push(e); k++; });
+      el("tirResultat").innerHTML = g.map(function(m, i){ return '<div class="anim-in"><b>Groupe ' + (i + 1) + '</b>' + m.map(function(e){ return esc(e.nom); }).join("<br>") + '</div>'; }).join("");
+    });
+});
+
+/* ---------- accueil : aujourd'hui ---------- */
+function renderAujourdhui(){
+  var zone = el("acAuj"); if(!zone) return;
+  var v = state.vie, jj = indexJourJ(), l = alpha();
+  var eq = (equipesFormees() && jj >= 0) ? l.filter(function(e){ return v.equipes[e.id] === jj; }) : null;
+  el("acAujEquipe").textContent = !equipesFormees() ? v.service + " : équipes pas encore formées"
+    : jj < 0 ? "Pas de " + v.service.toLowerCase() + " aujourd'hui" : v.service + " — " + JOURS_SEMAINE[new Date().getDay()].toLowerCase();
+  el("acAujNoms").innerHTML = eq ? eq.map(function(e){ return '<span class="puce-el sx-' + e.sexe + '" style="cursor:default">' + esc(e.nom) + '</span>'; }).join("") : "";
+  var j = state.appel[aujourdhuiISO()];
+  if(!j) el("acAujAppel").textContent = "Appel du jour : pas encore fait";
+  else { var a = Object.keys(j).filter(function(id){ return j[id] === "A" && eleveExiste(id); }).length; el("acAujAppel").textContent = "Appel du jour : " + (a ? a + " absent(s)" : "tout le monde est présent"); }
+  var resp = [v.chef && eleveParId(v.chef) ? "Chef : " + eleveParId(v.chef).nom : "", v.sousChef && eleveParId(v.sousChef) ? "Sous-chef : " + eleveParId(v.sousChef).nom : ""].filter(Boolean);
+  el("acAujResp").textContent = resp.join(" · ");
+  el("acAujResp").classList.toggle("is-hidden", !resp.length);
+}
+
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "1.2.0";
+var APP_VERSION = "1.3.0";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
@@ -3344,6 +4210,7 @@ function lancerGuide(){
       state.meta.drena = txt(c.drena.trim()); state.meta.inspection = txt(c.iepp.trim());
       state.meta.an1 = ans[0] || ""; state.meta.an2 = ans[1] || "";
       state.meta.directeur = "";
+      CHAMPS_ECOLE.forEach(function(k){ if(state.meta[k]) dossier.ecole[k] = state.meta[k]; });
       if(modeSaisie() === "tableau") for(var k = 0; k < 5; k++) state.eleves.push(eleveVide());
       touch(); persist(); renderAll();
       dialogue("C'est prêt !",
