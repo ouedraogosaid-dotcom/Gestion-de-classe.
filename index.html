@@ -1311,6 +1311,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
         <h2 id="ntTitre">Composition du mois <small id="ntStatus">—</small></h2>
         <div class="nt-tools no-print">
           <div class="field"><label for="f_mois">Composition</label><select id="f_mois"></select></div>
+          <div class="field mini is-hidden" id="moisTrimWrap"><label for="f_moisTrim">Mois de la composition</label><select id="f_moisTrim"></select></div>
           <div class="field mini"><label for="f_echelle_notes">Échelle</label>
             <select id="f_echelle_notes"><option value="10">Moyenne sur 10</option><option value="20">Moyenne sur 20</option></select>
           </div>
@@ -2012,7 +2013,9 @@ function normNotes(n, codesClasse){
   var appr = parPeriode(n.appr, function(v){ return txt(v, 160).trim(); });
   var conduite = parPeriode(n.conduite, function(v){ return CONDUITES.some(function(c){ return c[0] === v; }) ? v : ""; });
   var coefPassage = [1,2,3].indexOf(Number(n.coefPassage)) >= 0 ? Number(n.coefPassage) : 2;
-  return {bareme:ancienBareme, echelle:echelle, baremes:baremes, mois:mois, actives:actives, data:data, seuil:seuil, appr:appr, conduite:conduite, coefPassage:coefPassage};
+  var moisTrim = {};
+  if(n.moisTrim && typeof n.moisTrim === "object") TRIMESTRES.forEach(function(t){ if(MOIS.indexOf(n.moisTrim[t]) >= 0) moisTrim[t] = n.moisTrim[t]; });
+  return {bareme:ancienBareme, echelle:echelle, baremes:baremes, mois:mois, actives:actives, data:data, seuil:seuil, appr:appr, conduite:conduite, coefPassage:coefPassage, moisTrim:moisTrim};
 }
 
 /* ---------- calculs : la logique du registre ---------- */
@@ -2100,7 +2103,7 @@ function libelleMois(m){
 /* « Composition du mois d'octobre », « Composition de passage » */
 function libellePeriode(m, majDebut){
   var t = (m === PASSAGE) ? "composition de passage"
-        : estTrimestre(m) ? "composition du " + (m.slice(-1) === "1" ? "1er" : m.slice(-1) + "e") + " trimestre"
+        : estTrimestre(m) ? "composition du " + (m.slice(-1) === "1" ? "1er" : m.slice(-1) + "e") + " trimestre" + (moisDuTrimestre(m) ? " (" + moisDuTrimestre(m).toLowerCase() + ")" : "")
         : ("évaluation du mois " + libelleMois(m));
   return majDebut === false ? t : t.charAt(0).toUpperCase() + t.slice(1);
 }
@@ -2763,7 +2766,14 @@ function renderNotes(){
       + '</optgroup>';
     moisPret = true;
   }
+  /* les intitulés des trimestres affichent le mois choisi */
+  TRIMESTRES.forEach(function(t){ [el("f_mois"), el("f_mois2")].forEach(function(sel){ var o = sel.querySelector('option[value="' + t + '"]'); if(o) o.textContent = libellePeriode(t); }); });
   el("f_mois").value = state.notes.mois;
+  var tri = estTrimestre(state.notes.mois);
+  el("moisTrimWrap").classList.toggle("is-hidden", !tri);
+  if(tri){
+    el("f_moisTrim").innerHTML = '<option value="">— Choisir —</option>' + MOIS.map(function(mm){ return '<option value="' + mm + '"' + (moisDuTrimestre(state.notes.mois) === mm ? ' selected' : '') + '>' + mm + '</option>'; }).join("");
+  }
   if(!el("f_mois2").options.length) el("f_mois2").innerHTML = el("f_mois").innerHTML;
   el("f_mois2").value = state.notes.mois;
   el("ntTitre").innerHTML = esc(libellePeriode(state.notes.mois)) + ' <small id="ntStatus"></small>';
@@ -2868,7 +2878,8 @@ var CARTES_PAR_PAGE = 2, LIGNES_PAR_PAGE = 34, selectionBulletins = null;
 /* ---------- fin d'annee ---------- */
 var MOIS_AB = {"Octobre":"Oct.", "Novembre":"Nov.", "D\u00e9cembre":"D\u00e9c.", "Janvier":"Jan.",
   "F\u00e9vrier":"F\u00e9v.", "Mars":"Mars", "Avril":"Avr.", "Mai":"Mai", "Juin":"Juin"};
-function abbrMois(m){ return m === PASSAGE ? "Passage" : estTrimestre(m) ? "T" + m.slice(-1) : (MOIS_AB[m] || m.slice(0,4) + "."); }
+function moisDuTrimestre(t){ return state && state.notes && state.notes.moisTrim ? state.notes.moisTrim[t] || "" : ""; }
+function abbrMois(m){ return m === PASSAGE ? "Passage" : estTrimestre(m) ? "T" + m.slice(-1) + (moisDuTrimestre(m) ? " " + (MOIS_AB[moisDuTrimestre(m)] || "") : "") : (MOIS_AB[m] || m.slice(0,4) + "."); }
 
 function renderAnnee(){
   var mois = moisRenseignes(), cl = classementAnnuel(), b = echelleMoyenne();
@@ -3102,6 +3113,11 @@ function touch(){
   saveTimer = setTimeout(persist, 600);
   majSauvegardeInfo();
 }
+
+/* enregistre tout de suite si l'on quitte l'application pendant le court délai d'enregistrement */
+function enregistrerMaintenant(){ if(saveTimer){ clearTimeout(saveTimer); saveTimer = null; persist(); } }
+window.addEventListener("pagehide", enregistrerMaintenant);
+document.addEventListener("visibilitychange", function(){ if(document.hidden) enregistrerMaintenant(); });
 
 /* ---------- Annuler : pile de photos du dossier, en mémoire ---------- */
 var pileAnnuler = [], derniereFrappe = 0;
@@ -3654,6 +3670,12 @@ el("tbNotes").addEventListener("keydown", function(ev){
   if(i >= 0 && tous[i+1]){ tous[i+1].focus(); tous[i+1].select(); }
 });
 
+el("f_moisTrim").addEventListener("change", function(){
+  avantModif(false);
+  var t = state.notes.mois; if(!estTrimestre(t)) return;
+  if(MOIS.indexOf(this.value) >= 0) state.notes.moisTrim[t] = this.value; else delete state.notes.moisTrim[t];
+  touch(); renderNotes(); renderAnnee(); buildCartes(); fitCartes();
+});
 el("f_mois2").addEventListener("change", function(){
   state.notes.mois = this.value; touch(); renderNotes(); buildCartes(); fitCartes();
 });
@@ -5519,7 +5541,7 @@ el("ecRecues").addEventListener("click", function(ev){
 });
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "1.6.1";
+var APP_VERSION = "1.6.2";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }

@@ -34,6 +34,7 @@ Si le navigateur est réinitialisé ou le téléphone perdu, elles sont perdues 
 
 ## Historique
 
+- **1.6.2** — Mois de chaque composition trimestrielle (ex. « Composition du 1er trimestre (décembre) »), repris sur les bulletins et le tableau annuel. Enregistrement immédiat quand on quitte l'application.
 - **1.6.1** — Trois types de compositions : évaluations mensuelles (école, ne comptent pas), compositions trimestrielles (comptent) et composition de passage. Moyenne annuelle = (moyenne des trimestrielles + passage × 2) ÷ 3, poids du passage réglable. Barème /40 ajouté.
 - **1.6.0** — Lot directeur : rôle maître ou directeur ; le maître envoie sa classe au directeur d'un geste (partage WhatsApp, ou fichier à joindre) ; le directeur importe les classes dans « Mon école » (lecture seule, mise à jour à chaque envoi, maîtres à relancer), voit les effectifs et résultats de toute l'école, sa propre classe comprise, et les imprime avec l'en-tête officiel.
 - **1.5.0** — Lot 4 : saisie des notes « une matière à la fois » (idéale sur téléphone) ; conduite et mot du maître par composition, avec appréciations proposées et vos propres formules retenues ; en-tête officiel (République de Côte d'Ivoire, devise, ministère) et logo de l'école sur les bulletins et documents ; moyennes précédentes sur le bulletin ; bulletin grand format (1 par feuille) ; impression d'une partie des bulletins ; contrôle des notes et âges manquants avant impression.
