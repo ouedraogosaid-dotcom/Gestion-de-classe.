@@ -631,7 +631,7 @@ td.faible{color:var(--bad); font-weight:700}
 .ag-txt b{display:block; font-size:.92rem}
 .ag-txt small{color:var(--texte-3); font-size:.76rem}
 .ag-type{font-size:.68rem; font-weight:700; padding:3px 8px; border-radius:999px}
-.t-composition{background:var(--bleu-doux); color:var(--bleu)} .t-conge{background:var(--ok-bg); color:var(--ok)} .t-reunion{background:var(--f-bg); color:var(--f)} .t-rappel{background:var(--warn-bg); color:var(--warn)} .t-autre{background:var(--surface-2); color:var(--texte-2)} .t-anniv{background:var(--or-doux); color:var(--warn)}
+.t-composition{background:var(--bleu-doux); color:var(--bleu)} .t-conge{background:var(--ok-bg); color:var(--ok)} .t-reunion{background:var(--f-bg); color:var(--f)} .t-rappel{background:var(--warn-bg); color:var(--warn)} .t-autre{background:var(--surface-2); color:var(--texte-2)} .t-trimestre{background:var(--info-bg); color:var(--info)} .t-anniv{background:var(--or-doux); color:var(--warn)}
 .edt{min-width:640px; border-collapse:collapse}
 .edt th, .edt td{border:1px solid var(--bord); padding:0}
 .edt thead th{padding:8px 4px}
@@ -819,6 +819,30 @@ h1,h2,h3,.titre{letter-spacing:-.015em}
 .ln-txt small{font-size:.76rem; color:var(--texte-3); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
 .ln-item > svg:last-child{color:var(--texte-3); width:18px; height:18px}
 
+/* calendrier de l'année */
+.cal-resume{margin-bottom:10px}
+.cal-resume .sit{cursor:default}
+.cal-barre{display:block; height:5px; border-radius:5px; background:var(--surface-2); margin-top:6px; overflow:hidden}
+.cal-barre i{display:block; height:100%; background:var(--bleu); border-radius:5px}
+.cal-tri{padding:12px 14px; margin-top:10px}
+.cal-tri.passe{opacity:.62}
+.cal-tri.encours{border-color:var(--bleu); box-shadow:0 0 0 1px var(--bleu) inset}
+.cal-tete{display:flex; align-items:center; gap:8px; padding-bottom:6px}
+.cal-tete > span:first-child{flex:1; display:flex; flex-direction:column; min-width:0}
+.cal-tete b{font-size:1rem}
+.cal-tete small{font-size:.76rem; color:var(--texte-3)}
+.icon-btn.mini{width:32px; height:32px}
+.icon-btn.mini svg{width:16px; height:16px}
+.cal-evt{display:grid; grid-template-columns:auto 1fr auto; gap:10px; align-items:center; padding:9px 0; border-top:1px solid var(--bord); cursor:pointer}
+.cal-evt.conge .act-ic{background:var(--ok-bg); color:var(--ok)}
+.cal-evt.composition .act-ic{background:var(--bleu-doux); color:var(--bleu)}
+.cal-evt.passe{opacity:.6}
+.cal-ajout-compo{margin-top:8px}
+.docs-compos{grid-column:1/-1; display:grid; gap:10px; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr))}
+.doc-compo{cursor:default}
+.doc-btns{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px}
+.doc-btns .btn{min-height:30px; padding:5px 10px; font-size:.76rem}
+@media print{ .cal-tri{break-inside:avoid; opacity:1 !important} .cal-resume{display:none !important} }
 /* notifications */
 .notifs{list-style:none; margin:0; padding:0; display:flex; flex-direction:column}
 .notifs li{display:grid; grid-template-columns:auto 1fr auto; gap:10px; align-items:center; padding:10px 0; border-bottom:1px solid var(--bord)}
@@ -1163,7 +1187,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
   body.pr-saisie #vSaisie, body.pr-scolarite #vScolarite, body.pr-alpha #vAlpha,
   body.pr-synthese #vSynthese, body.pr-feuille #vFeuille, body.pr-notes #vNotes,
   body.pr-annee #vAnnee, body.pr-cartes #vCartes, body.pr-doc #vDoc, body.pr-appel #vAppel, body.pr-groupes #vGroupes,
-  body.pr-vie #vVie, body.pr-agenda #vAgenda, body.pr-edt #vEdt, body.pr-fourn #vFourn, body.pr-manuels #vManuels,
+  body.pr-vie #vVie, body.pr-agenda #vAgenda, body.pr-calendrier #vCalendrier, body.pr-edt #vEdt, body.pr-fourn #vFourn, body.pr-manuels #vManuels,
   body.pr-blocnotes #vBlocnotes, body.pr-textes #vTextes, body.pr-ecole #vEcole, body.pr-stats #vStats,
   body.pr-visites #vVisites, body.pr-inventaire #vInventaire, body.pr-taches #vTaches{display:block !important; animation:none !important}
   .edt input{font-size:9pt !important; padding:4px !important}
@@ -1235,6 +1259,8 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
   <symbol id="i-grille" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.8"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.8"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.8"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.8"/></symbol>
   <symbol id="i-aide" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.6v.6M12 17.2v.1"/></symbol>
   <symbol id="i-telecharger" viewBox="0 0 24 24"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19.5h14"/></symbol>
+  <symbol id="i-calendrier" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M8 3v4M16 3v4M3.5 10h17M8 14h2M14 14h2M8 17.5h2"/></symbol>
+  <symbol id="i-soleil" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></symbol>
   <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
   <symbol id="i-fermer" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
   <symbol id="i-photo" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></symbol>
@@ -1325,6 +1351,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
    <div id="orgHub" class="no-print">
     <div class="page-titre"><div><h1>Organisation</h1><p>Agenda, emploi du temps et tâches de l'année</p></div></div>
     <div class="liste-nav anim">
+      <button class="ln-item" type="button" data-outil="calendrier"><span class="rond"><svg class="ic"><use href="#i-calendrier"/></svg></span><span class="ln-txt"><b>Calendrier de l'année</b><small><span id="orgCalSous">Trimestres, compositions, congés et vacances</span></small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
       <button class="ln-item" type="button" data-outil="agenda"><span class="rond"><svg class="ic"><use href="#i-agenda"/></svg></span><span class="ln-txt"><b>Agenda</b><small><span id="orgAgSous">Compositions, congés, réunions, rappels</span></small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
       <button class="ln-item" type="button" data-outil="edt"><span class="rond"><svg class="ic"><use href="#i-horloge"/></svg></span><span class="ln-txt"><b>Emploi du temps</b><small><span id="orgEdtSous">Les matières de chaque jour</span></small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
       <button class="ln-item" type="button" data-outil="taches"><span class="rond"><svg class="ic"><use href="#i-check"/></svg></span><span class="ln-txt"><b>Tâches de l'année</b><small><span id="orgTaSous">Rentrée et fin d'année</span></small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
@@ -1350,6 +1377,14 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
          <button class="btn btn-sm btn-ghost" type="button" id="edtMoins">Retirer le dernier créneau</button></div>
        <p class="hint no-print">Touchez une case pour écrire la matière. Les horaires de la première colonne sont modifiables.</p></div>
    </section>
+   <section class="view is-hidden" id="vCalendrier">
+     <div class="page-titre"><div><h1 id="calTitre">Calendrier de l'année</h1><p>Découpage de l'année : trimestres, compositions, congés et vacances</p></div>
+       <button class="btn btn-primary btn-sm no-print" type="button" id="calAjout"><svg class="ic"><use href="#i-plus"/></svg>Ajouter</button></div>
+     <div class="notice no-print is-hidden" id="calOfficiel"><span id="calOfficielTxt" style="flex:1 1 220px"></span><button class="btn btn-sm btn-primary" type="button" id="calOfficielBtn">Ajouter le calendrier officiel</button></div>
+     <div class="situation cal-resume" id="calResume"></div>
+     <div id="calCorps"></div>
+     <p class="hint no-print">Touchez une date pour la modifier ou la supprimer. Les dates des compositions trimestrielles sont fixées par votre école : ajoutez-les dans chaque trimestre.</p>
+   </section>
    <section class="view is-hidden" id="vTaches">
      <div class="page-titre"><div><h1>Tâches de l'année</h1><p id="taSous">—</p></div></div>
      <div class="seg seg-mini no-print" role="tablist" id="taOnglets">
@@ -1368,6 +1403,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
     <h2 class="section-titre">Documents</h2>
     <div class="liste-nav">
       <button class="ln-item" type="button" data-go="documents|"><span class="rond"><svg class="ic"><use href="#i-imprimer"/></svg></span><span class="ln-txt"><b>Tous les documents</b><small>Listes, attestations, convocations, rapports…</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
+      <button class="ln-item" type="button" data-go="documents|compos"><span class="rond"><svg class="ic"><use href="#i-crayon"/></svg></span><span class="ln-txt"><b>Compositions</b><small>Chaque composition : notes, bulletins, tableau d'honneur</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
       <button class="ln-item" type="button" data-go="documents|cartes"><span class="rond"><svg class="ic"><use href="#i-notes"/></svg></span><span class="ln-txt"><b>Bulletins scolaires</b><small>Pour la composition choisie</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
       <button class="ln-item" type="button" data-go="documents|feuille"><span class="rond"><svg class="ic"><use href="#i-docs"/></svg></span><span class="ln-txt"><b>Tableau récapitulatif</b><small>Scolarité, effectifs, âges et visas</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
       <button class="ln-item" type="button" data-go="documents|d:presence"><span class="rond"><svg class="ic"><use href="#i-appel"/></svg></span><span class="ln-txt"><b>Fiche de présence du mois</b><small>Appels du matin et du soir, taux</small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
@@ -1767,6 +1803,8 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
         <button class="doc" type="button" data-doc="alpha" style="--i:4"><span class="feuille"></span><span><b>Liste de classe</b><small>Tableau alphabétique des élèves</small></span></button>
         <button class="doc" type="button" data-doc="scolarite" style="--i:5"><span class="feuille"></span><span><b>Tableaux de scolarité</b><small>Garçons et filles, âges et scolarités</small></span></button>
         <button class="doc" type="button" data-doc="synthese" style="--i:6"><span class="feuille"></span><span><b>Synthèse</b><small>Effectifs, âges, contrôles et visas</small></span></button>
+        <h2 class="section-titre" style="grid-column:1/-1;margin:14px 2px 0" id="docsComposTitre">Compositions</h2>
+        <div id="docsCompos" class="docs-compos"></div>
         <h2 class="section-titre" style="grid-column:1/-1;margin:14px 2px 0">Pour la classe</h2>
         <button class="doc" type="button" data-doc="d:emargement" style="--i:7"><span class="feuille"></span><span><b>Liste d'émargement</b><small>Noms et colonne de signature, pour une réunion ou une remise</small></span></button>
         <button class="doc" type="button" data-doc="d:etiquettes" style="--i:8"><span class="feuille"></span><span><b>Étiquettes de noms</b><small>Pour les cahiers, 24 par feuille</small></span></button>
@@ -2133,7 +2171,7 @@ function normDossier(d){
     recues: listeNorm(d.recues, 40, normRecue),
     agenda: listeNorm(d.agenda, 300, function(a){
       var t = txt(a && a.titre, 80).trim(), dt = dateJour(a && a.date); if(!t || !dt) return null;
-      return {id:idSur(a.id) || uid(), titre:t, date:dt, fin:dateJour(a.fin), type:["composition","conge","reunion","rappel","autre"].indexOf(a.type) >= 0 ? a.type : "autre"};
+      return {id:idSur(a.id) || uid(), titre:t, date:dt, fin:dateJour(a.fin), type:["composition","conge","trimestre","reunion","rappel","autre"].indexOf(a.type) >= 0 ? a.type : "autre"};
     }),
     rappelReporte: dateSure(d.rappelReporte)
   };
@@ -3715,7 +3753,7 @@ function dialogue(titre, corpsHtml, boutons, opt){
 }
 function dateFr(iso){
   if(!iso) return "—";
-  try{ return new Date(iso).toLocaleDateString("fr-FR", {day:"numeric", month:"long", year:"numeric"}); }catch(e){ return iso.slice(0,10); }
+  try{ return new Date(iso).toLocaleDateString("fr-FR", {day:"numeric", month:"long", year:"numeric"}).replace(/^1 /, "1er "); }catch(e){ return iso.slice(0,10); }
 }
 function ilYa(iso){
   if(!iso) return "jamais";
@@ -4322,13 +4360,13 @@ el("btnViderMois").addEventListener("click", function(){
 el("f_cartesMode").addEventListener("change", function(){ majTitreCartes(); buildCartes(); fitCartes(); majFab(); });
 
 /* ---------- navigation : 5 rubriques, chacune avec ses vues ---------- */
-var VIEWS = {stats:"vStats", visites:"vVisites", inventaire:"vInventaire", taches:"vTaches", doc:"vDoc", ecole:"vEcole", agenda:"vAgenda", edt:"vEdt", fourn:"vFourn", manuels:"vManuels", blocnotes:"vBlocnotes", textes:"vTextes", saisie:"vSaisie", appel:"vAppel", groupes:"vGroupes", vie:"vVie", scolarite:"vScolarite", alpha:"vAlpha", synthese:"vSynthese", feuille:"vFeuille", notes:"vNotes", annee:"vAnnee", cartes:"vCartes"};
+var VIEWS = {calendrier:"vCalendrier", stats:"vStats", visites:"vVisites", inventaire:"vInventaire", taches:"vTaches", doc:"vDoc", ecole:"vEcole", agenda:"vAgenda", edt:"vEdt", fourn:"vFourn", manuels:"vManuels", blocnotes:"vBlocnotes", textes:"vTextes", saisie:"vSaisie", appel:"vAppel", groupes:"vGroupes", vie:"vVie", scolarite:"vScolarite", alpha:"vAlpha", synthese:"vSynthese", feuille:"vFeuille", notes:"vNotes", annee:"vAnnee", cartes:"vCartes"};
 var RUBRIQUES = {accueil:"rAccueil", eleves:"rEleves", notes:"rNotes", organisation:"rOrga", plus:"rPlus", documents:"rDocuments", reglages:"rReglages"};
 /* onglet de la barre du bas allumé pour chaque rubrique */
 var NAV_DE = {accueil:"accueil", eleves:"eleves", notes:"notes", organisation:"organisation", plus:"plus", documents:"plus", reglages:"plus"};
 /* rubriques à page d'accueil (hub) puis outils */
 var HUBS = {accueil:["acHub","acRetour"], organisation:["orgHub","orgRetour"], plus:["plusHub","plusRetour"]};
-var RUBRIQUE_DE = {stats:"notes", visites:"plus", inventaire:"plus", taches:"organisation", doc:"documents", ecole:"plus", agenda:"organisation", edt:"organisation", fourn:"plus", manuels:"plus", blocnotes:"plus", textes:"plus", saisie:"eleves", appel:"eleves", groupes:"eleves", vie:"eleves", scolarite:"eleves", alpha:"eleves", synthese:"eleves", notes:"notes", annee:"notes", feuille:"documents", cartes:"documents"};
+var RUBRIQUE_DE = {calendrier:"organisation", stats:"notes", visites:"plus", inventaire:"plus", taches:"organisation", doc:"documents", ecole:"plus", agenda:"organisation", edt:"organisation", fourn:"plus", manuels:"plus", blocnotes:"plus", textes:"plus", saisie:"eleves", appel:"eleves", groupes:"eleves", vie:"eleves", scolarite:"eleves", alpha:"eleves", synthese:"eleves", notes:"notes", annee:"notes", feuille:"documents", cartes:"documents"};
 var DERNIERE_VUE = {eleves:"saisie", notes:"notes"};
 var vueActive = null, rubriqueActive = "accueil";
 var TITRES_CARTES = {cartes:"Bulletins scolaires", tableau:"Tableau des notes", annee:"Résultats de fin d'année"};
@@ -4382,6 +4420,7 @@ function montrerVue(v, anim){
 }
 function fermerDocument(){
   setTimeout(noterNavigation, 0);
+  if(typeof renderDocsCompos === "function") renderDocsCompos();
   el("docsHub").classList.remove("is-hidden"); el("docRetour").classList.add("is-hidden");
   el("vFeuille").classList.add("is-hidden"); el("vCartes").classList.add("is-hidden"); el("vDoc").classList.add("is-hidden");
   vueActive = null; animer(el("docsHub")); majFab();
@@ -4394,6 +4433,8 @@ function ouvrirDocument(d){
 }
 function majTitreCartes(){
   var m = el("f_cartesMode").value;
+  if(!el("f_mois2").options.length) renderNotes();
+  el("f_mois2").value = state.notes.mois;
   el("cartesTitre").textContent = TITRES_CARTES[m] || "Document";
   el("cartesMoisWrap").classList.toggle("is-hidden", m === "annee");
   el("cartesModeleWrap").classList.toggle("is-hidden", m !== "cartes");
@@ -5727,9 +5768,10 @@ document.querySelectorAll("[data-outil]").forEach(function(b){ b.addEventListene
 el("acRetour").addEventListener("click", function(){ allerRubrique("accueil"); });
 function fermerOutil(){
   Object.keys(HUBS).forEach(function(k){ el(HUBS[k][0]).classList.remove("is-hidden"); el(HUBS[k][1]).classList.add("is-hidden"); });
-  ["vEcole","vAgenda","vEdt","vFourn","vManuels","vBlocnotes","vTextes","vVisites","vInventaire","vTaches"].forEach(function(id){ el(id).classList.add("is-hidden"); });
+  ["vCalendrier","vEcole","vAgenda","vEdt","vFourn","vManuels","vBlocnotes","vTextes","vVisites","vInventaire","vTaches"].forEach(function(id){ el(id).classList.add("is-hidden"); });
 }
 function renderOutil(v){
+  if(v === "calendrier") renderCalendrier();
   if(v === "agenda") renderAgenda();
   if(v === "edt") renderEdt();
   if(v === "fourn") renderFourn();
@@ -5743,7 +5785,7 @@ function renderOutil(v){
 }
 
 /* agenda */
-var TYPES_AG = [["composition","Composition"],["conge","Congés"],["reunion","Réunion"],["rappel","Rappel"],["autre","Autre"]];
+var TYPES_AG = [["composition","Composition"],["conge","Congés / vacances"],["trimestre","Trimestre"],["reunion","Réunion"],["rappel","Rappel"],["autre","Autre"]];
 function libType(t){ var x = TYPES_AG.filter(function(k){ return k[0] === t; })[0]; return x ? x[1] : "Autre"; }
 function moisCourt(iso){ try{ return new Date(iso + "T12:00:00").toLocaleDateString("fr-FR", {month:"short"}).replace(".", ""); }catch(e){ return iso.slice(5, 7); } }
 function joursAvant(iso){ return Math.round((Date.parse(iso + "T12:00:00") - Date.parse(aujourdhuiISO() + "T12:00:00")) / 86400000); }
@@ -5777,25 +5819,26 @@ function renderAgenda(){
     return '<li style="cursor:default"><span class="ag-date"><b>' + Number(x.date.slice(8, 10)) + '</b><small>' + esc(moisCourt(x.date)) + '</small></span><span class="ag-txt"><b>' + esc(x.e.nom) + '</b><small>' + x.age + ' ans · ' + (x.j === 0 ? "aujourd'hui" : "dans " + x.j + " jour(s)") + (dossier.classes.length > 1 ? " · " + esc(nomClasse(x.c)) : "") + '</small></span><span class="ag-type t-anniv">Anniversaire</span></li>';
   }).join("") || '<li class="vide-etat" style="border:0;cursor:default">Aucun anniversaire. Les dates de naissance se saisissent dans la fiche de chaque élève.</li>';
 }
-function editerEvenement(id){
+function editerEvenement(id, pre){
   var a = id ? dossier.agenda.filter(function(x){ return x.id === id; })[0] : null;
-  var corps = '<div class="fiche-grille"><div class="field plein"><label for="agTitre">Intitulé</label><input id="agTitre" name="titre" maxlength="80" value="' + esc(a ? a.titre : "") + '" placeholder="Ex. Composition de décembre"></div>'
-    + '<div class="field plein"><label for="agType">Type</label><select id="agType" name="type">' + TYPES_AG.map(function(t){ return '<option value="' + t[0] + '"' + ((a ? a.type : "composition") === t[0] ? ' selected' : '') + '>' + t[1] + '</option>'; }).join("") + '</select></div>'
-    + '<div class="field"><label for="agDate">Date</label><input id="agDate" name="date" type="date" value="' + (a ? a.date : aujourdhuiISO()) + '"></div>'
+  pre = pre || {};
+  var corps = '<div class="fiche-grille"><div class="field plein"><label for="agTitre">Intitulé</label><input id="agTitre" name="titre" maxlength="80" value="' + esc(a ? a.titre : (pre.titre || "")) + '" placeholder="Ex. Composition de décembre"></div>'
+    + '<div class="field plein"><label for="agType">Type</label><select id="agType" name="type">' + TYPES_AG.map(function(t){ return '<option value="' + t[0] + '"' + ((a ? a.type : (pre.type || "composition")) === t[0] ? ' selected' : '') + '>' + t[1] + '</option>'; }).join("") + '</select></div>'
+    + '<div class="field"><label for="agDate">Date</label><input id="agDate" name="date" type="date" value="' + (a ? a.date : (pre.date || aujourdhuiISO())) + '"></div>'
     + '<div class="field"><label for="agFin">Jusqu\'au (facultatif)</label><input id="agFin" name="fin" type="date" value="' + (a ? a.fin : "") + '"></div></div>';
   var boutons = a ? [{label:"Supprimer", valeur:"suppr", style:"btn-danger"}, {label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Enregistrer", valeur:"ok", style:"btn-primary"}]
                   : [{label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Ajouter", valeur:"ok", style:"btn-primary"}];
   dialogue(a ? "Modifier" : "Ajouter à l'agenda", corps, boutons, {champs:true, feuille:true, focus:a ? null : "agTitre"}).then(function(r){
     if(!r || !r.valeur) return;
     avantModif(false);
-    if(r.valeur === "suppr"){ dossier.agenda = dossier.agenda.filter(function(x){ return x !== a; }); persist(); renderAgenda(); renderAccueil(false); toast("Supprimé.", {label:"Annuler", fn:annuler}); return; }
+    if(r.valeur === "suppr"){ dossier.agenda = dossier.agenda.filter(function(x){ return x !== a; }); persist(); renderAgenda(); renderAccueil(false); if(vueActive === "calendrier") renderCalendrier(); toast("Supprimé.", {label:"Annuler", fn:annuler}); return; }
     var c = r.champs, titre = txt(c.titre, 80).trim(), d = dateJour(c.date);
     if(!titre || !d){ toast("Indiquez un intitulé et une date."); return; }
     var fin = dateJour(c.fin); if(fin && fin < d) fin = "";
     var type = TYPES_AG.some(function(t){ return t[0] === c.type; }) ? c.type : "autre";
     if(a){ a.titre = titre; a.date = d; a.fin = fin; a.type = type; }
     else dossier.agenda.push({id:uid(), titre:titre, date:d, fin:fin, type:type});
-    persist(); renderAgenda(); renderAccueil(false);
+    persist(); renderAgenda(); renderAccueil(false); if(vueActive === "calendrier") renderCalendrier();
   });
 }
 el("agAjout").addEventListener("click", function(){ editerEvenement(null); });
@@ -5992,7 +6035,7 @@ function renderAccueil3B(){
   var compo = dossier.agenda.filter(function(a){ return a.type === "composition" && a.date >= auj; }).sort(function(a, b){ return a.date.localeCompare(b.date); })[0];
   el("acCompte").classList.toggle("is-hidden", !compo);
   if(compo){ var j = joursAvant(compo.date); el("acCompte").textContent = (j === 0 ? "Composition aujourd'hui" : j === 1 ? "Composition demain" : "Composition dans " + j + " jours") + " · " + compo.titre; }
-  var jour = dossier.agenda.filter(function(a){ return a.date <= auj && (a.fin || a.date) >= auj && a.type !== "composition"; });
+  var jour = dossier.agenda.filter(function(a){ return a.date <= auj && (a.fin || a.date) >= auj && a.type !== "composition" && a.type !== "trimestre"; });
   var an = anniversaires(0);
   var morceaux = jour.map(function(a){ return '<b>' + esc(libType(a.type)) + ' :</b> ' + esc(a.titre); })
     .concat(an.map(function(x){ return '<b>Anniversaire :</b> ' + esc(x.e.nom) + ' a ' + x.age + ' ans aujourd\'hui'; }));
@@ -7142,6 +7185,7 @@ el("acInstallBtn").addEventListener("click", function(){
 
 /* ---------- « Quoi de neuf » après une mise à jour ---------- */
 var NOUVEAUTES = [
+  ["2.1.0", ["Organisation : calendrier de l'année — trimestres, compositions trimestrielles, congés et grandes vacances (calendrier officiel 2026-2027 à ajouter d'un geste)","Documents : rubrique « Compositions » avec chaque composition saisie (tableau des notes, bulletins, tableau d'honneur)"]],
   ["2.0.0", ["Nouvelle présentation : bleu nuit et ambre, une seule police, cartes plus compactes","Barre du bas : Accueil, Élèves, Notes, Organisation, Plus (barre latérale sur ordinateur)","Accueil repensé : actions rapides, activités du jour avec leur statut, situation de la classe","Cloche de notifications : sauvegarde, appels, compositions non terminées, rappels","Organisation : agenda, emploi du temps et tâches de l'année réunis","Plus : documents, ressources, vie professionnelle et administration","Recherche élargie aux compositions, à l'agenda et au bloc-notes"]],
   ["1.13.3", ["Appel : bilan de fin de mois pour toute la classe — présences possibles, présences effectives, absences, taux de présence et taux d'absence"]],
   ["1.13.1", ["Fiche de présence du mois à imprimer : appels du matin et du soir de chaque jour, totaux et taux (garçons, filles, classe)"]],
@@ -7174,7 +7218,10 @@ el("btnNouveautes").addEventListener("click", function(){ quoiDeNeuf(true); });
 /* ---------- liens génériques « data-go="rubrique|vue" » ---------- */
 function allerVers(go){
   var p = String(go || "").split("|"), r = p[0], v = p[1] || "";
-  if(r === "documents"){ if(!v) allerRubrique("documents"); else ouvrirDocument(v); return; }
+  if(r === "documents"){
+    if(v === "compos"){ allerRubrique("documents"); setTimeout(function(){ var n = el("docsComposTitre"); window.scrollTo({top:n.getBoundingClientRect().top + window.scrollY - 76, behavior:"smooth"}); }, 80); return; }
+    if(!v) allerRubrique("documents"); else ouvrirDocument(v); return;
+  }
   if(r === "reglages"){
     allerRubrique("reglages");
     if(v && el(v)) setTimeout(function(){ var n = el(v); var y = n.getBoundingClientRect().top + window.scrollY - 76; window.scrollTo({top:y, behavior:"smooth"}); n.classList.remove("eclair"); void n.offsetWidth; n.classList.add("eclair"); }, 80);
@@ -7225,7 +7272,7 @@ function activitesDuJour(){
       }
     }
   }
-  dossier.agenda.filter(function(a){ return a.date <= auj && (a.fin || a.date) >= auj; }).forEach(function(a){
+  dossier.agenda.filter(function(a){ return a.type !== "trimestre" && a.date <= auj && (a.fin || a.date) >= auj; }).forEach(function(a){
     l.push({ic:"i-agenda", t:esc(a.titre), s:libType(a.type) + (a.fin && a.fin !== a.date ? " · jusqu'au " + dateFr(a.fin) : ""), st:a.fin && a.fin !== a.date ? "encours" : "afaire", lib:a.fin && a.fin !== a.date ? "En cours" : "Aujourd'hui", btn:"Agenda", act:"agenda"});
   });
   anniversaires(0).forEach(function(x){ l.push({ic:"i-etoile", t:"Anniversaire de " + esc(x.e.nom), s:x.age + " ans aujourd'hui", st:"info", lib:"Aujourd'hui"}); });
@@ -7302,7 +7349,9 @@ el("acSituation").addEventListener("click", function(ev){
 /* ---------- Organisation ---------- */
 function renderOrga(){
   var auj = aujourdhuiISO();
-  var avenir = dossier.agenda.filter(function(a){ return (a.fin || a.date) >= auj; }).sort(function(a, b){ return a.date.localeCompare(b.date); });
+  var avenir = dossier.agenda.filter(function(a){ return a.type !== "trimestre" && (a.fin || a.date) >= auj; }).sort(function(a, b){ return a.date.localeCompare(b.date); });
+  var ev = evtsAnnee(), proc = ev.filter(function(a){ return a.type === "conge" && a.date > auj; })[0], encours = ev.filter(function(a){ return a.type === "trimestre" && a.date <= auj && (a.fin || a.date) >= auj; })[0];
+  el("orgCalSous").textContent = !ev.length ? "Trimestres, compositions, congés et vacances" : (encours ? encours.titre + " en cours" : "Année " + anneeDebut() + "–" + (anneeDebut() + 1)) + (proc ? " · " + proc.titre.replace(/^Congés de /, "") + " dans " + joursAvant(proc.date) + " j" : "");
   el("orgAgSous").textContent = avenir.length ? avenir.length + " événement(s) à venir" : "Compositions, congés, réunions, rappels";
   var cours = edtDuJour(); el("orgEdtSous").textContent = cours.length ? "Aujourd'hui : " + cours.map(function(c){ return c.m; }).join(" · ") : "Les matières de chaque jour";
   var tf = ["rentree","fin"].map(function(o){ var x = state.taches[o] || []; return x.filter(function(t){ return t.fait; }).length + "/" + x.length; });
@@ -7351,7 +7400,7 @@ function notifications(){
   var sansAge = l.filter(function(e){ return e.age == null; }).length;
   if(sansAge) n.push({niv:"info", ic:"i-eleves", t:"Informations à vérifier", s:sansAge + " élève(s) sans âge", btn:"Voir", v:"go:eleves|saisie"});
   var c = controles(); if(c.length) n.push({niv:c.some(function(x){ return x.bad; }) ? "bad" : "info", ic:"i-alerte", t:c.length + " point(s) à vérifier", s:"Effectifs, âges, scolarités", btn:"Voir", v:"go:eleves|synthese"});
-  dossier.agenda.filter(function(a){ return a.date <= decalerJour(auj, 1) && (a.fin || a.date) >= auj; }).forEach(function(a){
+  dossier.agenda.filter(function(a){ return a.type !== "trimestre" && a.date <= decalerJour(auj, 1) && (a.fin || a.date) >= auj; }).forEach(function(a){
     n.push({niv:"info", ic:"i-agenda", t:a.titre, s:libType(a.type) + " · " + (a.date > auj ? "demain" : "aujourd'hui"), btn:"Agenda", v:"go:organisation|agenda"});
   });
   anniversaires(0).forEach(function(x){ n.push({niv:"info", ic:"i-etoile", t:"Anniversaire : " + x.e.nom, s:x.age + " ans aujourd'hui"}); });
@@ -7379,6 +7428,121 @@ el("btnNotif").addEventListener("click", function(){
     });
 });
 
+/* ---------- calendrier de l'année : trimestres, compositions, congés, vacances ---------- */
+/* Calendrier officiel 2026-2027 (MENA, rentrée du 14 septembre 2026 ; arrêté rectificatif pour Pâques) */
+var CALENDRIERS_OFFICIELS = {
+  "2026": [
+    {titre:"Rentrée scolaire", type:"autre", date:"2026-09-14", fin:""},
+    {titre:"1er trimestre", type:"trimestre", date:"2026-09-14", fin:"2026-12-04"},
+    {titre:"Congés de Toussaint", type:"conge", date:"2026-10-23", fin:"2026-11-01"},
+    {titre:"2e trimestre", type:"trimestre", date:"2026-12-07", fin:"2027-03-12"},
+    {titre:"Congés de Noël", type:"conge", date:"2026-12-18", fin:"2027-01-03"},
+    {titre:"Congés de février", type:"conge", date:"2027-02-05", fin:"2027-02-14"},
+    {titre:"3e trimestre", type:"trimestre", date:"2027-03-15", fin:"2027-06-11"},
+    {titre:"Congés de Pâques", type:"conge", date:"2027-03-19", fin:"2027-04-04"},
+    {titre:"Grandes vacances", type:"conge", date:"2027-07-30", fin:"2027-09-12"}
+  ]
+};
+function anneeDebut(){ var a = Number(state.meta.an1); return a || anneeScolaire()[0]; }
+function bornesAnnee(){ var a = anneeDebut(); return [a + "-08-01", (a + 1) + "-09-30"]; }
+function evtsAnnee(){
+  var b = bornesAnnee();
+  return dossier.agenda.filter(function(x){ return (x.fin || x.date) >= b[0] && x.date <= b[1] && (x.type === "trimestre" || x.type === "conge" || x.type === "composition" || /rentr|fin d.ann|examen|cepe/i.test(x.titre)); })
+    .sort(function(x, y){ return x.date.localeCompare(y.date) || (y.type === "trimestre") - (x.type === "trimestre"); });
+}
+function dureeJours(a){ return a.fin ? Math.round((Date.parse(a.fin + "T12:00:00") - Date.parse(a.date + "T12:00:00")) / 86400000) + 1 : 1; }
+function quandEvt(a){
+  var auj = aujourdhuiISO(), fin = a.fin || a.date;
+  if(fin < auj) return {st:"passe", lib:"Passé"};
+  if(a.date <= auj) return {st:"encours", lib:a.type === "trimestre" ? "En cours" : a.type === "conge" ? "En congé" : "Aujourd'hui"};
+  var j = joursAvant(a.date); return {st:j <= 7 ? "bientot" : "avenir", lib:j === 1 ? "Demain" : "Dans " + j + " j"};
+}
+var ICONE_TYPE = {trimestre:"i-agenda", conge:"i-soleil", composition:"i-crayon", autre:"i-etoile", reunion:"i-eleves", rappel:"i-cloche"};
+function periodeTxt(a){ return a.fin && a.fin !== a.date ? "du " + dateFr(a.date) + " au " + dateFr(a.fin) : dateFr(a.date); }
+function ligneCal(a){
+  var q = quandEvt(a), d = dureeJours(a);
+  return '<li class="cal-evt ' + a.type + ' ' + q.st + '" data-ag="' + a.id + '"><span class="act-ic"><svg class="ic"><use href="#' + (ICONE_TYPE[a.type] || "i-agenda") + '"/></svg></span>'
+    + '<span class="act-txt"><b>' + esc(a.titre) + '</b><small>' + periodeTxt(a) + (d > 1 ? " · " + d + " jours" : "") + '</small></span>'
+    + '<span class="statut ' + ({passe:"", encours:"fait", bientot:"encours", avenir:"info"}[q.st]) + '">' + q.lib + '</span></li>';
+}
+function renderCalendrier(){
+  var l = evtsAnnee(), auj = aujourdhuiISO(), an = anneeDebut(), officiel = CALENDRIERS_OFFICIELS[String(an)];
+  el("calTitre").textContent = "Calendrier " + an + "–" + (an + 1);
+  var tri = l.filter(function(a){ return a.type === "trimestre" && a.fin; });
+  var manquants = officiel ? officiel.filter(function(o){ return !dossier.agenda.some(function(x){ return x.type === o.type && x.date === o.date && (x.fin || "") === o.fin; }); }) : [];
+  el("calOfficiel").classList.toggle("is-hidden", !officiel || !manquants.length);
+  el("calOfficielTxt").innerHTML = officiel ? '<b>Calendrier officiel ' + an + '–' + (an + 1) + '</b> : rentrée, trois trimestres, congés de Toussaint, de Noël, de février, de Pâques et grandes vacances. ' + (manquants.length < officiel.length ? manquants.length + ' date(s) manquante(s).' : '') : '';
+  /* résumé : où en est-on ? */
+  var actuel = tri.filter(function(t){ return t.date <= auj && t.fin >= auj; })[0];
+  var conge = l.filter(function(a){ return a.type === "conge" && a.date <= auj && (a.fin || a.date) >= auj; })[0];
+  var procConge = l.filter(function(a){ return a.type === "conge" && a.date > auj; })[0];
+  var procCompo = l.filter(function(a){ return a.type === "composition" && a.date >= auj; })[0];
+  var res = [];
+  if(conge) res.push({l:"En ce moment", v:esc(conge.titre), s:"Reprise après le " + dateFr(conge.fin || conge.date)});
+  else if(actuel){
+    var tot = dureeJours(actuel), fait = Math.round((Date.parse(auj + "T12:00:00") - Date.parse(actuel.date + "T12:00:00")) / 86400000) + 1;
+    res.push({l:"En ce moment", v:esc(actuel.titre), s:"Jusqu'au " + dateFr(actuel.fin), pc:Math.round(fait / tot * 100)});
+  }
+  if(procCompo) res.push({l:"Prochaine composition", v:esc(procCompo.titre), s:joursAvant(procCompo.date) === 0 ? "Aujourd'hui" : "Dans " + joursAvant(procCompo.date) + " jours · " + dateFr(procCompo.date)});
+  if(procConge) res.push({l:"Prochain congé", v:esc(procConge.titre), s:"Dans " + joursAvant(procConge.date) + " jours · " + dateFr(procConge.date)});
+  el("calResume").innerHTML = res.map(function(x){ return '<div class="sit"><small>' + x.l + '</small><b>' + x.v + '</b><span>' + x.s + '</span>' + (x.pc != null ? '<i class="cal-barre"><i style="width:' + x.pc + '%"></i></i>' : '') + '</div>'; }).join("");
+  el("calResume").classList.toggle("is-hidden", !res.length);
+  /* découpage par trimestre */
+  var places = {}, blocs = [];
+  tri.forEach(function(t, i){
+    var suivant = tri[i + 1], finZone = suivant ? decalerJour(suivant.date, -1) : t.fin;
+    var dedans = l.filter(function(a){ return a !== t && a.type !== "trimestre" && !places[a.id] && a.date >= t.date && a.date <= finZone; });
+    dedans.forEach(function(a){ places[a.id] = 1; });
+    var q = quandEvt(t);
+    var compos = dedans.filter(function(a){ return a.type === "composition"; }).length;
+    blocs.push('<div class="sheet cal-tri ' + q.st + '"><div class="cal-tete"><span><b>' + esc(t.titre) + '</b><small>' + periodeTxt(t) + ' · ' + Math.round(dureeJours(t) / 7) + ' semaines</small></span>'
+      + '<span class="statut ' + ({passe:"", encours:"fait", bientot:"encours", avenir:"info"}[q.st]) + '">' + q.lib + '</span><button type="button" class="icon-btn mini no-print" data-ag="' + t.id + '" aria-label="Modifier"><svg class="ic"><use href="#i-crayon"/></svg></button></div>'
+      + '<ul class="act-liste">' + dedans.map(ligneCal).join("") + '</ul>'
+      + (!compos ? '<button type="button" class="btn btn-sm no-print cal-ajout-compo" data-compo-tri="' + (i + 1) + '" data-date="' + t.fin + '"><svg class="ic"><use href="#i-plus"/></svg>Date de la composition du ' + (i ? (i + 1) + "e" : "1er") + ' trimestre</button>' : '')
+      + '</div>');
+  });
+  var reste = l.filter(function(a){ return a.type !== "trimestre" && !places[a.id]; });
+  var avant = reste.filter(function(a){ return !tri.length || a.date < tri[0].date; }), apres = reste.filter(function(a){ return tri.length && a.date >= tri[0].date; });
+  var html = (avant.length ? '<div class="sheet cal-tri"><ul class="act-liste">' + avant.map(ligneCal).join("") + '</ul></div>' : '')
+    + blocs.join("") + (apres.length ? '<div class="sheet cal-tri"><div class="cal-tete"><span><b>Fin d\'année et vacances</b></span></div><ul class="act-liste">' + apres.map(ligneCal).join("") + '</ul></div>' : '');
+  el("calCorps").innerHTML = html || '<div class="sheet"><p class="vide-etat" style="margin:0">Aucune date pour cette année. ' + (officiel ? 'Touchez « Ajouter le calendrier officiel » ci-dessus, ou ajoutez' : 'Ajoutez') + ' vos trimestres, compositions et congés.</p></div>';
+}
+el("calOfficielBtn").addEventListener("click", function(){
+  var off = CALENDRIERS_OFFICIELS[String(anneeDebut())]; if(!off) return;
+  avantModif(false); var n = 0;
+  off.forEach(function(o){
+    if(dossier.agenda.some(function(x){ return x.type === o.type && x.date === o.date && (x.fin || "") === o.fin; })) return;
+    dossier.agenda.push({id:uid(), titre:o.titre, date:o.date, fin:o.fin, type:o.type}); n++;
+  });
+  persist(); renderCalendrier(); renderAccueil(false);
+  toast(n + " date(s) ajoutée(s). Ajoutez maintenant les dates de vos compositions.", {label:"Annuler", fn:annuler});
+});
+el("calAjout").addEventListener("click", function(){ editerEvenement(null, {type:"conge"}); });
+el("calCorps").addEventListener("click", function(ev){
+  var c = ev.target.closest("[data-compo-tri]");
+  if(c){ var n = Number(c.getAttribute("data-compo-tri")); editerEvenement(null, {type:"composition", titre:"Composition du " + (n > 1 ? n + "e" : "1er") + " trimestre", date:c.getAttribute("data-date")}); return; }
+  var li = ev.target.closest("[data-ag]"); if(li) editerEvenement(li.getAttribute("data-ag"));
+});
+
+/* ---------- documents : les compositions saisies ---------- */
+function renderDocsCompos(){
+  var per = periodesRenseignees();
+  el("docsCompos").innerHTML = per.length ? per.slice().reverse().map(function(p, i){
+    var cl = classement(p);
+    return '<div class="doc doc-compo" style="--i:' + i + '"><span class="feuille"></span><span><b>' + esc(libellePeriode(p)) + '</b><small>' + (estTrimestre(p) || p === PASSAGE ? "Compte pour l'année" : "Ne compte pas") + ' · ' + cl.sur + ' élève(s) · moyenne ' + (cl.moyenneClasse == null ? "—" : nombreFr(cl.moyenneClasse, 2)) + '</small>'
+      + '<span class="doc-btns"><button type="button" class="btn btn-sm" data-compo-doc="tableau" data-p="' + esc(p) + '">Tableau des notes</button><button type="button" class="btn btn-sm" data-compo-doc="cartes" data-p="' + esc(p) + '">Bulletins</button><button type="button" class="btn btn-sm" data-compo-doc="honneur" data-p="' + esc(p) + '">Tableau d\'honneur</button></span></span></div>';
+  }).join("") + '<button class="doc" type="button" data-doc="d:recap"><span class="feuille"></span><span><b>Toutes les compositions</b><small>Moyennes de chaque composition, moyenne annuelle et rang, sur une feuille</small></span></button>'
+  : '<p class="hint" style="grid-column:1/-1;margin:0">Aucune composition saisie pour l\'instant. Elles apparaîtront ici dès que des notes seront entrées.</p>';
+}
+el("docsCompos").addEventListener("click", function(ev){
+  var b = ev.target.closest("[data-compo-doc]"); if(!b) return;
+  ev.stopPropagation();
+  var p = b.getAttribute("data-p"), d = b.getAttribute("data-compo-doc");
+  state.notes.mois = p;
+  if(d === "honneur"){ docOpts.honneur = docOpts.honneur || {}; docOpts.honneur.compo = p; ouvrirDocument("d:honneur"); }
+  else ouvrirDocument(d);
+});
+
 /* ---------- couleur de l'application ---------- */
 el("rgCouleur").addEventListener("change", function(){ changerPref("couleur", this.value === "bleu" ? "bleu" : "registre"); });
 
@@ -7391,7 +7555,7 @@ function entreesRecherche(){
   });
   var vues = [["Liste des élèves","eleves","saisie"],["Cahier d'appel","eleves","appel"],["Groupes d'EPS et PNAPAS","eleves","groupes"],["Vie de classe, balayage, tirage au sort","eleves","vie"],["Tableaux de scolarité","eleves","scolarite"],
     ["Liste de classe","eleves","alpha"],["Synthèse, effectifs, âges","eleves","synthese"],["Saisir des notes, compositions","notes","notes"],["Fin d'année, moyennes annuelles","notes","annee"],["Statistiques et graphiques","notes","stats"],
-    ["Tableau récapitulatif","documents","feuille"],["Bulletins scolaires","documents","cartes"],["Agenda","accueil","agenda"],["Emploi du temps","accueil","edt"],["Fournitures","accueil","fourn"],["Manuels et kits","accueil","manuels"],
+    ["Tableau récapitulatif","documents","feuille"],["Bulletins scolaires","documents","cartes"],["Calendrier de l'année, congés, vacances, trimestres","organisation","calendrier"],["Agenda","accueil","agenda"],["Emploi du temps","accueil","edt"],["Fournitures","accueil","fourn"],["Manuels et kits","accueil","manuels"],
     ["Bloc-notes","accueil","blocnotes"],["Chants et récitations","accueil","textes"],["Registre des visites","accueil","visites"],["Inventaire","accueil","inventaire"],["Tâches de l'année","accueil","taches"]];
   vues.forEach(function(x){ r.push({t:x[1] === "documents" ? "Document" : "Écran", l:x[0], s:"", v:"n|" + x[1] + "|" + x[2]}); });
   Object.keys(DOCS).forEach(function(k){ r.push({t:"Document", l:DOCS[k], s:"", v:"d|" + k}); });
@@ -7441,7 +7605,7 @@ function tableauMatieresEleve(e){
 }
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "2.0.0";
+var APP_VERSION = "2.1.0";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
