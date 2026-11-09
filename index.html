@@ -1300,7 +1300,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
 
   <!-- =================== NOTES =================== -->
   <section class="rubrique is-hidden" id="rNotes">
-    <div class="page-titre no-print"><div><h1>Notes</h1><p>Compositions mensuelles, passage et fin d'année</p></div></div>
+    <div class="page-titre no-print"><div><h1>Notes</h1><p>Évaluations mensuelles, compositions trimestrielles, passage et fin d'année</p></div></div>
     <div class="seg no-print" role="tablist" data-seg="notes">
       <button role="tab" data-v="notes" aria-selected="true">Compositions</button>
       <button role="tab" data-v="annee" aria-selected="false">Fin d'année</button>
@@ -1319,7 +1319,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
         </div>
         <div class="mat-panel is-hidden no-print" id="matPanel">
           <div class="lg" id="matList"></div>
-          <p class="hint">Pour chaque matière, choisissez son barème : /10, /20 ou /50. La moyenne est calculée sur le total des points obtenus rapporté au total des points possibles, puis ramenée à l'échelle de la classe.</p>
+          <p class="hint">Pour chaque matière, choisissez son barème : /10, /20, /40 ou /50. La moyenne est calculée sur le total des points obtenus rapporté au total des points possibles, puis ramenée à l'échelle de la classe.</p>
         </div>
         <div class="outils-liste no-print">
           <span class="bascule" id="ntModes" role="group" aria-label="Mode de saisie">
@@ -1357,13 +1357,14 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
         <h2>Résultats de fin d'année <small id="anStatus">—</small></h2>
         <div class="nt-tools no-print">
           <div class="field mini"><label for="f_seuil">Moyenne d'admission</label><input id="f_seuil" inputmode="decimal" style="width:110px"></div>
-          <p class="hint" style="margin:0 0 4px">Moyenne annuelle = (moyenne des compositions mensuelles + composition de passage × 2) ÷ 3.</p>
+          <div class="field mini"><label for="f_coef">Poids du passage</label><select id="f_coef"><option value="1">× 1</option><option value="2">× 2</option><option value="3">× 3</option></select></div>
+          <p class="hint" style="margin:0 0 4px"><span id="anFormule">Moyenne annuelle = (moyenne des compositions trimestrielles + composition de passage × 2) ÷ 3.</span> Les évaluations mensuelles ne comptent pas.</p>
         </div>
         <div class="scroll" id="tAnnee">
           <table><thead><tr id="anHead"></tr></thead><tbody id="tbAnnee"></tbody></table>
         </div>
         <div class="nt-legend">
-          <span>Compositions prises en compte <b id="anNb">0</b></span>
+          <span>Compositions trimestrielles prises en compte <b id="anNb">0</b></span>
           <span>Élèves classés <b id="anSur">0</b></span>
           <span>Moyenne de la classe <b id="anMoy">—</b></span>
           <span>Admis(e)s <b id="anAdmis">0</b></span>
@@ -1626,7 +1627,11 @@ var MAT_NOM = {lect:"Lecture", ecr:"Ecriture", graph:"Graphisme", expe:"Exp. Ecr
 var CODES = MATIERES.map(function(m){ return m.code; });
 var MOIS = ["Octobre","Novembre","D\u00e9cembre","Janvier","F\u00e9vrier","Mars","Avril","Mai","Juin"];
 var PASSAGE = "Passage";
-var PERIODES = MOIS.concat([PASSAGE]);
+var TRIMESTRES = ["Trimestre 1","Trimestre 2","Trimestre 3"];
+/* ordre chronologique : évaluations mensuelles, compositions trimestrielles, passage */
+var PERIODES = ["Octobre","Novembre","D\u00e9cembre","Trimestre 1","Janvier","F\u00e9vrier","Mars","Trimestre 2","Avril","Mai","Juin","Trimestre 3",PASSAGE];
+function estTrimestre(m){ return TRIMESTRES.indexOf(m) >= 0; }
+var BAREMES = [10,20,40,50];
 var MOIS_DEF = MOIS[0];
 
 var DEMO = {
@@ -1976,7 +1981,7 @@ function normNotes(n, codesClasse){
   var baremes = {};
   CODES.forEach(function(c){
     var v = Number(srcBaremes[c]);
-    baremes[c] = (v === 10 || v === 20 || v === 50) ? v : ancienBareme;
+    baremes[c] = BAREMES.indexOf(v) >= 0 ? v : ancienBareme;
   });
   var data = {}, src = (n.data && typeof n.data === "object") ? n.data : {};
   PERIODES.forEach(function(m){
@@ -2006,7 +2011,8 @@ function normNotes(n, codesClasse){
   };
   var appr = parPeriode(n.appr, function(v){ return txt(v, 160).trim(); });
   var conduite = parPeriode(n.conduite, function(v){ return CONDUITES.some(function(c){ return c[0] === v; }) ? v : ""; });
-  return {bareme:ancienBareme, echelle:echelle, baremes:baremes, mois:mois, actives:actives, data:data, seuil:seuil, appr:appr, conduite:conduite};
+  var coefPassage = [1,2,3].indexOf(Number(n.coefPassage)) >= 0 ? Number(n.coefPassage) : 2;
+  return {bareme:ancienBareme, echelle:echelle, baremes:baremes, mois:mois, actives:actives, data:data, seuil:seuil, appr:appr, conduite:conduite, coefPassage:coefPassage};
 }
 
 /* ---------- calculs : la logique du registre ---------- */
@@ -2051,7 +2057,7 @@ function poserNote(e, code, valeur, m){
 function echelleMoyenne(){ return Number(state.notes.echelle) === 20 ? 20 : 10; }
 function baremeMat(code){
   var v = Number(state.notes.baremes && state.notes.baremes[code]);
-  return (v === 10 || v === 20 || v === 50) ? v : (Number(state.notes.bareme) === 20 ? 20 : 10);
+  return BAREMES.indexOf(v) >= 0 ? v : (Number(state.notes.bareme) === 20 ? 20 : 10);
 }
 function appreciation(moy){
   if(moy == null) return "";
@@ -2093,7 +2099,9 @@ function libelleMois(m){
 }
 /* « Composition du mois d'octobre », « Composition de passage » */
 function libellePeriode(m, majDebut){
-  var t = (m === PASSAGE) ? "composition de passage" : ("composition du mois " + libelleMois(m));
+  var t = (m === PASSAGE) ? "composition de passage"
+        : estTrimestre(m) ? "composition du " + (m.slice(-1) === "1" ? "1er" : m.slice(-1) + "e") + " trimestre"
+        : ("évaluation du mois " + libelleMois(m));
   return majDebut === false ? t : t.charAt(0).toUpperCase() + t.slice(1);
 }
 function nombreFr(v, dec){
@@ -2104,12 +2112,20 @@ function nombreFr(v, dec){
 }
 function noteHorsBareme(v, code){ return v != null && (v < 0 || v > baremeMat(code)); }
 
-/* --- fin d'annee : (moyenne des compositions + passage x 2) / 3 --- */
+/* --- fin d'année : (moyenne des compositions TRIMESTRIELLES + passage × k) / (1 + k).
+   Les évaluations mensuelles, au niveau de l'école, n'entrent pas dans ce calcul. --- */
+function periodesRenseignees(liste){
+  return (liste || PERIODES).filter(function(m){ var b = state.notes.data[m]; return b && Object.keys(b).length; });
+}
 function moisRenseignes(){
-  return MOIS.filter(function(m){
+  return TRIMESTRES.filter(function(m){
     var bloc = state.notes.data[m];
     return bloc && Object.keys(bloc).length;
   });
+}
+function formuleAnnuelle(){
+  var k = state.notes.coefPassage || 2;
+  return "(moyenne des compositions trimestrielles + composition de passage" + (k > 1 ? " × " + k : "") + ") ÷ " + (1 + k);
 }
 function moyennePeriode(e, m){ var b = bilan(e, m); return b.nb ? b.moy : null; }
 function bilanAnnuel(e){
@@ -2118,7 +2134,8 @@ function bilanAnnuel(e){
   var somme = 0; moys.forEach(function(v){ somme += v; });
   var moyComp = moys.length ? somme / moys.length : null;
   var pass = moyennePeriode(e, PASSAGE);
-  var annuelle = (moyComp != null && pass != null) ? (moyComp + pass * 2) / 3 : null;
+  var k = state.notes.coefPassage || 2;
+  var annuelle = pass == null ? null : (moyComp != null ? (moyComp + pass * k) / (1 + k) : pass);
   return {nbComp:moys.length, moyComp:moyComp, passage:pass, annuelle:annuelle};
 }
 function classementAnnuel(){
@@ -2737,10 +2754,13 @@ var moisPret = false;
 function renderNotes(){
   if(!moisPret){
     el("f_mois").innerHTML =
-      '<optgroup label="Compositions mensuelles">'
+      '<optgroup label="Compositions trimestrielles (comptent pour l\'année)">'
+      + TRIMESTRES.map(function(m){ return '<option value="'+m+'">'+esc(libellePeriode(m))+'</option>'; }).join("")
+      + '</optgroup><optgroup label="Composition de passage (finale)">'
+      + '<option value="'+PASSAGE+'">Composition de passage</option></optgroup>'
+      + '<optgroup label="Évaluations mensuelles (ne comptent pas)">'
       + MOIS.map(function(m){ return '<option value="'+m+'">'+m+'</option>'; }).join("")
-      + '</optgroup><optgroup label="Fin d\'année">'
-      + '<option value="'+PASSAGE+'">Composition de passage</option></optgroup>';
+      + '</optgroup>';
     moisPret = true;
   }
   el("f_mois").value = state.notes.mois;
@@ -2788,7 +2808,7 @@ function renderNotes(){
 function libConduite(k){ var c = CONDUITES.filter(function(x){ return x[0] === k; })[0]; return c ? c[1] : ""; }
 function moyennesPrecedentes(e){
   var idx = PERIODES.indexOf(state.notes.mois), r = [];
-  MOIS.forEach(function(m, i){ if(i >= idx) return; var v = moyennePeriode(e, m); if(v != null) r.push({m:m, v:v}); });
+  PERIODES.forEach(function(m, i){ if(i >= idx || m === PASSAGE) return; var v = moyennePeriode(e, m); if(v != null) r.push({m:m, v:v}); });
   return r;
 }
 function carteHtml(e, rang, sur, grande){
@@ -2848,7 +2868,7 @@ var CARTES_PAR_PAGE = 2, LIGNES_PAR_PAGE = 34, selectionBulletins = null;
 /* ---------- fin d'annee ---------- */
 var MOIS_AB = {"Octobre":"Oct.", "Novembre":"Nov.", "D\u00e9cembre":"D\u00e9c.", "Janvier":"Jan.",
   "F\u00e9vrier":"F\u00e9v.", "Mars":"Mars", "Avril":"Avr.", "Mai":"Mai", "Juin":"Juin"};
-function abbrMois(m){ return m === PASSAGE ? "Passage" : (MOIS_AB[m] || m.slice(0,4) + "."); }
+function abbrMois(m){ return m === PASSAGE ? "Passage" : estTrimestre(m) ? "T" + m.slice(-1) : (MOIS_AB[m] || m.slice(0,4) + "."); }
 
 function renderAnnee(){
   var mois = moisRenseignes(), cl = classementAnnuel(), b = echelleMoyenne();
@@ -2856,7 +2876,7 @@ function renderAnnee(){
 
   el("anHead").innerHTML = '<th class="num">N°</th><th>Nom et prénoms</th>'
     + mois.map(function(m){ return '<th class="mt" title="'+esc(libellePeriode(m))+'">'+esc(abbrMois(m))+'</th>'; }).join("")
-    + '<th>Moy. comp.</th><th>Passage</th><th>Moy. ann. /'+b+'</th><th>Rang</th><th>Décision</th>';
+    + '<th>Moy. trim.</th><th>Passage</th><th>Moy. ann. /'+b+'</th><th>Rang</th><th>Décision</th>';
 
   var liste = alpha(), html = "";
   liste.forEach(function(e, i){
@@ -2878,10 +2898,11 @@ function renderAnnee(){
   el("anSur").textContent = cl.sur;
   el("anMoy").textContent = cl.moyenneClasse == null ? "—" : nombreFr(cl.moyenneClasse,2) + " / " + b;
   el("anAdmis").textContent = cl.admis + (cl.sur ? " / " + cl.sur : "");
-  el("anStatus").textContent = mois.length
-    ? mois.length + " composition" + (mois.length>1?"s":"") + " mensuelle" + (mois.length>1?"s":"")
-      + (state.notes.data[PASSAGE] && Object.keys(state.notes.data[PASSAGE]).length ? " + la composition de passage" : " — composition de passage non saisie")
-    : "aucune composition saisie";
+  var aPassage = !!(state.notes.data[PASSAGE] && Object.keys(state.notes.data[PASSAGE]).length);
+  el("anStatus").textContent = (mois.length ? mois.length + " composition" + (mois.length>1?"s":"") + " trimestrielle" + (mois.length>1?"s":"") : "aucune composition trimestrielle")
+      + (aPassage ? " + la composition de passage" : " — composition de passage non saisie");
+  el("f_coef").value = String(state.notes.coefPassage || 2);
+  if(el("anFormule")) el("anFormule").textContent = "Moyenne annuelle = " + formuleAnnuelle() + ".";
 }
 
 function pageAnneeHtml(liste, cl, depart, pages){
@@ -2894,7 +2915,7 @@ function pageAnneeHtml(liste, cl, depart, pages){
     + '<col style="width:8%"><col style="width:8%"><col style="width:8%"><col style="width:5.5%"><col style="width:8%"></colgroup>';
   var head = '<tr><th class="n">N°</th><th>Nom et prénoms</th>'
     + mois.map(function(m){ return '<th class="v">'+esc(abbrMois(m))+'</th>'; }).join("")
-    + '<th class="v">Moy. comp.</th><th class="v">Passage</th><th class="v">Moy. ann.</th><th class="v">Rang</th><th class="v">Décision</th></tr>';
+    + '<th class="v">Moy. trim.</th><th class="v">Passage</th><th class="v">Moy. ann.</th><th class="v">Rang</th><th class="v">Décision</th></tr>';
   var corps = liste.map(function(e, i){
     var a = bilanAnnuel(e);
     return '<tr><td class="n">'+(depart+i+1)+'</td><td class="nm2">'+esc(e.nom)+'</td>'
@@ -2917,7 +2938,7 @@ function pageAnneeHtml(liste, cl, depart, pages){
     +   '<span style="margin-left:auto"><i>Page</i> '+(Math.floor(depart/LIGNES_PAR_PAGE)+1)+' / '+pages+'</span></div>'
     + '<table class="np">'+cols+head+corps+'</table>'
     + '<div class="np-meta" style="border-top:1px solid #8a8272 !important;margin-top:2mm">'
-    +   '<span><b>Moyenne annuelle</b> = (moyenne des compositions mensuelles + composition de passage × 2) ÷ 3</span></div>'
+    +   '<span><b>Moyenne annuelle</b> = ' + esc(formuleAnnuelle()) + '</span></div>'
     + '<div class="np-meta" style="border-top:0 !important">'
     +   '<span>Élèves classés : '+cl.sur+'</span><span>Admis(e)s : '+cl.admis+'</span>'
     +   '<span>Moyenne de la classe : '+(cl.moyenneClasse==null?"—":nombreFr(cl.moyenneClasse,2)+" / "+b)+'</span>'
@@ -3394,7 +3415,7 @@ function compteur(n, cible, anime){
 }
 function derniereCompo(){
   if(state.notes.data[PASSAGE] && Object.keys(state.notes.data[PASSAGE]).length) return PASSAGE;
-  var r = moisRenseignes(); return r.length ? r[r.length - 1] : null;
+  var r = periodesRenseignees(); return r.length ? r[r.length - 1] : null;
 }
 function renderAccueil(anime){
   if(rubriqueActive !== "accueil" && !anime) { majSauvegardeInfo(); return; }
@@ -3575,6 +3596,10 @@ el("fRestaure").addEventListener("change", function(){
   lec.readAsText(f);
 });
 
+el("f_coef").addEventListener("change", function(){
+  avantModif(false); state.notes.coefPassage = [1,2,3].indexOf(Number(this.value)) >= 0 ? Number(this.value) : 2;
+  touch(); renderAnnee(); buildCartes(); fitCartes();
+});
 el("f_seuil").addEventListener("input", function(){
   var v = Number(this.value.replace(",", ".").trim());
   if(isNaN(v)) return;
@@ -3651,7 +3676,7 @@ function renderMatieres(){
       + '<input type="checkbox" data-mat="' + m.code + '"' + (estActive(m.code) ? ' checked' : '') + ' aria-label="Noter ' + esc(m.nom) + '">'
       + '<input class="mat-nom" data-nom-mat="' + m.code + '" value="' + esc(m.nom) + '" aria-label="Nom de la matière" maxlength="40">'
       + '<select data-bareme-mat="' + m.code + '" aria-label="Barème ' + esc(m.nom) + '">'
-      +   [10,20,50].map(function(v){ return '<option value="' + v + '"' + (b === v ? ' selected' : '') + '>/' + v + '</option>'; }).join("")
+      +   BAREMES.map(function(v){ return '<option value="' + v + '"' + (b === v ? ' selected' : '') + '>/' + v + '</option>'; }).join("")
       + '</select>'
       + '<span class="mat-ordre"><button type="button" class="btn btn-sm btn-ghost" data-monter="' + i + '" aria-label="Monter"' + (i ? '' : ' disabled') + '>↑</button>'
       + '<button type="button" class="btn btn-sm btn-ghost" data-retirer="' + m.code + '" aria-label="Retirer ' + esc(m.nom) + '">✕</button></span>'
@@ -3669,7 +3694,7 @@ el("matList").addEventListener("change", function(ev){
   var bm = ev.target.closest("[data-bareme-mat]");
   if(bm){
     avantModif(false);
-    state.notes.baremes[bm.getAttribute("data-bareme-mat")] = Number(bm.value) === 50 ? 50 : (Number(bm.value) === 20 ? 20 : 10);
+    var nb = Number(bm.value); state.notes.baremes[bm.getAttribute("data-bareme-mat")] = BAREMES.indexOf(nb) >= 0 ? nb : 10;
     apresMatieres(); return;
   }
   var nm = ev.target.closest("[data-nom-mat]");
@@ -4115,7 +4140,7 @@ function csv(){
   var moisR = moisRenseignes(), cla = classementAnnuel();
   L.push("");
   L.push(["Resultats de fin d'annee", "Moyenne d'admission", nombreFr(state.notes.seuil,2)].map(q).join(";"));
-  L.push(["N","Nom et prenoms"].concat(moisR).concat(["Moyenne des compositions","Passage","Moyenne annuelle","Rang","Decision"]).map(q).join(";"));
+  L.push(["N","Nom et prenoms"].concat(moisR).concat(["Moyenne des compositions trimestrielles","Passage","Moyenne annuelle","Rang","Decision"]).map(q).join(";"));
   alpha().forEach(function(e, i){
     var a = bilanAnnuel(e);
     L.push([i+1, e.nom]
@@ -5494,7 +5519,7 @@ el("ecRecues").addEventListener("click", function(ev){
 });
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "1.6.0";
+var APP_VERSION = "1.6.1";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
