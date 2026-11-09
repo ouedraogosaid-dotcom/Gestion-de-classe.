@@ -903,7 +903,7 @@ h1,h2,h3,.titre{letter-spacing:-.015em}
 .jr-st button{appearance:none; border:1px solid var(--bord); background:none; color:var(--texte-3); font:600 .66rem/1 "Inter",sans-serif; padding:5px 7px; border-radius:999px; cursor:pointer}
 .jr-st [data-jr-st="fait"][aria-pressed="true"]{background:var(--ok-bg); color:var(--ok); border-color:var(--ok)}
 .jr-st [data-jr-st="reporte"][aria-pressed="true"]{background:var(--warn-bg); color:var(--warn); border-color:var(--warn)}
-.jr-champs{display:grid; grid-template-columns:4.6em 1fr 4.2em; gap:6px}
+.jr-champs{display:grid; grid-template-columns:6.6em 1fr 4.2em; gap:6px}
 .jr-champs input{min-height:40px; padding:8px 9px; font-size:.88rem}
 .jr-actions{display:flex; gap:6px; flex-wrap:wrap; margin-top:7px}
 .jr-actions:empty{display:none}
@@ -935,6 +935,7 @@ h1,h2,h3,.titre{letter-spacing:-.015em}
 .jr-g-s{display:block; color:#B42318}
 .jr-g-t{display:block; color:#1D3A8A}
 .jr-g-s{font-weight:700}
+.jr-g-d{display:block; color:#111; font-size:.86em; text-transform:uppercase; letter-spacing:.02em; border-bottom:1px dotted #999; margin-bottom:2px; padding-bottom:1px}
 .jr-g-p{display:block; font-size:.92em; color:#333; margin-top:2px}
 .jr-g-r{display:block; font-size:.85em; color:#9A5B00}
 @media print{
@@ -1500,6 +1501,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
        <div class="rowbtns"><button class="btn btn-sm" type="button" id="jrAuj">Cette semaine</button><button class="btn btn-sm" type="button" id="jrCopier">Recopier la semaine précédente</button></div>
        <div class="rowbtns"><label class="btn btn-sm btn-primary" style="cursor:pointer"><svg class="ic"><use href="#i-import"/></svg>Charger la répartition mensuelle<input type="file" id="jrRepFichier" accept=".pdf,.docx,.xlsx,.doc,.xls,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/*" style="display:none"></label>
          <button class="btn btn-sm" type="button" id="jrType">Semaine type</button></div>
+       <div class="field mini" style="margin-top:10px"><label for="jrDispo">Feuille imprimée</label><select id="jrDispo"><option value="compacte">Séances à la suite (sans cases vides)</option><option value="disciplines">Une colonne par discipline</option></select></div>
        <div class="notice is-hidden" id="jrConge" style="margin:10px 0 0"></div>
      </div>
      <div class="puces jr-jours no-print" id="jrJours" role="group" aria-label="Jour"></div>
@@ -2553,7 +2555,7 @@ function normJournal(j){
     var cases = {};
     if(sm.cases && typeof sm.cases === "object") Object.keys(sm.cases).slice(0, 120).forEach(function(c){
       var p = c.split("|"), v = sm.cases[c]; if(p.length !== 2 || JOURS_OK.indexOf(p[0]) < 0 || !idSur(p[1]) || !v || typeof v !== "object") return;
-      var o = {s:txt(v.s, 20).trim(), t:txt(v.t, 140).trim(), p:txt(v.p, 12).trim(), st:["fait","reporte"].indexOf(v.st) >= 0 ? v.st : ""};
+      var o = {s:libSeance(txt(v.s, 20)), t:txt(v.t, 140).trim(), p:txt(v.p, 12).trim(), st:["fait","reporte"].indexOf(v.st) >= 0 ? v.st : ""};
       if(!(o.s || o.t || o.p || o.st)) return;
       var cid = fusion[idSur(p[1])] || idSur(p[1]), cle = p[0] + "|" + cid, deja = cases[cle];
       if(deja && fusion[idSur(p[1])]){ deja.t = [deja.t, o.t].filter(Boolean).join(" / "); deja.p = deja.p || o.p; deja.s = deja.s || o.s; }
@@ -7469,6 +7471,7 @@ el("acInstallBtn").addEventListener("click", function(){
 
 /* ---------- « Quoi de neuf » après une mise à jour ---------- */
 var NOUVEAUTES = [
+  ["2.4.2", ["Cahier journal imprimé : les séances de chaque jour à la suite, sans colonnes vides (au choix : une colonne par discipline)","« Séance 1 », « Séance 2 »… écrits en entier"]],
   ["2.4.1", ["Cahier journal : chaque jour, seules les disciplines prévues ou remplies sont affichées ; les colonnes vides de la semaine ne sont plus imprimées"]],
   ["2.4.0", ["Cahier journal : chargez la répartition mensuelle (PDF, Word ou Excel) et les 4 semaines se remplissent toutes seules","Colonnes du cahier journal : les 15 matières de la répartition (lecture, vocabulaire, orthographe, grammaire, conjugaison…)","« Semaine type » : les jours de chaque discipline, à cocher une fois"]],
   ["2.3.5", ["Notes : « Matières à noter » s'affiche comme le choix du mois, en grand, avec le nombre de matières notées"]],
@@ -8095,8 +8098,10 @@ function seancePrecedente(lundi, jour, col){
   });
   return best;
 }
+function libSeance(s){ var m = String(s || "").trim().match(/^s(?:[eé]ance)?\.?\s*(\d+)$/i); return m ? "Séance " + m[1] : String(s || "").trim(); }
 function seanceSuivante(s){
-  if(!s) return "S1";
+  if(!s) return "Séance 1";
+  s = libSeance(s);
   var m = String(s).match(/(\d+)(?!.*\d)/);
   return m ? s.slice(0, m.index) + (Number(m[1]) + 1) + s.slice(m.index + m[1].length) : s + " 2";
 }
@@ -8131,7 +8136,7 @@ function renderJournal(force){
       var v = caseJr(jrLundi, jrJour, c.id) || {}, prec = seancePrecedente(jrLundi, jrJour, c.id);
       return '<div class="jr-case' + (v.st ? ' ' + v.st : '') + '" data-col="' + c.id + '"><div class="jr-col"><b>' + esc(c.nom) + '</b>'
         + '<span class="jr-st"><button type="button" data-jr-st="fait" aria-pressed="' + (v.st === "fait") + '">Faite</button><button type="button" data-jr-st="reporte" aria-pressed="' + (v.st === "reporte") + '">Reportée</button></span></div>'
-        + '<div class="jr-champs"><input class="jr-s" data-k="s" value="' + esc(v.s || "") + '" placeholder="S1" maxlength="20" aria-label="Séance">'
+        + '<div class="jr-champs"><input class="jr-s" data-k="s" value="' + esc(v.s || "") + '" placeholder="Séance 1" maxlength="20" aria-label="Séance">'
         + '<input class="jr-t" data-k="t" value="' + esc(v.t || "") + '" placeholder="Titre de la leçon" maxlength="140" list="jrTitres-' + c.id + '" aria-label="Titre de la leçon">'
         + '<input class="jr-p" data-k="p" value="' + esc(v.p || "") + '" placeholder="Page" maxlength="12" inputmode="numeric" aria-label="Page"></div>'
         + '<div class="jr-actions">' + (prec && prec.t && !caseRemplie(v) ? '<button type="button" class="btn btn-sm" data-jr-suite>Séance suivante <small>' + esc(seanceSuivante(prec.s)) + ' · ' + esc(prec.t.length > 28 ? prec.t.slice(0, 27) + "…" : prec.t) + '</small></button>' : '')
@@ -8141,6 +8146,7 @@ function renderJournal(force){
   }
   el("jrCopier").disabled = !Object.keys(state.journal.semaines).some(function(k){ return k < jrLundi && Object.keys(state.journal.semaines[k].cases).length; });
   el("jrImpr").innerHTML = grilleJournal(jrLundi);
+  el("jrDispo").value = jrCompact() ? "compacte" : "disciplines";
 }
 function titresColonne(col){
   var vus = {}, l = [];
@@ -8151,7 +8157,24 @@ function colsUtilisees(lundi){
   var J = state.journal, l = J.cols.filter(function(c){ return J.jours.some(function(j){ return caseRemplie(caseJr(lundi, j, c.id)); }); });
   return l.length ? l : J.cols;
 }
+function jrCompact(){ return lirePrefs().jrDisposition !== "disciplines"; }
+function grilleJournalCompacte(lundi){
+  var J = state.journal, m = state.meta, num = numeroSemaine(lundi);
+  var parJour = J.jours.map(function(j){ return J.cols.map(function(c){ return {c:c, v:caseJr(lundi, j, c.id)}; }).filter(function(x){ return caseRemplie(x.v); }); });
+  var n = Math.max(1, Math.max.apply(null, parJour.map(function(l){ return l.length; }))), w = (87 / n).toFixed(2) + "%";
+  return '<div class="jr-page"><div class="jr-tete"><span>' + (num ? '<b class="jr-num">' + esc(num) + '</b>' : '') + '<b>SEMAINE ' + esc(libSemaine(lundi).toUpperCase()) + '</b></span>'
+    + '<span>' + [m.ecole ? "EPP " + esc(m.ecole) : "", m.classe ? "Classe : " + esc(m.classe) : "", m.maitre ? "Maître : " + esc(m.maitre) : "", anneeTxt() ? esc(anneeTxt()) : ""].filter(Boolean).join(" · ") + '</span></div>'
+    + '<table class="jr-grille compacte' + (n > 8 ? ' serre' : '') + '" style="--h:' + Math.max(24, Math.floor(172 / Math.max(1, J.jours.length))) + 'mm"><colgroup><col style="width:6%">' + Array(n + 1).join('<col style="width:' + w + '">') + '<col style="width:7%"></colgroup>'
+    + '<thead><tr><th>Jours</th><th colspan="' + n + '">Activités de la journée</th><th>Visa du directeur</th></tr></thead><tbody>'
+    + J.jours.map(function(j, k){
+        var l = parJour[k];
+        return '<tr><th class="jr-jour"><span>' + j.toUpperCase() + '</span><small>' + Number(dateDuJour(lundi, j).slice(8, 10)) + '</small></th>'
+          + l.map(function(x){ var v = x.v; return '<td><b class="jr-g-d">' + esc(x.c.nom) + '</b>' + (v.s ? '<b class="jr-g-s">' + esc(libSeance(v.s)) + '</b>' : '') + (v.t ? '<span class="jr-g-t">' + esc(v.t) + '</span>' : '') + (v.p ? '<span class="jr-g-p">p. ' + esc(v.p) + '</span>' : '') + (v.st === "reporte" ? '<i class="jr-g-r">reportée</i>' : '') + '</td>'; }).join("")
+          + (l.length < n ? '<td colspan="' + (n - l.length) + '" class="jr-g-vide"></td>' : '') + '<td></td></tr>';
+      }).join("") + '</tbody></table></div>';
+}
 function grilleJournal(lundi){
+  if(jrCompact()) return grilleJournalCompacte(lundi);
   var J0 = state.journal, J = {cols:colsUtilisees(lundi), jours:J0.jours}, m = state.meta, num = numeroSemaine(lundi), w = (87 / Math.max(1, J.cols.length)).toFixed(2) + "%";
   return '<div class="jr-page"><div class="jr-tete"><span>' + (num ? '<b class="jr-num">' + esc(num) + '</b>' : '') + '<b>SEMAINE ' + esc(libSemaine(lundi).toUpperCase()) + '</b></span>'
     + '<span>' + [m.ecole ? "EPP " + esc(m.ecole) : "", m.classe ? "Classe : " + esc(m.classe) : "", m.maitre ? "Maître : " + esc(m.maitre) : "", anneeTxt() ? esc(anneeTxt()) : ""].filter(Boolean).join(" · ") + '</span></div>'
@@ -8160,7 +8183,7 @@ function grilleJournal(lundi){
     + J.jours.map(function(j){
         return '<tr><th class="jr-jour"><span>' + j.toUpperCase() + '</span><small>' + Number(dateDuJour(lundi, j).slice(8, 10)) + '</small></th>' + J.cols.map(function(c){
           var v = caseJr(lundi, j, c.id) || {};
-          return '<td>' + (v.s ? '<b class="jr-g-s">' + esc(v.s) + '</b>' : '') + (v.t ? '<span class="jr-g-t">' + esc(v.t) + '</span>' : '') + (v.p ? '<span class="jr-g-p">p. ' + esc(v.p) + '</span>' : '') + (v.st === "reporte" ? '<i class="jr-g-r">reportée</i>' : '') + '</td>';
+          return '<td>' + (v.s ? '<b class="jr-g-s">' + esc(libSeance(v.s)) + '</b>' : '') + (v.t ? '<span class="jr-g-t">' + esc(v.t) + '</span>' : '') + (v.p ? '<span class="jr-g-p">p. ' + esc(v.p) + '</span>' : '') + (v.st === "reporte" ? '<i class="jr-g-r">reportée</i>' : '') + '</td>';
         }).join("") + '<td></td></tr>';
       }).join("") + '</tbody></table></div>';
 }
@@ -8177,6 +8200,10 @@ el("jrCases").addEventListener("input", function(ev){
   majCaseJr(i.closest(".jr-case"), function(v){ v[i.getAttribute("data-k")] = txt(i.value, i.getAttribute("data-k") === "t" ? 140 : 20); });
   el("jrImpr").innerHTML = grilleJournal(jrLundi);
 });
+el("jrCases").addEventListener("change", function(ev){
+  var i = ev.target.closest(".jr-s"); if(!i) return; var v = libSeance(i.value); if(v === i.value) return;
+  i.value = v; majCaseJr(i.closest(".jr-case"), function(c){ c.s = v; });
+});
 el("jrCases").addEventListener("focusout", function(){ setTimeout(function(){ if(!el("jrCases").contains(document.activeElement)) renderJournal(); }, 0); });
 el("jrCases").addEventListener("click", function(ev){
   var c = ev.target.closest(".jr-case"); if(!c) return; var b;
@@ -8186,6 +8213,7 @@ el("jrCases").addEventListener("click", function(ev){
   } else if((b = ev.target.closest("[data-jr-vider]"))){ avantModif(false); majCaseJr(c, function(v){ v.s = v.t = v.p = v.st = ""; }); renderJournal(true); toast("Case effacée.", {label:"Annuler", fn:annuler}); }
   else if((b = ev.target.closest("[data-jr-st]"))){ avantModif(false); var st = b.getAttribute("data-jr-st"); majCaseJr(c, function(v){ v.st = v.st === st ? "" : st; }); renderJournal(true); }
 });
+el("jrDispo").addEventListener("change", function(){ changerPref("jrDisposition", this.value === "disciplines" ? "disciplines" : "compacte"); renderJournal(true); });
 el("jrToutBtn").addEventListener("click", function(){ jrTout = !jrTout; renderJournal(true); });
 el("jrJours").addEventListener("click", function(ev){ var b = ev.target.closest("[data-jr-jour]"); if(!b) return; jrJour = b.getAttribute("data-jr-jour"); renderJournal(true); });
 el("jrPrec").addEventListener("click", function(){ jrLundi = decalerJour(jrLundi, -7); jrJour = null; renderJournal(true); });
@@ -8420,7 +8448,7 @@ function remplirDepuisRepartition(g, lundis, remplacer){
         if(compte[pt.l.t] != null) num = compte[pt.l.t] + 1;
         else { var prec = seancePrecedente(lundi, pt.j, col.id), m = prec && mememLecon(prec.t, pt.l.t) && String(prec.s || "").match(/(\d+)(?!.*\d)/); num = m ? Number(m[1]) + 1 : 1; }
         compte[pt.l.t] = num;
-        sem.cases[cle] = {s:"S" + num, t:txt(pt.l.t, 140), p:txt(pt.l.p, 12), st:""}; n++;
+        sem.cases[cle] = {s:"Séance " + num, t:txt(pt.l.t, 140), p:txt(pt.l.p, 12), st:""}; n++;
       });
     });
   });
@@ -8536,7 +8564,7 @@ function tableauMatieresEleve(e){
 }
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "2.4.1";
+var APP_VERSION = "2.4.2";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
