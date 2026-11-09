@@ -1504,7 +1504,8 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
      </div>
      <div class="puces jr-jours no-print" id="jrJours" role="group" aria-label="Jour"></div>
      <div class="jr-cases no-print" id="jrCases"></div>
-     <p class="hint no-print">Dans chaque case : la séance (S1, S2…), le titre de la leçon et la page. « Séance suivante » reprend la même leçon avec le numéro suivant, même si la séance précédente était la semaine d'avant.</p>
+     <div class="rowbtns no-print" style="justify-content:center"><button class="btn btn-sm btn-ghost is-hidden" type="button" id="jrToutBtn">Afficher les autres disciplines</button></div>
+     <p class="hint no-print">Seules les disciplines prévues ce jour (semaine type) ou déjà remplies sont affichées ; les colonnes vides de la semaine ne sont pas imprimées. Dans chaque case : la séance (S1, S2…), le titre de la leçon et la page. « Séance suivante » reprend la même leçon avec le numéro suivant, même si la séance précédente était la semaine d'avant.</p>
      <h2 class="section-titre no-print">La semaine, telle qu'elle s'imprime</h2>
      <div class="sheet jr-apercu"><div class="scroll" id="jrImpr"></div></div>
    </section>
@@ -7468,6 +7469,7 @@ el("acInstallBtn").addEventListener("click", function(){
 
 /* ---------- « Quoi de neuf » après une mise à jour ---------- */
 var NOUVEAUTES = [
+  ["2.4.1", ["Cahier journal : chaque jour, seules les disciplines prévues ou remplies sont affichées ; les colonnes vides de la semaine ne sont plus imprimées"]],
   ["2.4.0", ["Cahier journal : chargez la répartition mensuelle (PDF, Word ou Excel) et les 4 semaines se remplissent toutes seules","Colonnes du cahier journal : les 15 matières de la répartition (lecture, vocabulaire, orthographe, grammaire, conjugaison…)","« Semaine type » : les jours de chaque discipline, à cocher une fois"]],
   ["2.3.5", ["Notes : « Matières à noter » s'affiche comme le choix du mois, en grand, avec le nombre de matières notées"]],
   ["2.3.4", ["Cahier journal imprimé : écriture plus grande dans les cases, comme l'en-tête de la semaine"]],
@@ -8056,7 +8058,7 @@ el("horsLigne").addEventListener("click", function(){ toast("Pas d'internet en c
 /* ---------- cahier journal : une page par semaine, une classe à la fois ---------- */
 var JR_COLS_DEF = ["Lecture","Vocabulaire","Orthographe","Grammaire","Conjugaison","Expression écrite","Expression orale","Poésie","Écriture","Mathématiques","Sciences","Histoire-Géographie","EDHC","AEC","EPS"];
 var JR_JOURS = ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
-var jrLundi = null, jrJour = null;
+var jrLundi = null, jrJour = null, jrTout = false;
 function lundiDe(iso){ var d = new Date(iso + "T12:00:00"), k = (d.getDay() + 6) % 7; return decalerJour(iso, -k); }
 function dateDuJour(lundi, jour){ return decalerJour(lundi, JR_JOURS.indexOf(jour)); }
 function semaineJr(lundi, creer){ var s = state.journal.semaines[lundi]; if(!s && creer) s = state.journal.semaines[lundi] = {num:"", cases:{}}; return s; }
@@ -8121,7 +8123,11 @@ function renderJournal(force){
     return '<button type="button" class="puce' + (d === auj ? ' jr-auj' : '') + '" data-jr-jour="' + j + '" aria-pressed="' + (j === jrJour) + '">' + j.slice(0, 3) + ' ' + Number(d.slice(8, 10)) + (n ? ' <small>' + n + '/' + J.cols.length + '</small>' : '') + '</button>';
   }).join("");
   if(!el("jrCases").contains(document.activeElement)){
-    el("jrCases").innerHTML = J.cols.map(function(c){
+    var visibles = jrTout ? J.cols : J.cols.filter(function(c){ return caseRemplie(caseJr(jrLundi, jrJour, c.id)) || joursType(c).indexOf(jrJour) >= 0; });
+    var caches = J.cols.length - visibles.length;
+    el("jrToutBtn").classList.toggle("is-hidden", !caches && !jrTout);
+    el("jrToutBtn").textContent = jrTout ? "Masquer les disciplines vides" : "Afficher les autres disciplines (" + caches + ")";
+    el("jrCases").innerHTML = (visibles.length ? '' : '<p class="vide-etat" style="grid-column:1/-1;margin:0">Aucune discipline prévue ce jour dans la semaine type.</p>') + visibles.map(function(c){
       var v = caseJr(jrLundi, jrJour, c.id) || {}, prec = seancePrecedente(jrLundi, jrJour, c.id);
       return '<div class="jr-case' + (v.st ? ' ' + v.st : '') + '" data-col="' + c.id + '"><div class="jr-col"><b>' + esc(c.nom) + '</b>'
         + '<span class="jr-st"><button type="button" data-jr-st="fait" aria-pressed="' + (v.st === "fait") + '">Faite</button><button type="button" data-jr-st="reporte" aria-pressed="' + (v.st === "reporte") + '">Reportée</button></span></div>'
@@ -8141,8 +8147,12 @@ function titresColonne(col){
   Object.keys(state.journal.semaines).sort().reverse().forEach(function(k){ var s = state.journal.semaines[k]; Object.keys(s.cases).forEach(function(c){ if(c.split("|")[1] !== col) return; var t = s.cases[c].t; if(t && !vus[t]){ vus[t] = 1; l.push(t); } }); });
   return l.slice(0, 40);
 }
+function colsUtilisees(lundi){
+  var J = state.journal, l = J.cols.filter(function(c){ return J.jours.some(function(j){ return caseRemplie(caseJr(lundi, j, c.id)); }); });
+  return l.length ? l : J.cols;
+}
 function grilleJournal(lundi){
-  var J = state.journal, m = state.meta, num = numeroSemaine(lundi), w = (87 / Math.max(1, J.cols.length)).toFixed(2) + "%";
+  var J0 = state.journal, J = {cols:colsUtilisees(lundi), jours:J0.jours}, m = state.meta, num = numeroSemaine(lundi), w = (87 / Math.max(1, J.cols.length)).toFixed(2) + "%";
   return '<div class="jr-page"><div class="jr-tete"><span>' + (num ? '<b class="jr-num">' + esc(num) + '</b>' : '') + '<b>SEMAINE ' + esc(libSemaine(lundi).toUpperCase()) + '</b></span>'
     + '<span>' + [m.ecole ? "EPP " + esc(m.ecole) : "", m.classe ? "Classe : " + esc(m.classe) : "", m.maitre ? "Maître : " + esc(m.maitre) : "", anneeTxt() ? esc(anneeTxt()) : ""].filter(Boolean).join(" · ") + '</span></div>'
     + '<table class="jr-grille' + (J.cols.length > 12 ? ' tres-serre' : J.cols.length > 9 ? ' serre' : '') + '" style="--h:' + Math.max(24, Math.floor(172 / Math.max(1, J.jours.length))) + 'mm"><colgroup><col style="width:6%">' + J.cols.map(function(){ return '<col style="width:' + w + '">'; }).join("") + '<col style="width:7%"></colgroup>'
@@ -8176,6 +8186,7 @@ el("jrCases").addEventListener("click", function(ev){
   } else if((b = ev.target.closest("[data-jr-vider]"))){ avantModif(false); majCaseJr(c, function(v){ v.s = v.t = v.p = v.st = ""; }); renderJournal(true); toast("Case effacée.", {label:"Annuler", fn:annuler}); }
   else if((b = ev.target.closest("[data-jr-st]"))){ avantModif(false); var st = b.getAttribute("data-jr-st"); majCaseJr(c, function(v){ v.st = v.st === st ? "" : st; }); renderJournal(true); }
 });
+el("jrToutBtn").addEventListener("click", function(){ jrTout = !jrTout; renderJournal(true); });
 el("jrJours").addEventListener("click", function(ev){ var b = ev.target.closest("[data-jr-jour]"); if(!b) return; jrJour = b.getAttribute("data-jr-jour"); renderJournal(true); });
 el("jrPrec").addEventListener("click", function(){ jrLundi = decalerJour(jrLundi, -7); jrJour = null; renderJournal(true); });
 el("jrSuiv").addEventListener("click", function(){ jrLundi = decalerJour(jrLundi, 7); jrJour = null; renderJournal(true); });
@@ -8525,7 +8536,7 @@ function tableauMatieresEleve(e){
 }
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "2.4.0";
+var APP_VERSION = "2.4.1";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }

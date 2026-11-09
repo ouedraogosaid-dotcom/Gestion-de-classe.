@@ -43,6 +43,7 @@ Si le navigateur est réinitialisé ou le téléphone perdu, elles sont perdues 
 
 ## Historique
 
+- **2.4.1** — Cahier journal : sur le téléphone, chaque jour n'affiche que les disciplines prévues (semaine type) ou déjà remplies, avec un bouton pour voir les autres ; à l'impression, les colonnes restées vides toute la semaine sont retirées.
 - **2.4.0** — Cahier journal : chargement de la répartition mensuelle (PDF tapé, Word ou Excel : semaines en colonnes, matières en lignes) et remplissage automatique des semaines selon la « semaine type » (jours de chaque discipline, à cocher une fois, repris de l'emploi du temps si possible) ; une leçon sur deux semaines continue sa numérotation (S4, S5, S6) ; plusieurs leçons dans la semaine réparties sur les jours ; congés sautés ; cases déjà remplies conservées (sauf demande). Colonnes du cahier journal : les 15 matières de la répartition. Réimpression de la répartition depuis Documents.
 - **2.3.5** — Notes : le bouton des matières à noter prend l'apparence du choix du mois (même taille d'écriture), avec le nombre de matières notées.
 - **2.3.4** — Cahier journal imprimé : écriture plus grande dans les cases (même taille que l'en-tête de la semaine), mots non coupés, lignes qui occupent toute la feuille.
