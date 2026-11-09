@@ -789,6 +789,14 @@ body.est-directeur .role-maitre{display:none !important}
 .a4 td.ms > div{display:flex; height:7.2mm}
 .a4 td.ms span{flex:1}
 .a4 td.ms span:first-child{border-right:1px dotted #777}
+.a4 td.ms.rempli > div{height:6.4mm}
+.a4 td.ms.rempli span, .a4 td.ms.rempli b{display:flex; align-items:center; justify-content:center; font-size:7px; line-height:1}
+.a4 td.ms.rempli b{flex:1}
+.a4 td.ms.rempli b:first-child{border-right:1px dotted #777}
+.a4 td.ms.rempli .ab{color:#B42318}
+.a4 td.ms.rempli .pas{color:#9a9a9a}
+.a4 .pr-bilan td, .a4 .pr-bilan th{text-align:center}
+.a4 .pr-bilan tr.tot td{font-weight:700}
 .a4 .ms-tete{display:flex; font-size:6px; font-weight:400; border-top:1px dotted #777; margin-top:1px}
 .a4 .ms-tete span{flex:1}
 .a4 .ms-tete span:first-child{border-right:1px dotted #777}
@@ -1369,6 +1377,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
           <button class="btn btn-primary" type="button" id="apTous"><svg class="ic"><use href="#i-check"/></svg>Tout le monde est présent</button>
           <button class="btn btn-sm is-hidden" type="button" id="apCopier">Mêmes absents que le matin</button>
           <button class="btn btn-sm btn-ghost" type="button" id="apEffacer">Effacer cet appel</button>
+          <button class="btn btn-sm" type="button" id="apFiche"><svg class="ic"><use href="#i-imprimer"/></svg>Fiche du mois à imprimer</button>
         </div>
         <p class="hint">Deux appels par jour : le matin et le soir. Un élève absent toute la journée compte <b>2 absences</b> ; présent matin et soir, <b>2 présences</b>. Touchez « A » pour un absent, « R » pour un retard (compté présent).</p>
       </div>
@@ -1624,6 +1633,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
         <button class="doc" type="button" data-doc="d:emargement" style="--i:7"><span class="feuille"></span><span><b>Liste d'émargement</b><small>Noms et colonne de signature, pour une réunion ou une remise</small></span></button>
         <button class="doc" type="button" data-doc="d:etiquettes" style="--i:8"><span class="feuille"></span><span><b>Étiquettes de noms</b><small>Pour les cahiers, 24 par feuille</small></span></button>
         <button class="doc" type="button" data-doc="d:releve" style="--i:9"><span class="feuille"></span><span><b>Relevé de notes vierge</b><small>Noms déjà inscrits, colonnes à remplir à la main</small></span></button>
+        <button class="doc" type="button" data-doc="d:presence" style="--i:10"><span class="feuille"></span><span><b>Fiche de présence du mois</b><small>Appels du matin et du soir, totaux et taux de présence</small></span></button>
         <button class="doc" type="button" data-doc="d:appelvierge" style="--i:10"><span class="feuille"></span><span><b>Feuille d'appel du mois</b><small>Noms et jours de classe, à remplir à la main</small></span></button>
         <button class="doc" type="button" data-doc="d:perso" style="--i:11"><span class="feuille"></span><span><b>Liste personnalisée</b><small>Vous choisissez les colonnes</small></span></button>
         <button class="doc" type="button" data-doc="d:redoublants" style="--i:12"><span class="feuille"></span><span><b>Liste des redoublants</b><small>Élèves qui refont la classe</small></span></button>
@@ -5082,6 +5092,11 @@ function renderAppel(){
   el("apMoisResume").innerHTML = '<span class="ok">' + T.pres + ' présence(s)</span><span class="ab">' + T.abs + ' absence(s)</span>'
     + '<span>Taux de présence : ' + nombreFr(pct(T.pres, T.total), 1) + ' %</span><span>Taux d\'absence : ' + nombreFr(pct(T.abs, T.total), 1) + ' %</span>';
 }
+el("apFiche").addEventListener("click", function(){
+  var no = Number(apDate.slice(5, 7)), i = [10,11,12,1,2,3,4,5,6].indexOf(no);
+  docOpts.presence = docOpts.presence || {}; docOpts.presence.mois = i >= 0 ? MOIS[i] : moisActuel();
+  ouvrirDocument("d:presence");
+});
 el("apDemi").addEventListener("click", function(ev){ var b = ev.target.closest("[data-demi]"); if(!b) return; apDemi = b.getAttribute("data-demi"); renderAppel(); });
 function jourAppel(){ if(!state.appel[apDate]) state.appel[apDate] = {}; return state.appel[apDate]; }
 el("apListe").addEventListener("click", function(ev){
@@ -6168,7 +6183,7 @@ el("ecRecues").addEventListener("click", function(ev){
    LOT 5A — documents à imprimer (moteur générique)
    ===================================================================== */
 var DOCS = {
-  emargement:"Liste d'émargement", etiquettes:"Étiquettes de noms", releve:"Relevé de notes vierge", appelvierge:"Feuille d'appel du mois",
+  emargement:"Liste d'émargement", etiquettes:"Étiquettes de noms", releve:"Relevé de notes vierge", appelvierge:"Feuille d'appel du mois", presence:"Fiche de présence du mois",
   perso:"Liste personnalisée", redoublants:"Liste des redoublants", honneur:"Tableau d'honneur", satisfecit:"Satisfecits", admis:"Liste des admis",
   recap:"Récapitulatif annuel des moyennes", pnapas:"Bilan PNAPAS", renseignements:"Fiche de renseignements", attestation:"Attestation de scolarité",
   transfert:"Fiche de transfert", convocation:"Convocation des parents", rapport:"Rapport mensuel du maître"
@@ -6209,6 +6224,7 @@ function specsDoc(){
     case "emargement": return [{k:"titre", l:"Objet", t:"text", d:"Réunion des parents d'élèves"},{k:"date", l:"Date", t:"date", d:aujourdhuiISO()},{k:"col", l:"Colonne", t:"select", d:"parent", o:[["parent","Parent + signature"],["sig","Signature seule"]]}];
     case "etiquettes": return [{k:"n", l:"Par élève", t:"select", d:"1", o:[["1","1 étiquette"],["2","2 étiquettes"],["3","3 étiquettes"]]}];
     case "releve": return [{k:"titre", l:"Titre", t:"text", d:"Relevé de notes"},{k:"cols", l:"Colonnes", t:"select", d:"mat", o:[["mat","Matières de la classe"],["5","5 colonnes vides"],["8","8 colonnes vides"],["10","10 colonnes vides"]]}];
+    case "presence": return [{k:"mois", l:"Mois", t:"select", d:moisActuel(), o:MOIS.map(function(m){ return [m, m + " " + isoMois(m).slice(0, 4)]; })}];
     case "appelvierge": return [{k:"mois", l:"Mois", t:"select", d:moisActuel(), o:MOIS.map(function(m){ return [m, m + " " + isoMois(m).slice(0, 4)]; })}];
     case "perso": return [{k:"titre", l:"Titre", t:"text", d:"Liste de la classe"},{k:"c_mat", l:"Matricule", t:"check", d:false},{k:"c_sexe", l:"Sexe", t:"check", d:true},{k:"c_age", l:"Âge", t:"check", d:true},
       {k:"c_nais", l:"Naissance", t:"check", d:false},{k:"c_parent", l:"Parent", t:"check", d:false},{k:"c_tel", l:"Téléphone", t:"check", d:false},{k:"v1", l:"Colonne vide 1", t:"text", d:""},{k:"v2", l:"Colonne vide 2", t:"text", d:""}];
@@ -6295,6 +6311,44 @@ var DOC_BUILD = {
       return pageDoc(titreDoc(opt("titre", "Relevé de notes"), "Composition : ……………………………………") + tableDoc(["N°","Nom et prénoms"].concat(tetes).concat(["Total"]),
           p.map(function(e, i){ return '<tr style="height:7.2mm">' + ligneNom(e, k * 32 + i) + tetes.map(function(){ return '<td></td>'; }).join("") + '<td></td></tr>'; }),
           ["5%","25%"].concat(tetes.map(function(){ return lg; })).concat(["6%"])) + pied(signatures()));
+    });
+  },
+  presence: function(l){
+    var m = opt("mois", moisActuel()), iso = isoMois(m);
+    /* jours de classe du mois, plus les jours où un appel a été fait (un samedi par exemple) */
+    var jours = joursClasse(iso).map(function(d){ return {n:d.n, j:d.j, iso:iso + "-" + ("0" + d.n).slice(-2)}; });
+    Object.keys(state.appel).filter(function(d){ return d.slice(0, 7) === iso && !jours.some(function(x){ return x.iso === d; }); }).forEach(function(d){
+      var dt = new Date(d + "T12:00:00"); jours.push({n:dt.getDate(), j:["D","L","M","M","J","V","S"][dt.getDay()], iso:d});
+    });
+    jours.sort(function(a, b){ return a.iso < b.iso ? -1 : 1; });
+    var isos = jours.map(function(d){ return d.iso; }), T = {pres:0, abs:0, ret:0, total:0}, nApp = appelsDuMois(iso);
+    l.forEach(function(e){ var b = bilanAppel(e, isos); ["pres","abs","ret","total"].forEach(function(k){ T[k] += b[k]; }); });
+    var lg = (58 / Math.max(1, jours.length)).toFixed(2) + "%";
+    var demi = function(d, k, e){
+      var j = state.appel[d] && state.appel[d][k];
+      if(!j) return '<span class="pas">–</span>';
+      var v = j[e.id]; return v === "A" ? '<b class="ab">A</b>' : v === "R" ? '<b>R</b>' : '<span></span>';
+    };
+    var g = l.filter(function(e){ return e.sexe === "G"; }), f = l.filter(function(e){ return e.sexe === "F"; });
+    var tx = function(a, b){ return b ? nombreFr(pct(a, b), 1) + " %" : "—"; };
+    var resume = '<table class="np pr-bilan" style="margin-top:3mm"><thead><tr><th></th><th>Présences</th><th>Absences</th><th>Retards</th><th>Taux de présence</th><th>Taux d\'absence</th></tr></thead><tbody>'
+      + [["Garçons", g], ["Filles", f], ["Total", l]].map(function(x){
+          var t = {pres:0, abs:0, ret:0, total:0}; x[1].forEach(function(e){ var b = bilanAppel(e, isos); ["pres","abs","ret","total"].forEach(function(k){ t[k] += b[k]; }); });
+          return '<tr' + (x[0] === "Total" ? ' class="tot"' : '') + '><td class="nm2">' + x[0] + ' (' + x[1].length + ')</td><td>' + t.pres + '</td><td>' + t.abs + '</td><td>' + t.ret + '</td><td>' + tx(t.pres, t.total) + '</td><td>' + tx(t.abs, t.total) + '</td></tr>';
+        }).join("") + '</tbody></table>';
+    var pages = paginer(l, 30);
+    return pages.map(function(p, k){
+      var der = k === pages.length - 1;
+      return pageDoc(titreDoc("Fiche de présence", m + " " + iso.slice(0, 4) + " — " + nApp + " appel(s) : chaque jour, matin | soir")
+        + tableDoc(["N°","Nom et prénoms"].concat(jours.map(function(d){ return d.j + "<br>" + d.n + '<div class="ms-tete"><span>M</span><span>S</span></div>'; })).concat(["Prés.","Abs.","Taux"]),
+          p.map(function(e, i){
+            var b = bilanAppel(e, isos);
+            return '<tr style="height:6.4mm">' + ligneNom(e, k * 30 + i) + jours.map(function(d){ return '<td class="ms rempli"><div>' + demi(d.iso, "m", e) + demi(d.iso, "s", e) + '</div></td>'; }).join("")
+              + '<td class="v">' + (b.total ? b.pres : "") + '</td><td class="v">' + (b.total ? b.abs : "") + '</td><td class="v">' + (b.total ? Math.round(pct(b.pres, b.total)) + "%" : "") + '</td></tr>';
+          }),
+          ["3.5%","22%"].concat(jours.map(function(){ return lg; })).concat(["5%","5%","6.5%"]))
+        + '<p class="np-sous" style="text-align:left;margin-top:1.5mm">Case vide : présent · A : absent · R : en retard (compté présent) · – : pas d\'appel. Une journée compte 2 appels (matin et soir).</p>'
+        + (der ? resume : '') + pied(signatures()));
     });
   },
   appelvierge: function(l){
@@ -7007,6 +7061,7 @@ el("acInstallBtn").addEventListener("click", function(){
 
 /* ---------- « Quoi de neuf » après une mise à jour ---------- */
 var NOUVEAUTES = [
+  ["1.13.1", ["Fiche de présence du mois à imprimer : appels du matin et du soir de chaque jour, totaux et taux (garçons, filles, classe)"]],
   ["1.13.0", ["Cahier d'appel : un appel le matin et un le soir (une journée = 2 présences ou 2 absences)","Total des présences et des absences, taux de présence et taux d'absence du mois","Bouton « Mêmes absents que le matin » pour l'appel du soir"]],
   ["1.12.0", ["Nouveau menu ☰ en haut à droite : tous les écrans y sont rangés (la barre du bas est retirée)"]],
   ["1.11.1", ["Notes : on choisit le type de composition (évaluation mensuelle, composition trimestrielle ou de passage) avec des boutons bien visibles"]],
@@ -7088,7 +7143,7 @@ function tableauMatieresEleve(e){
 }
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "1.13.0";
+var APP_VERSION = "1.13.1";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
