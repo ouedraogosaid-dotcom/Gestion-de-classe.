@@ -935,6 +935,10 @@ input::placeholder, textarea::placeholder{color:var(--texte-3); opacity:.75}
 .une-liste input.nt::placeholder{font-weight:500; font-size:.82rem}
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) input:not([type=checkbox]):not([type=radio]), :root:not([data-theme="light"]) select, :root:not([data-theme="light"]) textarea{background:var(--fond)} }
 :root[data-theme="dark"] input:not([type=checkbox]):not([type=radio]), :root[data-theme="dark"] select, :root[data-theme="dark"] textarea{background:var(--fond)}
+.zone-danger{margin:18px 2px 4px; padding-top:14px; border-top:1px dashed var(--bord-2); display:flex; justify-content:center}
+.lien-danger{appearance:none; border:0; background:none; color:var(--bad); font:600 .8rem/1.3 "Inter",sans-serif; display:inline-flex; align-items:center; gap:6px; cursor:pointer; padding:10px 8px; opacity:.85}
+.lien-danger:hover{opacity:1; text-decoration:underline}
+.lien-danger svg{width:16px; height:16px}
 /* notifications */
 .notifs{list-style:none; margin:0; padding:0; display:flex; flex-direction:column}
 .notifs li{display:grid; grid-template-columns:auto 1fr auto; gap:10px; align-items:center; padding:10px 0; border-bottom:1px solid var(--bord)}
@@ -1823,7 +1827,6 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
             <select id="f_echelle_notes"><option value="10">Moyenne sur 10</option><option value="20">Moyenne sur 20</option></select>
           </div>
           <button class="btn btn-sm" id="btnMatieres" type="button">Matières notées…</button>
-          <button class="btn btn-sm btn-danger" id="btnViderMois" type="button">Effacer cette composition</button>
         </div>
         <div class="mat-panel is-hidden no-print" id="matPanel">
           <div class="lg" id="matList"></div>
@@ -1857,6 +1860,9 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
           <span>Plus faible <b id="ntMin">—</b></span>
         </div>
         <p class="hint">Moyenne = (total des points obtenus ÷ total des points possibles) × échelle de la classe. Deux élèves à égalité portent le même rang. Touche Entrée pour passer à l'élève suivant.</p>
+      </div>
+          <div class="zone-danger no-print">
+        <button class="lien-danger" id="btnViderMois" type="button"><svg class="ic"><use href="#i-corbeille"/></svg>Effacer toutes les notes de cette composition…</button>
       </div>
     </section>
 
@@ -4539,14 +4545,20 @@ function ajouterMatiere(){
   setTimeout(function(){ if(el("matNouvelle")) el("matNouvelle").focus(); }, 30);
 }
 el("btnViderMois").addEventListener("click", function(){
-  var periode = libellePeriode(state.notes.mois, false);
-  dialogue("Effacer cette composition ?", '<p style="margin:0">Toutes les notes de la ' + esc(periode) + ' seront effacées. Le bouton « Annuler » permettra de revenir en arrière tout de suite après.</p>',
-    [{label:"Garder", valeur:false}, {label:"Effacer", valeur:true, style:"btn-danger"}]).then(function(oui){
-    if(!oui) return;
+  var periode = libellePeriode(state.notes.mois, false), bloc = state.notes.data[state.notes.mois] || {}, nb = Object.keys(bloc).length;
+  if(!nb){ toast("Cette composition ne contient encore aucune note."); return; }
+  var saisi = "";
+  var pr = dialogue("Effacer toute la composition ?", '<p style="margin:0 0 8px"><b>' + esc(libellePeriode(state.notes.mois)) + '</b> : les notes de <b>' + nb + ' élève(s)</b> seront effacées.</p>'
+    + '<p class="hint" style="margin:0 0 10px">Pour confirmer, écrivez <b>EFFACER</b> ci-dessous.</p><input id="confEff" autocomplete="off" autocapitalize="characters" placeholder="EFFACER" aria-label="Écrivez EFFACER pour confirmer">',
+    [{label:"Garder les notes", valeur:false, style:"btn-primary"}, {label:"Effacer", valeur:"eff", style:"btn-danger"}], {focus:"confEff"});
+  el("confEff").addEventListener("input", function(){ saisi = this.value; });
+  pr.then(function(r){
+    if(r !== "eff") return;
+    if(String(saisi).trim().toUpperCase() !== "EFFACER"){ toast("Rien n'a été effacé : il fallait écrire EFFACER."); return; }
     avantModif(false);
     state.notes.data[state.notes.mois] = {};
     touch(); renderNotes(); buildCartes(); fitCartes();
-    toast("Notes de la " + periode + " effacées.", {label:"Annuler", fn:annuler});
+    toast("Notes effacées : " + libellePeriode(state.notes.mois) + ".", {label:"Annuler", fn:annuler});
   });
 });
 el("f_cartesMode").addEventListener("change", function(){ majTitreCartes(); buildCartes(); fitCartes(); majFab(); });
@@ -7400,6 +7412,7 @@ el("acInstallBtn").addEventListener("click", function(){
 
 /* ---------- « Quoi de neuf » après une mise à jour ---------- */
 var NOUVEAUTES = [
+  ["2.3.3", ["Notes : « Effacer la composition » est déplacé tout en bas, loin des autres boutons, et demande d'écrire EFFACER pour confirmer"]],
   ["2.3.2", ["Champs de saisie (notes, fiches, cahier journal) bien visibles, surtout en thème sombre"]],
   ["2.3.1", ["Cahier journal : chaque discipline a sa propre colonne (Histoire, Géographie, Poésie, Chant, Dessin, EPS séparés)"]],
   ["2.3.0", ["Cahier journal (Organisation) : une page par semaine, une colonne par discipline ; dans chaque case la séance (S1, S2…), le titre de la leçon et la page ; « Séance suivante » d'un geste ; impression comme le cahier"]],
@@ -8205,7 +8218,7 @@ function tableauMatieresEleve(e){
 }
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "2.3.2";
+var APP_VERSION = "2.3.3";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }

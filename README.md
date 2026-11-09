@@ -43,6 +43,7 @@ Si le navigateur est réinitialisé ou le téléphone perdu, elles sont perdues 
 
 ## Historique
 
+- **2.3.3** — Notes : « Effacer la composition » déplacé tout en bas de la page, séparé des autres boutons, avec confirmation en écrivant EFFACER (et bouton Annuler juste après).
 - **2.3.2** — Champs de saisie bien visibles (bordure, fond contrasté en thème sombre, indication « Note » dans la saisie des notes).
 - **2.3.1** — Cahier journal : chaque discipline a sa propre colonne (EDHC, expression orale, lecture, expression écrite, mathématiques, sciences et technologie, histoire, géographie, poésie, chant, dessin, EPS) ; les cahiers déjà commencés sont mis à jour sans perte.
 - **2.3.0** — Cahier journal (Organisation) : une page par semaine et par classe ; lignes = jours (lundi, mardi, jeudi, vendredi par défaut), colonnes = disciplines (modifiables par classe) ; dans chaque case la séance (S1, S2…), le titre de la leçon et la page ; « Séance suivante » reprend la leçon avec le numéro suivant, même d'une semaine à l'autre ; recopie de la semaine précédente ; séance faite ou reportée ; numéro de semaine proposé (congés sautés) ; impression A4 paysage avec la colonne du visa du directeur.
