@@ -40,7 +40,7 @@
   --f:#C2336E; --f-bg:rgba(194,51,110,.11); --f-line:rgba(194,51,110,.33);
   --ok:#12805A; --ok-bg:rgba(18,128,90,.10); --warn:#9A5B00; --warn-bg:rgba(233,162,59,.16); --bad:#B42318; --bad-bg:rgba(180,35,24,.09);
   --shadow:var(--ombre-2); --r:var(--rayon-s);
-  --nav-h:66px;
+  --nav-h:0px;
   color-scheme:light;
 }
 @media (prefers-color-scheme: dark){
@@ -758,6 +758,30 @@ body.est-directeur .role-maitre{display:none !important}
 .nt-compte{margin:8px 0 0; font-size:.82rem; padding:7px 10px; border-radius:10px; display:inline-block}
 .nt-compte.oui{background:var(--ok-bg); color:var(--ok)}
 .nt-compte.non{background:var(--surface-2); color:var(--texte-2)}
+.bottomnav{display:none !important}
+.tiroir{position:fixed; inset:0; z-index:70}
+.tiroir[hidden]{display:none}
+.tiroir-fond{position:absolute; inset:0; background:rgba(8,15,30,.45); opacity:0; transition:opacity .25s ease}
+.tiroir-panneau{position:absolute; top:0; right:0; bottom:0; width:min(320px, 86vw); background:var(--surface); box-shadow:-20px 0 50px -20px rgba(0,0,0,.45);
+  display:flex; flex-direction:column; transform:translateX(102%); transition:transform .28s cubic-bezier(.2,.8,.2,1); padding-bottom:env(safe-area-inset-bottom,0px)}
+.tiroir.on .tiroir-fond{opacity:1}
+.tiroir.on .tiroir-panneau{transform:none}
+.tiroir-tete{display:flex; align-items:center; gap:10px; padding:16px 14px 12px; border-bottom:1px solid var(--bord)}
+.tiroir-nom{flex:1; display:flex; flex-direction:column; min-width:0}
+.tiroir-nom b{font:700 1.05rem/1.2 "Poppins",sans-serif}
+.tiroir-nom small{color:var(--texte-3); font-size:.78rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.tiroir-liste{flex:1; overflow:auto; padding:6px 10px 16px; overscroll-behavior:contain}
+.menu-titre{margin:14px 10px 4px; font-size:.72rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--texte-3)}
+.menu-sep{height:1px; background:var(--bord); margin:8px 6px}
+.menu-sep:first-child{display:none}
+.menu-item{display:flex; align-items:center; gap:12px; width:100%; min-height:44px; padding:8px 12px; border:0; border-radius:12px; background:none;
+  color:var(--texte); font:500 .95rem/1.2 "Inter",sans-serif; text-align:left; cursor:pointer}
+.menu-item .ic{width:20px; height:20px; color:var(--texte-3); flex:none}
+.menu-item:hover{background:var(--surface-2)}
+.menu-item.on{background:var(--bleu-doux); color:var(--bleu); font-weight:600}
+.menu-item.on .ic{color:var(--bleu)}
+@media (max-width:420px){ .brand-txt{display:none} }
+@media (prefers-reduced-motion: reduce){ .tiroir-panneau, .tiroir-fond{transition:none} }
 .puces-cases{display:flex; flex-wrap:wrap; gap:6px 12px; padding-top:4px}
 .puces-cases .case{display:inline-flex; align-items:center; gap:5px; font-size:.88rem; cursor:pointer}
 .field .lbl{display:block; font-size:.8rem; font-weight:600; color:var(--texte-2); margin-bottom:4px}
@@ -1059,6 +1083,9 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
   <symbol id="i-appel" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="17" rx="2.5"/><path d="M8 2.5v3M16 2.5v3M4 9.5h16"/><path d="m9 15 2 2 4-4"/></symbol>
   <symbol id="i-balai" viewBox="0 0 24 24"><path d="M14 3 9.5 11"/><path d="M6 12h8l2 9H4l2-9Z"/><path d="M8 16v5M12 16v5"/></symbol>
   <symbol id="i-de" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="3.5"/><circle cx="9" cy="9" r="1.2" fill="currentColor"/><circle cx="15" cy="15" r="1.2" fill="currentColor"/><circle cx="15" cy="9" r="1.2" fill="currentColor"/><circle cx="9" cy="15" r="1.2" fill="currentColor"/></symbol>
+  <symbol id="i-graphe" viewBox="0 0 24 24"><path d="M4 20V4M4 20h16M8 16l4-5 3 3 5-6"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="i-fermer" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
   <symbol id="i-photo" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></symbol>
   <symbol id="i-import" viewBox="0 0 24 24"><path d="M12 3v11"/><path d="m7.5 9.5 4.5 4.5 4.5-4.5"/><path d="M4 16v3.5h16V16"/></symbol>
   <symbol id="i-agenda" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M8 3v4M16 3v4M3.5 10h17"/><path d="M8 14h3"/></symbol>
@@ -1082,8 +1109,21 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
     <label class="classe-chip"><span class="sr">Classe ouverte</span><select id="f_classeSel"></select></label>
     <button class="icon-btn" id="btnRecherche" type="button" aria-label="Rechercher" title="Rechercher"><svg class="ic"><use href="#i-recherche"/></svg></button>
     <button class="icon-btn" id="btnAnnuler" type="button" disabled aria-label="Annuler la dernière action" title="Annuler la dernière action"><svg class="ic"><use href="#i-annuler"/></svg></button>
+    <button class="icon-btn" id="btnMenu" type="button" aria-label="Menu" title="Menu" aria-expanded="false" aria-controls="menu"><svg class="ic"><use href="#i-menu"/></svg></button>
   </div>
 </header>
+
+<div class="tiroir no-print" id="menu" hidden>
+  <div class="tiroir-fond" id="menuFond"></div>
+  <aside class="tiroir-panneau" role="dialog" aria-modal="true" aria-label="Menu">
+    <div class="tiroir-tete">
+      <span class="logo" aria-hidden="true">R</span>
+      <span class="tiroir-nom"><b>Registre</b><small id="menuClasse">—</small></span>
+      <button class="icon-btn" id="menuFermer" type="button" aria-label="Fermer le menu"><svg class="ic"><use href="#i-fermer"/></svg></button>
+    </div>
+    <nav class="tiroir-liste" id="menuListe" aria-label="Tous les écrans"></nav>
+  </aside>
+</div>
 
 <main class="wrap">
 
@@ -6852,6 +6892,55 @@ el("btnRetirerPhotos").addEventListener("click", function(){
     });
 });
 
+/* ---------- menu ☰ : tous les écrans ---------- */
+var MENU = [
+  {t:"", l:[["accueil|", "i-accueil", "Accueil"]]},
+  {t:"Élèves", l:[["eleves|saisie","i-eleves","Liste des élèves"],["eleves|appel","i-appel","Cahier d'appel"],["eleves|groupes","i-de","Groupes EPS et PNAPAS"],["eleves|vie","i-balai","Vie de classe"],
+    ["eleves|scolarite","i-tri","Tableaux de scolarité"],["eleves|alpha","i-livre","Liste de classe"],["eleves|synthese","i-check","Synthèse, effectifs, âges"]]},
+  {t:"Notes", l:[["notes|notes","i-notes","Compositions"],["notes|annee","i-etoile","Fin d'année"],["notes|stats","i-graphe","Statistiques"]]},
+  {t:"Documents", l:[["documents|feuille","i-docs","Tableau récapitulatif"],["documents|cartes","i-docs","Bulletins scolaires"],["documents|","i-imprimer","Tous les documents"]]},
+  {t:"", l:[["accueil|ecole","i-ecole","Mon école","dir"],["reglages|","i-reglages","Réglages"]]}
+];
+var coucheMenu = null;
+function renderMenu(){
+  var ici = rubriqueActive + "|" + (vueActive || "");
+  if(rubriqueActive === "documents" && vueActive === "doc") ici = "documents|";
+  el("menuClasse").textContent = nomClasse(state);
+  el("menuListe").innerHTML = MENU.map(function(g){
+    var items = g.l.filter(function(x){ return x[3] !== "dir" || dossier.role === "directeur"; });
+    return (g.t ? '<p class="menu-titre">' + g.t + '</p>' : '<div class="menu-sep"></div>')
+      + items.map(function(x){ return '<button type="button" class="menu-item' + (x[0] === ici ? ' on' : '') + '" data-go="' + x[0] + '"><svg class="ic"><use href="#' + x[1] + '"/></svg><span>' + esc(x[2]) + '</span></button>'; }).join("");
+  }).join("");
+}
+function ouvrirMenu(){
+  renderMenu();
+  el("menu").hidden = false;
+  requestAnimationFrame(function(){ el("menu").classList.add("on"); });
+  el("btnMenu").setAttribute("aria-expanded", "true");
+  coucheMenu = ouvrirCouche(function(){ fermerMenu(true); });
+  var actif = el("menuListe").querySelector(".on") || el("menuListe").querySelector("button"); if(actif) actif.focus({preventScroll:true});
+}
+function fermerMenu(parRetour){
+  if(el("menu").hidden) return;
+  el("menu").classList.remove("on"); el("btnMenu").setAttribute("aria-expanded", "false");
+  setTimeout(function(){ if(!el("menu").classList.contains("on")) el("menu").hidden = true; }, 260);
+  if(coucheMenu){ var c = coucheMenu; coucheMenu = null; fermerCouche(c, parRetour); }
+}
+el("btnMenu").addEventListener("click", function(){ if(el("menu").hidden) ouvrirMenu(); else fermerMenu(false); });
+el("menuFond").addEventListener("click", function(){ fermerMenu(false); });
+el("menuFermer").addEventListener("click", function(){ fermerMenu(false); });
+document.addEventListener("keydown", function(e){ if(e.key === "Escape" && !el("menu").hidden) fermerMenu(false); });
+el("menuListe").addEventListener("click", function(e){
+  var b = e.target.closest("[data-go]"); if(!b) return;
+  var p = b.getAttribute("data-go").split("|");
+  fermerMenu(false);
+  /* on attend que le retour d'historique du menu soit passé avant de naviguer */
+  setTimeout(function(){
+    if(p[1] === "feuille" || p[1] === "cartes") ouvrirDocument(p[1]);
+    else allerRubrique(p[0], p[1] || undefined);
+  }, 60);
+});
+
 /* ---------- bouton « Installer l'application » ---------- */
 var inviteInstall = null;
 function estInstallee(){ return (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || window.navigator.standalone === true; }
@@ -6866,6 +6955,7 @@ el("acInstallBtn").addEventListener("click", function(){
 
 /* ---------- « Quoi de neuf » après une mise à jour ---------- */
 var NOUVEAUTES = [
+  ["1.12.0", ["Nouveau menu ☰ en haut à droite : tous les écrans y sont rangés (la barre du bas est retirée)"]],
   ["1.11.1", ["Notes : on choisit le type de composition (évaluation mensuelle, composition trimestrielle ou de passage) avec des boutons bien visibles"]],
   ["1.11.0", ["Charger une liste de classe depuis un fichier PDF, Excel ou Word (Élèves → Importer)","Aide pour une liste sur papier ou en photo (avec Google Lens)","Le bouton « PDF » s'appelle maintenant « Envoyer » : il envoie le document par WhatsApp"]],
   ["1.10.0", ["Le bouton Retour du téléphone revient à l'écran précédent au lieu de quitter","Bouton « Installer l'application » sur l'accueil","Couleurs au choix : bleu, ou orange et vert ivoiriens (Réglages)","Recherche générale (loupe en haut)","Moyennes de l'élève par matière sur l'année, avec ses points forts","Jauge de mémoire et alerte si le téléphone est plein","Application plus fluide et compatible avec les anciens téléphones"]],
@@ -6945,7 +7035,7 @@ function tableauMatieresEleve(e){
 }
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "1.11.1";
+var APP_VERSION = "1.12.0";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }

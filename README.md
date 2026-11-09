@@ -35,6 +35,7 @@ Si le navigateur est réinitialisé ou le téléphone perdu, elles sont perdues 
 
 ## Historique
 
+- **1.12.0** — Menu ☰ en haut à droite : tous les écrans y sont rangés (Accueil, Élèves, Notes, Documents, Mon école pour le directeur, Réglages), l'écran ouvert est mis en évidence, le bouton Retour le ferme. La barre de navigation du bas est retirée.
 - **1.11.1** — Notes : boutons « Type de composition » (Mensuelle, Trimestrielle, Passage), puis le mois ou le trimestre ; un message indique si la composition compte ou non dans la moyenne annuelle.
 - **1.11.0** — Importer une liste de classe depuis un fichier PDF (tapé à l'ordinateur), Excel (.xlsx) ou Word (.docx) : noms, sexe, matricule et date de naissance sont reconnus grâce à l'en-tête du tableau, puis vérifiés avant l'ajout. Aide pour une liste sur papier ou en photo (Google Lens). Le bouton « PDF » des documents devient « Envoyer ».
 - **1.10.0** — Finitions : le bouton Retour du téléphone revient à l'écran précédent (et ferme les fenêtres) au lieu de quitter ; bouton « Installer l'application » ; « Quoi de neuf » après chaque mise à jour ; couleurs au choix (bleu, ou orange et vert ivoiriens) ; recherche générale (élèves, documents, outils) ; moyennes de l'élève par matière sur l'année avec points forts et à renforcer ; démarrage guidé avec rôle et niveaux ; jauge de mémoire, alerte si la mémoire est pleine, vider la corbeille, retirer les photos ; colonnes des noms fixes dans les grands tableaux ; application plus fluide et compatible avec les anciens téléphones.
