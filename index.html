@@ -2152,7 +2152,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
         <p>Dans Chrome, menu ⋮ puis « Ajouter à l'écran d'accueil ». L'application fonctionne ensuite sans internet.</p></details>
     </section>
 
-    <p class="version">Registre récapitulatif — version <span id="appVersion"></span> · <button type="button" class="btn btn-sm btn-ghost" id="btnNouveautes" style="min-height:0;padding:2px 6px">Quoi de neuf ?</button></p>
+    <p class="version">Registre récapitulatif — version <span id="appVersion"></span> · <button type="button" class="btn btn-sm btn-ghost" id="btnNouveautes" style="min-height:0;padding:2px 6px">Quoi de neuf ?</button> · <button type="button" class="btn btn-sm btn-ghost" id="btnVerifMaj" style="min-height:0;padding:2px 6px">Vérifier les mises à jour</button></p>
   </section>
 </main>
 
@@ -7471,6 +7471,7 @@ el("acInstallBtn").addEventListener("click", function(){
 
 /* ---------- « Quoi de neuf » après une mise à jour ---------- */
 var NOUVEAUTES = [
+  ["2.4.3", ["Recherche des mises à jour plus fréquente, et bouton « Vérifier les mises à jour » dans Réglages"]],
   ["2.4.2", ["Cahier journal imprimé : les séances de chaque jour à la suite, sans colonnes vides (au choix : une colonne par discipline)","« Séance 1 », « Séance 2 »… écrits en entier"]],
   ["2.4.1", ["Cahier journal : chaque jour, seules les disciplines prévues ou remplies sont affichées ; les colonnes vides de la semaine ne sont plus imprimées"]],
   ["2.4.0", ["Cahier journal : chargez la répartition mensuelle (PDF, Word ou Excel) et les 4 semaines se remplissent toutes seules","Colonnes du cahier journal : les 15 matières de la répartition (lecture, vocabulaire, orthographe, grammaire, conjugaison…)","« Semaine type » : les jours de chaque discipline, à cocher une fois"]],
@@ -7508,6 +7509,14 @@ function quoiDeNeuf(force){
     }).join(""), [{label:"Super !", valeur:null, style:"btn-primary"}], {feuille:true});
 }
 el("btnNouveautes").addEventListener("click", function(){ quoiDeNeuf(true); });
+el("btnVerifMaj").addEventListener("click", function(){
+  if(navigator.onLine === false){ toast("Pas d'internet : impossible de vérifier pour l'instant."); return; }
+  if(!window.__verifierMaj){ toast("Vérification impossible sur ce navigateur. Fermez et rouvrez l'application."); return; }
+  var b = this; b.disabled = true; b.textContent = "Vérification…";
+  window.__verifierMaj().then(function(r){
+    toast(r === "dispo" ? "Nouvelle version prête : touchez « Mettre à jour » sur le bandeau." : r === "encours" ? "Téléchargement de la nouvelle version en cours…" : "Vous avez déjà la dernière version (" + APP_VERSION + ").");
+  }).catch(function(){ toast("La vérification n'a pas pu se faire. Réessayez."); }).then(function(){ b.disabled = false; b.textContent = "Vérifier les mises à jour"; });
+});
 
 /* =====================================================================
    REFONTE 2.0 — tableau de bord, Organisation, Plus, notifications
@@ -8564,7 +8573,7 @@ function tableauMatieresEleve(e){
 }
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "2.4.2";
+var APP_VERSION = "2.4.3";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
@@ -8718,8 +8727,19 @@ if("serviceWorker" in navigator){
         var nv = reg.installing; if(!nv) return;
         nv.addEventListener("statechange", function(){ if(nv.state === "installed") proposer(reg); });
       });
-      /* vérifie s'il y a du nouveau à chaque retour sur l'application */
-      document.addEventListener("visibilitychange", function(){ if(!document.hidden) reg.update().catch(function(){}); });
+      /* vérifie s'il y a du nouveau : au retour sur l'application, au retour d'internet, et toutes les 30 minutes */
+      var verifier = function(){ return reg.update().catch(function(){}); };
+      document.addEventListener("visibilitychange", function(){ if(!document.hidden) verifier(); });
+      window.addEventListener("online", verifier);
+      setInterval(verifier, 30 * 60 * 1000);
+      window.__verifierMaj = function(){
+        return reg.update().then(function(){
+          var r = reg.installing || reg.waiting;
+          if(reg.waiting){ proposer(reg); return "dispo"; }
+          if(!r) return "ajour";
+          return new Promise(function(ok){ r.addEventListener("statechange", function(){ if(r.state === "installed"){ proposer(reg); ok("dispo"); } else if(r.state === "redundant") ok("ajour"); }); setTimeout(function(){ ok(reg.waiting ? "dispo" : "encours"); }, 15000); });
+        });
+      };
     }).catch(function(){});
     navigator.serviceWorker.addEventListener("controllerchange", function(){
       if(recharge || !dejaControle) return;
