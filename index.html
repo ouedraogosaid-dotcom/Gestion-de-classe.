@@ -877,6 +877,56 @@ h1,h2,h3,.titre{letter-spacing:-.015em}
 .mn-presets{justify-content:center; max-width:560px}
 .mn-btns{display:flex; gap:10px; flex-wrap:wrap; justify-content:center}
 .mn-btns .btn{min-width:150px; min-height:52px; font-size:1.05rem}
+/* cahier journal */
+.jr-nav{padding:12px 14px}
+.jr-ligne{display:flex; align-items:center; gap:10px}
+.jr-titre{flex:1; display:flex; flex-direction:column; align-items:center; text-align:center; min-width:0}
+.jr-titre b{font-size:.92rem; line-height:1.3}
+.jr-titre small{font-size:.76rem; color:var(--texte-3)}
+.jr-titre input{width:3.4em; padding:2px 6px; text-align:center; font:700 .8rem/1.2 "Inter",sans-serif; border-radius:8px; min-height:0}
+.jr-jours{margin:12px 0 10px; flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none}
+.jr-jours .puce{flex:1 0 auto; justify-content:center}
+.jr-jours .puce small{font-size:.66rem; opacity:.8; margin-left:4px}
+.jr-jours .puce.jr-auj:not([aria-pressed="true"]){border-color:var(--bleu)}
+.jr-cases{display:grid; gap:10px}
+@media (min-width:760px){ .jr-cases{grid-template-columns:repeat(2,1fr)} }
+.jr-case{background:var(--surface); border:1px solid var(--bord); border-radius:14px; padding:11px 12px}
+.jr-case.fait{border-color:var(--ok)} .jr-case.reporte{border-color:var(--warn)}
+.jr-col{display:flex; align-items:center; gap:8px; margin-bottom:8px}
+.jr-col b{flex:1; font-size:.86rem; color:var(--bleu)}
+.jr-st{display:flex; gap:4px}
+.jr-st button{appearance:none; border:1px solid var(--bord); background:none; color:var(--texte-3); font:600 .66rem/1 "Inter",sans-serif; padding:5px 7px; border-radius:999px; cursor:pointer}
+.jr-st [data-jr-st="fait"][aria-pressed="true"]{background:var(--ok-bg); color:var(--ok); border-color:var(--ok)}
+.jr-st [data-jr-st="reporte"][aria-pressed="true"]{background:var(--warn-bg); color:var(--warn); border-color:var(--warn)}
+.jr-champs{display:grid; grid-template-columns:4.6em 1fr 4.2em; gap:6px}
+.jr-champs input{min-height:40px; padding:8px 9px; font-size:.88rem}
+.jr-actions{display:flex; gap:6px; flex-wrap:wrap; margin-top:7px}
+.jr-actions:empty{display:none}
+.jr-actions .btn{min-height:30px; padding:5px 10px; font-size:.76rem}
+.jr-actions .btn small{font-weight:400; opacity:.75; margin-left:4px}
+.jr-apercu{padding:10px}
+.jr-page{min-width:860px; color:#111; background:#fff; padding:8px; border-radius:6px; font-family:"Inter",sans-serif}
+.jr-tete{display:flex; justify-content:space-between; gap:10px; font-size:11px; margin-bottom:6px}
+.jr-num{display:inline-block; border:1px solid #111; padding:0 6px; margin-right:8px}
+.jr-grille{width:100%; border-collapse:collapse; table-layout:fixed; font-size:9.5px; line-height:1.25}
+.jr-grille th, .jr-grille td{white-space:normal; overflow-wrap:anywhere; border:1px solid #555; padding:3px 4px; vertical-align:top; color:#111; background:#fff}
+.jr-grille thead th{white-space:normal; overflow-wrap:anywhere; hyphens:auto; font-size:8.5px; text-transform:uppercase; background:#f1efe9; text-align:center; vertical-align:middle}
+.jr-grille .jr-jour{text-align:center; vertical-align:middle; background:#f7f6f2}
+.jr-grille .jr-jour span{display:block; font-size:8.5px; letter-spacing:.04em}
+.jr-grille .jr-jour small{font-size:9px; color:#555}
+.jr-grille tbody tr{height:30mm}
+.jr-g-s{display:block; color:#B42318}
+.jr-g-t{display:block; color:#1D3A8A}
+.jr-g-p{display:block; font-size:8.5px; color:#333; margin-top:1px}
+.jr-g-r{display:block; font-size:8px; color:#9A5B00}
+@media print{
+  body.pr-journal, body.pr-journal main, body.pr-journal .rubrique, body.pr-journal .view{page:paysage}
+  .jr-apercu{border:0 !important; box-shadow:none !important; padding:0 !important; margin:0 !important}
+  .jr-apercu .scroll{overflow:visible !important}
+  .jr-page{min-width:0; padding:0}
+  .jr-grille tbody tr{height:34mm}
+  @page paysage{size:A4 landscape; margin:6mm}
+}
 /* notifications */
 .notifs{list-style:none; margin:0; padding:0; display:flex; flex-direction:column}
 .notifs li{display:grid; grid-template-columns:auto 1fr auto; gap:10px; align-items:center; padding:10px 0; border-bottom:1px solid var(--bord)}
@@ -1225,7 +1275,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
   body.pr-saisie #vSaisie, body.pr-scolarite #vScolarite, body.pr-alpha #vAlpha,
   body.pr-synthese #vSynthese, body.pr-feuille #vFeuille, body.pr-notes #vNotes,
   body.pr-annee #vAnnee, body.pr-cartes #vCartes, body.pr-doc #vDoc, body.pr-appel #vAppel, body.pr-groupes #vGroupes,
-  body.pr-vie #vVie, body.pr-agenda #vAgenda, body.pr-calendrier #vCalendrier, body.pr-cepe #vCepe, body.pr-edt #vEdt, body.pr-fourn #vFourn, body.pr-manuels #vManuels,
+  body.pr-vie #vVie, body.pr-agenda #vAgenda, body.pr-calendrier #vCalendrier, body.pr-journal #vJournal, body.pr-cepe #vCepe, body.pr-edt #vEdt, body.pr-fourn #vFourn, body.pr-manuels #vManuels,
   body.pr-blocnotes #vBlocnotes, body.pr-textes #vTextes, body.pr-ecole #vEcole, body.pr-stats #vStats,
   body.pr-visites #vVisites, body.pr-inventaire #vInventaire, body.pr-taches #vTaches{display:block !important; animation:none !important}
   .edt input{font-size:9pt !important; padding:4px !important}
@@ -1385,6 +1435,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
    <div id="orgHub" class="no-print">
     <div class="page-titre"><div><h1>Organisation</h1><p>Agenda, emploi du temps et tâches de l'année</p></div></div>
     <div class="liste-nav anim">
+      <button class="ln-item" type="button" data-outil="journal"><span class="rond"><svg class="ic"><use href="#i-livre"/></svg></span><span class="ln-txt"><b>Cahier journal</b><small><span id="orgJrSous">Les séances de la semaine, discipline par discipline</span></small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
       <button class="ln-item" type="button" data-outil="calendrier"><span class="rond"><svg class="ic"><use href="#i-calendrier"/></svg></span><span class="ln-txt"><b>Calendrier de l'année</b><small><span id="orgCalSous">Trimestres, compositions, congés et vacances</span></small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
       <button class="ln-item" type="button" data-outil="agenda"><span class="rond"><svg class="ic"><use href="#i-agenda"/></svg></span><span class="ln-txt"><b>Agenda</b><small><span id="orgAgSous">Compositions, congés, réunions, rappels</span></small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
       <button class="ln-item" type="button" data-outil="edt"><span class="rond"><svg class="ic"><use href="#i-horloge"/></svg></span><span class="ln-txt"><b>Emploi du temps</b><small><span id="orgEdtSous">Les matières de chaque jour</span></small></span><svg class="ic"><use href="#i-chevron"/></svg></button>
@@ -1410,6 +1461,22 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
        <div class="rowbtns no-print"><button class="btn btn-sm" type="button" id="edtPlus"><svg class="ic"><use href="#i-plus"/></svg>Ajouter un créneau</button>
          <button class="btn btn-sm btn-ghost" type="button" id="edtMoins">Retirer le dernier créneau</button></div>
        <p class="hint no-print">Touchez une case pour écrire la matière. Les horaires de la première colonne sont modifiables.</p></div>
+   </section>
+   <section class="view is-hidden" id="vJournal">
+     <div class="page-titre no-print"><div><h1>Cahier journal</h1><p>Une page par semaine — <span id="jrProgres"></span></p></div>
+       <button class="btn btn-sm no-print" type="button" id="jrReglages">Colonnes et jours</button></div>
+     <div class="sheet no-print jr-nav">
+       <div class="jr-ligne"><button class="icon-btn" type="button" id="jrPrec" aria-label="Semaine précédente"><svg class="ic"><use href="#i-retour"/></svg></button>
+         <span class="jr-titre"><small>Semaine n° <input id="jrNum" maxlength="6" inputmode="numeric" aria-label="Numéro de la semaine"></small><b id="jrSemaine">—</b></span>
+         <button class="icon-btn" type="button" id="jrSuiv" aria-label="Semaine suivante"><svg class="ic"><use href="#i-chevron"/></svg></button></div>
+       <div class="rowbtns"><button class="btn btn-sm" type="button" id="jrAuj">Cette semaine</button><button class="btn btn-sm" type="button" id="jrCopier">Recopier la semaine précédente</button></div>
+       <div class="notice is-hidden" id="jrConge" style="margin:10px 0 0"></div>
+     </div>
+     <div class="puces jr-jours no-print" id="jrJours" role="group" aria-label="Jour"></div>
+     <div class="jr-cases no-print" id="jrCases"></div>
+     <p class="hint no-print">Dans chaque case : la séance (S1, S2…), le titre de la leçon et la page. « Séance suivante » reprend la même leçon avec le numéro suivant, même si la séance précédente était la semaine d'avant.</p>
+     <h2 class="section-titre no-print">La semaine, telle qu'elle s'imprime</h2>
+     <div class="sheet jr-apercu"><div class="scroll" id="jrImpr"></div></div>
    </section>
    <section class="view is-hidden" id="vCalendrier">
      <div class="page-titre"><div><h1 id="calTitre">Calendrier de l'année</h1><p>Découpage de l'année : trimestres, compositions, congés et vacances</p></div>
@@ -2423,6 +2490,27 @@ function normVie(v, ids){
   if(v.faits && typeof v.faits === "object") Object.keys(v.faits).filter(function(d){ return /^\d{4}-\d{2}-\d{2}$/.test(d) && v.faits[d]; }).sort().slice(-120).forEach(function(d){ faits[d] = 1; });
   return {chef:un(v.chef), sousChef:un(v.sousChef), service:txt(v.service, 50).trim() || "Balayage et nettoyage", jours:jours, equipes:equipes, faits:faits};
 }
+function normJournal(j){
+  j = (j && typeof j === "object") ? j : {};
+  var JOURS_OK = ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
+  var cols = Array.isArray(j.cols) ? j.cols.slice(0, 14).map(function(c){ var n = txt(c && c.nom, 50).trim(); return n ? {id:idSur(c.id) || uid(), nom:n} : null; }).filter(Boolean) : [];
+  if(!cols.length) cols = ["EDHC","Français — Expression orale","Français — Lecture","Français — Expression écrite","Mathématiques","Sciences et technologie","Histoire / Géographie","AEC (poésie, chant, dessin) / EPS"].map(function(n, i){ return {id:"c" + (i + 1), nom:n}; });
+  var ids = {}; cols.forEach(function(c){ if(ids[c.id]) c.id = uid(); ids[c.id] = 1; });
+  var jours = Array.isArray(j.jours) ? JOURS_OK.filter(function(x){ return j.jours.indexOf(x) >= 0; }) : [];
+  if(!jours.length) jours = ["Lundi","Mardi","Jeudi","Vendredi"];
+  var semaines = {};
+  if(j.semaines && typeof j.semaines === "object") Object.keys(j.semaines).filter(function(k){ return /^\d{4}-\d{2}-\d{2}$/.test(k); }).sort().slice(-80).forEach(function(k){
+    var sm = j.semaines[k]; if(!sm || typeof sm !== "object") return;
+    var cases = {};
+    if(sm.cases && typeof sm.cases === "object") Object.keys(sm.cases).slice(0, 120).forEach(function(c){
+      var p = c.split("|"), v = sm.cases[c]; if(p.length !== 2 || JOURS_OK.indexOf(p[0]) < 0 || !idSur(p[1]) || !v || typeof v !== "object") return;
+      var o = {s:txt(v.s, 20).trim(), t:txt(v.t, 140).trim(), p:txt(v.p, 12).trim(), st:["fait","reporte"].indexOf(v.st) >= 0 ? v.st : ""};
+      if(o.s || o.t || o.p || o.st) cases[p[0] + "|" + idSur(p[1])] = o;
+    });
+    semaines[k] = {num:txt(sm.num, 6).trim(), cases:cases};
+  });
+  return {cols:cols, jours:jours, semaines:semaines};
+}
 function normCepe(c, ids){
   c = (c && typeof c === "object") ? c : {};
   var ok = function(k){ var id = idSur(k); return id && (!ids || ids[id]) ? id : ""; };
@@ -2497,6 +2585,7 @@ function normalize(d){
     vie: normVie(d.vie, vus),
     appel: normAppel(d.appel, vus),
     cepe: normCepe(d.cepe, vus),
+    journal: normJournal(d.journal),
     archive: !!d.archive,
     edt: normEdt(d.edt),
     fourn: {items:normItems(d.fourn && d.fourn.items), manque:normSuivi(d.fourn && d.fourn.manque, vus, [])},
@@ -4448,13 +4537,13 @@ el("btnViderMois").addEventListener("click", function(){
 el("f_cartesMode").addEventListener("change", function(){ majTitreCartes(); buildCartes(); fitCartes(); majFab(); });
 
 /* ---------- navigation : 5 rubriques, chacune avec ses vues ---------- */
-var VIEWS = {cepe:"vCepe", calendrier:"vCalendrier", stats:"vStats", visites:"vVisites", inventaire:"vInventaire", taches:"vTaches", doc:"vDoc", ecole:"vEcole", agenda:"vAgenda", edt:"vEdt", fourn:"vFourn", manuels:"vManuels", blocnotes:"vBlocnotes", textes:"vTextes", saisie:"vSaisie", appel:"vAppel", groupes:"vGroupes", vie:"vVie", scolarite:"vScolarite", alpha:"vAlpha", synthese:"vSynthese", feuille:"vFeuille", notes:"vNotes", annee:"vAnnee", cartes:"vCartes"};
+var VIEWS = {journal:"vJournal", cepe:"vCepe", calendrier:"vCalendrier", stats:"vStats", visites:"vVisites", inventaire:"vInventaire", taches:"vTaches", doc:"vDoc", ecole:"vEcole", agenda:"vAgenda", edt:"vEdt", fourn:"vFourn", manuels:"vManuels", blocnotes:"vBlocnotes", textes:"vTextes", saisie:"vSaisie", appel:"vAppel", groupes:"vGroupes", vie:"vVie", scolarite:"vScolarite", alpha:"vAlpha", synthese:"vSynthese", feuille:"vFeuille", notes:"vNotes", annee:"vAnnee", cartes:"vCartes"};
 var RUBRIQUES = {accueil:"rAccueil", eleves:"rEleves", notes:"rNotes", organisation:"rOrga", plus:"rPlus", documents:"rDocuments", reglages:"rReglages"};
 /* onglet de la barre du bas allumé pour chaque rubrique */
 var NAV_DE = {accueil:"accueil", eleves:"eleves", notes:"notes", organisation:"organisation", plus:"plus", documents:"plus", reglages:"plus"};
 /* rubriques à page d'accueil (hub) puis outils */
 var HUBS = {accueil:["acHub","acRetour"], organisation:["orgHub","orgRetour"], plus:["plusHub","plusRetour"]};
-var RUBRIQUE_DE = {cepe:"notes", calendrier:"organisation", stats:"notes", visites:"plus", inventaire:"plus", taches:"organisation", doc:"documents", ecole:"plus", agenda:"organisation", edt:"organisation", fourn:"plus", manuels:"plus", blocnotes:"plus", textes:"plus", saisie:"eleves", appel:"eleves", groupes:"eleves", vie:"eleves", scolarite:"eleves", alpha:"eleves", synthese:"eleves", notes:"notes", annee:"notes", feuille:"documents", cartes:"documents"};
+var RUBRIQUE_DE = {journal:"organisation", cepe:"notes", calendrier:"organisation", stats:"notes", visites:"plus", inventaire:"plus", taches:"organisation", doc:"documents", ecole:"plus", agenda:"organisation", edt:"organisation", fourn:"plus", manuels:"plus", blocnotes:"plus", textes:"plus", saisie:"eleves", appel:"eleves", groupes:"eleves", vie:"eleves", scolarite:"eleves", alpha:"eleves", synthese:"eleves", notes:"notes", annee:"notes", feuille:"documents", cartes:"documents"};
 var DERNIERE_VUE = {eleves:"saisie", notes:"notes"};
 var vueActive = null, rubriqueActive = "accueil";
 var TITRES_CARTES = {cartes:"Bulletins scolaires", tableau:"Tableau des notes", annee:"Résultats de fin d'année"};
@@ -5815,9 +5904,10 @@ document.querySelectorAll("[data-outil]").forEach(function(b){ b.addEventListene
 el("acRetour").addEventListener("click", function(){ allerRubrique("accueil"); });
 function fermerOutil(){
   Object.keys(HUBS).forEach(function(k){ el(HUBS[k][0]).classList.remove("is-hidden"); el(HUBS[k][1]).classList.add("is-hidden"); });
-  ["vCalendrier","vEcole","vAgenda","vEdt","vFourn","vManuels","vBlocnotes","vTextes","vVisites","vInventaire","vTaches"].forEach(function(id){ el(id).classList.add("is-hidden"); });
+  ["vJournal","vCalendrier","vEcole","vAgenda","vEdt","vFourn","vManuels","vBlocnotes","vTextes","vVisites","vInventaire","vTaches"].forEach(function(id){ el(id).classList.add("is-hidden"); });
 }
 function renderOutil(v){
+  if(v === "journal") renderJournal();
   if(v === "calendrier") renderCalendrier();
   if(v === "agenda") renderAgenda();
   if(v === "edt") renderEdt();
@@ -7295,6 +7385,7 @@ el("acInstallBtn").addEventListener("click", function(){
 
 /* ---------- « Quoi de neuf » après une mise à jour ---------- */
 var NOUVEAUTES = [
+  ["2.3.0", ["Cahier journal (Organisation) : une page par semaine, une colonne par discipline ; dans chaque case la séance (S1, S2…), le titre de la leçon et la page ; « Séance suivante » d'un geste ; impression comme le cahier"]],
   ["2.2.1", ["Chef de classe et équipes de balayage retirés ; l'onglet devient « Tirage au sort »"]],
   ["2.2.0", ["CM2 : examens blancs (ils comptent dans la moyenne annuelle) et pas de composition de passage ; onglet CEPE (candidats, résultats, taux de réussite)","Alerte quand un élève dépasse 6 absences dans le mois, avec convocation du parent","Dossier complet de l'élève à imprimer ; présence sur l'année","Message à tous les parents par WhatsApp ; rapport de fin d'année pour l'IEPP","Minuteur et chronomètre en grand ; actions rapides de l'accueil au choix ; passer la classe à un remplaçant ; témoin « hors ligne »"]],
   ["2.1.0", ["Organisation : calendrier de l'année — trimestres, compositions trimestrielles, congés et grandes vacances (calendrier officiel 2026-2027 à ajouter d'un geste)","Documents : rubrique « Compositions » avec chaque composition saisie (tableau des notes, bulletins, tableau d'honneur)"]],
@@ -7373,6 +7464,8 @@ function activitesDuJour(){
     l.push({ic:"i-appel", t:"Appel du matin", s:am.s, st:am.st, btn:am.st === "fait" ? "Voir" : "Faire l'appel", act:"appel-m"});
     l.push({ic:"i-appel", t:"Appel du soir", s:as.s, st:as.st, btn:as.st === "fait" ? "Voir" : "Faire l'appel", act:"appel-s"});
   }
+  var ej = etatJournalDuJour();
+  if(ej) l.push({ic:"i-livre", t:"Cahier journal du jour", s:ej.n + " / " + ej.total + " séance(s) préparée(s)", st:ej.n >= ej.total ? "fait" : ej.n ? "encours" : "afaire", lib:ej.n >= ej.total ? "Terminé" : ej.n ? "En cours" : "À faire", btn:"Ouvrir", act:"journal"});
   dossier.agenda.filter(function(a){ return a.type !== "trimestre" && a.date <= auj && (a.fin || a.date) >= auj; }).forEach(function(a){
     l.push({ic:"i-agenda", t:esc(a.titre), s:libType(a.type) + (a.fin && a.fin !== a.date ? " · jusqu'au " + dateFr(a.fin) : ""), st:a.fin && a.fin !== a.date ? "encours" : "afaire", lib:a.fin && a.fin !== a.date ? "En cours" : "Aujourd'hui", btn:"Agenda", act:"agenda"});
   });
@@ -7403,6 +7496,7 @@ el("acActivites").addEventListener("click", function(ev){
   if(a === "appel-m" || a === "appel-s"){ apDate = aujourdhuiISO(); apDemi = a.slice(-1); allerRubrique("eleves", "appel"); }
   else if(a === "vie") allerRubrique("eleves", "vie");
   else if(a === "agenda") allerRubrique("organisation", "agenda");
+  else if(a === "journal"){ jrLundi = null; jrJour = null; allerRubrique("organisation", "journal"); }
   else if(a === "taches"){ var ta = tacheSuivante(); if(ta) taOnglet = ta.o; allerRubrique("organisation", "taches"); }
 });
 
@@ -7447,6 +7541,9 @@ function renderOrga(){
   var auj = aujourdhuiISO();
   var avenir = dossier.agenda.filter(function(a){ return a.type !== "trimestre" && (a.fin || a.date) >= auj; }).sort(function(a, b){ return a.date.localeCompare(b.date); });
   var ev = evtsAnnee(), proc = ev.filter(function(a){ return a.type === "conge" && a.date > auj; })[0], encours = ev.filter(function(a){ return a.type === "trimestre" && a.date <= auj && (a.fin || a.date) >= auj; })[0];
+  var ej = etatJournalDuJour(), lj = lundiDe(auj), nb = 0, tot = state.journal.jours.length * state.journal.cols.length;
+  state.journal.jours.forEach(function(j){ state.journal.cols.forEach(function(c){ if(caseRemplie(caseJr(lj, j, c.id))) nb++; }); });
+  el("orgJrSous").textContent = "Cette semaine : " + nb + " / " + tot + " case(s) remplie(s)";
   el("orgCalSous").textContent = !ev.length ? "Trimestres, compositions, congés et vacances" : (encours ? encours.titre + " en cours" : "Année " + anneeDebut() + "–" + (anneeDebut() + 1)) + (proc ? " · " + proc.titre.replace(/^Congés de /, "") + " dans " + joursAvant(proc.date) + " j" : "");
   el("orgAgSous").textContent = avenir.length ? avenir.length + " événement(s) à venir" : "Compositions, congés, réunions, rappels";
   var cours = edtDuJour(); el("orgEdtSous").textContent = cours.length ? "Aujourd'hui : " + cours.map(function(c){ return c.m; }).join(" · ") : "Les matières de chaque jour";
@@ -7467,6 +7564,7 @@ function renderOrga(){
   else if(a === "agenda") allerRubrique("organisation", "agenda");
   else if(a === "taches"){ var ta = tacheSuivante(); if(ta) taOnglet = ta.o; allerRubrique("organisation", "taches"); }
   else if(a === "vie") allerRubrique("eleves", "vie");
+  else if(a === "journal"){ jrLundi = null; jrJour = null; allerRubrique("organisation", "journal"); }
 }); });
 function renderPlus(){
   var d = dossier.derniereSauvegarde;
@@ -7822,6 +7920,7 @@ var ACTIONS = {
   recap:["i-docs","Tableau récapitulatif",function(){ ouvrirDocument("feuille"); }],
   presence:["i-appel","Fiche de présence",function(){ ouvrirDocument("d:presence"); }],
   liste:["i-eleves","Liste des élèves",function(){ allerRubrique("eleves", "saisie"); }],
+  journal:["i-livre","Cahier journal",function(){ allerRubrique("organisation", "journal"); }],
   calendrier:["i-calendrier","Calendrier",function(){ allerRubrique("organisation", "calendrier"); }],
   agenda:["i-agenda","Agenda",function(){ allerRubrique("organisation", "agenda"); }],
   minuteur:["i-horloge","Minuteur",function(){ ouvrirMinuteur(); }],
@@ -7860,6 +7959,173 @@ window.addEventListener("offline", function(){ majEnLigne(true); });
 window.addEventListener("online", function(){ majEnLigne(true); });
 el("horsLigne").addEventListener("click", function(){ toast("Pas d'internet en ce moment. L'application fonctionne quand même : rien n'est perdu."); });
 
+/* ---------- cahier journal : une page par semaine, une classe à la fois ---------- */
+var JR_COLS_DEF = ["EDHC","Français — Expression orale","Français — Lecture","Français — Expression écrite","Mathématiques","Sciences et technologie","Histoire / Géographie","AEC (poésie, chant, dessin) / EPS"];
+var JR_JOURS = ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi"];
+var jrLundi = null, jrJour = null;
+function lundiDe(iso){ var d = new Date(iso + "T12:00:00"), k = (d.getDay() + 6) % 7; return decalerJour(iso, -k); }
+function dateDuJour(lundi, jour){ return decalerJour(lundi, JR_JOURS.indexOf(jour)); }
+function semaineJr(lundi, creer){ var s = state.journal.semaines[lundi]; if(!s && creer) s = state.journal.semaines[lundi] = {num:"", cases:{}}; return s; }
+function congeDeSemaine(lundi){
+  var jours = state.journal.jours.map(function(j){ return dateDuJour(lundi, j); });
+  return dossier.agenda.filter(function(a){ return a.type === "conge" && jours.every(function(d){ return a.date <= d && (a.fin || a.date) >= d; }); })[0] || null;
+}
+function numeroSemaine(lundi){
+  var s = semaineJr(lundi); if(s && s.num) return s.num;
+  /* on part de la dernière semaine numérotée, en sautant les semaines de congé */
+  var cles = Object.keys(state.journal.semaines).filter(function(k){ return k < lundi && state.journal.semaines[k].num && /^\d+$/.test(state.journal.semaines[k].num); }).sort();
+  if(cles.length){
+    var base = cles[cles.length - 1], n = Number(state.journal.semaines[base].num), d = decalerJour(base, 7);
+    while(d <= lundi){ if(!congeDeSemaine(d)) n++; d = decalerJour(d, 7); }
+    return String(n);
+  }
+  var an = anneeDebut(), r = (dossier.agenda.filter(function(a){ return /rentr/i.test(a.titre) && a.date.slice(0, 4) === String(an); })[0] || {}).date;
+  if(!r || r > lundi) return "";
+  var n2 = 0, d2 = lundiDe(r); while(d2 <= lundi){ if(!congeDeSemaine(d2)) n2++; d2 = decalerJour(d2, 7); }
+  return String(n2);
+}
+function caseJr(lundi, jour, col){ var s = semaineJr(lundi); return s ? s.cases[jour + "|" + col] || null : null; }
+function caseRemplie(c){ return c && (c.s || c.t || c.p); }
+/* dernière séance écrite dans cette colonne, avant le jour donné (même la semaine d'avant) */
+function seancePrecedente(lundi, jour, col){
+  var cle = lundi + "|" + JR_JOURS.indexOf(jour), best = null, bestCle = "";
+  Object.keys(state.journal.semaines).forEach(function(l){
+    var s = state.journal.semaines[l];
+    Object.keys(s.cases).forEach(function(k){
+      var p = k.split("|"); if(p[1] !== col || !caseRemplie(s.cases[k])) return;
+      var c2 = l + "|" + JR_JOURS.indexOf(p[0]);
+      if(c2 < cle && c2 > bestCle){ bestCle = c2; best = s.cases[k]; }
+    });
+  });
+  return best;
+}
+function seanceSuivante(s){
+  if(!s) return "S1";
+  var m = String(s).match(/(\d+)(?!.*\d)/);
+  return m ? s.slice(0, m.index) + (Number(m[1]) + 1) + s.slice(m.index + m[1].length) : s + " 2";
+}
+function libSemaine(lundi){
+  var j = state.journal.jours, deb = dateDuJour(lundi, j[0]), fin = dateDuJour(lundi, j[j.length - 1]);
+  var f = function(d, an){ try{ return new Date(d + "T12:00:00").toLocaleDateString("fr-FR", an ? {weekday:"long", day:"numeric", month:"long", year:"numeric"} : {weekday:"long", day:"numeric", month:"long"}).replace(/ 1 /, " 1er "); }catch(e){ return d; } };
+  return "du " + f(deb) + " au " + f(fin, true);
+}
+function renderJournal(force){
+  if(force && document.activeElement && el("jrCases").contains(document.activeElement)) document.activeElement.blur();
+  if(!jrLundi) jrLundi = lundiDe(aujourdhuiISO());
+  var J = state.journal, s = semaineJr(jrLundi), cg = congeDeSemaine(jrLundi), auj = aujourdhuiISO();
+  if(!jrJour || J.jours.indexOf(jrJour) < 0){ var jt = J.jours.filter(function(j){ return dateDuJour(jrLundi, j) === auj; })[0]; jrJour = jt || J.jours[0]; }
+  el("jrSemaine").textContent = libSemaine(jrLundi);
+  var num = numeroSemaine(jrLundi);
+  if(document.activeElement !== el("jrNum")) el("jrNum").value = num;
+  el("jrConge").classList.toggle("is-hidden", !cg);
+  el("jrConge").innerHTML = cg ? '<b>' + esc(cg.titre) + '</b> : pas de classe cette semaine.' : '';
+  var total = J.jours.length * J.cols.length, faits = 0;
+  J.jours.forEach(function(j){ J.cols.forEach(function(c){ if(caseRemplie(caseJr(jrLundi, j, c.id))) faits++; }); });
+  el("jrProgres").textContent = faits + " / " + total + " case(s) remplie(s)";
+  el("jrJours").innerHTML = J.jours.map(function(j){
+    var d = dateDuJour(jrLundi, j), n = J.cols.filter(function(c){ return caseRemplie(caseJr(jrLundi, j, c.id)); }).length;
+    return '<button type="button" class="puce' + (d === auj ? ' jr-auj' : '') + '" data-jr-jour="' + j + '" aria-pressed="' + (j === jrJour) + '">' + j.slice(0, 3) + ' ' + Number(d.slice(8, 10)) + (n ? ' <small>' + n + '/' + J.cols.length + '</small>' : '') + '</button>';
+  }).join("");
+  if(!el("jrCases").contains(document.activeElement)){
+    el("jrCases").innerHTML = J.cols.map(function(c){
+      var v = caseJr(jrLundi, jrJour, c.id) || {}, prec = seancePrecedente(jrLundi, jrJour, c.id);
+      return '<div class="jr-case' + (v.st ? ' ' + v.st : '') + '" data-col="' + c.id + '"><div class="jr-col"><b>' + esc(c.nom) + '</b>'
+        + '<span class="jr-st"><button type="button" data-jr-st="fait" aria-pressed="' + (v.st === "fait") + '">Faite</button><button type="button" data-jr-st="reporte" aria-pressed="' + (v.st === "reporte") + '">Reportée</button></span></div>'
+        + '<div class="jr-champs"><input class="jr-s" data-k="s" value="' + esc(v.s || "") + '" placeholder="S1" maxlength="20" aria-label="Séance">'
+        + '<input class="jr-t" data-k="t" value="' + esc(v.t || "") + '" placeholder="Titre de la leçon" maxlength="140" list="jrTitres-' + c.id + '" aria-label="Titre de la leçon">'
+        + '<input class="jr-p" data-k="p" value="' + esc(v.p || "") + '" placeholder="Page" maxlength="12" inputmode="numeric" aria-label="Page"></div>'
+        + '<div class="jr-actions">' + (prec && prec.t && !caseRemplie(v) ? '<button type="button" class="btn btn-sm" data-jr-suite>Séance suivante <small>' + esc(seanceSuivante(prec.s)) + ' · ' + esc(prec.t.length > 28 ? prec.t.slice(0, 27) + "…" : prec.t) + '</small></button>' : '')
+        + (caseRemplie(v) ? '<button type="button" class="btn btn-sm btn-ghost" data-jr-vider>Effacer</button>' : '') + '</div>'
+        + '<datalist id="jrTitres-' + c.id + '">' + titresColonne(c.id).map(function(t){ return '<option value="' + esc(t) + '">'; }).join("") + '</datalist></div>';
+    }).join("");
+  }
+  el("jrCopier").disabled = !Object.keys(state.journal.semaines).some(function(k){ return k < jrLundi && Object.keys(state.journal.semaines[k].cases).length; });
+  el("jrImpr").innerHTML = grilleJournal(jrLundi);
+}
+function titresColonne(col){
+  var vus = {}, l = [];
+  Object.keys(state.journal.semaines).sort().reverse().forEach(function(k){ var s = state.journal.semaines[k]; Object.keys(s.cases).forEach(function(c){ if(c.split("|")[1] !== col) return; var t = s.cases[c].t; if(t && !vus[t]){ vus[t] = 1; l.push(t); } }); });
+  return l.slice(0, 40);
+}
+function grilleJournal(lundi){
+  var J = state.journal, m = state.meta, num = numeroSemaine(lundi), w = (86 / Math.max(1, J.cols.length)).toFixed(2) + "%";
+  return '<div class="jr-page"><div class="jr-tete"><span>' + (num ? '<b class="jr-num">' + esc(num) + '</b>' : '') + '<b>SEMAINE ' + esc(libSemaine(lundi).toUpperCase()) + '</b></span>'
+    + '<span>' + [m.ecole ? "EPP " + esc(m.ecole) : "", m.classe ? "Classe : " + esc(m.classe) : "", m.maitre ? "Maître : " + esc(m.maitre) : "", anneeTxt() ? esc(anneeTxt()) : ""].filter(Boolean).join(" · ") + '</span></div>'
+    + '<table class="jr-grille"><colgroup><col style="width:6%">' + J.cols.map(function(){ return '<col style="width:' + w + '">'; }).join("") + '<col style="width:8%"></colgroup>'
+    + '<thead><tr><th>Jours</th>' + J.cols.map(function(c){ return '<th>' + esc(c.nom) + '</th>'; }).join("") + '<th>Visa du directeur</th></tr></thead><tbody>'
+    + J.jours.map(function(j){
+        return '<tr><th class="jr-jour"><span>' + j.toUpperCase() + '</span><small>' + Number(dateDuJour(lundi, j).slice(8, 10)) + '</small></th>' + J.cols.map(function(c){
+          var v = caseJr(lundi, j, c.id) || {};
+          return '<td>' + (v.s ? '<b class="jr-g-s">' + esc(v.s) + '</b>' : '') + (v.t ? '<span class="jr-g-t">' + esc(v.t) + '</span>' : '') + (v.p ? '<span class="jr-g-p">p. ' + esc(v.p) + '</span>' : '') + (v.st === "reporte" ? '<i class="jr-g-r">reportée</i>' : '') + '</td>';
+        }).join("") + '<td></td></tr>';
+      }).join("") + '</tbody></table></div>';
+}
+function majCaseJr(caseEl, modif){
+  var col = caseEl.getAttribute("data-col"), s = semaineJr(jrLundi, true), cle = jrJour + "|" + col;
+  var v = s.cases[cle] || {s:"", t:"", p:"", st:""};
+  modif(v);
+  if(caseRemplie(v) || v.st) s.cases[cle] = v; else delete s.cases[cle];
+  touch();
+}
+el("jrCases").addEventListener("input", function(ev){
+  var i = ev.target.closest("[data-k]"); if(!i) return;
+  avantModif(true);
+  majCaseJr(i.closest(".jr-case"), function(v){ v[i.getAttribute("data-k")] = txt(i.value, i.getAttribute("data-k") === "t" ? 140 : 20); });
+  el("jrImpr").innerHTML = grilleJournal(jrLundi);
+});
+el("jrCases").addEventListener("focusout", function(){ setTimeout(function(){ if(!el("jrCases").contains(document.activeElement)) renderJournal(); }, 0); });
+el("jrCases").addEventListener("click", function(ev){
+  var c = ev.target.closest(".jr-case"); if(!c) return; var b;
+  if((b = ev.target.closest("[data-jr-suite]"))){
+    var prec = seancePrecedente(jrLundi, jrJour, c.getAttribute("data-col")); if(!prec) return;
+    avantModif(false); majCaseJr(c, function(v){ v.s = seanceSuivante(prec.s); v.t = prec.t; v.p = prec.p; v.st = ""; }); renderJournal(true);
+  } else if((b = ev.target.closest("[data-jr-vider]"))){ avantModif(false); majCaseJr(c, function(v){ v.s = v.t = v.p = v.st = ""; }); renderJournal(true); toast("Case effacée.", {label:"Annuler", fn:annuler}); }
+  else if((b = ev.target.closest("[data-jr-st]"))){ avantModif(false); var st = b.getAttribute("data-jr-st"); majCaseJr(c, function(v){ v.st = v.st === st ? "" : st; }); renderJournal(true); }
+});
+el("jrJours").addEventListener("click", function(ev){ var b = ev.target.closest("[data-jr-jour]"); if(!b) return; jrJour = b.getAttribute("data-jr-jour"); renderJournal(true); });
+el("jrPrec").addEventListener("click", function(){ jrLundi = decalerJour(jrLundi, -7); jrJour = null; renderJournal(true); });
+el("jrSuiv").addEventListener("click", function(){ jrLundi = decalerJour(jrLundi, 7); jrJour = null; renderJournal(true); });
+el("jrAuj").addEventListener("click", function(){ jrLundi = lundiDe(aujourdhuiISO()); jrJour = null; renderJournal(true); });
+el("jrNum").addEventListener("change", function(){ avantModif(false); semaineJr(jrLundi, true).num = txt(this.value.trim(), 6); touch(); renderJournal(); });
+el("jrCopier").addEventListener("click", function(){
+  var avant = Object.keys(state.journal.semaines).filter(function(k){ return k < jrLundi && Object.keys(state.journal.semaines[k].cases).length; }).sort().pop(); if(!avant) return;
+  var src = state.journal.semaines[avant], s = semaineJr(jrLundi), plein = s && Object.keys(s.cases).length;
+  var faire = function(){
+    avantModif(false); var dst = semaineJr(jrLundi, true);
+    Object.keys(src.cases).forEach(function(k){ var v = src.cases[k]; dst.cases[k] = {s:v.s, t:v.t, p:v.p, st:""}; });
+    touch(); renderJournal(true); toast("Semaine du " + dateFr(avant) + " recopiée. Modifiez ce qui change.", {label:"Annuler", fn:annuler});
+  };
+  if(!plein) faire();
+  else dialogue("Recopier la semaine précédente ?", '<p style="margin:0">Les cases déjà remplies de cette semaine seront remplacées par celles de la semaine du ' + esc(dateFr(avant)) + '.</p>', [{label:"Annuler", valeur:false}, {label:"Recopier", valeur:true, style:"btn-primary"}]).then(function(oui){ if(oui) faire(); });
+});
+el("jrReglages").addEventListener("click", function(){
+  var J = state.journal;
+  dialogue("Colonnes et jours", '<p class="hint" style="margin:0 0 8px">Une discipline par ligne, dans l\'ordre du cahier. Elles peuvent être différentes pour chaque classe.</p>'
+    + '<div class="field"><label for="jrColsTxt">Disciplines (colonnes)</label><textarea id="jrColsTxt" name="cols" rows="8">' + esc(J.cols.map(function(c){ return c.nom; }).join("\n")) + '</textarea></div>'
+    + '<div class="field" style="margin-top:10px"><span class="lbl">Jours de classe</span><div class="puces-cases">' + JR_JOURS.map(function(j){ return '<label class="case"><input type="checkbox" name="j_' + j + '"' + (J.jours.indexOf(j) >= 0 ? " checked" : "") + '> ' + j + '</label>'; }).join("") + '</div></div>',
+    [{label:"Par défaut", valeur:"def", style:"btn-ghost"}, {label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Enregistrer", valeur:"ok", style:"btn-primary"}], {champs:true, feuille:true}).then(function(r){
+      if(!r || !r.valeur) return;
+      avantModif(false);
+      var noms = r.valeur === "def" ? JR_COLS_DEF : String(r.champs.cols || "").split(/\n/).map(function(x){ return txt(x.trim(), 50); }).filter(Boolean).slice(0, 14);
+      if(!noms.length){ toast("Indiquez au moins une discipline."); return; }
+      var anciens = J.cols.slice();
+      var pris = {};
+      J.cols = noms.map(function(n, i){
+        var a = anciens.filter(function(c){ return c.nom === n && !pris[c.id]; })[0] || (anciens[i] && !pris[anciens[i].id] && !noms.some(function(x){ return x === anciens[i].nom; }) ? anciens[i] : null);
+        var id = a ? a.id : uid(); pris[id] = 1; return {id:id, nom:n};
+      });
+      var jours = r.valeur === "def" ? ["Lundi","Mardi","Jeudi","Vendredi"] : JR_JOURS.filter(function(j){ return r.champs["j_" + j]; });
+      J.jours = jours.length ? jours : ["Lundi","Mardi","Jeudi","Vendredi"];
+      touch(); renderJournal(); toast("Cahier journal mis à jour.");
+    });
+});
+function etatJournalDuJour(){
+  var J = state.journal, auj = aujourdhuiISO(), jour = JR_JOURS[(new Date().getDay() + 6) % 7];
+  if(J.jours.indexOf(jour) < 0 || congeDeSemaine(lundiDe(auj))) return null;
+  var l = lundiDe(auj), n = J.cols.filter(function(c){ return caseRemplie(caseJr(l, jour, c.id)); }).length;
+  return {n:n, total:J.cols.length};
+}
+
 /* ---------- couleur de l'application ---------- */
 el("rgCouleur").addEventListener("change", function(){ changerPref("couleur", this.value === "bleu" ? "bleu" : "registre"); });
 
@@ -7872,7 +8138,7 @@ function entreesRecherche(){
   });
   var vues = [["Liste des élèves","eleves","saisie"],["Cahier d'appel","eleves","appel"],["Groupes d'EPS et PNAPAS","eleves","groupes"],["Tirage au sort, groupes de travail","eleves","vie"],["Tableaux de scolarité","eleves","scolarite"],
     ["Liste de classe","eleves","alpha"],["Synthèse, effectifs, âges","eleves","synthese"],["Saisir des notes, compositions","notes","notes"],["Fin d'année, moyennes annuelles","notes","annee"],["Statistiques et graphiques","notes","stats"],
-    ["Tableau récapitulatif","documents","feuille"],["Bulletins scolaires","documents","cartes"],["Calendrier de l'année, congés, vacances, trimestres","organisation","calendrier"],["CEPE, examen, candidats","notes","cepe"],["Agenda","accueil","agenda"],["Emploi du temps","accueil","edt"],["Fournitures","accueil","fourn"],["Manuels et kits","accueil","manuels"],
+    ["Tableau récapitulatif","documents","feuille"],["Bulletins scolaires","documents","cartes"],["Calendrier de l'année, congés, vacances, trimestres","organisation","calendrier"],["CEPE, examen, candidats","notes","cepe"],["Cahier journal, séances de la semaine","organisation","journal"],["Agenda","accueil","agenda"],["Emploi du temps","accueil","edt"],["Fournitures","accueil","fourn"],["Manuels et kits","accueil","manuels"],
     ["Bloc-notes","accueil","blocnotes"],["Chants et récitations","accueil","textes"],["Registre des visites","accueil","visites"],["Inventaire","accueil","inventaire"],["Tâches de l'année","accueil","taches"]];
   vues.forEach(function(x){ r.push({t:x[1] === "documents" ? "Document" : "Écran", l:x[0], s:"", v:"n|" + x[1] + "|" + x[2]}); });
   Object.keys(DOCS).forEach(function(k){ r.push({t:"Document", l:DOCS[k], s:"", v:"d|" + k}); });
@@ -7922,7 +8188,7 @@ function tableauMatieresEleve(e){
 }
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "2.2.1";
+var APP_VERSION = "2.3.0";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }

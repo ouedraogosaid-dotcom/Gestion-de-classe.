@@ -37,12 +37,13 @@ Si le navigateur est réinitialisé ou le téléphone perdu, elles sont perdues 
 
 - **Barre du bas** (barre latérale sur ordinateur) : Accueil · Élèves · Notes · Organisation · Plus.
 - **Accueil** : carte de bienvenue, indicateurs, actions rapides, activités du jour (appels du matin et du soir, agenda, tâches) avec leur statut, situation de la classe, sauvegarde.
-- **Organisation** : calendrier de l'année, agenda, emploi du temps, tâches de l'année.
+- **Organisation** : cahier journal, calendrier de l'année, agenda, emploi du temps, tâches de l'année.
 - **Plus** : documents, ressources (fournitures, manuels, inventaire, chants), vie professionnelle (visites, bloc-notes, envoi au directeur, Mon école), administration (sauvegarde, classes, établissement, paramètres, aide).
 - En haut : recherche, notifications, paramètres.
 
 ## Historique
 
+- **2.3.0** — Cahier journal (Organisation) : une page par semaine et par classe ; lignes = jours (lundi, mardi, jeudi, vendredi par défaut), colonnes = disciplines (8 par défaut, modifiables par classe) ; dans chaque case la séance (S1, S2…), le titre de la leçon et la page ; « Séance suivante » reprend la leçon avec le numéro suivant, même d'une semaine à l'autre ; recopie de la semaine précédente ; séance faite ou reportée ; numéro de semaine proposé (congés sautés) ; impression A4 paysage avec la colonne du visa du directeur.
 - **2.2.1** — Retrait du chef de classe / sous-chef et des équipes de balayage (écran, accueil, Organisation) ; l'onglet « Vie de classe » devient « Tirage au sort ». Les anciennes données restent conservées dans le fichier.
 - **2.2.0** — CM2 : examens blancs (2) qui comptent dans la moyenne annuelle avec les compositions trimestrielles, pas de composition de passage ; onglet CEPE (candidats, résultats, taux de réussite garçons/filles), repris en fin d'année. Alerte d'absences répétées (6 par mois par défaut, réglable) avec convocation du parent ; présence sur l'année (graphique, élèves les plus absents) ; dossier complet de l'élève ; rapport de fin d'année pour l'IEPP ; message à tous les parents par WhatsApp ; minuteur et chronomètre en grand ; actions rapides de l'accueil au choix ; passer la classe à un remplaçant ; témoin « hors ligne ».
 - **2.1.0** — Organisation : calendrier de l'année (trimestres, compositions trimestrielles, congés, grandes vacances), avec le calendrier officiel 2026-2027 à ajouter d'un geste (rentrée le 14 septembre 2026, congés de Toussaint, Noël, février, Pâques, grandes vacances). Documents : rubrique « Compositions » listant chaque composition saisie (tableau des notes, bulletins, tableau d'honneur) et le récapitulatif de toutes les compositions.
