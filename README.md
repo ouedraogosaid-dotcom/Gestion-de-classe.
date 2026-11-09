@@ -30,10 +30,12 @@ Si le navigateur est réinitialisé ou le téléphone perdu, elles sont perdues 
 | `sw.js` | Fonctionnement hors ligne et annonce des mises à jour |
 | `manifest.webmanifest` | Nom, icônes et couleurs de l'application installée |
 | `icon-*.png` | Icônes |
+| `lib/` | Lecture des fichiers PDF (pdf.js, licence Apache 2.0) et des fichiers Excel/Word (pako, licence MIT), chargés seulement à l'import |
 | `fonts/` | Polices Inter et Poppins (licence SIL OFL, voir `fonts/LICENCE-POLICES.txt`) |
 
 ## Historique
 
+- **1.11.0** — Importer une liste de classe depuis un fichier PDF (tapé à l'ordinateur), Excel (.xlsx) ou Word (.docx) : noms, sexe, matricule et date de naissance sont reconnus grâce à l'en-tête du tableau, puis vérifiés avant l'ajout. Aide pour une liste sur papier ou en photo (Google Lens). Le bouton « PDF » des documents devient « Envoyer ».
 - **1.10.0** — Finitions : le bouton Retour du téléphone revient à l'écran précédent (et ferme les fenêtres) au lieu de quitter ; bouton « Installer l'application » ; « Quoi de neuf » après chaque mise à jour ; couleurs au choix (bleu, ou orange et vert ivoiriens) ; recherche générale (élèves, documents, outils) ; moyennes de l'élève par matière sur l'année avec points forts et à renforcer ; démarrage guidé avec rôle et niveaux ; jauge de mémoire, alerte si la mémoire est pleine, vider la corbeille, retirer les photos ; colonnes des noms fixes dans les grands tableaux ; application plus fluide et compatible avec les anciens téléphones.
 - **1.9.0** — Lot 6 : bouton « PDF » sur chaque document (vrai fichier PDF fabriqué dans le téléphone, à envoyer par WhatsApp) ; résumé du bulletin envoyé à chaque parent par WhatsApp (numéro de la fiche élève) ; export Excel (.xlsx : élèves, notes de chaque composition, fin d'année) ; sauvegarde envoyée vers Google Drive ou WhatsApp, restaurable.
 - **1.8.0** — Lot 5B : onglet Statistiques dans Notes (évolution de la moyenne de la classe, des garçons et des filles ; répartition des résultats ; réussite par composition ; suivi par matière ; comparaison garçons/filles ; pyramide des âges), imprimable ; courbe d'évolution dans la fiche de chaque élève ; registre des visites ; inventaire de la classe ; tâches de rentrée et de fin d'année.

@@ -751,6 +751,8 @@ body.est-directeur .role-maitre{display:none !important}
 .hero{background:radial-gradient(120% 140% at 100% 0%, var(--hero1, #5A8DF2) 0%, var(--hero2, #1D5BD8) 45%, var(--hero3, #123C93) 100%)}
 .logo, .guide-ill{background:linear-gradient(140deg, var(--bleu) 0%, var(--logo2, #4F86F5) 100%)}
 .espace{margin-top:12px}
+.aide-photo{background:var(--bleu-doux); border-radius:12px; padding:10px 12px; color:var(--texte) !important}
+.aide-photo ol{margin:4px 0 0; padding-left:18px}
 .puces-cases{display:flex; flex-wrap:wrap; gap:6px 12px; padding-top:4px}
 .puces-cases .case{display:inline-flex; align-items:center; gap:5px; font-size:.88rem; cursor:pointer}
 .field .lbl{display:block; font-size:.8rem; font-weight:600; color:var(--texte-2); margin-bottom:4px}
@@ -1757,7 +1759,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
   </div>
 </nav>
 
-<button class="fab fab-pdf no-print cache" id="fabPdf" type="button" aria-label="Partager en PDF"><svg class="ic"><use href="#i-envoyer"/></svg><span id="fabPdfTxt">PDF</span></button>
+<button class="fab fab-pdf no-print cache" id="fabPdf" type="button" aria-label="Envoyer en PDF (WhatsApp…)"><svg class="ic"><use href="#i-envoyer"/></svg><span id="fabPdfTxt">Envoyer</span></button>
 <button class="fab no-print cache" id="fabPrint" type="button"><svg class="ic"><use href="#i-imprimer"/></svg><span id="fabTxt">Imprimer</span></button>
 
 <div class="maj-banniere no-print" id="majBanniere" role="status" hidden>
@@ -4666,9 +4668,12 @@ function analyserListe(texte, sexeDefaut){
       var m = parts[0].match(/^(.*?)(?:\s+(F|G|M|fille|garçon|garcon))?(?:\s+(\d{1,2})\s*(?:ans)?)?$/i);
       parts = [m[1]]; if(m[2]) parts.push(m[2]); if(m[3]) parts.push(m[3]);
     }
-    var e = {nom:"", sexe:sexeDefaut || "G", age:null, mat:""}, noms = [];
+    if(parts.length > 1 && /^\d{1,3}\.?$/.test(parts[0])) parts.shift();   /* colonne N° */
+    var e = {nom:"", sexe:sexeDefaut || "G", age:null, mat:"", naissance:""}, noms = [];
     parts.forEach(function(p){
-      if(RE_SEXE_F.test(p)) e.sexe = "F";
+      var d = p.match(/^(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{2,4})$/);
+      if(d){ var an = d[3].length === 2 ? "20" + d[3] : d[3]; if(Number(d[2]) <= 12 && Number(d[1]) <= 31) e.naissance = an + "-" + ("0" + d[2]).slice(-2) + "-" + ("0" + d[1]).slice(-2); }
+      else if(RE_SEXE_F.test(p)) e.sexe = "F";
       else if(RE_SEXE_G.test(p)) e.sexe = "G";
       else if(/^\d{1,2}(\s*ans)?$/i.test(p) && Number(p.replace(/\D/g, "")) >= 3 && Number(p.replace(/\D/g, "")) <= 20) e.age = Number(p.replace(/\D/g, ""));
       else if(/\d/.test(p) && /^[A-Za-z0-9\/-]{4,}$/.test(p)) e.mat = p;
@@ -4679,14 +4684,196 @@ function analyserListe(texte, sexeDefaut){
   });
   return res;
 }
+/* ---------- lire une liste depuis un fichier PDF, Excel ou Word ---------- */
+/* Chaque fichier devient une liste de lignes ; chaque ligne, une liste de cellules {t, x0, x1}. */
+function chargerScript(src){
+  return new Promise(function(ok, ko){ var s = document.createElement("script"); s.src = src; s.onload = ok; s.onerror = function(){ ko(new Error("script")); }; document.head.appendChild(s); });
+}
+function inflerBrut(octets){
+  if(typeof DecompressionStream === "function"){
+    try{
+      var flux = new Blob([octets]).stream().pipeThrough(new DecompressionStream("deflate-raw"));
+      return new Response(flux).arrayBuffer().then(function(b){ return new Uint8Array(b); });
+    }catch(e){}
+  }
+  return (window.pako ? Promise.resolve() : chargerScript("./lib/pako_inflate.min.js")).then(function(){ return window.pako.inflateRaw(octets); });
+}
+/* lecture d'un fichier .zip (xlsx et docx sont des zip) : renvoie une fonction lire(nom) → texte */
+function ouvrirZip(buf){
+  var o = new Uint8Array(buf), dv = new DataView(buf), fin = -1;
+  for(var i = o.length - 22; i >= Math.max(0, o.length - 65600); i--){ if(dv.getUint32(i, true) === 0x06054b50){ fin = i; break; } }
+  if(fin < 0) throw new Error("zip");
+  var n = dv.getUint16(fin + 10, true), p = dv.getUint32(fin + 16, true), entrees = {};
+  for(var k = 0; k < n; k++){
+    if(dv.getUint32(p, true) !== 0x02014b50) break;
+    var meth = dv.getUint16(p + 10, true), taille = dv.getUint32(p + 20, true), ln = dv.getUint16(p + 28, true), lx = dv.getUint16(p + 30, true), lc = dv.getUint16(p + 32, true), off = dv.getUint32(p + 42, true);
+    var nom = new TextDecoder().decode(o.subarray(p + 46, p + 46 + ln));
+    entrees[nom] = {meth:meth, taille:taille, off:off};
+    p += 46 + ln + lx + lc;
+  }
+  return function(nom){
+    var e = entrees[nom]; if(!e) return Promise.resolve(null);
+    var debut = e.off + 30 + dv.getUint16(e.off + 26, true) + dv.getUint16(e.off + 28, true), brut = o.subarray(debut, debut + e.taille);
+    return (e.meth === 0 ? Promise.resolve(brut) : inflerBrut(brut)).then(function(b){ return new TextDecoder().decode(b); });
+  };
+}
+function xmlDoc(t){ return new DOMParser().parseFromString(t, "application/xml"); }
+function balises(noeud, nom){ return Array.prototype.slice.call(noeud.getElementsByTagNameNS("*", nom)); }
+function lireXlsx(buf){
+  var lire = ouvrirZip(buf);
+  return Promise.all([lire("xl/sharedStrings.xml"), lire("xl/workbook.xml"), lire("xl/_rels/workbook.xml.rels")]).then(function(r){
+    var chaines = r[0] ? balises(xmlDoc(r[0]), "si").map(function(si){ return balises(si, "t").map(function(t){ return t.textContent; }).join(""); }) : [];
+    var cible = "xl/worksheets/sheet1.xml";
+    if(r[1] && r[2]){
+      var feuille = balises(xmlDoc(r[1]), "sheet")[0], rid = feuille && (feuille.getAttribute("r:id") || feuille.getAttributeNS("http://schemas.openxmlformats.org/officeDocument/2006/relationships", "id"));
+      balises(xmlDoc(r[2]), "Relationship").forEach(function(rel){ if(rel.getAttribute("Id") === rid){ var t = rel.getAttribute("Target").replace(/^\/?xl\//, "").replace(/^\//, ""); cible = "xl/" + t; } });
+    }
+    return lire(cible).then(function(x){
+      if(!x) throw new Error("feuille");
+      return balises(xmlDoc(x), "row").map(function(row){
+        return balises(row, "c").map(function(c){
+          var ref = c.getAttribute("r") || "", lettres = (ref.match(/^[A-Z]+/) || ["A"])[0], col = 0;
+          for(var i = 0; i < lettres.length; i++) col = col * 26 + lettres.charCodeAt(i) - 64;
+          var t = c.getAttribute("t"), v = balises(c, "v")[0], val = "";
+          if(t === "s") val = chaines[Number(v && v.textContent)] || "";
+          else if(t === "inlineStr") val = balises(c, "t").map(function(x){ return x.textContent; }).join("");
+          else val = v ? v.textContent : "";
+          return {t:String(val).trim(), x0:col, x1:col + 1, n:t !== "s" && t !== "inlineStr" && t !== "str"};
+        }).filter(function(c){ return c.t; });
+      }).filter(function(l){ return l.length; });
+    });
+  });
+}
+function lireDocx(buf){
+  return ouvrirZip(buf)("word/document.xml").then(function(x){
+    if(!x) throw new Error("docx");
+    var corps = balises(xmlDoc(x), "body")[0], lignes = [];
+    var texteDe = function(n){ var s = ""; balises(n, "*").forEach(function(e){ if(e.localName === "t") s += e.textContent; else if(e.localName === "tab") s += "\t"; }); return s; };
+    Array.prototype.forEach.call(corps ? corps.children : [], function(n){
+      if(n.localName === "p"){ var t = texteDe(n).trim(); if(t) lignes.push(t.split(/\t+/).map(function(c, i){ return {t:c.trim(), x0:i, x1:i + 1}; })); }
+      else if(n.localName === "tbl"){
+        balises(n, "tr").forEach(function(tr){
+          var cel = balises(tr, "tc").filter(function(tc){ return tc.parentNode === tr; }).map(function(tc, i){ return {t:balises(tc, "p").map(texteDe).join(" ").replace(/\s+/g, " ").trim(), x0:i, x1:i + 1}; });
+          cel = cel.filter(function(c){ return c.t; }); if(cel.length) lignes.push(cel);
+        });
+      }
+    });
+    return lignes;
+  });
+}
+var pdfjsCharge = null;
+function lirePdf(buf){
+  if(!pdfjsCharge) pdfjsCharge = import("./lib/pdf.min.mjs").then(function(m){ m.GlobalWorkerOptions.workerSrc = "./lib/pdf.worker.min.mjs"; return m; });
+  return pdfjsCharge.then(function(pdfjs){
+    return pdfjs.getDocument({data:new Uint8Array(buf), isEvalSupported:false, disableFontFace:true}).promise;
+  }).then(function(doc){
+    var pages = [];
+    for(var i = 1; i <= Math.min(doc.numPages, 20); i++) pages.push(i);
+    return pages.reduce(function(pr, num){
+      return pr.then(function(toutes){
+        return doc.getPage(num).then(function(pg){ return pg.getTextContent(); }).then(function(tc){
+          /* regrouper les morceaux de texte en lignes (même hauteur), puis en cellules (écart horizontal) */
+          var mots = tc.items.filter(function(it){ return it.str && it.str.trim(); }).map(function(it){
+            var h = Math.abs(it.transform[3]) || Math.abs(it.height) || 10;
+            return {t:it.str, x0:it.transform[4], x1:it.transform[4] + (it.width || it.str.length * h * .5), y:it.transform[5], h:h};
+          });
+          mots.sort(function(a, b){ return b.y - a.y || a.x0 - b.x0; });
+          var lignes = [];
+          mots.forEach(function(m){
+            var l = lignes.filter(function(l){ return Math.abs(l.y - m.y) <= Math.max(2.5, m.h * .45); })[0];
+            if(!l){ l = {y:m.y, mots:[]}; lignes.push(l); }
+            l.mots.push(m);
+          });
+          lignes.sort(function(a, b){ return b.y - a.y; });
+          return toutes.concat(lignes.map(function(l){
+            l.mots.sort(function(a, b){ return a.x0 - b.x0; });
+            var cel = [];
+            l.mots.forEach(function(m){
+              var der = cel[cel.length - 1];
+              if(der && m.x0 - der.x1 < m.h * .55){ der.t += (m.x0 - der.x1 > m.h * .12 && !/\s$/.test(der.t) ? " " : "") + m.t; der.x1 = Math.max(der.x1, m.x1); }
+              else cel.push({t:m.t, x0:m.x0, x1:m.x1});
+            });
+            return cel.map(function(c){ c.t = c.t.replace(/\s+/g, " ").trim(); return c; }).filter(function(c){ return c.t; });
+          }));
+        });
+      });
+    }, Promise.resolve([]));
+  });
+}
+/* Transforme les lignes en texte « un élève par ligne », en se servant de l'en-tête du tableau s'il existe. */
+var RE_DATE = /(\d{1,2})[\/.\-](\d{1,2})[\/.\-](\d{2,4})/;
+function serieVersDate(v){ var d = new Date(Math.round((Number(v) - 25569) * 864e5)); return isNaN(d) ? "" : ("0" + d.getUTCDate()).slice(-2) + "/" + ("0" + (d.getUTCMonth() + 1)).slice(-2) + "/" + d.getUTCFullYear(); }
+function lignesVersTexte(lignes){
+  var typeCol = function(t){
+    t = sansAccent(t);
+    if(/pere|mere|parent|tuteur|contact|tel/.test(t)) return "";
+    if(/matric/.test(t)) return "mat";
+    if(/lieu|classe|^age$|obs/.test(t)) return "";
+    if(/naiss|^date/.test(t)) return "naiss";
+    if(/(^|\W)noms?(\W|$)|prenom|nom et/.test(t)) return "nom";
+    if(/sexe|genre|^s$|^g\s*\/\s*f$|^m\s*\/\s*f$/.test(t)) return "sexe";
+    return "";
+  };
+  var iEnt = -1, ent = [];
+  for(var i = 0; i < Math.min(lignes.length, 40); i++){
+    var types = lignes[i].map(function(c){ return typeCol(c.t); });
+    if(types.indexOf("nom") >= 0 && lignes[i].length >= 2 && types.filter(Boolean).length >= 2){ iEnt = i; ent = lignes[i].map(function(c, k){ return {type:types[k], c:(c.x0 + c.x1) / 2}; }); break; }
+  }
+  var res = [];
+  lignes.forEach(function(l, i){
+    if(i === iEnt) return;
+    if(iEnt >= 0 && i > iEnt){
+      if(l.filter(function(c){ return typeCol(c.t); }).length >= 2) return;   /* en-tête répété sur une autre page */
+      var f = {nom:[], sexe:"", mat:"", naiss:""};
+      l.forEach(function(c){
+        var centre = (c.x0 + c.x1) / 2, proche = null, d = Infinity;
+        ent.forEach(function(h){ var e = Math.abs(h.c - centre); if(e < d){ d = e; proche = h; } });
+        var typ = proche ? proche.type : "";
+        /* une cellule « matricule + nom » collée : on sépare */
+        var morceaux = c.t.split(" "), num = [];
+        while(morceaux.length > 1 && /\d/.test(morceaux[0]) && morceaux[0].length >= 4){ num.push(morceaux.shift()); }
+        if(num.length && /[a-zà-ÿ]{2}/i.test(morceaux.join(" "))){ if(!f.mat) f.mat = num.join(""); f.nom.push(morceaux.join(" ")); return; }
+        if(typ === "nom") f.nom.push(c.t);
+        else if(typ === "sexe") f.sexe = c.t;
+        else if(typ === "mat") f.mat = c.t;
+        else if(typ === "naiss"){ var m = c.t.match(RE_DATE), v = m ? m[0] : (c.n && /^\d{4,5}(\.\d+)?$/.test(c.t) ? serieVersDate(c.t) : ""); if(v) f.naiss = v; }
+      });
+      var nom = f.nom.join(" ").replace(/\s+/g, " ").trim();
+      if(!/[a-zà-ÿ]{2}/i.test(nom) || /:|^(effectif|total)/i.test(nom)) return;
+      res.push([nom, f.sexe, f.mat.replace(/\s/g, ""), f.naiss].filter(Boolean).join(" ; "));
+    } else if(iEnt < 0){
+      var t = l.map(function(c){ return c.t; }).join(" ; ");
+      if(!/(effectif|total|garçons?|filles?)\s*:/i.test(t)) res.push(t);
+    }
+  });
+  return res.join("\n");
+}
+function lireFichierListe(f){
+  var nom = (f.name || "").toLowerCase(), type = f.type || "";
+  if(/\.(xls|doc)$/.test(nom)) return Promise.reject(new Error("ancien"));
+  if(/^image\//.test(type) || /\.(jpe?g|png|webp|heic)$/.test(nom)) return Promise.reject(new Error("photo"));
+  if(f.size > 15 * 1024 * 1024) return Promise.reject(new Error("taille"));
+  if(/\.(csv|txt)$/.test(nom) || /^text\//.test(type)) return f.text().then(function(t){ return t.replace(/^﻿/, ""); });
+  return f.arrayBuffer().then(function(buf){
+    var o = new Uint8Array(buf, 0, 5), sig = String.fromCharCode.apply(null, o);
+    if(sig.indexOf("%PDF") === 0) return lirePdf(buf).then(function(l){ if(l.length < 2) throw new Error("scan"); return lignesVersTexte(l); });
+    if(sig.indexOf("PK") === 0) return (/\.docx$/.test(nom) ? lireDocx(buf) : lireXlsx(buf)).then(lignesVersTexte);
+    throw new Error("format");
+  });
+}
+var AIDE_PHOTO = '<p style="margin:0 0 8px">Le téléphone ne peut pas lire tout seul le texte d\'une photo ou d\'un PDF scanné. Mais <b>Google Lens</b> le fait en quelques secondes :</p>'
+  + '<ol><li>Ouvrez la photo de la liste dans <b>Google Photos</b> (pour un PDF scanné : faites une capture d\'écran de la page).</li>'
+  + '<li>Touchez <b>Lens</b>, puis <b>Texte</b>.</li><li>Touchez <b>Tout sélectionner</b>, puis <b>Copier</b>.</li>'
+  + '<li>Revenez ici et <b>collez</b> dans la case « Liste des élèves ».</li></ol><p class="hint" style="margin:6px 0 0">Vérifiez ensuite les noms : la lecture d\'une photo peut faire quelques fautes.</p>';
 el("btnImporter").addEventListener("click", function(){ ouvrirImport(""); });
 function ouvrirImport(texteInitial){
-  var corps = '<p style="margin:0 0 10px">Collez votre liste ou dictez-la avec le micro du clavier : <b>un élève par ligne</b>. Vous pouvez ajouter le sexe (F ou G) et l\'âge après le nom.</p>'
+  var corps = '<p style="margin:0 0 10px"><b>Chargez un fichier</b> (PDF, Excel, Word), ou collez votre liste, ou dictez-la avec le micro du clavier : <b>un élève par ligne</b>, avec le sexe (F ou G) après le nom si vous voulez.</p>'
     + '<div class="field"><label for="impTexte">Liste des élèves</label><textarea id="impTexte" name="texte" rows="8" placeholder="KOUAMÉ Ama F 8&#10;YAO Koffi G 9&#10;TRAORÉ Salimata">' + esc(texteInitial) + '</textarea></div>'
     + '<div class="field" style="margin-top:12px"><span class="lbl">Sexe si non précisé</span><div class="choix">'
     + '<label><input type="radio" name="sexe" value="G" checked><span>Garçon</span></label><label><input type="radio" name="sexe" value="F"><span>Fille</span></label></div></div>'
-    + '<div class="btns" style="margin-top:12px"><label class="btn btn-sm" style="cursor:pointer"><svg class="ic"><use href="#i-import"/></svg>Choisir un fichier (.csv, .txt)<input type="file" id="impFichier" accept=".csv,.txt,text/plain,text/csv" style="display:none"></label></div>'
-    + '<p class="hint" id="impApercu">Depuis Excel : sélectionnez les cellules, copiez, puis collez ici.</p>';
+    + '<div class="btns" style="margin-top:12px"><label class="btn btn-sm" style="cursor:pointer"><svg class="ic"><use href="#i-import"/></svg>Charger un fichier (PDF, Excel, Word)<input type="file" id="impFichier" accept=".pdf,.xlsx,.docx,.csv,.txt,.xls,.doc,application/pdf,text/plain,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/*" style="display:none"></label>'
+    + '<button class="btn btn-sm btn-ghost" type="button" id="impPhoto"><svg class="ic"><use href="#i-photo"/></svg>Liste sur papier ou en photo</button></div>'
+    + '<p class="hint" id="impApercu">Une liste déjà tapée (PDF, Excel, Word) se charge directement. Vous pouvez aussi copier-coller.</p>';
   dialogue("Importer une liste", corps, [{label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Vérifier", valeur:"ok", style:"btn-primary"}], {champs:true, feuille:true, focus:"impTexte"}).then(function(r){
     if(!r || r.valeur !== "ok") return;
     var liste = analyserListe(r.champs.texte, r.champs.sexe);
@@ -4698,7 +4885,7 @@ function ouvrirImport(texteInitial){
     var apercu = '<p style="margin:0 0 8px"><b>' + nouveaux.length + '</b> élève(s) à ajouter'
       + (doublons ? ', ' + doublons + ' déjà dans la classe (ignoré' + (doublons > 1 ? 's' : '') + ')' : '') + ' :</p>'
       + '<ul class="imp" style="max-height:46vh;overflow:auto">' + nouveaux.map(function(e){
-          return '<li><b>' + esc(e.nom) + '</b><br><small>' + (e.sexe === "F" ? "Fille" : "Garçon") + (e.age ? " · " + e.age + " ans" : "") + (e.mat ? " · Mat. " + esc(e.mat) : "") + '</small></li>';
+          return '<li><b>' + esc(e.nom) + '</b><br><small>' + (e.sexe === "F" ? "Fille" : "Garçon") + (e.age ? " · " + e.age + " ans" : "") + (e.mat ? " · Mat. " + esc(e.mat) : "") + (e.naissance ? " · né(e) le " + dateFr(e.naissance) : "") + '</small></li>';
         }).join("") + '</ul>';
     dialogue("Vérifier avant d'ajouter", apercu,
       [{label:"Corriger", valeur:"corriger", style:"btn-ghost"}, {label:"Ajouter " + nouveaux.length + " élève(s)", valeur:"ok", style:"btn-primary"}], {feuille:true}
@@ -4709,18 +4896,33 @@ function ouvrirImport(texteInitial){
       nouveaux.forEach(function(n){
         var cible = state.eleves.filter(function(x){ return !x.nom.trim() && !x.mat.trim(); })[0];
         if(!cible){ cible = eleveVide(); state.eleves.push(cible); }
-        cible.nom = n.nom; cible.sexe = n.sexe; cible.age = n.age; cible.mat = n.mat;
+        cible.nom = n.nom; cible.sexe = n.sexe; cible.age = n.age; cible.mat = n.mat; if(n.naissance) cible.naissance = n.naissance;
       });
       touch(); renderAll();
       toast(nouveaux.length + " élève(s) ajouté(s).", {label:"Annuler", fn:annuler});
     });
   });
+  var aidePhoto = function(intro){ el("impApercu").innerHTML = (intro ? '<b>' + esc(intro) + '</b><br>' : '') + AIDE_PHOTO; el("impApercu").classList.add("aide-photo"); };
+  el("impPhoto").addEventListener("click", function(){ aidePhoto(""); });
   el("impFichier").addEventListener("change", function(){
-    var f = this.files && this.files[0]; if(!f) return;
-    if(f.size > 1024 * 1024){ toast("Fichier trop gros."); return; }
-    var lec = new FileReader();
-    lec.onload = function(){ el("impTexte").value = String(lec.result).replace(/^﻿/, ""); el("impApercu").textContent = "Fichier chargé : vérifiez la liste puis touchez « Vérifier »."; };
-    lec.readAsText(f);
+    var f = this.files && this.files[0], champ = this; if(!f) return;
+    el("impApercu").classList.remove("aide-photo");
+    el("impApercu").textContent = "Lecture du fichier…";
+    lireFichierListe(f).then(function(t){
+      champ.value = "";
+      var n = t.split("\n").filter(function(l){ return l.trim(); }).length;
+      if(!n){ el("impApercu").textContent = "Aucun texte trouvé dans ce fichier."; return; }
+      el("impTexte").value = t;
+      el("impApercu").innerHTML = "<b>" + n + " ligne(s) lue(s)</b> dans « " + esc(f.name) + " ». Vérifiez, corrigez si besoin, puis touchez « Vérifier ».";
+    }).catch(function(e){
+      champ.value = "";
+      var m = e && e.message;
+      if(m === "photo") aidePhoto("C'est une photo.");
+      else if(m === "scan") aidePhoto("Ce PDF est scanné : il ne contient pas de texte, seulement une image.");
+      else if(m === "ancien") el("impApercu").innerHTML = "<b>Ancien format (.xls ou .doc).</b> Ouvrez le fichier et enregistrez-le en .xlsx, .docx ou PDF, ou copiez-collez la liste ici.";
+      else if(m === "taille") el("impApercu").textContent = "Fichier trop gros (15 Mo au plus).";
+      else el("impApercu").innerHTML = "<b>Ce fichier n'a pas pu être lu.</b> Essayez de copier la liste et de la coller ici.";
+    });
   });
 }
 
@@ -6429,14 +6631,14 @@ el("fabPdf").addEventListener("click", function(){
   var b = this; if(b.disabled) return;
   b.disabled = true; el("fabPdfTxt").textContent = "Préparation…";
   verifierAvantImpression().then(function(ok){
-    if(!ok){ b.disabled = false; el("fabPdfTxt").textContent = "PDF"; return; }
+    if(!ok){ b.disabled = false; el("fabPdfTxt").textContent = "Envoyer"; return; }
     return fabriquerPdf().then(function(blob){
       var nom = nomDocument("pdf");
       return partagerFichier(nom, blob, nom.replace(/\.pdf$/, ""), "Document du registre — " + (state.meta.classe || "")).then(function(r){
         if(r === "telecharge") toast("PDF enregistré dans vos téléchargements : vous pouvez l'envoyer par WhatsApp.");
       });
     }).catch(function(){ toast("Le PDF n'a pas pu être fabriqué sur ce téléphone : utilisez « Imprimer », puis « Enregistrer au format PDF »."); });
-  }).then(function(){ b.disabled = false; el("fabPdfTxt").textContent = "PDF"; });
+  }).then(function(){ b.disabled = false; el("fabPdfTxt").textContent = "Envoyer"; });
 });
 function majFabPdf(){ el("fabPdf").classList.toggle("cache", !stageActif()); }
 
@@ -6619,6 +6821,7 @@ el("acInstallBtn").addEventListener("click", function(){
 
 /* ---------- « Quoi de neuf » après une mise à jour ---------- */
 var NOUVEAUTES = [
+  ["1.11.0", ["Charger une liste de classe depuis un fichier PDF, Excel ou Word (Élèves → Importer)","Aide pour une liste sur papier ou en photo (avec Google Lens)","Le bouton « PDF » s'appelle maintenant « Envoyer » : il envoie le document par WhatsApp"]],
   ["1.10.0", ["Le bouton Retour du téléphone revient à l'écran précédent au lieu de quitter","Bouton « Installer l'application » sur l'accueil","Couleurs au choix : bleu, ou orange et vert ivoiriens (Réglages)","Recherche générale (loupe en haut)","Moyennes de l'élève par matière sur l'année, avec ses points forts","Jauge de mémoire et alerte si le téléphone est plein","Application plus fluide et compatible avec les anciens téléphones"]],
   ["1.9.0", ["Bouton PDF sur chaque document, à envoyer par WhatsApp","Résumé du bulletin envoyé aux parents par WhatsApp","Export Excel et sauvegarde vers Google Drive"]],
   ["1.8.0", ["Statistiques avec graphiques (Notes → Statistiques)","Registre des visites, inventaire, tâches de l'année"]],
@@ -6696,7 +6899,7 @@ function tableauMatieresEleve(e){
 }
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "1.10.0";
+var APP_VERSION = "1.11.0";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
