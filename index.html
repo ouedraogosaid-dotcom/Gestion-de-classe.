@@ -583,6 +583,7 @@ td.faible{color:var(--bad); font-weight:700}
 .pn-liste li{display:flex; align-items:center; gap:10px; padding:6px 10px; border-radius:12px; border:1px solid var(--bord)}
 .pn-liste .ce-nom{flex:1; min-width:0}
 .pn-liste select{width:auto; min-width:150px; padding:8px 10px}
+.tag-cl{font:600 .66rem/1 "Inter",sans-serif; color:var(--texte-3); background:var(--surface-3); border-radius:6px; padding:2px 5px; margin-left:4px; vertical-align:1px}
 .evol{font-size:.75rem; font-weight:700; min-width:22px; text-align:center}
 .evol.monte{color:var(--ok)} .evol.baisse{color:var(--bad)}
 
@@ -1188,6 +1189,9 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
         <button class="btn btn-sm" id="btnClRen" type="button">Renommer</button>
         <button class="btn btn-sm btn-danger" id="btnClDel" type="button">Supprimer</button>
       </div>
+      <div class="field" style="margin-top:16px"><label for="rgSalle">Même salle que (groupes PNAPAS et d'EPS communs)</label>
+        <select id="rgSalle"></select>
+        <p class="hint" id="rgSalleInfo" style="margin:4px 0 0"></p></div>
     </section>
 
     <section class="sheet">
@@ -1394,8 +1398,23 @@ function normDossier(d){
     corbeille: corbeille,
     derniereSauvegarde: dateSure(d.derniereSauvegarde),
     ecole: normEcole(d.ecole, cls),
+    salles: normSalles(d.salles, cls),
     rappelReporte: dateSure(d.rappelReporte)
   };
+}
+function normSalles(l, cls){
+  var out = [];
+  (Array.isArray(l) ? l : []).slice(0, 30).forEach(function(sl){
+    if(!sl || typeof sl !== "object") return;
+    var id = idSur(sl.id); if(!id) return;
+    var membres = cls.filter(function(c){ return c.salle === id; });
+    var ids = {}; membres.forEach(function(c){ c.eleves.forEach(function(e){ ids[e.id] = 1; }); });
+    var x = {id:id, eps:normEPS(sl.eps, ids), pnapas:normPnapas(sl.pnapas, ids)};
+    if(membres.length >= 2) out.push(x);
+    else membres.forEach(function(c){ c.eps = x.eps; c.pnapas = x.pnapas; c.salle = ""; });
+  });
+  cls.forEach(function(c){ if(c.salle && !out.some(function(x){ return x.id === c.salle; })) c.salle = ""; });
+  return out;
 }
 /* profil de l'école : saisi une fois, repris pour chaque nouvelle classe */
 var CHAMPS_ECOLE = ["drena","inspection","ecole","directeur"];
@@ -1538,6 +1557,7 @@ function nomClasse(c){
   return c.demo ? n + " (exemple)" : n;
 }
 function ouvrirClasse(id){
+  nettoyerSalles();
   dossier.active = id;
   state = classeActive();
   persist();
@@ -1566,6 +1586,7 @@ function normalize(d){
     chants: txt(d.chants, MAX_LIBRE),
     recitations: txt(d.recitations, MAX_LIBRE),
     eleves: eleves,
+    salle: idSur(d.salle),
     niveaux: niveaux,
     matieres: matieres,
     notes: normNotes(d.notes, matieres.map(function(m){ return m.code; })),
@@ -2597,6 +2618,7 @@ function render(){
     renderClasses();
     renderAccueil(false);
     renderNiveaux();
+    renderSalle();
     if(vueActive === "appel") renderAppel();
     if(vueActive === "groupes"){ renderEPS(); renderPnapas(); }
     if(vueActive === "vie") renderVie();
@@ -3003,6 +3025,7 @@ el("btnClDup").addEventListener("click", function(){
   avantModif(false);
   var copie = normalize(JSON.parse(JSON.stringify(state)));
   copie.modifie = new Date().toISOString();
+  copie.salle = "";
   copie.id = uid();
   copie.demo = false;
   copie.nom = (state.nom || state.meta.classe || "Classe") + " (copie)";
@@ -3071,6 +3094,7 @@ function appliquerImport(classes, choix){
     if(reelles.length) dossier.classes = reelles;
   }
   if(premier) dossier.active = premier;
+  nettoyerSalles();
   state = classeActive();
   persist(); renderAll(); majCorbeilleBouton();
   var morceaux = [];
@@ -3722,8 +3746,88 @@ function avatarHtml(e, n){
   if(e.photo) return '<span class="avatar" aria-hidden="true"><img src="' + e.photo + '" alt=""></span>';
   return '<span class="avatar" aria-hidden="true">' + esc(e.nom.trim() ? initiales(e.nom) : String(n || "?")) + '</span>';
 }
-function puceEleve(e, attr){
-  return '<button type="button" class="puce-el sx-' + e.sexe + '" ' + (attr || "") + '>' + esc(e.nom) + '</button>';
+function puceEleve(e, attr, tag){
+  return '<button type="button" class="puce-el sx-' + e.sexe + '" ' + (attr || "") + '>' + esc(e.nom) + (tag || "") + '</button>';
+}
+
+/* ---------- salle commune : plusieurs classes (CE1 + CE2) partagent
+   les groupes PNAPAS et EPS ; notes et classements restent séparés ---------- */
+function salleDe(c){ return c && c.salle ? (dossier.salles || []).filter(function(x){ return x.id === c.salle; })[0] || null : null; }
+function classesSalle(){ var sl = salleDe(state); return sl ? dossier.classes.filter(function(c){ return c.salle === sl.id; }) : [state]; }
+function EPS(){ var sl = salleDe(state); return sl ? sl.eps : state.eps; }
+function PN(){ var sl = salleDe(state); return sl ? sl.pnapas : state.pnapas; }
+function elevesSalle(){
+  if(!salleDe(state)) return alpha();
+  var l = []; classesSalle().forEach(function(c){ c.eleves.forEach(function(e){ if(e.nom.trim()) l.push(e); }); });
+  return l.sort(function(a, b){ return COL.compare(a.nom.trim(), b.nom.trim()); });
+}
+function eleveSalle(id){
+  var r = null; classesSalle().forEach(function(c){ c.eleves.forEach(function(e){ if(!r && e.id === id) r = e; }); }); return r;
+}
+function existeSalle(id){ var e = eleveSalle(id); return !!(e && e.nom.trim()); }
+function tagClasse(e){
+  var cs = classesSalle(); if(cs.length < 2) return "";
+  var c = cs.filter(function(k){ return k.eleves.indexOf(e) >= 0; })[0];
+  return c ? ' <small class="tag-cl">' + esc(c.meta.classe || nomClasse(c)) + '</small>' : "";
+}
+function copieFiltree(obj, ids){
+  var o = JSON.parse(JSON.stringify(obj));
+  if(o.groupes) o.groupes.forEach(function(g){ g.membres = g.membres.filter(function(x){ return ids[x]; }); });
+  if(o.tests) o.tests.forEach(function(t){ ["fr","ma"].forEach(function(d){ Object.keys(t[d]).forEach(function(k){ if(!ids[k]) delete t[d][k]; }); }); });
+  return o;
+}
+function idsClasse(c){ var r = {}; c.eleves.forEach(function(e){ r[e.id] = 1; }); return r; }
+function fusionnerEPS(cible, src){
+  var place = {}; cible.groupes.forEach(function(g){ g.membres.forEach(function(x){ place[x] = 1; }); });
+  src.groupes.forEach(function(g){
+    var t = cible.groupes.filter(function(x){ return x.nom.toLowerCase() === g.nom.toLowerCase(); })[0];
+    if(!t){ if(cible.groupes.length >= 8) return; t = {id:uid(), nom:g.nom, couleur:g.couleur, membres:[]}; cible.groupes.push(t); }
+    g.membres.forEach(function(x){ if(!place[x]){ t.membres.push(x); place[x] = 1; } });
+  });
+}
+function fusionnerPN(cible, src){
+  src.tests.forEach(function(t){
+    var c = cible.tests.filter(function(x){ return x.libelle.toLowerCase() === t.libelle.toLowerCase(); })[0];
+    if(!c){ cible.tests.push(JSON.parse(JSON.stringify(t))); return; }
+    ["fr","ma"].forEach(function(d){ Object.keys(t[d]).forEach(function(k){ if(!c[d][k]) c[d][k] = t[d][k]; }); });
+  });
+  cible.tests.sort(function(a, b){ return (a.date || "").localeCompare(b.date || ""); });
+}
+function quitterSalle(c){
+  var sl = salleDe(c); if(!sl) return;
+  c.eps = copieFiltree(sl.eps, idsClasse(c)); c.pnapas = copieFiltree(sl.pnapas, idsClasse(c));
+  c.salle = "";
+  nettoyerSalles();
+}
+function nettoyerSalles(){
+  dossier.salles = (dossier.salles || []).filter(function(sl){
+    var membres = dossier.classes.filter(function(c){ return c.salle === sl.id; });
+    if(membres.length >= 2) return true;
+    membres.forEach(function(c){ c.eps = copieFiltree(sl.eps, idsClasse(c)); c.pnapas = copieFiltree(sl.pnapas, idsClasse(c)); c.salle = ""; });
+    return false;
+  });
+  dossier.classes.forEach(function(c){ if(c.salle && !salleDe(c)) c.salle = ""; });
+}
+function rejoindreSalle(c, autre){
+  if(c.salle) quitterSalle(c);
+  var sl = salleDe(autre);
+  if(!sl){
+    sl = {id:uid(), eps:JSON.parse(JSON.stringify(autre.eps)), pnapas:JSON.parse(JSON.stringify(autre.pnapas))};
+    dossier.salles.push(sl); autre.salle = sl.id;
+  }
+  fusionnerEPS(sl.eps, c.eps); fusionnerPN(sl.pnapas, c.pnapas);
+  c.salle = sl.id;
+}
+function renderSalle(){
+  var sel = el("rgSalle"); if(!sel) return;
+  var autres = dossier.classes.filter(function(c){ return c.id !== state.id && !c.demo; });
+  var sl = salleDe(state), lie = sl ? dossier.classes.filter(function(c){ return c.salle === sl.id && c.id !== state.id; }) : [];
+  sel.innerHTML = '<option value="">Aucune — classe seule dans sa salle</option>' + autres.map(function(c){
+    return '<option value="' + c.id + '"' + (lie.length && lie[0].id === c.id ? ' selected' : '') + '>' + esc(nomClasse(c)) + '</option>';
+  }).join("");
+  sel.disabled = !autres.length || state.demo;
+  el("rgSalleInfo").textContent = sl ? "Groupes PNAPAS et d'EPS communs avec : " + lie.map(nomClasse).join(", ") + ". Les notes et les classements restent séparés."
+    : (autres.length ? "Choisissez l'autre classe de votre salle pour former des groupes communs." : "Créez d'abord l'autre classe de la salle (bouton « Nouvelle classe »).");
 }
 function melanger(t){ t = t.slice(); for(var i = t.length - 1; i > 0; i--){ var j = Math.floor(Math.random() * (i + 1)), x = t[i]; t[i] = t[j]; t[j] = x; } return t; }
 function aujourdhuiISO(){ var d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); }
@@ -3736,6 +3840,17 @@ function renderNiveaux(){
     return '<button type="button" class="puce" data-niv="' + n + '" aria-pressed="' + (state.niveaux.indexOf(n) >= 0) + '">' + n + '</button>';
   }).join("");
 }
+el("rgSalle").addEventListener("change", function(){
+  avantModif(false);
+  var v = this.value;
+  if(!v){ quitterSalle(state); toast("La classe a de nouveau ses propres groupes."); }
+  else {
+    var autre = dossier.classes.filter(function(c){ return c.id === v; })[0]; if(!autre) return;
+    rejoindreSalle(state, autre);
+    toast("Salle commune : groupes PNAPAS et d'EPS partagés avec " + nomClasse(autre) + ".");
+  }
+  touch(); renderAll();
+});
 el("rgNiveaux").addEventListener("click", function(ev){
   var b = ev.target.closest("[data-niv]"); if(!b) return;
   avantModif(false);
@@ -3745,8 +3860,9 @@ el("rgNiveaux").addEventListener("click", function(ev){
   touch(); render();
 });
 function classePnapas(){
-  if(!state.niveaux.length) return null;   /* inconnu */
-  return state.niveaux.some(function(n){ return NIVEAUX_PNAPAS.indexOf(n) >= 0; });
+  var niv = []; classesSalle().forEach(function(c){ niv = niv.concat(c.niveaux); });
+  if(!niv.length) return null;   /* inconnu */
+  return niv.some(function(n){ return NIVEAUX_PNAPAS.indexOf(n) >= 0; });
 }
 
 /* ---------- photo : réduite à 160 px pour rester légère ---------- */
@@ -3888,39 +4004,39 @@ el("apAujourdhui").addEventListener("click", function(){ apDate = aujourdhuiISO(
 /* ---------- groupes d'EPS ---------- */
 function renderEPS(){
   var place = {};
-  var gs = state.eps.groupes;
+  var gs = EPS().groupes;
   el("epsGrille").innerHTML = gs.map(function(g, i){
-    var membres = g.membres.map(eleveParId).filter(function(e){ return e && e.nom.trim() && !place[e.id] && (place[e.id] = 1); });
+    var membres = g.membres.map(eleveSalle).filter(function(e){ return e && e.nom.trim() && !place[e.id] && (place[e.id] = 1); });
     membres.sort(function(a, b){ return COL.compare(a.nom, b.nom); });
     return '<div class="eps-groupe"><button type="button" class="eps-tete" data-gr="' + i + '" style="background:' + g.couleur + (g.couleur === "#EAB308" || g.couleur === "#94A3B8" ? ';color:#1b1b1b' : '') + '">'
       + '<span>' + esc(g.nom) + '</span><small>' + membres.length + ' élève(s) · G ' + membres.filter(function(e){ return e.sexe === "G"; }).length + ' / F ' + membres.filter(function(e){ return e.sexe === "F"; }).length + '</small></button>'
-      + '<div class="eps-corps">' + (membres.map(function(e){ return puceEleve(e, 'data-eps="' + e.id + '"'); }).join("") || '<span class="hint" style="margin:0">Aucun élève</span>') + '</div></div>';
+      + '<div class="eps-corps">' + (membres.map(function(e){ return puceEleve(e, 'data-eps="' + e.id + '"', tagClasse(e)); }).join("") || '<span class="hint" style="margin:0">Aucun élève</span>') + '</div></div>';
   }).join("");
-  var libres = alpha().filter(function(e){ return !place[e.id]; });
+  var libres = elevesSalle().filter(function(e){ return !place[e.id]; });
   el("epsLibres").innerHTML = libres.length
-    ? '<b>À placer (' + libres.length + ')</b><div class="puces-el" style="display:flex;flex-wrap:wrap;gap:6px">' + libres.map(function(e){ return puceEleve(e, 'data-eps="' + e.id + '"'); }).join("") + '</div>'
+    ? '<b>À placer (' + libres.length + ')</b><div class="puces-el" style="display:flex;flex-wrap:wrap;gap:6px">' + libres.map(function(e){ return puceEleve(e, 'data-eps="' + e.id + '"', tagClasse(e)); }).join("") + '</div>'
     : '<b style="color:var(--ok);margin:0">✓ Tous les élèves sont placés.</b>';
   el("epsAjout").disabled = gs.length >= 8;
 }
-function groupeEPSDe(id){ var r = -1; state.eps.groupes.forEach(function(g, i){ if(g.membres.indexOf(id) >= 0 && r < 0) r = i; }); return r; }
+function groupeEPSDe(id){ var r = -1; EPS().groupes.forEach(function(g, i){ if(g.membres.indexOf(id) >= 0 && r < 0) r = i; }); return r; }
 function choisirGroupeEPS(id){
-  var e = eleveParId(id); if(!e) return;
+  var e = eleveSalle(id); if(!e) return;
   var actuel = groupeEPSDe(id);
-  var corps = '<div class="choix-groupes">' + state.eps.groupes.map(function(g, i){
+  var corps = '<div class="choix-groupes">' + EPS().groupes.map(function(g, i){
       return '<button type="button" data-v="' + i + '" style="background:' + g.couleur + (g.couleur === "#EAB308" || g.couleur === "#94A3B8" ? ';color:#1b1b1b' : '') + '">' + esc(g.nom) + (i === actuel ? ' ✓' : '') + '</button>';
     }).join("") + (actuel >= 0 ? '<button type="button" class="neutre" data-v="-1">Retirer du groupe</button>' : '') + '</div>';
   dialogue(e.nom, corps, [{label:"Fermer", valeur:null, style:"btn-ghost"}], {feuille:true}).then(function(v){
     if(v == null || v === "") return;
     var n = Number(v); if(n === actuel) return;
     avantModif(false);
-    state.eps.groupes.forEach(function(g){ g.membres = g.membres.filter(function(x){ return x !== id; }); });
-    if(n >= 0 && state.eps.groupes[n]) state.eps.groupes[n].membres.push(id);
+    EPS().groupes.forEach(function(g){ g.membres = g.membres.filter(function(x){ return x !== id; }); });
+    if(n >= 0 && EPS().groupes[n]) EPS().groupes[n].membres.push(id);
     touch(); renderEPS();
   });
 }
 function editerGroupeEPS(i){
-  var g = i == null ? null : state.eps.groupes[i];
-  var libre = COULEURS_EPS.filter(function(c){ return !state.eps.groupes.some(function(x){ return x.couleur === c[1]; }); })[0] || COULEURS_EPS[0];
+  var g = i == null ? null : EPS().groupes[i];
+  var libre = COULEURS_EPS.filter(function(c){ return !EPS().groupes.some(function(x){ return x.couleur === c[1]; }); })[0] || COULEURS_EPS[0];
   var coul = g ? g.couleur : libre[1];
   var corps = '<div class="field"><label for="gpNom">Nom du groupe</label><input id="gpNom" name="nom" maxlength="30" value="' + esc(g ? g.nom : libre[0]) + '"></div>'
     + '<div class="field" style="margin-top:12px"><span class="lbl">Couleur</span><div class="couleurs">' + COULEURS_EPS.map(function(c){
@@ -3931,9 +4047,9 @@ function editerGroupeEPS(i){
   dialogue(g ? "Modifier le groupe" : "Nouveau groupe", corps, boutons, {champs:true, feuille:true}).then(function(r){
     if(!r || !r.valeur) return;
     avantModif(false);
-    if(r.valeur === "suppr"){ state.eps.groupes.splice(i, 1); touch(); renderEPS(); toast("Groupe supprimé : ses élèves sont à replacer.", {label:"Annuler", fn:annuler}); return; }
+    if(r.valeur === "suppr"){ EPS().groupes.splice(i, 1); touch(); renderEPS(); toast("Groupe supprimé : ses élèves sont à replacer.", {label:"Annuler", fn:annuler}); return; }
     var nom = txt(r.champs.nom, 30).trim() || "Groupe", c = /^#[0-9A-Fa-f]{6}$/.test(r.champs.couleur || "") ? r.champs.couleur : "#64748B";
-    if(g){ g.nom = nom; g.couleur = c; } else state.eps.groupes.push({id:uid(), nom:nom, couleur:c, membres:[]});
+    if(g){ g.nom = nom; g.couleur = c; } else EPS().groupes.push({id:uid(), nom:nom, couleur:c, membres:[]});
     touch(); renderEPS();
   });
 }
@@ -3947,15 +4063,15 @@ el("epsAjout").addEventListener("click", function(){ editerGroupeEPS(null); });
 /* ---------- groupes de niveau PNAPAS ---------- */
 var pnDisc = "fr";
 function testActif(){
-  var t = state.pnapas.tests;
-  return t.filter(function(x){ return x.id === state.pnapas.actif; })[0] || t[t.length - 1] || null;
+  var t = PN().tests;
+  return t.filter(function(x){ return x.id === PN().actif; })[0] || t[t.length - 1] || null;
 }
 function niveauxDisc(d){ return d === "fr" ? NIV_FR : NIV_MA; }
 function libNiv(d, k){ var n = niveauxDisc(d).filter(function(x){ return x[0] === k; })[0]; return n ? n[1] : "—"; }
 function groupesPnapas(t, d){
-  var niv = niveauxDisc(d), l = alpha(), res = [];
+  var niv = niveauxDisc(d), l = elevesSalle(), res = [];
   var dans = function(liste){ return l.filter(function(e){ return liste.indexOf(t[d][e.id]) >= 0; }); };
-  if(state.pnapas.mode === "homogene"){
+  if(PN().mode === "homogene"){
     niv.forEach(function(n){ var m = dans([n[0]]); if(m.length) res.push({nom:n[1], niveaux:n[1], membres:m}); });
   } else {
     var g2 = d === "fr" ? GROUPE2_FR : GROUPE2_MA;
@@ -3972,13 +4088,14 @@ function renderPnapas(){
   el("pnHors").classList.toggle("is-hidden", ok !== false && ok !== null);
   el("pnZone").classList.toggle("is-hidden", ok === false);
   if(ok === false){ el("pnHors").innerHTML = '<span>Les groupes de niveau PNAPAS concernent les classes du <b>CE1 au CM2</b>. Cette classe est notée ' + esc(state.niveaux.join(", ")) + ' dans Réglages.</span>'; el("pnSous").textContent = ""; return; }
+  var cs = classesSalle();
   if(ok === null) el("pnHors").innerHTML = '<span>Indiquez le niveau de la classe dans <b>Réglages</b> : la partie PNAPAS ne s\'affiche que du CE1 au CM2.</span><button class="btn btn-sm" type="button" data-aller-reglages>Réglages</button>';
-  var tests = state.pnapas.tests, t = testActif();
-  el("pnMode").value = state.pnapas.mode;
+  var tests = PN().tests, t = testActif();
+  el("pnMode").value = PN().mode;
   el("pnDisc").querySelectorAll("[data-d]").forEach(function(b){ b.setAttribute("aria-selected", String(b.getAttribute("data-d") === pnDisc)); });
   el("pnTest").innerHTML = tests.length ? tests.map(function(x){ return '<option value="' + x.id + '"' + (t && x.id === t.id ? ' selected' : '') + '>' + esc(x.libelle) + (x.date ? " — " + esc(dateFr(x.date)) : "") + '</option>'; }).join("") : '<option value="">Aucune évaluation</option>';
   el("pnTest").disabled = !tests.length;
-  el("pnSous").textContent = t ? (pnDisc === "fr" ? "Français" : "Mathématiques") + " · " + t.libelle : "";
+  el("pnSous").textContent = (t ? (pnDisc === "fr" ? "Français" : "Mathématiques") + " · " + t.libelle : "") + (cs.length > 1 ? " · salle commune " + cs.map(function(c){ return c.meta.classe || nomClasse(c); }).join(" + ") : "");
   if(!t){
     el("pnGroupes").innerHTML = '<div class="notice" style="margin:0;grid-column:1/-1"><span style="flex:1 1 200px">Aucune évaluation saisie. Créez la première (par exemple le test de début d\'année) pour former les groupes.</span><button class="btn btn-sm btn-primary" type="button" data-pn-nouveau>Nouvelle évaluation</button></div>';
     el("pnListe").innerHTML = ""; el("pnBilan").innerHTML = ""; return;
@@ -3986,10 +4103,10 @@ function renderPnapas(){
   var gs = groupesPnapas(t, pnDisc);
   el("pnGroupes").innerHTML = gs.map(function(g){
     return '<div class="pn-groupe"' + (g.sans ? ' style="background:var(--warn-bg)"' : '') + '><h4>' + esc(g.nom) + ' · ' + g.membres.length + '</h4><div class="niv">' + esc(g.niveaux) + '</div>'
-      + (g.membres.length ? '<ol>' + g.membres.map(function(e){ return '<li>' + esc(e.nom) + (state.pnapas.mode === "heterogene" && !g.sans ? ' <small style="color:var(--ink3)">(' + esc(libNiv(pnDisc, t[pnDisc][e.id])) + ')</small>' : '') + '</li>'; }).join("") + '</ol>' : '<span class="hint">Aucun élève</span>') + '</div>';
+      + (g.membres.length ? '<ol>' + g.membres.map(function(e){ return '<li>' + esc(e.nom) + tagClasse(e) + (PN().mode === "heterogene" && !g.sans ? ' <small style="color:var(--ink3)">(' + esc(libNiv(pnDisc, t[pnDisc][e.id])) + ')</small>' : '') + '</li>'; }).join("") + '</ol>' : '<span class="hint">Aucun élève</span>') + '</div>';
   }).join("");
   var idx = tests.indexOf(t), prec = idx > 0 ? tests[idx - 1] : null, ordre = niveauxDisc(pnDisc).map(function(n){ return n[0]; });
-  el("pnListe").innerHTML = alpha().map(function(e){
+  el("pnListe").innerHTML = elevesSalle().map(function(e){
     var v = t[pnDisc][e.id] || "", ev = "";
     if(prec && v && prec[pnDisc][e.id]){ var dlt = ordre.indexOf(v) - ordre.indexOf(prec[pnDisc][e.id]); if(dlt > 0) ev = '<span class="evol monte" title="Progrès">▲</span>'; else if(dlt < 0) ev = '<span class="evol baisse" title="Recul">▼</span>'; else ev = '<span class="evol">=</span>'; }
     return '<li class="sx-' + e.sexe + '"><span class="ce-nom nom">' + esc(e.nom) + '</span>' + ev + '<select data-pn="' + e.id + '" aria-label="Niveau de ' + esc(e.nom) + '"><option value="">— Non évalué</option>'
@@ -3997,12 +4114,12 @@ function renderPnapas(){
   }).join("") || '<li class="vide-etat" style="border:0">Aucun élève.</li>';
   var h = '<thead><tr><th>Niveau</th>' + tests.map(function(x){ return '<th>' + esc(x.libelle) + '</th>'; }).join("") + '</tr></thead><tbody>';
   niveauxDisc(pnDisc).forEach(function(n){
-    h += '<tr><td>' + n[1] + '</td>' + tests.map(function(x){ var c = 0; Object.keys(x[pnDisc]).forEach(function(id){ if(eleveExiste(id) && x[pnDisc][id] === n[0]) c++; }); return '<td' + (x === t ? ' class="tot"' : '') + '>' + (c || "·") + '</td>'; }).join("") + '</tr>';
+    h += '<tr><td>' + n[1] + '</td>' + tests.map(function(x){ var c = 0; Object.keys(x[pnDisc]).forEach(function(id){ if(existeSalle(id) && x[pnDisc][id] === n[0]) c++; }); return '<td' + (x === t ? ' class="tot"' : '') + '>' + (c || "·") + '</td>'; }).join("") + '</tr>';
   });
-  el("pnBilan").innerHTML = h + '<tr class="tot"><td>Élèves évalués</td>' + tests.map(function(x){ return '<td>' + Object.keys(x[pnDisc]).filter(eleveExiste).length + '</td>'; }).join("") + '</tr></tbody>';
+  el("pnBilan").innerHTML = h + '<tr class="tot"><td>Élèves évalués</td>' + tests.map(function(x){ return '<td>' + Object.keys(x[pnDisc]).filter(existeSalle).length + '</td>'; }).join("") + '</tr></tbody>';
 }
 function nouvelleEvaluation(){
-  var n = state.pnapas.tests.length;
+  var n = PN().tests.length;
   var libs = ["Évaluation de début d'année", "Évaluation de mi-parcours", "Évaluation de fin d'année"];
   var corps = '<div class="field"><label for="pnLib">Nom de l\'évaluation</label><input id="pnLib" name="libelle" maxlength="40" value="' + esc(libs[n] || "Évaluation n° " + (n + 1)) + '"></div>'
     + '<div class="field" style="margin-top:12px"><label for="pnDt">Date</label><input id="pnDt" name="date" type="date" value="' + aujourdhuiISO() + '"></div>'
@@ -4010,19 +4127,19 @@ function nouvelleEvaluation(){
   dialogue("Nouvelle évaluation", corps, [{label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Créer", valeur:"ok", style:"btn-primary"}], {champs:true, feuille:true, focus:"pnLib"}).then(function(r){
     if(!r || r.valeur !== "ok") return;
     avantModif(false);
-    var prec = state.pnapas.tests[n - 1];
+    var prec = PN().tests[n - 1];
     var t = {id:uid(), libelle:txt(r.champs.libelle, 40).trim() || "Évaluation", date:/^\d{4}-\d{2}-\d{2}$/.test(r.champs.date) ? r.champs.date : "",
              fr:prec ? JSON.parse(JSON.stringify(prec.fr)) : {}, ma:prec ? JSON.parse(JSON.stringify(prec.ma)) : {}};
-    state.pnapas.tests.push(t); state.pnapas.actif = t.id;
-    if(state.pnapas.tests.length > 12) state.pnapas.tests.shift();
+    PN().tests.push(t); PN().actif = t.id;
+    if(PN().tests.length > 12) PN().tests.shift();
     touch(); renderPnapas();
   });
 }
 el("pnNouveau").addEventListener("click", nouvelleEvaluation);
 el("pnGroupes").addEventListener("click", function(ev){ if(ev.target.closest("[data-pn-nouveau]")) nouvelleEvaluation(); });
 el("pnHors").addEventListener("click", function(ev){ if(ev.target.closest("[data-aller-reglages]")) allerRubrique("reglages"); });
-el("pnTest").addEventListener("change", function(){ state.pnapas.actif = this.value; touch(); renderPnapas(); });
-el("pnMode").addEventListener("change", function(){ avantModif(false); state.pnapas.mode = this.value === "homogene" ? "homogene" : "heterogene"; touch(); renderPnapas(); });
+el("pnTest").addEventListener("change", function(){ PN().actif = this.value; touch(); renderPnapas(); });
+el("pnMode").addEventListener("change", function(){ avantModif(false); PN().mode = this.value === "homogene" ? "homogene" : "heterogene"; touch(); renderPnapas(); });
 el("pnDisc").addEventListener("click", function(ev){ var b = ev.target.closest("[data-d]"); if(!b) return; pnDisc = b.getAttribute("data-d"); renderPnapas(); });
 el("pnListe").addEventListener("change", function(ev){
   var s = ev.target.closest("[data-pn]"), t = testActif(); if(!s || !t) return;
@@ -4146,7 +4263,7 @@ function renderAujourdhui(){
 }
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "1.3.0";
+var APP_VERSION = "1.3.1";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
