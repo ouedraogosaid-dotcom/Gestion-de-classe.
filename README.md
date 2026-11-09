@@ -43,6 +43,7 @@ Si le navigateur est réinitialisé ou le téléphone perdu, elles sont perdues 
 
 ## Historique
 
+- **2.3.5** — Notes : le bouton des matières à noter prend l'apparence du choix du mois (même taille d'écriture), avec le nombre de matières notées.
 - **2.3.4** — Cahier journal imprimé : écriture plus grande dans les cases (même taille que l'en-tête de la semaine), mots non coupés, lignes qui occupent toute la feuille.
 - **2.3.3** — Notes : « Effacer la composition » déplacé tout en bas de la page, séparé des autres boutons, avec confirmation en écrivant EFFACER (et bouton Annuler juste après).
 - **2.3.2** — Champs de saisie bien visibles (bordure, fond contrasté en thème sombre, indication « Note » dans la saisie des notes).

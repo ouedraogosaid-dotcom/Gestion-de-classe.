@@ -484,6 +484,11 @@ tbody tr:hover{background:var(--surface-2); background:color-mix(in srgb, var(--
 .nt-tools{display:flex; gap:12px; align-items:flex-end; flex-wrap:wrap; margin-bottom:14px}
 .nt-tools .field{width:auto; min-width:160px}
 .nt-tools .field.mini{min-width:110px}
+.faux-select{appearance:none; width:100%; min-height:46px; text-align:left; cursor:pointer; position:relative;
+  font:inherit; font-size:.95rem; color:var(--texte); background:var(--surface-2); border:1px solid var(--bord-2); border-radius:var(--rayon-s); padding:10px 36px 10px 12px}
+.faux-select::after{content:""; position:absolute; right:14px; top:50%; width:7px; height:7px; margin-top:-6px; border-right:2px solid var(--texte-2); border-bottom:2px solid var(--texte-2); transform:rotate(45deg); transition:transform .2s ease}
+.faux-select[aria-expanded="true"]::after{transform:rotate(-135deg); margin-top:-2px}
+.faux-select:focus-visible{border-color:var(--bleu); box-shadow:0 0 0 4px var(--bleu-doux)}
 .mat-panel{border:1px solid var(--bord); border-radius:var(--rayon-s); padding:12px 14px; margin-bottom:14px; background:var(--surface-2)}
 .mat-panel .lg{display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:8px 14px}
 .mat-choice{display:flex;gap:8px;align-items:center;justify-content:space-between}
@@ -935,8 +940,8 @@ h1,h2,h3,.titre{letter-spacing:-.015em}
 input::placeholder, textarea::placeholder{color:var(--texte-3); opacity:.75}
 .une-liste input.nt{border-width:1.5px}
 .une-liste input.nt::placeholder{font-weight:500; font-size:.82rem}
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) input:not([type=checkbox]):not([type=radio]), :root:not([data-theme="light"]) select, :root:not([data-theme="light"]) textarea{background:var(--fond)} }
-:root[data-theme="dark"] input:not([type=checkbox]):not([type=radio]), :root[data-theme="dark"] select, :root[data-theme="dark"] textarea{background:var(--fond)}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) input:not([type=checkbox]):not([type=radio]), :root:not([data-theme="light"]) select, :root:not([data-theme="light"]) textarea, :root:not([data-theme="light"]) .faux-select{background:var(--fond)} }
+:root[data-theme="dark"] input:not([type=checkbox]):not([type=radio]), :root[data-theme="dark"] select, :root[data-theme="dark"] textarea, :root[data-theme="dark"] .faux-select{background:var(--fond)}
 .zone-danger{margin:18px 2px 4px; padding-top:14px; border-top:1px dashed var(--bord-2); display:flex; justify-content:center}
 .lien-danger{appearance:none; border:0; background:none; color:var(--bad); font:600 .8rem/1.3 "Inter",sans-serif; display:inline-flex; align-items:center; gap:6px; cursor:pointer; padding:10px 8px; opacity:.85}
 .lien-danger:hover{opacity:1; text-decoration:underline}
@@ -1828,7 +1833,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
           <div class="field mini"><label for="f_echelle_notes">Échelle</label>
             <select id="f_echelle_notes"><option value="10">Moyenne sur 10</option><option value="20">Moyenne sur 20</option></select>
           </div>
-          <button class="btn btn-sm" id="btnMatieres" type="button">Matières notées…</button>
+          <div class="field"><label for="btnMatieres">Matières à noter</label><button class="faux-select" id="btnMatieres" type="button" aria-expanded="false"><span id="btnMatieresTxt">Choisir</span></button></div>
         </div>
         <div class="mat-panel is-hidden no-print" id="matPanel">
           <div class="lg" id="matList"></div>
@@ -3462,6 +3467,9 @@ function renderNotes(){
   if(el("f_echelle_notes")) el("f_echelle_notes").value = String(echelleMoyenne());
 
   if(!el("matPanel").classList.contains("is-hidden") && !el("matList").contains(document.activeElement)) renderMatieres();
+  var nMat = matieresActives().length;
+  el("btnMatieresTxt").textContent = nMat + " matière" + (nMat > 1 ? "s" : "") + " notée" + (nMat > 1 ? "s" : "");
+  el("btnMatieres").setAttribute("aria-expanded", String(!el("matPanel").classList.contains("is-hidden")));
 
   var act = matieresActives(), b = echelleMoyenne();
   el("ntHead").innerHTML = '<th class="num">N°</th><th>Nom et prénoms</th>'
@@ -4475,6 +4483,7 @@ function renderMatieres(){
 function apresMatieres(){ touch(); renderNotes(); buildCartes(); fitCartes(); }
 el("btnMatieres").addEventListener("click", function(){
   var p = el("matPanel"); p.classList.toggle("is-hidden");
+  this.setAttribute("aria-expanded", String(!p.classList.contains("is-hidden")));
   if(!p.classList.contains("is-hidden")) renderMatieres();
 });
 el("matList").addEventListener("change", function(ev){
@@ -7414,6 +7423,7 @@ el("acInstallBtn").addEventListener("click", function(){
 
 /* ---------- « Quoi de neuf » après une mise à jour ---------- */
 var NOUVEAUTES = [
+  ["2.3.5", ["Notes : « Matières à noter » s'affiche comme le choix du mois, en grand, avec le nombre de matières notées"]],
   ["2.3.4", ["Cahier journal imprimé : écriture plus grande dans les cases, comme l'en-tête de la semaine"]],
   ["2.3.3", ["Notes : « Effacer la composition » est déplacé tout en bas, loin des autres boutons, et demande d'écrire EFFACER pour confirmer"]],
   ["2.3.2", ["Champs de saisie (notes, fiches, cahier journal) bien visibles, surtout en thème sombre"]],
@@ -8221,7 +8231,7 @@ function tableauMatieresEleve(e){
 }
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "2.3.4";
+var APP_VERSION = "2.3.5";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
