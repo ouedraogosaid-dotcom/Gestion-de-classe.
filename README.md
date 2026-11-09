@@ -34,6 +34,7 @@ Si le navigateur est réinitialisé ou le téléphone perdu, elles sont perdues 
 
 ## Historique
 
+- **1.7.0** — Lot 5A : 16 nouveaux documents à imprimer avec en-tête officiel — liste d'émargement, étiquettes de noms, relevé de notes vierge, feuille d'appel du mois, liste personnalisée, liste des redoublants, tableau d'honneur, satisfecits, liste des admis, récapitulatif annuel, bilan PNAPAS, fiche de renseignements, attestation de scolarité, fiche de transfert, convocation des parents, rapport mensuel du maître.
 - **1.6.2** — Mois de chaque composition trimestrielle (ex. « Composition du 1er trimestre (décembre) »), repris sur les bulletins et le tableau annuel. Enregistrement immédiat quand on quitte l'application.
 - **1.6.1** — Trois types de compositions : évaluations mensuelles (école, ne comptent pas), compositions trimestrielles (comptent) et composition de passage. Moyenne annuelle = (moyenne des trimestrielles + passage × 2) ÷ 3, poids du passage réglable. Barème /40 ajouté.
 - **1.6.0** — Lot directeur : rôle maître ou directeur ; le maître envoie sa classe au directeur d'un geste (partage WhatsApp, ou fichier à joindre) ; le directeur importe les classes dans « Mon école » (lecture seule, mise à jour à chaque envoi, maîtres à relancer), voit les effectifs et résultats de toute l'école, sa propre classe comprise, et les imprime avec l'en-tête officiel.

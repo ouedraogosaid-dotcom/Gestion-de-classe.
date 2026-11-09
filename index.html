@@ -854,6 +854,50 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
 .carte.grande .bulletin-mot{font-size:13px; max-height:20mm; margin-bottom:4mm} .carte.grande .bulletin-mot span{font-size:11px}
 .carte.grande .carte-visa{font-size:13px} .carte.grande .bulletin-dir{font-size:12px}
 
+
+/* ---- lot 5 : documents ---- */
+.np-sous{text-align:center; font-size:9px; margin:1.5mm 0 0; color:#333}
+.doc-page{display:flex; flex-direction:column; height:100%}
+.doc-gros table.np th, .doc-gros table.np td{font-size:10px; padding:1.6mm 2mm}
+.doc-gros table.np td.sig{width:34%}
+.doc-moyen table.np th, .doc-moyen table.np td{font-size:9px; padding:1.1mm 1.5mm}
+.honneur{text-align:center; padding-top:4mm}
+.honneur h3{font-family:"Poppins"; font-size:28px; letter-spacing:.06em; margin:4mm 0 1mm; color:#111}
+.honneur .np-sous{font-size:12px}
+.honneur ol{list-style:none; margin:8mm auto 0; padding:0; max-width:150mm; display:flex; flex-direction:column; gap:3.5mm}
+.honneur li{display:flex; align-items:center; gap:5mm; border:1.4px solid #111 !important; border-radius:3mm; padding:3.5mm 5mm; font-size:14px; text-align:left}
+.honneur li .rg{font:700 22px/1 "Poppins",sans-serif; width:14mm; text-align:center}
+.honneur li .hn{flex:1; font-weight:700; text-transform:uppercase}
+.honneur li .mo{font-weight:700}
+.honneur li:first-child{border-width:2.4px !important}
+.satis{height:136mm; border:2.6px double #111 !important; margin:3mm 3mm 6mm; padding:7mm 9mm; text-align:center; display:flex; flex-direction:column; justify-content:center; gap:3mm; position:relative}
+.satis h3{font-family:"Poppins"; font-size:30px; letter-spacing:.12em; margin:0; color:#111}
+.satis .ln{font-size:13px; line-height:1.6}
+.satis .sn{font:700 20px/1.2 "Poppins",sans-serif; text-transform:uppercase; border-bottom:1px solid #111 !important; display:inline-block; padding:0 6mm 1mm}
+.satis .sig{display:flex; justify-content:space-between; font-size:11px; margin-top:6mm}
+.satis .eo{font-size:7px}
+.etiq{display:grid; grid-template-columns:repeat(3,1fr); grid-auto-rows:33mm; gap:2.5mm; padding:2mm}
+.etiq div{border:1px dashed #888 !important; border-radius:2.5mm; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:2mm; gap:1mm}
+.etiq b{font:700 13px/1.15 "Poppins",sans-serif; text-transform:uppercase}
+.etiq span{font-size:9px; color:#333}
+.doc-texte{font-size:13px; line-height:1.8; margin:10mm 6mm 0; text-align:justify}
+.doc-texte h3{font-family:"Poppins"; font-size:22px; text-align:center; letter-spacing:.1em; margin:4mm 0 10mm; text-decoration:underline}
+.doc-texte .sig{display:flex; justify-content:flex-end; margin-top:14mm; text-align:center}
+.doc-texte .sig div{min-width:70mm}
+.fiche-r{font-size:11px}
+.fiche-r .fr-tete{display:flex; gap:5mm; align-items:flex-start; margin:4mm 0}
+.fiche-r .fr-tete img, .fiche-r .fr-photo{width:30mm; height:36mm; object-fit:cover; border:1px solid #888 !important; display:grid; place-items:center; font-size:9px; color:#777}
+.fiche-r table{width:100%; border-collapse:collapse}
+.fiche-r td{border:1px solid #999 !important; padding:2.2mm 2.5mm; font-size:11px; vertical-align:top}
+.fiche-r td.l{width:38%; font-weight:600; background:#f5f2ea}
+.fiche-r .lignes div{border-bottom:1px dotted #777 !important; height:8mm}
+.convoc{border:1.4px solid #111 !important; padding:5mm 6mm; height:88mm; margin-bottom:4mm; font-size:11.5px; line-height:1.7; display:flex; flex-direction:column}
+.convoc h3{font-family:"Poppins"; font-size:16px; text-align:center; letter-spacing:.1em; margin:0 0 3mm}
+.convoc .eo{font-size:6.5px; margin-bottom:2mm}
+.convoc .sig{margin-top:auto; display:flex; justify-content:space-between; font-size:10px}
+.rapport h3{font-family:"Poppins"; font-size:12px; margin:5mm 0 2mm; text-transform:uppercase; letter-spacing:.06em}
+.rapport table.np td, .rapport table.np th{font-size:9.5px; padding:1.2mm 2mm}
+
 /* tableau de la classe, format A4 */
 .notes-page{padding:4mm}
 .notes-page .np-title{font-family:"Inter"; font-weight:700; text-transform:uppercase; letter-spacing:.14em;
@@ -876,7 +920,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
   .view{display:none !important}
   body.pr-saisie #vSaisie, body.pr-scolarite #vScolarite, body.pr-alpha #vAlpha,
   body.pr-synthese #vSynthese, body.pr-feuille #vFeuille, body.pr-notes #vNotes,
-  body.pr-annee #vAnnee, body.pr-cartes #vCartes, body.pr-appel #vAppel, body.pr-groupes #vGroupes,
+  body.pr-annee #vAnnee, body.pr-cartes #vCartes, body.pr-doc #vDoc, body.pr-appel #vAppel, body.pr-groupes #vGroupes,
   body.pr-vie #vVie, body.pr-agenda #vAgenda, body.pr-edt #vEdt, body.pr-fourn #vFourn, body.pr-manuels #vManuels,
   body.pr-blocnotes #vBlocnotes, body.pr-textes #vTextes, body.pr-ecole #vEcole{display:block !important; animation:none !important}
   .edt input{font-size:9pt !important; padding:4px !important}
@@ -1387,6 +1431,26 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
         <button class="doc" type="button" data-doc="alpha" style="--i:4"><span class="feuille"></span><span><b>Liste de classe</b><small>Tableau alphabétique des élèves</small></span></button>
         <button class="doc" type="button" data-doc="scolarite" style="--i:5"><span class="feuille"></span><span><b>Tableaux de scolarité</b><small>Garçons et filles, âges et scolarités</small></span></button>
         <button class="doc" type="button" data-doc="synthese" style="--i:6"><span class="feuille"></span><span><b>Synthèse</b><small>Effectifs, âges, contrôles et visas</small></span></button>
+        <h2 class="section-titre" style="grid-column:1/-1;margin:14px 2px 0">Pour la classe</h2>
+        <button class="doc" type="button" data-doc="d:emargement" style="--i:7"><span class="feuille"></span><span><b>Liste d'émargement</b><small>Noms et colonne de signature, pour une réunion ou une remise</small></span></button>
+        <button class="doc" type="button" data-doc="d:etiquettes" style="--i:8"><span class="feuille"></span><span><b>Étiquettes de noms</b><small>Pour les cahiers, 24 par feuille</small></span></button>
+        <button class="doc" type="button" data-doc="d:releve" style="--i:9"><span class="feuille"></span><span><b>Relevé de notes vierge</b><small>Noms déjà inscrits, colonnes à remplir à la main</small></span></button>
+        <button class="doc" type="button" data-doc="d:appelvierge" style="--i:10"><span class="feuille"></span><span><b>Feuille d'appel du mois</b><small>Noms et jours de classe, à remplir à la main</small></span></button>
+        <button class="doc" type="button" data-doc="d:perso" style="--i:11"><span class="feuille"></span><span><b>Liste personnalisée</b><small>Vous choisissez les colonnes</small></span></button>
+        <button class="doc" type="button" data-doc="d:redoublants" style="--i:12"><span class="feuille"></span><span><b>Liste des redoublants</b><small>Élèves qui refont la classe</small></span></button>
+        <h2 class="section-titre" style="grid-column:1/-1;margin:14px 2px 0">Résultats et récompenses</h2>
+        <button class="doc" type="button" data-doc="d:honneur" style="--i:13"><span class="feuille"></span><span><b>Tableau d'honneur</b><small>Les meilleurs élèves d'une composition</small></span></button>
+        <button class="doc" type="button" data-doc="d:satisfecit" style="--i:14"><span class="feuille"></span><span><b>Satisfecits</b><small>Certificats de mérite à remettre</small></span></button>
+        <button class="doc" type="button" data-doc="d:admis" style="--i:15"><span class="feuille"></span><span><b>Liste des admis</b><small>Par ordre de mérite, à afficher</small></span></button>
+        <button class="doc" type="button" data-doc="d:recap" style="--i:16"><span class="feuille"></span><span><b>Récapitulatif annuel</b><small>Toutes les moyennes de l'année</small></span></button>
+        <button class="doc" type="button" data-doc="d:pnapas" style="--i:17"><span class="feuille"></span><span><b>Bilan PNAPAS</b><small>Élèves par niveau, français et maths</small></span></button>
+        <h2 class="section-titre" style="grid-column:1/-1;margin:14px 2px 0">Pour un élève</h2>
+        <button class="doc" type="button" data-doc="d:renseignements" style="--i:18"><span class="feuille"></span><span><b>Fiche de renseignements</b><small>Une page par élève</small></span></button>
+        <button class="doc" type="button" data-doc="d:attestation" style="--i:19"><span class="feuille"></span><span><b>Attestation de scolarité</b><small>Prête à signer par le directeur</small></span></button>
+        <button class="doc" type="button" data-doc="d:transfert" style="--i:20"><span class="feuille"></span><span><b>Fiche de transfert</b><small>Parcours et moyennes, pour la nouvelle école</small></span></button>
+        <button class="doc" type="button" data-doc="d:convocation" style="--i:21"><span class="feuille"></span><span><b>Convocation des parents</b><small>Date, heure et objet</small></span></button>
+        <h2 class="section-titre" style="grid-column:1/-1;margin:14px 2px 0">Pour le directeur</h2>
+        <button class="doc" type="button" data-doc="d:rapport" style="--i:22"><span class="feuille"></span><span><b>Rapport mensuel</b><small>Effectifs, mouvements, présence et résultats du mois</small></span></button>
       </div>
     </div>
     <button class="retour no-print is-hidden" id="docRetour" type="button"><svg class="ic"><use href="#i-retour"/></svg>Tous les documents</button>
@@ -1397,6 +1461,12 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
         <button class="btn btn-sm btn-primary is-hidden" id="btnPdf2" type="button">Enregistrer le tableau récapitulatif</button>
       </div>
       <div class="a4-stage" id="a4Stage"></div>
+    </section>
+
+    <section class="view is-hidden" id="vDoc">
+      <div class="page-titre no-print"><div><h1 id="docTitre">Document</h1><p id="docNote">Aperçu de la feuille telle qu'elle sortira à l'impression.</p></div></div>
+      <div class="a4-tools no-print" id="docOptions"></div>
+      <div class="a4-stage" id="docStage"></div>
     </section>
 
     <section class="view is-hidden" id="vCartes">
@@ -3078,6 +3148,7 @@ function render(){
     if(vueActive === "groupes"){ renderEPS(); renderPnapas(); }
     if(vueActive === "vie") renderVie();
     if(RUBRIQUE_DE[vueActive] === "accueil") renderOutil(vueActive);
+    if(vueActive === "doc" && !el("docOptions").contains(document.activeElement)){ renderDocOptions(); buildDoc(); fitDoc(); }
     renderMouvements();
     renderNotes();
     renderAnnee();
@@ -3795,9 +3866,9 @@ el("btnViderMois").addEventListener("click", function(){
 el("f_cartesMode").addEventListener("change", function(){ majTitreCartes(); buildCartes(); fitCartes(); majFab(); });
 
 /* ---------- navigation : 5 rubriques, chacune avec ses vues ---------- */
-var VIEWS = {ecole:"vEcole", agenda:"vAgenda", edt:"vEdt", fourn:"vFourn", manuels:"vManuels", blocnotes:"vBlocnotes", textes:"vTextes", saisie:"vSaisie", appel:"vAppel", groupes:"vGroupes", vie:"vVie", scolarite:"vScolarite", alpha:"vAlpha", synthese:"vSynthese", feuille:"vFeuille", notes:"vNotes", annee:"vAnnee", cartes:"vCartes"};
+var VIEWS = {doc:"vDoc", ecole:"vEcole", agenda:"vAgenda", edt:"vEdt", fourn:"vFourn", manuels:"vManuels", blocnotes:"vBlocnotes", textes:"vTextes", saisie:"vSaisie", appel:"vAppel", groupes:"vGroupes", vie:"vVie", scolarite:"vScolarite", alpha:"vAlpha", synthese:"vSynthese", feuille:"vFeuille", notes:"vNotes", annee:"vAnnee", cartes:"vCartes"};
 var RUBRIQUES = {accueil:"rAccueil", eleves:"rEleves", notes:"rNotes", documents:"rDocuments", reglages:"rReglages"};
-var RUBRIQUE_DE = {ecole:"accueil", agenda:"accueil", edt:"accueil", fourn:"accueil", manuels:"accueil", blocnotes:"accueil", textes:"accueil", saisie:"eleves", appel:"eleves", groupes:"eleves", vie:"eleves", scolarite:"eleves", alpha:"eleves", synthese:"eleves", notes:"notes", annee:"notes", feuille:"documents", cartes:"documents"};
+var RUBRIQUE_DE = {doc:"documents", ecole:"accueil", agenda:"accueil", edt:"accueil", fourn:"accueil", manuels:"accueil", blocnotes:"accueil", textes:"accueil", saisie:"eleves", appel:"eleves", groupes:"eleves", vie:"eleves", scolarite:"eleves", alpha:"eleves", synthese:"eleves", notes:"notes", annee:"notes", feuille:"documents", cartes:"documents"};
 var DERNIERE_VUE = {eleves:"saisie", notes:"notes"};
 var vueActive = null, rubriqueActive = "accueil";
 var TITRES_CARTES = {cartes:"Bulletins scolaires", tableau:"Tableau des notes", annee:"Résultats de fin d'année"};
@@ -3841,6 +3912,7 @@ function montrerVue(v, anim){
   if(anim) animer(el(VIEWS[v]));
   if(v === "feuille") fitFeuille();
   if(v === "cartes"){ majTitreCartes(); buildCartes(); fitCartes(); }
+  if(v === "doc"){ renderDocOptions(); buildDoc(); fitDoc(); }
   if(v === "appel") renderAppel();
   if(v === "groupes"){ renderEPS(); renderPnapas(); }
   if(v === "vie") renderVie();
@@ -3848,10 +3920,11 @@ function montrerVue(v, anim){
 }
 function fermerDocument(){
   el("docsHub").classList.remove("is-hidden"); el("docRetour").classList.add("is-hidden");
-  el("vFeuille").classList.add("is-hidden"); el("vCartes").classList.add("is-hidden");
+  el("vFeuille").classList.add("is-hidden"); el("vCartes").classList.add("is-hidden"); el("vDoc").classList.add("is-hidden");
   vueActive = null; animer(el("docsHub")); majFab();
 }
 function ouvrirDocument(d){
+  if(d.indexOf("d:") === 0){ docType = d.slice(2); allerRubrique("documents", "doc"); return; }
   if(d === "feuille"){ allerRubrique("documents", "feuille"); return; }
   if(d === "cartes" || d === "tableau" || d === "annee"){ el("f_cartesMode").value = d; allerRubrique("documents", "cartes"); return; }
   allerRubrique("eleves", d);   /* liste de classe, scolarité, synthèse : imprimées depuis leur vue */
@@ -3907,6 +3980,7 @@ function nomDocument(ext){
   var NOMS = {saisie:"liste-des-eleves", appel:"cahier-d-appel", groupes:"groupes", vie:"vie-de-classe", scolarite:"tableaux-de-scolarite",
     alpha:"liste-de-classe", synthese:"synthese", agenda:"agenda", edt:"emploi-du-temps", fourn:"fournitures", manuels:"manuels-et-kits",
     blocnotes:"bloc-notes", textes:"chants-et-recitations", ecole:"effectifs-et-resultats-de-l-ecole"};
+  if(vueActive === "doc") return slug(DOCS[docType] || "document") + "-" + classe + "." + ext;
   if(NOMS[vueActive]) return NOMS[vueActive] + "-" + classe + "." + ext;
   return "tableau-recapitulatif-" + classe + "." + ext;
 }
@@ -5540,8 +5614,303 @@ el("ecRecues").addEventListener("click", function(ev){
   });
 });
 
+/* =====================================================================
+   LOT 5A — documents à imprimer (moteur générique)
+   ===================================================================== */
+var DOCS = {
+  emargement:"Liste d'émargement", etiquettes:"Étiquettes de noms", releve:"Relevé de notes vierge", appelvierge:"Feuille d'appel du mois",
+  perso:"Liste personnalisée", redoublants:"Liste des redoublants", honneur:"Tableau d'honneur", satisfecit:"Satisfecits", admis:"Liste des admis",
+  recap:"Récapitulatif annuel des moyennes", pnapas:"Bilan PNAPAS", renseignements:"Fiche de renseignements", attestation:"Attestation de scolarité",
+  transfert:"Fiche de transfert", convocation:"Convocation des parents", rapport:"Rapport mensuel du maître"
+};
+var docType = "emargement", docOpts = {};
+function opt(k, def){ var o = docOpts[docType] || (docOpts[docType] = {}); return o[k] != null ? o[k] : def; }
+function anneeTxt(){ var m = state.meta; return (m.an1 || "") + (m.an2 ? "–" + m.an2 : ""); }
+function metaDoc(extra){
+  var m = state.meta;
+  return '<div class="np-meta"><span><i>DRENA</i> ' + esc(m.drena || "…") + '</span><span><i>I.E.P.P.</i> ' + esc(m.inspection || "…") + '</span><span><i>E.P.P.</i> ' + esc(m.ecole || "…") + '</span>'
+    + '<span><i>Classe</i> ' + esc(m.classe || "…") + '</span><span><i>Année</i> ' + esc(anneeTxt() || "…") + '</span>' + (extra || "") + '</div>';
+}
+function pageDoc(contenu, cls, sansEntete){ return '<div class="a4"><div class="notes-page doc-page ' + (cls || "") + '">' + (sansEntete ? "" : enteteOfficiel("eo-np")) + contenu + '</div></div>'; }
+function titreDoc(t, sous){ return '<div class="np-title">' + esc(t) + '</div>' + metaDoc() + (sous ? '<p class="np-sous">' + sous + '</p>' : ''); }
+function paginer(l, n){ var r = []; for(var i = 0; i < Math.max(1, l.length); i += n) r.push(l.slice(i, i + n)); return r; }
+function tableDoc(tetes, lignes, largeurs){
+  return '<table class="np" style="margin-top:2.5mm">' + (largeurs ? '<colgroup>' + largeurs.map(function(w){ return '<col style="width:' + w + '">'; }).join("") + '</colgroup>' : '')
+    + '<thead><tr>' + tetes.map(function(t){ return '<th>' + t + '</th>'; }).join("") + '</tr></thead><tbody>' + lignes.join("") + '</tbody></table>';
+}
+function pied(t){ return '<div class="np-meta" style="border-top:1px solid #8a8272 !important;margin-top:auto">' + t + '</div>'; }
+function signatures(){ return '<span>Le Maître : ' + esc(state.meta.maitre || "…………") + '</span><span style="margin-left:auto">Le Directeur : ' + esc(state.meta.directeur || "…………") + '</span>'; }
+function choixEleves(){ return [["", "Tous les élèves"]].concat(alpha().map(function(e){ return [e.id, e.nom]; })); }
+function elevesChoisis(){ var id = opt("eleve", ""); var l = alpha(); return id ? l.filter(function(e){ return e.id === id; }) : l; }
+function periodesNotees(){ return periodesRenseignees().map(function(m){ return [m, libellePeriode(m)]; }); }
+var AN = "__annee__";
+function choixCompos(avecAnnee){ var l = periodesNotees(); if(avecAnnee && classementAnnuel().sur) l.push([AN, "Fin d'année (moyenne annuelle)"]); return l; }
+function isoMois(nom){ var i = MOIS.indexOf(nom); if(i < 0) return ""; var y = i < 3 ? Number(state.meta.an1) || anneeScolaire()[0] : Number(state.meta.an2) || anneeScolaire()[1]; return y + "-" + ("0" + ([10,11,12,1,2,3,4,5,6][i])).slice(-2); }
+function joursClasse(iso){
+  var y = Number(iso.slice(0, 4)), mo = Number(iso.slice(5, 7)) - 1, d = new Date(y, mo, 1), r = [];
+  while(d.getMonth() === mo){ var j = d.getDay(); if(j >= 1 && j <= 5) r.push({n:d.getDate(), j:["D","L","M","M","J","V","S"][j]}); d.setDate(d.getDate() + 1); }
+  return r;
+}
+function moisActuel(){ var m = new Date().getMonth(); var idx = [3,4,5,6,7,8,-1,-1,-1,0,1,2][m]; return MOIS[idx >= 0 ? idx : 0]; }
+
+/* --- options de chaque document --- */
+function specsDoc(){
+  switch(docType){
+    case "emargement": return [{k:"titre", l:"Objet", t:"text", d:"Réunion des parents d'élèves"},{k:"date", l:"Date", t:"date", d:aujourdhuiISO()},{k:"col", l:"Colonne", t:"select", d:"parent", o:[["parent","Parent + signature"],["sig","Signature seule"]]}];
+    case "etiquettes": return [{k:"n", l:"Par élève", t:"select", d:"1", o:[["1","1 étiquette"],["2","2 étiquettes"],["3","3 étiquettes"]]}];
+    case "releve": return [{k:"titre", l:"Titre", t:"text", d:"Relevé de notes"},{k:"cols", l:"Colonnes", t:"select", d:"mat", o:[["mat","Matières de la classe"],["5","5 colonnes vides"],["8","8 colonnes vides"],["10","10 colonnes vides"]]}];
+    case "appelvierge": return [{k:"mois", l:"Mois", t:"select", d:moisActuel(), o:MOIS.map(function(m){ return [m, m + " " + isoMois(m).slice(0, 4)]; })}];
+    case "perso": return [{k:"titre", l:"Titre", t:"text", d:"Liste de la classe"},{k:"c_mat", l:"Matricule", t:"check", d:false},{k:"c_sexe", l:"Sexe", t:"check", d:true},{k:"c_age", l:"Âge", t:"check", d:true},
+      {k:"c_nais", l:"Naissance", t:"check", d:false},{k:"c_parent", l:"Parent", t:"check", d:false},{k:"c_tel", l:"Téléphone", t:"check", d:false},{k:"v1", l:"Colonne vide 1", t:"text", d:""},{k:"v2", l:"Colonne vide 2", t:"text", d:""}];
+    case "honneur": return [{k:"compo", l:"Composition", t:"select", d:"", o:choixCompos(true)},{k:"n", l:"Nombre", t:"select", d:"5", o:[["3","3 premiers"],["5","5 premiers"],["10","10 premiers"]]}];
+    case "satisfecit": return [{k:"compo", l:"Composition", t:"select", d:"", o:choixCompos(true)},{k:"n", l:"Pour", t:"select", d:"3", o:[["1","Le premier"],["3","Les 3 premiers"],["5","Les 5 premiers"],["10","Les 10 premiers"]]}];
+    case "renseignements": case "attestation": case "transfert": return [{k:"eleve", l:"Élève", t:"select", d:"", o:choixEleves()}].concat(docType === "attestation" ? [{k:"lieu", l:"Fait à", t:"text", d:state.meta.ecole || ""}] : []);
+    case "convocation": return [{k:"eleve", l:"Élève", t:"select", d:"", o:choixEleves()},{k:"date", l:"Date", t:"date", d:aujourdhuiISO()},{k:"heure", l:"Heure", t:"text", d:"8h00"},{k:"objet", l:"Objet", t:"text", d:"Entretien au sujet du travail de votre enfant"}];
+    case "rapport": return [{k:"mois", l:"Mois", t:"select", d:moisActuel(), o:MOIS.map(function(m){ return [m, m + " " + isoMois(m).slice(0, 4)]; })}];
+    default: return [];
+  }
+}
+function renderDocOptions(){
+  var sp = specsDoc();
+  el("docTitre").textContent = DOCS[docType] || "Document";
+  el("docOptions").innerHTML = sp.map(function(c){
+    var v = opt(c.k, c.d), id = "do_" + c.k;
+    if(c.t === "select"){
+      if(c.o.length && !c.o.some(function(x){ return x[0] === v; })) v = c.o[c.o.length - 1][0];
+      if(!c.o.length) return '<span class="status">Aucune composition notée pour l\'instant.</span>';
+      return '<div class="field mini" style="min-width:170px"><label for="' + id + '">' + c.l + '</label><select id="' + id + '" data-dopt="' + c.k + '">' + c.o.map(function(x){ return '<option value="' + esc(x[0]) + '"' + (x[0] === v ? ' selected' : '') + '>' + esc(x[1]) + '</option>'; }).join("") + '</select></div>';
+    }
+    if(c.t === "check") return '<label class="puce" style="display:inline-flex;gap:6px;align-items:center"><input type="checkbox" data-dopt="' + c.k + '"' + (v ? ' checked' : '') + ' style="width:16px;height:16px;accent-color:var(--bleu)">' + c.l + '</label>';
+    return '<div class="field mini" style="min-width:170px"><label for="' + id + '">' + c.l + '</label><input id="' + id + '" type="' + (c.t === "date" ? "date" : "text") + '" data-dopt="' + c.k + '" value="' + esc(v) + '" maxlength="80"></div>';
+  }).join("");
+  var o = docOpts[docType] || (docOpts[docType] = {});
+  sp.forEach(function(c){ if(o[c.k] == null && c.t !== "select") o[c.k] = c.d; });
+  sp.forEach(function(c){ if(c.t === "select" && c.o.length){ var v = opt(c.k, c.d); if(!c.o.some(function(x){ return x[0] === v; })) (docOpts[docType] || (docOpts[docType] = {}))[c.k] = c.o[c.o.length - 1][0]; } });
+}
+el("docOptions").addEventListener("input", function(ev){
+  var c = ev.target.closest("[data-dopt]"); if(!c) return;
+  (docOpts[docType] || (docOpts[docType] = {}))[c.getAttribute("data-dopt")] = c.type === "checkbox" ? c.checked : c.value;
+  clearTimeout(docTimer); docTimer = setTimeout(function(){ buildDoc(); fitDoc(); }, c.type === "text" ? 300 : 0);
+});
+var docTimer = null;
+
+/* --- construction --- */
+function buildDoc(){
+  var st = el("docStage"); if(!st) return;
+  var l = alpha(), pages = [];
+  if(!l.length && docType !== "pnapas"){ st.innerHTML = pageDoc('<p style="padding:10mm;font-size:12px">Aucun élève nommé : renseignez d\'abord la liste des élèves.</p>'); return; }
+  var f = DOC_BUILD[docType]; pages = f ? f(l) : [];
+  st.innerHTML = pages.join("");
+  el("docNote").textContent = pages.length + " feuille" + (pages.length > 1 ? "s" : "") + " A4 — aperçu avant impression.";
+}
+function fitDoc(){
+  var stage = el("docStage"); if(!stage || stage.offsetParent === null) return;
+  var W = px("198mm"), feuilles = [].slice.call(stage.querySelectorAll(".a4"));
+  var z = Math.min(1, (largeurUtile(stage) || W) / W);
+  feuilles.forEach(function(x){ x.style.transform = "scale(" + z + ")"; });
+  stage.style.height = z < 1 ? (feuilles.length * (px("283mm") + 14) * z + margeStage(stage)) + "px" : "";
+}
+window.addEventListener("resize", fitDoc);
+
+function ligneNom(e, i){ return '<td class="n">' + (i + 1) + '</td><td class="nm2">' + esc(e.nom) + '</td>'; }
+function classementDe(compo){
+  if(compo === AN){ var ca = classementAnnuel(); return {liste:ca.liste.map(function(x){ return {e:x.e, moy:x.a.annuelle}; }), rangs:ca.rangs, sur:ca.sur, titre:"Fin d'année"}; }
+  var c = classement(compo); return {liste:c.liste.map(function(x){ return {e:x.e, moy:x.b.moy}; }), rangs:c.rangs, sur:c.sur, titre:libellePeriode(compo)};
+}
+function rangTxt(r){ return r + (r === 1 ? "er" : "e"); }
+function dateLongue(iso){ try{ return new Date((iso || aujourdhuiISO()) + "T12:00:00").toLocaleDateString("fr-FR", {day:"numeric", month:"long", year:"numeric"}); }catch(e){ return iso; } }
+function naissanceTxt(e){ return e.naissance ? dateLongue(e.naissance) + (e.lieu ? " à " + e.lieu : "") : (e.lieu ? "à " + e.lieu : "…………………………"); }
+
+var DOC_BUILD = {
+  emargement: function(l){
+    var sig = opt("col", "parent") === "sig";
+    return paginer(l, 24).map(function(p, k){
+      return pageDoc(titreDoc("Liste d'émargement", esc(opt("titre", "Réunion des parents d'élèves")) + " — " + esc(dateLongue(opt("date", aujourdhuiISO()))))
+        + tableDoc(["N°","Nom et prénoms de l'élève"].concat(sig ? ["Signature"] : ["Nom du parent","Signature"]),
+            p.map(function(e, i){ return '<tr style="height:9.4mm">' + ligneNom(e, k * 24 + i) + (sig ? '<td></td>' : '<td></td><td></td>') + '</tr>'; }), sig ? ["6%","50%","44%"] : ["6%","38%","30%","26%"])
+        + pied('<span>Effectif : ' + l.length + '</span>' + signatures()), "doc-gros");
+    });
+  },
+  etiquettes: function(l){
+    var n = Number(opt("n", "1")) || 1, et = [];
+    l.forEach(function(e){ for(var i = 0; i < n; i++) et.push(e); });
+    return paginer(et, 21).map(function(p){
+      return pageDoc('<div class="etiq">' + p.map(function(e){ return '<div><b>' + esc(e.nom) + '</b><span>' + esc(state.meta.classe || "") + (state.meta.ecole ? " — EPP " + esc(state.meta.ecole) : "") + '</span><span>' + esc(anneeTxt()) + '</span></div>'; }).join("") + '</div>', "", true);
+    });
+  },
+  releve: function(l){
+    var c = opt("cols", "mat"), tetes = c === "mat" ? state.matieres.map(function(m){ return esc(m.ab); }) : Array.apply(null, Array(Number(c))).map(function(){ return ""; });
+    var lg = (64 / Math.max(1, tetes.length)).toFixed(2) + "%";
+    return paginer(l, 32).map(function(p, k){
+      return pageDoc(titreDoc(opt("titre", "Relevé de notes"), "Composition : ……………………………………") + tableDoc(["N°","Nom et prénoms"].concat(tetes).concat(["Total"]),
+          p.map(function(e, i){ return '<tr style="height:7.2mm">' + ligneNom(e, k * 32 + i) + tetes.map(function(){ return '<td></td>'; }).join("") + '<td></td></tr>'; }),
+          ["5%","25%"].concat(tetes.map(function(){ return lg; })).concat(["6%"])) + pied(signatures()));
+    });
+  },
+  appelvierge: function(l){
+    var m = opt("mois", moisActuel()), iso = isoMois(m), j = joursClasse(iso), lg = (60 / Math.max(1, j.length)).toFixed(2) + "%";
+    return paginer(l, 32).map(function(p, k){
+      return pageDoc(titreDoc("Feuille d'appel", m + " " + iso.slice(0, 4) + " — A : absent, R : retard") + tableDoc(["N°","Nom et prénoms"].concat(j.map(function(d){ return d.j + "<br>" + d.n; })).concat(["Abs."]),
+          p.map(function(e, i){ return '<tr style="height:7.2mm">' + ligneNom(e, k * 32 + i) + j.map(function(){ return '<td></td>'; }).join("") + '<td></td></tr>'; }),
+          ["4%","26%"].concat(j.map(function(){ return lg; })).concat(["6%"])) + pied(signatures()));
+    });
+  },
+  perso: function(l){
+    var cols = [["c_mat","Matricule",function(e){ return esc(e.mat); }],["c_sexe","Sexe",function(e){ return e.sexe === "F" ? "F" : "G"; }],["c_age","Âge",function(e){ return e.age == null ? "" : e.age; }],
+      ["c_nais","Naissance",function(e){ return e.naissance ? esc(dateFr(e.naissance)) : ""; }],["c_parent","Parent",function(e){ return esc(e.parent || ""); }],["c_tel","Téléphone",function(e){ return esc(e.tel || ""); }]]
+      .filter(function(c){ return opt(c[0], c[0] === "c_sexe" || c[0] === "c_age"); });
+    var vides = [opt("v1", ""), opt("v2", "")].filter(Boolean);
+    return paginer(l, 30).map(function(p, k){
+      return pageDoc(titreDoc(opt("titre", "Liste de la classe")) + tableDoc(["N°","Nom et prénoms"].concat(cols.map(function(c){ return c[1]; })).concat(vides.map(esc)),
+        p.map(function(e, i){ return '<tr style="height:7.6mm">' + ligneNom(e, k * 30 + i) + cols.map(function(c){ return '<td class="v">' + c[2](e) + '</td>'; }).join("") + vides.map(function(){ return '<td></td>'; }).join("") + '</tr>'; }))
+        + pied('<span>Effectif : ' + l.length + ' (G ' + parSexe("G").length + ', F ' + parSexe("F").length + ')</span>' + signatures()), "doc-moyen");
+    });
+  },
+  redoublants: function(){
+    var r = alpha().filter(estRedoublant);
+    if(!r.length) return [pageDoc(titreDoc("Liste des redoublants") + '<p style="text-align:center;margin-top:12mm;font-size:13px">Aucun redoublant dans la classe.</p>')];
+    return paginer(r, 30).map(function(p, k){
+      return pageDoc(titreDoc("Liste des redoublants", r.length + " élève(s) : " + r.filter(function(e){ return e.sexe === "G"; }).length + " garçon(s), " + r.filter(function(e){ return e.sexe === "F"; }).length + " fille(s)")
+        + tableDoc(["N°","Nom et prénoms","Sexe","Âge","Situation","Scol. totale"], p.map(function(e, i){
+            return '<tr style="height:7.6mm">' + ligneNom(e, k * 30 + i) + '<td class="v">' + e.sexe + '</td><td class="v">' + (e.age || "") + '</td><td class="v">' + (Number(e.sc) === 3 ? "Triplant(e)" : "Redoublant(e)") + '</td><td class="v">' + e.st + '</td></tr>';
+          }), ["6%","44%","10%","10%","18%","12%"]) + pied(signatures()), "doc-moyen");
+    });
+  },
+  honneur: function(){
+    var compo = opt("compo", ""), n = Number(opt("n", "5"));
+    if(!compo) return [pageDoc(titreDoc("Tableau d'honneur") + '<p style="text-align:center;margin-top:12mm">Aucune composition notée.</p>')];
+    var c = classementDe(compo), top = c.liste.filter(function(x){ return c.rangs[x.e.id] <= n; });
+    return [pageDoc('<div class="honneur"><h3>TABLEAU D\'HONNEUR</h3><p class="np-sous">' + esc(c.titre) + ' — Classe de ' + esc(state.meta.classe || "") + (state.meta.ecole ? " — EPP " + esc(state.meta.ecole) : "") + ' — ' + esc(anneeTxt()) + '</p><ol>'
+      + top.map(function(x){ return '<li><span class="rg">' + rangTxt(c.rangs[x.e.id]) + '</span><span class="hn">' + esc(x.e.nom) + '</span><span class="mo">' + nombreFr(x.moy, 2) + ' / ' + echelleMoyenne() + '</span></li>'; }).join("")
+      + '</ol></div>' + pied('<span>Félicitations à tous !</span>' + signatures()))];
+  },
+  satisfecit: function(){
+    var compo = opt("compo", ""), n = Number(opt("n", "3"));
+    if(!compo) return [pageDoc(titreDoc("Satisfecits") + '<p style="text-align:center;margin-top:12mm">Aucune composition notée.</p>')];
+    var c = classementDe(compo), top = c.liste.filter(function(x){ return c.rangs[x.e.id] <= n; });
+    return paginer(top, 2).map(function(p){
+      return pageDoc(p.map(function(x){
+        return '<div class="satis">' + enteteOfficiel("") + '<h3>SATISFECIT</h3><div class="ln">décerné à</div><div><span class="sn">' + esc(x.e.nom) + '</span></div>'
+          + '<div class="ln">élève de la classe de <b>' + esc(state.meta.classe || "…") + '</b>' + (state.meta.ecole ? ' de l\'EPP <b>' + esc(state.meta.ecole) + '</b>' : '') + ',<br>pour son excellent travail à la ' + esc(c.titre.charAt(0).toLowerCase() + c.titre.slice(1)) + ',<br>classé(e) <b>' + rangTxt(c.rangs[x.e.id]) + '</b> sur ' + c.sur + ' avec une moyenne de <b>' + nombreFr(x.moy, 2) + ' / ' + echelleMoyenne() + '</b>.</div>'
+          + '<div class="sig"><span>Le Maître<br><br>' + esc(state.meta.maitre || "") + '</span><span>Fait le ' + esc(dateLongue()) + '</span><span>Le Directeur<br><br>' + esc(state.meta.directeur || "") + '</span></div></div>';
+      }).join(""), "", true);
+    });
+  },
+  admis: function(){
+    var ca = classementAnnuel(), adm = ca.liste.filter(function(x){ return x.a.annuelle >= state.notes.seuil; });
+    if(!ca.sur) return [pageDoc(titreDoc("Liste des admis") + '<p style="text-align:center;margin-top:12mm">Les moyennes annuelles ne sont pas encore calculées (compositions trimestrielles et passage).</p>')];
+    return paginer(adm, 30).map(function(p, k){
+      return pageDoc(titreDoc("Liste des admis", "Par ordre de mérite — " + adm.length + " admis(es) sur " + ca.sur + " — moyenne d'admission : " + nombreFr(state.notes.seuil, 2))
+        + tableDoc(["Rang","Nom et prénoms","Sexe","Moyenne annuelle"], p.map(function(x){
+            return '<tr style="height:7.6mm"><td class="v">' + rangTxt(ca.rangs[x.e.id]) + '</td><td class="nm2">' + esc(x.e.nom) + '</td><td class="v">' + x.e.sexe + '</td><td class="r">' + nombreFr(x.a.annuelle, 2) + ' / ' + echelleMoyenne() + '</td></tr>';
+          }), ["10%","56%","10%","24%"]) + pied(signatures()), "doc-moyen");
+    });
+  },
+  recap: function(l){
+    var per = periodesRenseignees(), lg = (50 / Math.max(1, per.length)).toFixed(2) + "%", ca = classementAnnuel();
+    return paginer(l, 32).map(function(p, k){
+      return pageDoc(titreDoc("Récapitulatif annuel des moyennes", "Évaluations mensuelles (indicatives), compositions trimestrielles et passage — sur " + echelleMoyenne())
+        + tableDoc(["N°","Nom et prénoms"].concat(per.map(function(m){ return esc(abbrMois(m)); })).concat(["Moy. ann.","Rang"]),
+            p.map(function(e, i){ var a = bilanAnnuel(e); return '<tr>' + ligneNom(e, k * 32 + i) + per.map(function(m){ var v = moyennePeriode(e, m); return '<td class="v"' + (estTrimestre(m) || m === PASSAGE ? ' style="font-weight:700"' : '') + '>' + (v == null ? "" : nombreFr(v, 2)) + '</td>'; }).join("")
+              + '<td class="r">' + (a.annuelle == null ? "" : nombreFr(a.annuelle, 2)) + '</td><td class="r">' + (ca.rangs[e.id] || "") + '</td></tr>'; }),
+            ["4%","26%"].concat(per.map(function(){ return lg; })).concat(["11%","9%"]))
+        + pied('<span>En gras : compositions qui comptent pour la moyenne annuelle.</span>' + signatures()));
+    });
+  },
+  pnapas: function(){
+    var pn = PN(), t = testActif(), l = elevesSalle();
+    if(!t) return [pageDoc(titreDoc("Bilan PNAPAS") + '<p style="text-align:center;margin-top:12mm">Aucune évaluation PNAPAS saisie.</p>')];
+    var bloc = function(d){
+      var niv = niveauxDisc(d);
+      return '<h3 style="font-family:Poppins;font-size:12px;margin:5mm 0 1mm">' + (d === "fr" ? "Français" : "Mathématiques") + '</h3>'
+        + tableDoc(["Niveau"].concat(pn.tests.map(function(x){ return esc(x.libelle); })), niv.map(function(n){
+            return '<tr><td>' + n[1] + '</td>' + pn.tests.map(function(x){ var c = 0; Object.keys(x[d]).forEach(function(id){ if(existeSalle(id) && x[d][id] === n[0]) c++; }); return '<td class="v">' + (c || "·") + '</td>'; }).join("") + '</tr>';
+          }).concat(['<tr><td><b>Élèves évalués</b></td>' + pn.tests.map(function(x){ return '<td class="r">' + Object.keys(x[d]).filter(existeSalle).length + '</td>'; }).join("") + '</tr>']))
+        + '<p class="np-sous" style="text-align:left">' + groupesPnapas(t, d).map(function(g){ return '<b>' + esc(g.nom) + '</b> (' + esc(g.niveaux) + ') : ' + g.membres.length; }).join(" · ") + '</p>';
+    };
+    var cs = classesSalle();
+    return [pageDoc(titreDoc("Bilan PNAPAS", "Évaluation : " + esc(t.libelle) + (t.date ? " du " + esc(dateLongue(t.date)) : "") + " — " + l.length + " élève(s)" + (cs.length > 1 ? " — salle commune " + esc(cs.map(function(c){ return c.meta.classe; }).join(" + ")) : "") + " — " + (pn.mode === "homogene" ? "classe homogène" : "classe hétérogène"))
+      + bloc("fr") + bloc("ma") + pied(signatures()), "doc-moyen")];
+  },
+  renseignements: function(){
+    return elevesChoisis().map(function(e){
+      var ligne = function(a, b){ return '<tr><td class="l">' + a + '</td><td>' + (b || "") + '</td></tr>'; };
+      return pageDoc(titreDoc("Fiche de renseignements") + '<div class="fiche-r"><div class="fr-tete">' + (e.photo ? '<img src="' + e.photo + '" alt="">' : '<div class="fr-photo">Photo</div>')
+        + '<table>' + ligne("Nom et prénoms", '<b>' + esc(e.nom) + '</b>') + ligne("Sexe", e.sexe === "F" ? "Féminin" : "Masculin") + ligne("Date et lieu de naissance", esc(naissanceTxt(e)))
+        + ligne("Âge", e.age ? e.age + " ans" : "") + ligne("N° matricule", esc(e.mat)) + '</table></div>'
+        + '<table>' + ligne("Classe", esc(state.meta.classe || "")) + ligne("Scolarité dans la classe", Number(e.sc) === 1 ? "1re année" : Number(e.sc) === 2 ? "Redoublant(e)" : "Triplant(e)")
+        + ligne("Scolarité totale", e.st + " année(s) d'école") + ligne("Arrivé(e) dans la classe le", e.arrivee ? esc(dateFr(e.arrivee)) : "Début d'année")
+        + ligne("Parent ou tuteur", esc(e.parent || "")) + ligne("Téléphone", esc(e.tel || "")) + ligne("Observations", esc(e.obs || "")) + '</table>'
+        + '<p style="margin:5mm 0 1mm;font-weight:600">Renseignements complémentaires</p><div class="lignes">' + '<div></div>'.repeat(8) + '</div></div>'
+        + pied(signatures()));
+    });
+  },
+  attestation: function(){
+    return elevesChoisis().map(function(e){
+      return pageDoc('<div class="doc-texte"><h3>ATTESTATION DE SCOLARITÉ</h3>'
+        + '<p>Je soussigné(e), <b>' + esc(state.meta.directeur || "……………………………………") + '</b>, Directeur de l\'École Primaire Publique <b>' + esc(state.meta.ecole || "……………………") + '</b>'
+        + (state.meta.inspection ? ', Inspection de l\'Enseignement Préscolaire et Primaire de <b>' + esc(state.meta.inspection) + '</b>' : '') + (state.meta.drena ? ', DRENA de <b>' + esc(state.meta.drena) + '</b>' : '') + ',</p>'
+        + '<p>atteste que l\'élève <b>' + esc(e.nom) + '</b>, né(e) le ' + esc(naissanceTxt(e)) + (e.mat ? ', matricule <b>' + esc(e.mat) + '</b>' : '') + ',</p>'
+        + '<p>est régulièrement inscrit(e) dans mon établissement en classe de <b>' + esc(state.meta.classe || "……") + '</b> au titre de l\'année scolaire <b>' + esc(anneeTxt() || "……") + '</b>.</p>'
+        + '<p>En foi de quoi, la présente attestation lui est délivrée pour servir et valoir ce que de droit.</p>'
+        + '<div class="sig"><div>Fait à ' + esc(opt("lieu", state.meta.ecole || "") || "……………") + ', le ' + esc(dateLongue()) + '<br><br><b>Le Directeur</b><br><br><br><br>' + esc(state.meta.directeur || "") + '</div></div></div>');
+    });
+  },
+  transfert: function(){
+    return elevesChoisis().map(function(e){
+      var per = periodesRenseignees(), a = bilanAnnuel(e), dep = e.depart;
+      var ligne = function(x, y){ return '<tr><td class="l">' + x + '</td><td>' + (y || "") + '</td></tr>'; };
+      return pageDoc(titreDoc("Fiche de transfert") + '<div class="fiche-r"><table style="margin-top:4mm">' + ligne("Nom et prénoms", '<b>' + esc(e.nom) + '</b>') + ligne("Sexe", e.sexe === "F" ? "Féminin" : "Masculin")
+        + ligne("Date et lieu de naissance", esc(naissanceTxt(e))) + ligne("N° matricule", esc(e.mat)) + ligne("Classe fréquentée", esc(state.meta.classe || "") + " — " + esc(anneeTxt()))
+        + ligne("Scolarité", (Number(e.sc) > 1 ? "Redoublant(e), " : "") + e.st + " année(s) d'école") + ligne("Parent ou tuteur", esc((e.parent || "") + (e.tel ? " — " + e.tel : "")))
+        + ligne("Date de départ", dep ? esc(dateLongue(dep.date)) : "……………………") + ligne("Motif", esc(dep && dep.motif ? dep.motif : "……………………")) + ligne("École d'accueil", esc(dep && dep.vers ? dep.vers : "……………………")) + '</table>'
+        + '<p style="margin:5mm 0 1mm;font-weight:600">Résultats de l\'année en cours (sur ' + echelleMoyenne() + ')</p>'
+        + (per.length ? tableDoc(per.map(function(m){ return esc(abbrMois(m)); }).concat(["Moy. annuelle"]), ['<tr>' + per.map(function(m){ var v = moyennePeriode(e, m); return '<td class="v">' + (v == null ? "—" : nombreFr(v, 2)) + '</td>'; }).join("") + '<td class="r">' + (a.annuelle == null ? "—" : nombreFr(a.annuelle, 2)) + '</td></tr>']) : '<p>Aucune composition notée.</p>')
+        + '<p style="margin:5mm 0 1mm;font-weight:600">Appréciation du maître</p><div class="lignes"><div></div><div></div><div></div></div></div>'
+        + pied(signatures() + '<span>Cachet de l\'école</span>'));
+    });
+  },
+  convocation: function(){
+    var ch = elevesChoisis();
+    return paginer(ch, 3).map(function(p){
+      return pageDoc(p.map(function(e){
+        return '<div class="convoc">' + enteteOfficiel("") + '<h3>CONVOCATION</h3><div>Monsieur, Madame <b>' + esc(e.parent || "……………………………………") + '</b>,</div>'
+          + '<div>parent de l\'élève <b>' + esc(e.nom) + '</b> (classe de ' + esc(state.meta.classe || "…") + '), vous êtes prié(e) de vous présenter à l\'école'
+          + ' le <b>' + esc(dateLongue(opt("date", aujourdhuiISO()))) + '</b> à <b>' + esc(opt("heure", "8h00")) + '</b>.</div><div>Objet : <b>' + esc(opt("objet", "")) + '</b></div>'
+          + '<div class="sig"><span>Le Maître : ' + esc(state.meta.maitre || "") + '</span><span>Signature du parent : ……………………</span></div></div>';
+      }).join(""), "", true);
+    });
+  },
+  rapport: function(l){
+    var m = opt("mois", moisActuel()), iso = isoMois(m), debut = iso + "-01", fin = iso + "-31";
+    var tous = state.eleves.filter(function(e){ return e.nom.trim(); });
+    var present = function(e, d){ return (!e.arrivee || e.arrivee <= d) && (!e.depart || e.depart.date > d); };
+    var effD = tous.filter(function(e){ return present(e, debut); }), effF = tous.filter(function(e){ return present(e, fin); });
+    var arr = tous.filter(function(e){ return e.arrivee && e.arrivee.slice(0, 7) === iso; }), dep = tous.filter(function(e){ return e.depart && e.depart.date.slice(0, 7) === iso; });
+    var jours = Object.keys(state.appel).filter(function(d){ return d.slice(0, 7) === iso; }), abs = 0;
+    jours.forEach(function(d){ Object.keys(state.appel[d]).forEach(function(id){ if(state.appel[d][id] === "A") abs++; }); });
+    var taux = jours.length && effF.length ? Math.round((1 - abs / (jours.length * effF.length)) * 100) : null;
+    var compos = [m].concat(TRIMESTRES.filter(function(t){ return moisDuTrimestre(t) === m; })).filter(function(p){ var b = state.notes.data[p]; return b && Object.keys(b).length; });
+    var gf = function(x){ return '<td class="v">' + x.filter(function(e){ return e.sexe === "G"; }).length + '</td><td class="v">' + x.filter(function(e){ return e.sexe === "F"; }).length + '</td><td class="r">' + x.length + '</td>'; };
+    var resultats = compos.map(function(p){
+      var c = classement(p), b = echelleMoyenne(), moyG = [], moyF = [], ok = 0;
+      c.liste.forEach(function(x){ (x.e.sexe === "G" ? moyG : moyF).push(x.b.moy); if(x.b.moy >= b / 2) ok++; });
+      var mo = function(t){ if(!t.length) return "—"; var s = 0; t.forEach(function(v){ s += v; }); return nombreFr(s / t.length, 2); };
+      return '<tr><td>' + esc(libellePeriode(p)) + '</td><td class="v">' + c.sur + '</td><td class="v">' + (c.moyenneClasse == null ? "—" : nombreFr(c.moyenneClasse, 2)) + '</td><td class="v">' + mo(moyG) + '</td><td class="v">' + mo(moyF) + '</td><td class="r">' + (c.sur ? ok + " (" + Math.round(ok / c.sur * 100) + " %)" : "—") + '</td></tr>';
+    });
+    return [pageDoc(titreDoc("Rapport mensuel du maître", "Mois de " + esc(m.toLowerCase()) + " " + iso.slice(0, 4)) + '<div class="rapport">'
+      + '<h3>1. Effectifs</h3>' + tableDoc(["","Garçons","Filles","Total"], ['<tr><td>Début du mois</td>' + gf(effD) + '</tr>', '<tr><td>Fin du mois</td>' + gf(effF) + '</tr>', '<tr><td>Redoublants</td>' + gf(effF.filter(estRedoublant)) + '</tr>'])
+      + '<h3>2. Mouvements</h3>' + (arr.length || dep.length ? tableDoc(["Date","Élève","Mouvement","Précision"], arr.map(function(e){ return '<tr><td>' + esc(dateFr(e.arrivee)) + '</td><td>' + esc(e.nom) + '</td><td>Arrivée</td><td></td></tr>'; })
+          .concat(dep.map(function(e){ return '<tr><td>' + esc(dateFr(e.depart.date)) + '</td><td>' + esc(e.nom) + '</td><td>Départ</td><td>' + esc([e.depart.motif, e.depart.vers].filter(Boolean).join(" — ")) + '</td></tr>'; }))) : '<p class="np-sous" style="text-align:left">Aucun mouvement ce mois-ci.</p>')
+      + '<h3>3. Présence</h3><p class="np-sous" style="text-align:left">' + (jours.length ? jours.length + " jour(s) d'appel · " + abs + " absence(s) au total · taux de présence " + taux + " %" : "Aucun appel enregistré ce mois-ci.") + '</p>'
+      + '<h3>4. Résultats</h3>' + (resultats.length ? tableDoc(["Composition","Notés","Moy. classe","Moy. garçons","Moy. filles","≥ moyenne"], resultats) : '<p class="np-sous" style="text-align:left">Aucune composition notée ce mois-ci.</p>')
+      + '<h3>5. Observations</h3><div class="fiche-r"><div class="lignes">' + '<div></div>'.repeat(6) + '</div></div></div>'
+      + pied(signatures()))];
+  }
+};
+
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "1.6.2";
+var APP_VERSION = "1.7.0";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
