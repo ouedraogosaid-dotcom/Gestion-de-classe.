@@ -2200,8 +2200,18 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
         <p>Dans Notes, choisissez la composition, puis tapez les notes. La touche Entrée passe à l'élève suivant dans la même matière. Le total, la moyenne et le rang se calculent tout seuls.</p></details>
       <details><summary>Imprimer ou enregistrer en PDF</summary>
         <p>Ouvrez un document puis touchez le bouton <b>Imprimer</b> en bas de l'écran. Dans la fenêtre du téléphone, choisissez une imprimante ou « Enregistrer au format PDF ».</p></details>
-      <details><summary>Sauvegarde, corbeille et Annuler</summary>
-        <p>Faites une sauvegarde chaque semaine : l'application vous le rappelle. Un élève ou une classe supprimés restent 30 jours dans la corbeille. La flèche en haut à droite annule la dernière action.</p></details>
+      <details><summary>Comment mes données sont-elles enregistrées ?</summary>
+        <p>Chaque modification (une note, un appel, une séance…) est enregistrée tout de suite dans le téléphone, et aussi quand vous fermez l'application. Vous n'avez rien à faire.</p>
+        <p>Mais ces données ne sont <b>que dans ce téléphone</b> : elles sont perdues si le téléphone est perdu, volé ou réinitialisé, si l'application est désinstallée ou si les données de Chrome sont effacées. D'où la sauvegarde.</p></details>
+      <details><summary>Comment faire une sauvegarde de sécurité ?</summary>
+        <ul><li>Touchez <b>Sauvegarder</b> (sur l'Accueil, ou Plus → Sauvegarde). Un fichier <i>registre-classes-date.json</i> est créé dans les <b>Téléchargements</b> du téléphone.</li>
+        <li>Ce fichier contient <b>tout</b> : toutes les classes, les élèves, les notes, l'appel, le cahier journal, le calendrier et les réglages.</li>
+        <li>Un rappel s'affiche si la dernière sauvegarde a plus de <b>7 jours</b> et que vous avez modifié quelque chose depuis. L'Accueil indique toujours la date de la dernière sauvegarde.</li>
+        <li><b>Important</b> : le fichier reste dans le téléphone. Envoyez-en une copie <b>hors du téléphone</b> (à vous-même sur WhatsApp, par e-mail ou sur Google Drive), sinon il disparaît avec le téléphone.</li></ul></details>
+      <details><summary>Comment récupérer mes données ?</summary>
+        <p>Sur un nouveau téléphone ou après un effacement : ouvrez l'application, allez dans <b>Plus → Sauvegarde → Restaurer</b>, puis choisissez votre fichier de sauvegarde. Tout revient tel que c'était le jour de cette sauvegarde.</p></details>
+      <details><summary>J'ai supprimé quelque chose par erreur</summary>
+        <p>Un élève ou une classe supprimés restent <b>30 jours</b> dans la corbeille (Plus → Sauvegarde), d'où vous pouvez les restaurer. La flèche ↶ en haut de l'écran annule la dernière action.</p></details>
       <details id="aideDonnees"><summary>Vos données</summary>
         <p>Les élèves, les notes et l'appel restent dans votre téléphone (et dans vos sauvegardes). L'application compte seulement ses ouvertures, de façon anonyme — aucun nom, aucune note, aucune donnée d'élève — pour savoir combien d'enseignants l'utilisent.</p></details>
       <details><summary>Installer l'application sur le téléphone</summary>
@@ -7619,6 +7629,7 @@ el("acInstallBtn").addEventListener("click", function(){
 
 /* ---------- « Quoi de neuf » après une mise à jour ---------- */
 var NOUVEAUTES = [
+  ["2.6.1", ["Aide : nouvelles questions sur l'enregistrement, la sauvegarde de sécurité, la restauration et la corbeille"]],
   ["2.6.0", ["Cahier journal : compteur d'exécution du programme (leçons et séances faites, prévues, restantes, reportées), en haut du cahier et en document « État d'exécution du programme »","Une séance plus récente marquée Faite valide automatiquement les séances précédentes de la discipline","Semaine bis : « Reprendre en semaine bis » refait la même page à de nouvelles dates et décale la suite","Import de la répartition : vous choisissez le lundi de départ"]],
   ["2.5.3", ["Actions rapides : toutes celles que vous cochez s'affichent sur l'accueil (plus de limite à 4)"]],
   ["2.5.2", ["Comptage anonyme des ouvertures de l'application (aucune donnée d'élève) — voir Aide → Vos données"]],
@@ -8926,7 +8937,7 @@ function tableauMatieresEleve(e){
 }
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "2.6.0";
+var APP_VERSION = "2.6.1";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
