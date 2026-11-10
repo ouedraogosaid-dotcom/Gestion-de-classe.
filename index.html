@@ -7567,6 +7567,7 @@ el("acInstallBtn").addEventListener("click", function(){
 
 /* ---------- « Quoi de neuf » après une mise à jour ---------- */
 var NOUVEAUTES = [
+  ["2.5.3", ["Actions rapides : toutes celles que vous cochez s'affichent sur l'accueil (plus de limite à 4)"]],
   ["2.5.2", ["Comptage anonyme des ouvertures de l'application (aucune donnée d'élève) — voir Aide → Vos données"]],
   ["2.5.1", ["Aide mise à jour après l'allègement de l'application"]],
   ["2.5.0", ["Application allégée : tirage au sort, minuteur, message aux parents, tâches de l'année, bloc-notes, registre des visites, fournitures, manuels, inventaire et passage à un remplaçant sont retirés","Documents retirés : étiquettes, satisfecits, bilan PNAPAS, fiche de renseignements, rapport mensuel","Les données déjà saisies restent conservées dans votre sauvegarde"]],
@@ -8139,23 +8140,23 @@ var ACTIONS = {
   sauver:["i-sauver","Sauvegarder",function(){ faireSauvegarde(); }]
 };
 var ACTIONS_DEF = ["appel","notes","ajout","documents"];
-function actionsChoisies(){ var a = lirePrefs().raccourcis; a = Array.isArray(a) ? a.filter(function(k){ return ACTIONS[k]; }).slice(0, 4) : []; return a.length ? a : ACTIONS_DEF; }
+function actionsChoisies(){ var a = lirePrefs().raccourcis; a = Array.isArray(a) ? a.filter(function(k){ return ACTIONS[k]; }) : []; return a.length ? a : ACTIONS_DEF; }
 function renderActions(){
   el("acActions").innerHTML = actionsChoisies().map(function(k, i){ var a = ACTIONS[k]; return '<button class="action" type="button" data-action="' + k + '" style="--i:' + i + '"><span class="rond"><svg class="ic"><use href="#' + a[0] + '"/></svg></span>' + a[1] + '</button>'; }).join("");
 }
 el("acActions").addEventListener("click", function(ev){ var b = ev.target.closest("[data-action]"); if(b) ACTIONS[b.getAttribute("data-action")][2](); });
 el("acActionsModif").addEventListener("click", function(){
   var ch = actionsChoisies();
-  dialogue("Actions rapides", '<p style="margin:0 0 8px">Choisissez <b>4 actions</b> pour l\'accueil.</p><div class="choix-actions">' + Object.keys(ACTIONS).map(function(k){
+  dialogue("Actions rapides", '<p style="margin:0 0 8px">Cochez les actions à afficher sur l\'accueil, autant que vous voulez.</p><div class="choix-actions">' + Object.keys(ACTIONS).map(function(k){
       return '<label class="case"><input type="checkbox" name="a_' + k + '"' + (ch.indexOf(k) >= 0 ? " checked" : "") + '> <svg class="ic"><use href="#' + ACTIONS[k][0] + '"/></svg> ' + ACTIONS[k][1] + '</label>';
     }).join("") + '</div><p class="hint" id="caNb"></p>',
     [{label:"Par défaut", valeur:"def", style:"btn-ghost"}, {label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Enregistrer", valeur:"ok", style:"btn-primary"}], {champs:true, feuille:true}).then(function(r){
       if(!r || !r.valeur) return;
-      var sel = r.valeur === "def" ? ACTIONS_DEF : Object.keys(ACTIONS).filter(function(k){ return r.champs["a_" + k]; }).slice(0, 4);
+      var sel = r.valeur === "def" ? ACTIONS_DEF : Object.keys(ACTIONS).filter(function(k){ return r.champs["a_" + k]; });
       if(!sel.length){ toast("Choisissez au moins une action."); return; }
       changerPref("raccourcis", sel); renderActions(); toast("Actions rapides mises à jour.");
     });
-  var maj = function(){ var n = el("modal").querySelectorAll(".choix-actions input:checked").length; el("caNb").textContent = n + " / 4 choisie(s)" + (n > 4 ? " — seules les 4 premières seront gardées" : ""); };
+  var maj = function(){ var n = el("modal").querySelectorAll(".choix-actions input:checked").length; el("caNb").textContent = n + " action" + (n > 1 ? "s" : "") + " choisie" + (n > 1 ? "s" : "") + "."; };
   el("modal").querySelector(".choix-actions").addEventListener("change", maj); maj();
 });
 
@@ -8734,7 +8735,7 @@ function tableauMatieresEleve(e){
 }
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "2.5.2";
+var APP_VERSION = "2.5.3";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }

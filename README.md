@@ -43,6 +43,7 @@ Si le navigateur est réinitialisé ou le téléphone perdu, elles sont perdues 
 
 ## Historique
 
+- **2.5.3** — Actions rapides sans limite de nombre.
 - **2.5.2** — Compteur GoatCounter activé (registreouedraogo.goatcounter.com), ouvertures seulement, anonyme.
 - **2.5.1** — Aide mise à jour ; compteur de visites anonyme GoatCounter préparé (inactif tant que COMPTEUR est vide, ne s'active que sur github.io).
 - **2.5.0** — Application allégée (liste RETIRES dans index.html) : retrait des menus du tirage au sort, minuteur, message aux parents, tâches, bloc-notes, visites, fournitures, manuels, inventaire, passage à un remplaçant, et des documents étiquettes, satisfecits, bilan PNAPAS, renseignements, rapport mensuel. Données et code conservés : enlever un élément de RETIRES le rétablit.
