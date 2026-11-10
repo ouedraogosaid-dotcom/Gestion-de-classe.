@@ -43,6 +43,7 @@ Si le navigateur est réinitialisé ou le téléphone perdu, elles sont perdues 
 
 ## Historique
 
+- **2.6.0** — Cahier journal : exécution du programme (Faite + validation automatique des séances antérieures de la même discipline, reportées à part ; totaux tapés leçons/séances ou déduits des répartitions ; résumé, détail par discipline, document « État d'exécution du programme ») ; semaines bis (semaines[k].bis = page reprise, même page, décalage des semaines suivantes congés sautés, retrait réversible) ; import : choix du lundi de départ (proposé selon la numérotation du cahier).
 - **2.5.3** — Actions rapides sans limite de nombre.
 - **2.5.2** — Compteur GoatCounter activé (registreouedraogo.goatcounter.com), ouvertures seulement, anonyme.
 - **2.5.1** — Aide mise à jour ; compteur de visites anonyme GoatCounter préparé (inactif tant que COMPTEUR est vide, ne s'active que sur github.io).

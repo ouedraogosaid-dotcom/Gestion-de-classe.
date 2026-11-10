@@ -1360,6 +1360,37 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
 .dbl-g input{margin-top:3px; width:20px; height:20px; flex:none}
 .dbl-g small{color:var(--ink3)}
 .retire{display:none !important}
+.jr-bilan{display:flex; flex-wrap:wrap; align-items:center; gap:6px 12px; width:100%; text-align:left; cursor:pointer; margin:0 0 12px; font:inherit; color:inherit}
+.jr-bilan .jb-t{display:flex; flex-direction:column; flex:1 1 180px}
+.jr-bilan .jb-t small, .jr-bilan .jb-p small{color:var(--texte-3); font-weight:400}
+.jr-bilan .jb-c{flex:1 1 100%; font-size:.95rem}
+.jr-bilan .jb-r{color:var(--warn)}
+.jr-bilan .jb-barre{flex:1 1 160px; height:10px; border-radius:999px; background:var(--bord); overflow:hidden}
+.jr-bilan .jb-barre i{display:block; height:100%; background:var(--ok); border-radius:999px}
+.jr-bilan .jb-p{font-weight:700}
+.jr-bis{display:flex; flex-wrap:wrap; gap:8px; align-items:center} .jr-bis span{flex:1 1 200px}
+.jr-case.auto{border-color:color-mix(in srgb, var(--ok) 45%, var(--bord))}
+.jr-st [data-jr-st="fait"].auto{color:var(--ok); border-style:dashed; border-color:var(--ok)}
+.jb-table{border-collapse:collapse; font-size:.85rem; min-width:620px; width:100%}
+.jb-table th, .jb-table td{border:1px solid var(--bord); padding:5px 6px; text-align:center}
+.jb-table th{font-size:.72rem; color:var(--texte-3)}
+.jb-table .jb-nom, .jb-table tr.tot td:first-child{text-align:left; font-weight:600}
+.jb-table tr.tot td{font-weight:700}
+.jb-table input{width:64px; font-size:16px; padding:6px; border:1.5px solid var(--bord-2); border-radius:8px; background:var(--fond); color:inherit; text-align:center}
+.jb-table input::placeholder{font-style:italic; color:var(--texte-3)}
+.jb-liste{display:flex; flex-direction:column; gap:8px; max-height:52vh; overflow:auto; padding:2px}
+.jb-carte{border:1.5px solid var(--bord); border-radius:12px; padding:8px 10px}
+.jb-carte .jb-nom{font-weight:700; margin-bottom:4px}
+.jb-carte .jb-r{font-weight:600; font-size:.78rem; color:var(--warn)}
+.jb-ligne{display:grid; grid-template-columns:64px 34px 10px 76px 1fr; align-items:center; gap:6px; margin-top:4px}
+.jb-ligne .jb-lib{color:var(--texte-3); font-size:.85rem}
+.jb-ligne b{text-align:right}
+.jb-ligne input{width:76px; font-size:16px; padding:6px; border:1.5px solid var(--bord-2); border-radius:8px; background:var(--fond); color:inherit; text-align:center}
+.jb-ligne input::placeholder{font-style:italic; color:var(--texte-3)}
+.jb-ligne small{color:var(--texte-3)}
+.jb-total{margin-top:10px; border-color:var(--ok)}
+.jb-vide{opacity:.75}
+.doc-page.exec th{white-space:normal !important; line-height:1.15} .doc-page.exec td{text-align:center} .doc-page.exec td.nm2{text-align:left} .doc-page.exec tr.tot td{font-weight:700}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -1520,8 +1551,11 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
        <div class="rowbtns"><label class="btn btn-sm btn-primary" style="cursor:pointer"><svg class="ic"><use href="#i-import"/></svg>Charger la répartition mensuelle<input type="file" id="jrRepFichier" accept=".pdf,.docx,.xlsx,.doc,.xls,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,image/*" style="display:none"></label>
          <button class="btn btn-sm" type="button" id="jrType">Semaine type</button></div>
        <div class="field mini" style="margin-top:10px"><label for="jrDispo">Feuille imprimée</label><select id="jrDispo"><option value="compacte">Séances à la suite (sans cases vides)</option><option value="disciplines">Une colonne par discipline</option></select></div>
+       <div class="rowbtns"><button class="btn btn-sm" type="button" id="jrBisBtn">Reprendre en semaine bis</button></div>
        <div class="notice is-hidden" id="jrConge" style="margin:10px 0 0"></div>
+       <div class="notice jr-bis is-hidden" id="jrBis" style="margin:10px 0 0"></div>
      </div>
+     <button type="button" class="sheet jr-bilan no-print" id="jrBilan" aria-label="État d'exécution du programme"></button>
      <div class="puces jr-jours no-print" id="jrJours" role="group" aria-label="Jour"></div>
      <div class="jr-cases no-print" id="jrCases"></div>
      <div class="rowbtns no-print" style="justify-content:center"><button class="btn btn-sm btn-ghost is-hidden" type="button" id="jrToutBtn">Afficher les autres disciplines</button></div>
@@ -1974,6 +2008,7 @@ body.leger .appbar, body.leger .bottomnav{backdrop-filter:none; -webkit-backdrop
         <button class="doc" type="button" data-doc="d:emargement" style="--i:7"><span class="feuille"></span><span><b>Liste d'émargement</b><small>Noms et colonne de signature, pour une réunion ou une remise</small></span></button>
         <button class="doc" type="button" data-doc="d:etiquettes" style="--i:8"><span class="feuille"></span><span><b>Étiquettes de noms</b><small>Pour les cahiers, 24 par feuille</small></span></button>
         <button class="doc" type="button" data-doc="d:releve" style="--i:9"><span class="feuille"></span><span><b>Relevé de notes vierge</b><small>Noms déjà inscrits, colonnes à remplir à la main</small></span></button>
+        <button class="doc" type="button" data-doc="d:execution" style="--i:10"><span class="feuille"></span><span><b>État d'exécution du programme</b><small>Leçons et séances faites, prévues et restantes, par discipline</small></span></button>
         <button class="doc" type="button" data-doc="d:repartition" style="--i:10"><span class="feuille"></span><span><b>Répartition mensuelle</b><small>La répartition chargée dans le cahier journal, à réimprimer</small></span></button>
         <button class="doc" type="button" data-doc="d:dossier" style="--i:10"><span class="feuille"></span><span><b>Dossier de l'élève</b><small>Informations, résultats de l'année, moyennes par matière, présence, observations</small></span></button>
         <button class="doc" type="button" data-doc="d:finannee" style="--i:10"><span class="feuille"></span><span><b>Rapport de fin d'année</b><small>Effectifs, mouvements, résultats (ou CEPE), assiduité — pour l'IEPP</small></span></button>
@@ -2584,7 +2619,10 @@ function normJournal(j){
       else cases[cle] = o;
     });
     semaines[k] = {num:txt(sm.num, 6).trim(), cases:cases};
+    /* v2.6 : semaine bis = même page qu'une semaine précédente, reprise à de nouvelles dates */
+    if(typeof sm.bis === "string" && /^\d{4}-\d{2}-\d{2}$/.test(sm.bis) && sm.bis < k){ semaines[k].bis = sm.bis; semaines[k].cases = {}; semaines[k].num = ""; }
   });
+  Object.keys(semaines).forEach(function(k){ var b = semaines[k].bis; if(b && (!semaines[b] || semaines[b].bis)) delete semaines[k].bis; });
   var type = {};
   if(j.type && typeof j.type === "object") Object.keys(j.type).forEach(function(k){ var id = fusion[idSur(k)] || idSur(k); if(id && Array.isArray(j.type[k]) && cols.some(function(c){ return c.id === id; })) type[id] = JOURS_OK.filter(function(x){ return j.type[k].indexOf(x) >= 0; }); });
   var repart = {};
@@ -2593,7 +2631,10 @@ function normJournal(j){
     if(r.cases && typeof r.cases === "object") Object.keys(r.cases).slice(0, 30).forEach(function(c){ var id = idSur(c); if(id && Array.isArray(r.cases[c])) cs[id] = r.cases[c].slice(0, 8).map(function(x){ return {t:txt(x && x.t, 160).trim(), p:txt(x && x.p, 12).trim()}; }).filter(function(x){ return x.t; }); });
     repart[k] = {num:txt(r.num, 6).trim(), cases:cs};
   });
-  return {cols:cols, jours:jours, semaines:semaines, type:type, rep:repart};
+  /* v2.6 : totaux de l'année tapés par le maître (leçons, séances) */
+  var totaux = {}, nb = function(x){ x = Math.round(Number(x)); return x > 0 && x < 10000 ? x : 0; };
+  if(j.totaux && typeof j.totaux === "object") Object.keys(j.totaux).forEach(function(k){ var id = fusion[idSur(k)] || idSur(k), t = j.totaux[k]; if(!id || !t || typeof t !== "object") return; var o = {l:nb(t.l), s:nb(t.s)}; if(o.l || o.s) totaux[id] = o; });
+  return {cols:cols, jours:jours, semaines:semaines, type:type, rep:repart, totaux:totaux};
 }
 function normCepe(c, ids){
   c = (c && typeof c === "object") ? c : {};
@@ -6661,7 +6702,7 @@ el("ecRecues").addEventListener("click", function(ev){
    LOT 5A — documents à imprimer (moteur générique)
    ===================================================================== */
 var DOCS = {
-  emargement:"Liste d'émargement", etiquettes:"Étiquettes de noms", releve:"Relevé de notes vierge", appelvierge:"Feuille d'appel du mois", presence:"Fiche de présence du mois", dossier:"Dossier de l'élève", repartition:"Répartition mensuelle", finannee:"Rapport de fin d'année",
+  emargement:"Liste d'émargement", etiquettes:"Étiquettes de noms", releve:"Relevé de notes vierge", appelvierge:"Feuille d'appel du mois", presence:"Fiche de présence du mois", dossier:"Dossier de l'élève", repartition:"Répartition mensuelle", execution:"État d'exécution du programme", finannee:"Rapport de fin d'année",
   perso:"Liste personnalisée", redoublants:"Liste des redoublants", honneur:"Tableau d'honneur", satisfecit:"Satisfecits", admis:"Liste des admis",
   recap:"Récapitulatif annuel des moyennes", pnapas:"Bilan PNAPAS", renseignements:"Fiche de renseignements", attestation:"Attestation de scolarité",
   transfert:"Fiche de transfert", convocation:"Convocation des parents", rapport:"Rapport mensuel du maître"
@@ -6769,6 +6810,17 @@ function dateLongue(iso){ try{ return new Date((iso || aujourdhuiISO()) + "T12:0
 function naissanceTxt(e){ return e.naissance ? dateLongue(e.naissance) + (e.lieu ? " à " + e.lieu : "") : (e.lieu ? "à " + e.lieu : "…………………………"); }
 
 var DOC_BUILD = {
+  execution: function(){
+    var b = bilanExecution(), T = b.T, l = b.lignes.filter(function(x){ return x.ecrites || x.totL || x.totS; });
+    var c = function(n){ return n ? String(n) : "—"; }, r = function(t, f){ return t ? String(Math.max(0, t - f)) : "—"; }, pc = function(f, t){ var p = pctExec(f, t); return p == null ? "—" : p + " %"; };
+    return [pageDoc(titreDoc("État d'exécution du programme", "Au " + dateFr(aujourdhuiISO()) + (T.partiel ? " — totaux en partie d'après les répartitions mensuelles chargées" : ""))
+      + tableDoc(["Discipline","Leçons<br>faites","Leçons<br>prévues","Leçons<br>restantes","Séances<br>faites","Séances<br>prévues","Séances<br>restantes","Séances<br>reportées","Taux"],
+        (l.length ? l : b.lignes).map(function(x){ return '<tr><td class="nm2">' + esc(x.c.nom) + '</td><td>' + x.lf + '</td><td>' + c(x.totL) + '</td><td>' + r(x.totL, x.lf) + '</td><td>' + x.sf + '</td><td>' + c(x.totS) + '</td><td>' + r(x.totS, x.sf) + '</td><td>' + c(x.rp) + '</td><td>' + (x.totL ? pc(x.lf, x.totL) : pc(x.sf, x.totS)) + '</td></tr>'; })
+          .concat(['<tr class="tot"><td class="nm2">Total</td><td>' + T.lf + '</td><td>' + c(T.totL) + '</td><td>' + r(T.totL, T.lf) + '</td><td>' + T.sf + '</td><td>' + c(T.totS) + '</td><td>' + r(T.totS, T.sf) + '</td><td>' + c(T.rp) + '</td><td>' + (T.totL ? pc(T.lf, T.totL) : pc(T.sf, T.totS)) + '</td></tr>']),
+        ["22%","9%","9%","9%","9%","9%","9%","10%","8%"])
+      + '<p class="np-sous" style="text-align:left;margin-top:2mm">D\'après le cahier journal. Une séance est comptée faite lorsqu\'elle est marquée faite, ou lorsqu\'une séance plus récente de la même discipline l\'est. Les séances reportées restent à rattraper.</p>'
+      + pied(signatures()), "exec")];
+  },
   repartition: function(){
     var mois = opt("mois", (moisRepartitions().slice(-1)[0] || [""])[0]), J = state.journal;
     var lundis = Object.keys(J.rep).filter(function(k){ return decalerJour(k, 4).slice(0, 7) === mois; }).sort();
@@ -7567,6 +7619,7 @@ el("acInstallBtn").addEventListener("click", function(){
 
 /* ---------- « Quoi de neuf » après une mise à jour ---------- */
 var NOUVEAUTES = [
+  ["2.6.0", ["Cahier journal : compteur d'exécution du programme (leçons et séances faites, prévues, restantes, reportées), en haut du cahier et en document « État d'exécution du programme »","Une séance plus récente marquée Faite valide automatiquement les séances précédentes de la discipline","Semaine bis : « Reprendre en semaine bis » refait la même page à de nouvelles dates et décale la suite","Import de la répartition : vous choisissez le lundi de départ"]],
   ["2.5.3", ["Actions rapides : toutes celles que vous cochez s'affichent sur l'accueil (plus de limite à 4)"]],
   ["2.5.2", ["Comptage anonyme des ouvertures de l'application (aucune donnée d'élève) — voir Aide → Vos données"]],
   ["2.5.1", ["Aide mise à jour après l'allègement de l'application"]],
@@ -8177,28 +8230,46 @@ var jrLundi = null, jrJour = null, jrTout = false;
 function lundiDe(iso){ var d = new Date(iso + "T12:00:00"), k = (d.getDay() + 6) % 7; return decalerJour(iso, -k); }
 function dateDuJour(lundi, jour){ return decalerJour(lundi, JR_JOURS.indexOf(jour)); }
 function semaineJr(lundi, creer){ var s = state.journal.semaines[lundi]; if(!s && creer) s = state.journal.semaines[lundi] = {num:"", cases:{}}; return s; }
+var SUFFIXES_BIS = ["bis","ter","quater","quinquies","sexies"];
+function estBis(lundi){ var s = state.journal.semaines[lundi]; return !!(s && s.bis); }
+/* la page affichée : pour une semaine bis, celle de la semaine reprise */
+function pageDe(lundi){ var s = state.journal.semaines[lundi]; return s && s.bis && state.journal.semaines[s.bis] ? s.bis : lundi; }
+function bisDe(lundi){ var S = state.journal.semaines; return Object.keys(S).filter(function(k){ return S[k].bis === lundi; }).sort(); }
+function suivanteEnseignee(d){ d = decalerJour(d, 7); var n = 0; while(congeDeSemaine(d) && n++ < 30) d = decalerJour(d, 7); return d; }
+function precedenteEnseignee(d){ d = decalerJour(d, -7); var n = 0; while(congeDeSemaine(d) && n++ < 30) d = decalerJour(d, -7); return d; }
+/* fait glisser d'une semaine de classe (congés sautés) toutes les semaines à partir de « depuis » (sens 1) ou après (sens -1) */
+function glisserSemaines(depuis, sens){
+  var S = state.journal.semaines, cles = Object.keys(S).filter(function(k){ return sens > 0 ? k >= depuis : k > depuis; }).sort(), map = {};
+  if(sens > 0) cles.reverse();
+  cles.forEach(function(k){ var n = sens > 0 ? suivanteEnseignee(k) : precedenteEnseignee(k); S[n] = S[k]; delete S[k]; map[k] = n; });
+  Object.keys(S).forEach(function(k){ if(S[k].bis && map[S[k].bis]) S[k].bis = map[S[k].bis]; });
+  return cles.length;
+}
 function congeDeSemaine(lundi){
   var jours = state.journal.jours.map(function(j){ return dateDuJour(lundi, j); });
   return dossier.agenda.filter(function(a){ return a.type === "conge" && jours.every(function(d){ return a.date <= d && (a.fin || a.date) >= d; }); })[0] || null;
 }
 function numeroSemaine(lundi){
-  var s = semaineJr(lundi); if(s && s.num) return s.num;
+  var s = semaineJr(lundi);
+  if(s && s.bis){ var o = pageDe(lundi), i = bisDe(o).indexOf(lundi); return (numeroSemaine(o) || "") + " " + (SUFFIXES_BIS[i] || "bis"); }
+  if(s && s.num) return s.num;
   /* on part de la dernière semaine numérotée, en sautant les semaines de congé */
   var cles = Object.keys(state.journal.semaines).filter(function(k){ return k < lundi && state.journal.semaines[k].num && /^\d+$/.test(state.journal.semaines[k].num); }).sort();
   if(cles.length){
     var base = cles[cles.length - 1], n = Number(state.journal.semaines[base].num), d = decalerJour(base, 7);
-    while(d <= lundi){ if(!congeDeSemaine(d)) n++; d = decalerJour(d, 7); }
+    while(d <= lundi){ if(!congeDeSemaine(d) && !estBis(d)) n++; d = decalerJour(d, 7); }
     return String(n);
   }
   var an = anneeDebut(), r = (dossier.agenda.filter(function(a){ return /rentr/i.test(a.titre) && a.date.slice(0, 4) === String(an); })[0] || {}).date;
   if(!r || r > lundi) return "";
-  var n2 = 0, d2 = lundiDe(r); while(d2 <= lundi){ if(!congeDeSemaine(d2)) n2++; d2 = decalerJour(d2, 7); }
+  var n2 = 0, d2 = lundiDe(r); while(d2 <= lundi){ if(!congeDeSemaine(d2) && !estBis(d2)) n2++; d2 = decalerJour(d2, 7); }
   return String(n2);
 }
-function caseJr(lundi, jour, col){ var s = semaineJr(lundi); return s ? s.cases[jour + "|" + col] || null : null; }
+function caseJr(lundi, jour, col){ var s = semaineJr(pageDe(lundi)); return s ? s.cases[jour + "|" + col] || null : null; }
 function caseRemplie(c){ return c && (c.s || c.t || c.p); }
 /* dernière séance écrite dans cette colonne, avant le jour donné (même la semaine d'avant) */
 function seancePrecedente(lundi, jour, col){
+  lundi = pageDe(lundi);
   var cle = lundi + "|" + JR_JOURS.indexOf(jour), best = null, bestCle = "";
   Object.keys(state.journal.semaines).forEach(function(l){
     var s = state.journal.semaines[l];
@@ -8217,6 +8288,12 @@ function seanceSuivante(s){
   var m = String(s).match(/(\d+)(?!.*\d)/);
   return m ? s.slice(0, m.index) + (Number(m[1]) + 1) + s.slice(m.index + m[1].length) : s + " 2";
 }
+/* en-tête d'une page : ses dates, puis celles de ses reprises (bis, ter…) */
+function libSemaineImpr(lundi){
+  var o = pageDe(lundi), b = bisDe(o);
+  return "SEMAINE " + libSemaine(o).toUpperCase() + b.map(function(x, i){ return " — " + (SUFFIXES_BIS[i] || "bis").toUpperCase() + " " + libSemaine(x).toUpperCase(); }).join("");
+}
+function joursImpr(lundi, j){ var o = pageDe(lundi); return [o].concat(bisDe(o)).map(function(x){ return Number(dateDuJour(x, j).slice(8, 10)); }).join(" / "); }
 function libSemaine(lundi){
   var j = state.journal.jours, deb = dateDuJour(lundi, j[0]), fin = dateDuJour(lundi, j[j.length - 1]);
   var f = function(d, an){ try{ return new Date(d + "T12:00:00").toLocaleDateString("fr-FR", an ? {weekday:"long", day:"numeric", month:"long", year:"numeric"} : {weekday:"long", day:"numeric", month:"long"}).replace(/ 1 /, " 1er "); }catch(e){ return d; } };
@@ -8230,6 +8307,15 @@ function renderJournal(force){
   el("jrSemaine").textContent = libSemaine(jrLundi);
   var num = numeroSemaine(jrLundi);
   if(document.activeElement !== el("jrNum")) el("jrNum").value = num;
+  el("jrNum").readOnly = estBis(jrLundi);
+  var bis = estBis(jrLundi), page = pageDe(jrLundi), reprises = bisDe(page);
+  el("jrBis").innerHTML = bis
+    ? '<span><b>Semaine ' + esc(numeroSemaine(jrLundi)) + '</b> : reprise de la page de la semaine ' + esc(numeroSemaine(page)) + ' (' + esc(libSemaine(page)) + '). Les séances sont celles de cette page.</span><button type="button" class="btn btn-sm" id="jrBisRetirer">Retirer le bis</button>'
+    : (reprises.length ? '<span>Cette page est reprise en ' + reprises.map(function(x, i){ return (SUFFIXES_BIS[i] || "bis") + ' ' + esc(libSemaine(x)); }).join(", ") + '.</span>' : '');
+  el("jrBis").classList.toggle("is-hidden", !bis && !reprises.length);
+  el("jrBisBtn").classList.toggle("is-hidden", !!cg);
+  el("jrCopier").classList.toggle("is-hidden", bis);
+  renderBilanJr();
   el("jrConge").classList.toggle("is-hidden", !cg);
   el("jrConge").innerHTML = cg ? '<b>' + esc(cg.titre) + '</b> : pas de classe cette semaine.' : '';
   var total = J.jours.length * J.cols.length, faits = 0;
@@ -8244,10 +8330,12 @@ function renderJournal(force){
     var caches = J.cols.length - visibles.length;
     el("jrToutBtn").classList.toggle("is-hidden", !caches && !jrTout);
     el("jrToutBtn").textContent = jrTout ? "Masquer les disciplines vides" : "Afficher les autres disciplines (" + caches + ")";
+    var parCol = seancesJr(), posJour = page + "|" + JR_JOURS.indexOf(jrJour);
     el("jrCases").innerHTML = (visibles.length ? '' : '<p class="vide-etat" style="grid-column:1/-1;margin:0">Aucune discipline prévue ce jour dans la semaine type.</p>') + visibles.map(function(c){
       var v = caseJr(jrLundi, jrJour, c.id) || {}, prec = seancePrecedente(jrLundi, jrJour, c.id);
-      return '<div class="jr-case' + (v.st ? ' ' + v.st : '') + '" data-col="' + c.id + '"><div class="jr-col"><b>' + esc(c.nom) + '</b>'
-        + '<span class="jr-st"><button type="button" data-jr-st="fait" aria-pressed="' + (v.st === "fait") + '">Faite</button><button type="button" data-jr-st="reporte" aria-pressed="' + (v.st === "reporte") + '">Reportée</button></span></div>'
+      var auto = !v.st && caseRemplie(v) && posJour < dernierFait(parCol[c.id] || []);
+      return '<div class="jr-case' + (v.st ? ' ' + v.st : auto ? ' auto' : '') + '" data-col="' + c.id + '"><div class="jr-col"><b>' + esc(c.nom) + '</b>'
+        + '<span class="jr-st"><button type="button" data-jr-st="fait" aria-pressed="' + (v.st === "fait") + '"' + (auto ? ' class="auto" title="Comptée faite : une séance plus récente de cette discipline est faite"' : '') + '>Faite' + (auto ? ' ✓' : '') + '</button><button type="button" data-jr-st="reporte" aria-pressed="' + (v.st === "reporte") + '">Reportée</button></span></div>'
         + '<div class="jr-champs"><input class="jr-s" data-k="s" value="' + esc(v.s || "") + '" placeholder="Séance 1" maxlength="20" aria-label="Séance">'
         + '<input class="jr-t" data-k="t" value="' + esc(v.t || "") + '" placeholder="Titre de la leçon" maxlength="140" list="jrTitres-' + c.id + '" aria-label="Titre de la leçon">'
         + '<input class="jr-p" data-k="p" value="' + esc(v.p || "") + '" placeholder="Page" maxlength="12" inputmode="numeric" aria-label="Page"></div>'
@@ -8260,6 +8348,98 @@ function renderJournal(force){
   el("jrImpr").innerHTML = grilleJournal(jrLundi);
   el("jrDispo").value = jrCompact() ? "compacte" : "disciplines";
 }
+/* ---------- exécution du programme (v2.6) ----------
+   Une séance compte comme faite si elle est marquée « Faite », ou si une séance plus récente de la même
+   discipline l'est (les oublis de clic sont rattrapés). Une séance « Reportée » reste à rattraper. */
+function seancesJr(){
+  var S = state.journal.semaines, par = {};
+  Object.keys(S).sort().forEach(function(l){
+    if(S[l].bis) return;
+    Object.keys(S[l].cases).forEach(function(k){ var p = k.split("|"), v = S[l].cases[k]; if(!caseRemplie(v)) return; (par[p[1]] || (par[p[1]] = [])).push({pos:l + "|" + JR_JOURS.indexOf(p[0]), v:v}); });
+  });
+  return par;
+}
+function dernierFait(l){ var m = ""; l.forEach(function(x){ if(x.v.st === "fait" && x.pos > m) m = x.pos; }); return m; }
+function cleLecon(t){ return sansAccent(t).replace(/[^a-z0-9]+/g, " ").trim(); }
+function prevuRepartition(c){
+  var R = state.journal.rep, lec = {}, s = 0, n = joursType(c).length || 1;
+  Object.keys(R).forEach(function(k){ var l = R[k].cases[c.id]; if(!l || !l.length) return; l.forEach(function(x){ lec[cleLecon(x.t)] = 1; }); s += Math.max(l.length, n); });
+  return {l:Object.keys(lec).length, s:s};
+}
+function bilanExecution(){
+  var J = state.journal, par = seancesJr();
+  var lignes = J.cols.map(function(c){
+    var l = par[c.id] || [], d = dernierFait(l), sf = 0, rp = 0, lf = {};
+    l.forEach(function(x){
+      var fait = x.v.st === "fait" || (!x.v.st && x.pos < d);
+      if(fait){ sf++; if(x.v.t) lf[cleLecon(x.v.t)] = 1; } else if(x.v.st === "reporte") rp++;
+    });
+    var t = J.totaux[c.id] || {}, pr = prevuRepartition(c);
+    return {c:c, ecrites:l.length, sf:sf, rp:rp, lf:Object.keys(lf).length, totL:t.l || pr.l, totS:t.s || pr.s, tapeL:!!t.l, tapeS:!!t.s};
+  });
+  var T = {sf:0, rp:0, lf:0, totL:0, totS:0, ecrites:0, partiel:false};
+  lignes.forEach(function(x){ ["sf","rp","lf","totL","totS","ecrites"].forEach(function(k){ T[k] += x[k]; }); if((x.totL && !x.tapeL) || (x.totS && !x.tapeS)) T.partiel = true; });
+  return {lignes:lignes, T:T};
+}
+function pctExec(a, b){ return b ? Math.min(100, Math.round(a / b * 100)) : null; }
+function renderBilanJr(){
+  var b = bilanExecution(), T = b.T, p = pctExec(T.lf, T.totL);
+  if(p == null) p = pctExec(T.sf, T.totS);
+  el("jrBilan").innerHTML = '<span class="jb-t"><b>Exécution du programme</b><small>Touchez pour le détail par discipline</small></span>'
+    + '<span class="jb-c"><b>' + T.lf + '</b>' + (T.totL ? ' / ' + T.totL : '') + ' leçon' + (T.lf > 1 ? 's' : '') + ' · <b>' + T.sf + '</b>' + (T.totS ? ' / ' + T.totS : '') + ' séance' + (T.sf > 1 ? 's' : '') + ' faite' + (T.sf > 1 ? 's' : '') + (T.rp ? ' · <b class="jb-r">' + T.rp + '</b> reportée' + (T.rp > 1 ? 's' : '') : '') + '</span>'
+    + (p != null ? '<span class="jb-barre"><i style="width:' + p + '%"></i></span><span class="jb-p">' + p + ' %' + (T.partiel ? ' <small>(totaux en partie d\'après les répartitions chargées)</small>' : '') + '</span>' : '<span class="jb-p"><small>Indiquez les totaux de l\'année pour voir ce qui reste.</small></span>');
+}
+el("jrBilan").addEventListener("click", dialogueBilanJr);
+function dialogueBilanJr(){
+  var b = bilanExecution(), T = b.T;
+  var cell = function(n){ return n ? n : '—'; };
+  var corps = '<p class="hint" style="margin:0 0 8px">Une séance compte comme faite si vous l\'avez marquée <b>Faite</b>, ou si une séance plus récente de la même discipline l\'est. Les reportées restent à rattraper. Tapez les totaux de l\'année (leçons, séances) ; sinon, ceux des répartitions chargées sont utilisés <i>(en italique)</i>.</p>'
+    + '<div class="jb-liste">' + b.lignes.map(function(x){
+        var id = x.c.id, ligne = function(lib, fait, tot, tape, nom){
+          return '<div class="jb-ligne"><span class="jb-lib">' + lib + '</span><b>' + fait + '</b><span>/</span><input type="number" min="0" max="9999" inputmode="numeric" name="' + nom + id + '" value="' + (tape ? tot : '') + '" placeholder="' + (tot && !tape ? tot : 'total') + '" aria-label="Total ' + lib + ' ' + esc(x.c.nom) + '"><small>' + (tot ? 'reste ' + Math.max(0, tot - fait) : '') + '</small></div>';
+        };
+        return '<div class="jb-carte' + (x.ecrites || x.totL || x.totS ? '' : ' jb-vide') + '"><div class="jb-nom">' + esc(x.c.nom) + (x.rp ? ' <span class="jb-r">' + x.rp + ' reportée' + (x.rp > 1 ? 's' : '') + '</span>' : '') + '</div>'
+          + ligne("Leçons", x.lf, x.totL, x.tapeL, "l_") + ligne("Séances", x.sf, x.totS, x.tapeS, "s_") + '</div>';
+      }).join("") + '</div>'
+    + '<div class="jb-carte jb-total"><div class="jb-nom">Toute la classe' + (T.rp ? ' <span class="jb-r">' + T.rp + ' reportée' + (T.rp > 1 ? 's' : '') + '</span>' : '') + '</div>'
+    + '<div class="jb-ligne"><span class="jb-lib">Leçons</span><b>' + T.lf + '</b><span>/</span><b>' + (T.totL || '—') + '</b><small>' + (T.totL ? 'reste ' + Math.max(0, T.totL - T.lf) : '') + '</small></div>'
+    + '<div class="jb-ligne"><span class="jb-lib">Séances</span><b>' + T.sf + '</b><span>/</span><b>' + (T.totS || '—') + '</b><small>' + (T.totS ? 'reste ' + Math.max(0, T.totS - T.sf) : '') + '</small></div></div>';
+  dialogue("Exécution du programme", corps, [{label:"Imprimer", valeur:"impr", style:"btn-ghost"}, {label:"Fermer", valeur:null, style:"btn-ghost"}, {label:"Enregistrer", valeur:"ok", style:"btn-primary"}], {champs:true, feuille:true, large:true}).then(function(r){
+    if(!r || !r.valeur) return;
+    var J = state.journal, avant = JSON.stringify(J.totaux), tot = {};
+    var nb = function(v){ v = Math.round(Number(v)); return v > 0 && v < 10000 ? v : 0; };
+    J.cols.forEach(function(c){ var o = {l:nb(r.champs["l_" + c.id]), s:nb(r.champs["s_" + c.id])}; if(o.l || o.s) tot[c.id] = o; });
+    if(JSON.stringify(tot) !== avant){ avantModif(false); J.totaux = tot; touch(); renderJournal(true); toast("Totaux de l'année enregistrés."); }
+    if(r.valeur === "impr") ouvrirDocument("d:execution");
+  });
+}
+/* ---------- semaine bis ---------- */
+el("jrBisBtn").addEventListener("click", function(){
+  var L = jrLundi, O = pageDe(L), N = suivanteEnseignee(L), S = state.journal.semaines;
+  var o = S[O], vide = !o || !Object.keys(o.cases).length;
+  if(vide){ toast("Cette semaine est vide : remplissez-la d'abord, ou passez simplement à la suivante."); return; }
+  var suite = Object.keys(S).filter(function(k){ return k >= N; }).length, nom = numeroSemaine(O);
+  dialogue("Reprendre en semaine bis ?", '<p style="margin:0 0 8px">La semaine ' + esc(libSemaine(N)) + ' devient la <b>semaine ' + esc(nom || "") + ' ' + esc(SUFFIXES_BIS[bisDe(O).length] || "bis") + '</b> : on y refait la même page, sans rien réécrire.</p>'
+    + (suite ? '<p style="margin:0 0 8px">Les <b>' + suite + ' semaine(s)</b> déjà remplies à partir de là glissent d\'une semaine (congés sautés).</p>' : '')
+    + '<p class="hint" style="margin:0">Vous pourrez revenir en arrière avec « Retirer le bis ».</p>',
+    [{label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Reprendre en bis", valeur:"ok", style:"btn-primary"}], {feuille:true}).then(function(v){
+      if(!v) return;
+      avantModif(false);
+      glisserSemaines(N, 1);
+      S[N] = {num:"", cases:{}, bis:O};
+      touch(); jrLundi = N; jrJour = null; renderJournal(true);
+      toast("Semaine " + numeroSemaine(N) + " créée.", {label:"Annuler", fn:annuler});
+    });
+});
+document.addEventListener("click", function(ev){
+  if(!ev.target.closest || !ev.target.closest("#jrBisRetirer")) return;
+  var B = jrLundi; if(!estBis(B)) return;
+  avantModif(false);
+  delete state.journal.semaines[B];
+  glisserSemaines(B, -1);
+  touch(); jrJour = null; renderJournal(true);
+  toast("Semaine bis retirée : les semaines suivantes ont repris leur place.", {label:"Annuler", fn:annuler});
+});
 function titresColonne(col){
   var vus = {}, l = [];
   Object.keys(state.journal.semaines).sort().reverse().forEach(function(k){ var s = state.journal.semaines[k]; Object.keys(s.cases).forEach(function(c){ if(c.split("|")[1] !== col) return; var t = s.cases[c].t; if(t && !vus[t]){ vus[t] = 1; l.push(t); } }); });
@@ -8274,13 +8454,13 @@ function grilleJournalCompacte(lundi){
   var J = state.journal, m = state.meta, num = numeroSemaine(lundi);
   var parJour = J.jours.map(function(j){ return J.cols.map(function(c){ return {c:c, v:caseJr(lundi, j, c.id)}; }).filter(function(x){ return caseRemplie(x.v); }); });
   var n = Math.max(1, Math.max.apply(null, parJour.map(function(l){ return l.length; }))), w = (87 / n).toFixed(2) + "%";
-  return '<div class="jr-page"><div class="jr-tete"><span>' + (num ? '<b class="jr-num">' + esc(num) + '</b>' : '') + '<b>SEMAINE ' + esc(libSemaine(lundi).toUpperCase()) + '</b></span>'
+  return '<div class="jr-page"><div class="jr-tete"><span>' + (num ? '<b class="jr-num">' + esc(numeroSemaine(pageDe(lundi))) + '</b>' : '') + '<b>' + esc(libSemaineImpr(lundi)) + '</b></span>'
     + '<span>' + [m.ecole ? "EPP " + esc(m.ecole) : "", m.classe ? "Classe : " + esc(m.classe) : "", m.maitre ? "Maître : " + esc(m.maitre) : "", anneeTxt() ? esc(anneeTxt()) : ""].filter(Boolean).join(" · ") + '</span></div>'
     + '<table class="jr-grille compacte' + (n > 8 ? ' serre' : '') + '" style="--h:' + Math.max(24, Math.floor(172 / Math.max(1, J.jours.length))) + 'mm"><colgroup><col style="width:6%">' + Array(n + 1).join('<col style="width:' + w + '">') + '<col style="width:7%"></colgroup>'
     + '<thead><tr><th>Jours</th><th colspan="' + n + '">Activités de la journée</th><th>Visa du directeur</th></tr></thead><tbody>'
     + J.jours.map(function(j, k){
         var l = parJour[k];
-        return '<tr><th class="jr-jour"><span>' + j.toUpperCase() + '</span><small>' + Number(dateDuJour(lundi, j).slice(8, 10)) + '</small></th>'
+        return '<tr><th class="jr-jour"><span>' + j.toUpperCase() + '</span><small>' + joursImpr(lundi, j) + '</small></th>'
           + l.map(function(x){ var v = x.v; return '<td><b class="jr-g-d">' + esc(x.c.nom) + '</b>' + (v.s ? '<b class="jr-g-s">' + esc(libSeance(v.s)) + '</b>' : '') + (v.t ? '<span class="jr-g-t">' + esc(v.t) + '</span>' : '') + (v.p ? '<span class="jr-g-p">p. ' + esc(v.p) + '</span>' : '') + (v.st === "reporte" ? '<i class="jr-g-r">reportée</i>' : '') + '</td>'; }).join("")
           + (l.length < n ? '<td colspan="' + (n - l.length) + '" class="jr-g-vide"></td>' : '') + '<td></td></tr>';
       }).join("") + '</tbody></table></div>';
@@ -8288,19 +8468,19 @@ function grilleJournalCompacte(lundi){
 function grilleJournal(lundi){
   if(jrCompact()) return grilleJournalCompacte(lundi);
   var J0 = state.journal, J = {cols:colsUtilisees(lundi), jours:J0.jours}, m = state.meta, num = numeroSemaine(lundi), w = (87 / Math.max(1, J.cols.length)).toFixed(2) + "%";
-  return '<div class="jr-page"><div class="jr-tete"><span>' + (num ? '<b class="jr-num">' + esc(num) + '</b>' : '') + '<b>SEMAINE ' + esc(libSemaine(lundi).toUpperCase()) + '</b></span>'
+  return '<div class="jr-page"><div class="jr-tete"><span>' + (num ? '<b class="jr-num">' + esc(numeroSemaine(pageDe(lundi))) + '</b>' : '') + '<b>' + esc(libSemaineImpr(lundi)) + '</b></span>'
     + '<span>' + [m.ecole ? "EPP " + esc(m.ecole) : "", m.classe ? "Classe : " + esc(m.classe) : "", m.maitre ? "Maître : " + esc(m.maitre) : "", anneeTxt() ? esc(anneeTxt()) : ""].filter(Boolean).join(" · ") + '</span></div>'
     + '<table class="jr-grille' + (J.cols.length > 12 ? ' tres-serre' : J.cols.length > 9 ? ' serre' : '') + '" style="--h:' + Math.max(24, Math.floor(172 / Math.max(1, J.jours.length))) + 'mm"><colgroup><col style="width:6%">' + J.cols.map(function(){ return '<col style="width:' + w + '">'; }).join("") + '<col style="width:7%"></colgroup>'
     + '<thead><tr><th>Jours</th>' + J.cols.map(function(c){ return '<th>' + esc(c.nom) + '</th>'; }).join("") + '<th>Visa du directeur</th></tr></thead><tbody>'
     + J.jours.map(function(j){
-        return '<tr><th class="jr-jour"><span>' + j.toUpperCase() + '</span><small>' + Number(dateDuJour(lundi, j).slice(8, 10)) + '</small></th>' + J.cols.map(function(c){
+        return '<tr><th class="jr-jour"><span>' + j.toUpperCase() + '</span><small>' + joursImpr(lundi, j) + '</small></th>' + J.cols.map(function(c){
           var v = caseJr(lundi, j, c.id) || {};
           return '<td>' + (v.s ? '<b class="jr-g-s">' + esc(libSeance(v.s)) + '</b>' : '') + (v.t ? '<span class="jr-g-t">' + esc(v.t) + '</span>' : '') + (v.p ? '<span class="jr-g-p">p. ' + esc(v.p) + '</span>' : '') + (v.st === "reporte" ? '<i class="jr-g-r">reportée</i>' : '') + '</td>';
         }).join("") + '<td></td></tr>';
       }).join("") + '</tbody></table></div>';
 }
 function majCaseJr(caseEl, modif){
-  var col = caseEl.getAttribute("data-col"), s = semaineJr(jrLundi, true), cle = jrJour + "|" + col;
+  var col = caseEl.getAttribute("data-col"), s = semaineJr(pageDe(jrLundi), true), cle = jrJour + "|" + col;
   var v = s.cases[cle] || {s:"", t:"", p:"", st:""};
   modif(v);
   if(caseRemplie(v) || v.st) s.cases[cle] = v; else delete s.cases[cle];
@@ -8331,9 +8511,10 @@ el("jrJours").addEventListener("click", function(ev){ var b = ev.target.closest(
 el("jrPrec").addEventListener("click", function(){ jrLundi = decalerJour(jrLundi, -7); jrJour = null; renderJournal(true); });
 el("jrSuiv").addEventListener("click", function(){ jrLundi = decalerJour(jrLundi, 7); jrJour = null; renderJournal(true); });
 el("jrAuj").addEventListener("click", function(){ jrLundi = lundiDe(aujourdhuiISO()); jrJour = null; renderJournal(true); });
-el("jrNum").addEventListener("change", function(){ avantModif(false); semaineJr(jrLundi, true).num = txt(this.value.trim(), 6); touch(); renderJournal(); });
+el("jrNum").addEventListener("change", function(){ if(estBis(jrLundi)){ renderJournal(); return; } avantModif(false); semaineJr(jrLundi, true).num = txt(this.value.trim(), 6); touch(); renderJournal(); });
 el("jrCopier").addEventListener("click", function(){
   var avant = Object.keys(state.journal.semaines).filter(function(k){ return k < jrLundi && Object.keys(state.journal.semaines[k].cases).length; }).sort().pop(); if(!avant) return;
+  if(estBis(jrLundi)){ toast("Semaine bis : c'est la page de la semaine reprise, rien à recopier."); return; }
   var src = state.journal.semaines[avant], s = semaineJr(jrLundi), plein = s && Object.keys(s.cases).length;
   var faire = function(){
     avantModif(false); var dst = semaineJr(jrLundi, true);
@@ -8625,14 +8806,21 @@ function remplirDepuisRepartition(g, lundis, remplacer){
   });
   return n;
 }
-function lundisDeGrille(g, premierLundi){
+function lundisDeGrille(g, premierLundi, ignorerDates){
   var l = [], d = premierLundi;
   g.semaines.forEach(function(w, k){
-    if(w.du) { l.push(lundiDe(w.du)); d = decalerJour(lundiDe(w.du), 7); return; }
-    while(d && congeDeSemaine(d)) d = decalerJour(d, 7);
+    if(w.du && !ignorerDates) { var x = lundiDe(w.du), n = 0; while(estBis(x) && n++ < 20) x = decalerJour(x, 7); l.push(x); d = decalerJour(x, 7); return; }
+    while(d && (congeDeSemaine(d) || estBis(d))) d = decalerJour(d, 7);
     l.push(d); d = d ? decalerJour(d, 7) : d;
   });
   return l;
+}
+/* lundi proposé : la semaine du cahier qui porte le numéro de la 1re semaine du fichier (tient compte des semaines bis) */
+function lundiConseille(g){
+  var w = g.semaines[0] || {}, f = w.du ? lundiDe(w.du) : lundiDe(aujourdhuiISO()), n = String(Number(w.num) || "");
+  if(!n || n === "0") return f;
+  for(var i = -6; i <= 10; i++){ var d = decalerJour(f, 7 * i); if(!estBis(d) && !congeDeSemaine(d) && numeroSemaine(d) === n) return d; }
+  return f;
 }
 el("jrRepFichier").addEventListener("change", function(){
   var f = this.files && this.files[0], champ = this; if(!f) return;
@@ -8641,20 +8829,23 @@ el("jrRepFichier").addEventListener("change", function(){
     champ.value = "";
     var manque = g.lignes.filter(function(l){ return !colPourCanon(l.mat); });
     if(manque.length){ avantModif(false); manque.forEach(function(l){ state.journal.cols.push({id:uid(), nom:NOMS_CANON[l.mat] || l.label}); }); touch(); }
-    var sansDate = !g.semaines.every(function(w){ return w.du; });
+    var dateFichier = g.semaines[0] && g.semaines[0].du ? lundiDe(g.semaines[0].du) : "", conseil = lundiConseille(g);
     var apercu = g.semaines.map(function(w, k){
       return '<details' + (k ? '' : ' open') + '><summary><b>Semaine ' + esc(w.num || (k + 1)) + '</b>' + (w.du ? ' — du ' + esc(dateFr(lundiDe(w.du))) : '') + '</summary><ul class="imp">'
         + g.lignes.map(function(l){ var lec = lecons(l.cells[k]); return lec.length ? '<li><b>' + esc(NOMS_CANON[l.mat] || l.label) + '</b> : ' + lec.map(function(x){ return esc(x.t) + (x.p ? ' (p. ' + esc(x.p) + ')' : ''); }).join(" · ") + '</li>' : ''; }).join("") + '</ul></details>';
     }).join("");
     dialogue("Répartition lue", '<p style="margin:0 0 8px"><b>' + g.semaines.length + ' semaine(s)</b> et <b>' + g.lignes.length + ' discipline(s)</b> trouvées. Vérifiez, puis remplissez le cahier journal.</p>'
-      + (sansDate ? '<div class="field" style="margin-bottom:8px"><label for="repLundi">Lundi de la première semaine</label><input type="date" id="repLundi" name="lundi" value="' + lundiDe(aujourdhuiISO()) + '"></div>' : '')
+      + '<div class="field" style="margin-bottom:6px"><label for="repLundi">Remplir à partir du lundi</label><input type="date" id="repLundi" name="lundi" value="' + conseil + '"></div>'
+      + '<p class="hint" style="margin:0 0 8px">' + (dateFichier && dateFichier !== conseil ? 'Le fichier commence le ' + esc(dateFr(dateFichier)) + ', mais votre cahier est décalé (semaine bis) : on propose le ' + esc(dateFr(conseil)) + '.' : dateFichier ? 'Date du fichier. Changez-la si le programme est décalé ; les semaines suivantes se placent à la suite, congés sautés.' : 'Le fichier n\'indique pas de dates : choisissez le lundi de la première semaine.') + '</p>'
       + '<div class="rep-apercu">' + apercu + '</div>'
       + '<label class="case" style="margin-top:10px;display:flex;gap:8px;align-items:center"><input type="checkbox" name="remplacer"> Remplacer aussi les cases déjà remplies</label>'
       + '<p class="hint" style="margin:6px 0 0">Les séances sont placées selon votre <b>semaine type</b> (jours de chaque discipline) ; les congés sont sautés.</p>',
       [{label:"Semaine type", valeur:"type", style:"btn-ghost"}, {label:"Annuler", valeur:null, style:"btn-ghost"}, {label:"Remplir " + g.semaines.length + " semaine(s)", valeur:"ok", style:"btn-primary"}], {champs:true, feuille:true}).then(function(r){
         if(!r || !r.valeur) return;
         var faire = function(){
-          var lundis = lundisDeGrille(g, r.champs.lundi ? lundiDe(r.champs.lundi) : lundiDe(aujourdhuiISO()));
+          var choisi = r.champs.lundi ? lundiDe(r.champs.lundi) : conseil;
+          var S = state.journal.semaines, bisApres = Object.keys(S).some(function(k){ return S[k].bis && k >= choisi; });
+          var lundis = lundisDeGrille(g, choisi, !dateFichier || choisi !== dateFichier || bisApres);
           avantModif(false);
           var nb = remplirDepuisRepartition(g, lundis, !!r.champs.remplacer);
           touch(); jrLundi = lundis[0]; jrJour = null; renderJournal(true);
@@ -8735,7 +8926,7 @@ function tableauMatieresEleve(e){
 }
 
 /* ---------- réglages d'apparence (propres à ce téléphone) ---------- */
-var APP_VERSION = "2.5.3";
+var APP_VERSION = "2.6.0";
 var PREFS = "tabrecap.prefs";
 function lirePrefs(){ try{ return JSON.parse(localStorage.getItem(PREFS) || "{}") || {}; }catch(e){ return {}; } }
 function ecrirePrefs(p){ try{ localStorage.setItem(PREFS, JSON.stringify(p)); }catch(e){} }
